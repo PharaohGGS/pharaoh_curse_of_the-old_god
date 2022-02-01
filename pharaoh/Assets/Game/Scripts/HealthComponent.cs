@@ -16,6 +16,9 @@ namespace Pharaoh.Gameplay.Component
     {
         public delegate void DHealthUpdate(HealthComponent healthComponent, float healthUpdate);
         public event DHealthUpdate OnHealthUpdate;
+
+        public delegate void DHealthUnderZero(HealthComponent healthComponent);
+        public event DHealthUnderZero OnHealthUnderZero;
         
         [field: SerializeField] public float MaxHealth { get; private set; }
 
@@ -27,6 +30,11 @@ namespace Pharaoh.Gameplay.Component
             {
                 _currentHealth = Mathf.Max(0, Mathf.Min(value, MaxHealth));
                 OnHealthUpdate?.Invoke(this, _currentHealth);
+
+                if (_currentHealth <= 0.0f)
+                {
+                    OnHealthUnderZero?.Invoke(this);
+                }
             }
         }
 
