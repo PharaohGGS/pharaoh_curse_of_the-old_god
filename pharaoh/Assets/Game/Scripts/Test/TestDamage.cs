@@ -2,7 +2,7 @@
 using Pharaoh.Gameplay.Component;
 using UnityEngine;
 
-namespace Game.Scripts.Test
+namespace Pharaoh.Test
 {
     [RequireComponent(typeof(DamageComponent), typeof(Collider), typeof(Rigidbody))]
     public class TestDamage : MonoBehaviour
