@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Pharaoh.Tools.BehaviourTree
 {
@@ -9,6 +10,22 @@ namespace Pharaoh.Tools.BehaviourTree
         FAILURE,
     }
 
+    public class Node<T> : Node where T : Tree
+    {
+        protected T tree;
+
+        public Node(T tree) : base()
+        {
+            this.tree = tree;
+        }
+
+        public Node(T tree, List<Node> children) : base(children)
+        {
+            this.tree = tree;
+        }
+    }
+
+    [Serializable]
     public class Node
     {
         protected NodeState state;
@@ -16,7 +33,7 @@ namespace Pharaoh.Tools.BehaviourTree
         public Node parent;
         protected List<Node> children = new List<Node>();
 
-        private Dictionary<string, object> _dataContext = new Dictionary<string, object>();
+        private GenericDictionary<string, object> _dataContext = new GenericDictionary<string, object>();
         
         public Node()
         {
@@ -41,7 +58,14 @@ namespace Pharaoh.Tools.BehaviourTree
 
         public void SetData(string key, object value)
         {
-            _dataContext[key] = value;
+            if (_dataContext.ContainsKey(key))
+            {
+                _dataContext[key] = value;
+            }
+            else
+            {
+                _dataContext.Add(key, value);
+            }
         }
 
         public object GetData(string key)

@@ -2,6 +2,14 @@
 
 namespace Pharaoh.Tools.BehaviourTree
 {
+    public class Selector<T> : Selector where T : Tree
+    {
+        protected T tree;
+
+        public Selector(T tree) : base() { }
+        public Selector(T tree, List<Node> children) : base(children) { }
+    }
+
     /// <summary>
     /// Act like '||' logic gate
     /// </summary>

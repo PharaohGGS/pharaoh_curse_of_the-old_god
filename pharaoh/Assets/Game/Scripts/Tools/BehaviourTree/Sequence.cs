@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 namespace Pharaoh.Tools.BehaviourTree
 {
+    public class Sequence<T> : Sequence where T : Tree
+    {
+        protected T tree;
+
+        public Sequence(T tree) : base() { }
+        public Sequence(T tree, List<Node> children) : base(children) { }
+    }
+
     /// <summary>
     /// Act like '&&' logic gate
     /// </summary>
