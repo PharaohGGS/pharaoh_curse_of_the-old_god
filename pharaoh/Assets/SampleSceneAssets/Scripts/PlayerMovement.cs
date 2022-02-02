@@ -1,89 +1,113 @@
-#if ENABLE_INPUT_SYSTEM 
-using UnityEngine.InputSystem;
-#endif
-
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEditor;
 
+[RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
 {
 
-    public CharacterController controller;
+    private Rigidbody2D _rigidbody;
+    private float _horizontalMovement;
+    private bool _jump;
+    private bool _facingRight = true;
 
-    public float speed = 12f;
-    public float gravity = -10f;
-    public float jumpHeight = 2f;
+    [Header("Key Bindings")]
+
+    public InputAction horizontalInput;
+    public InputAction jumpInput;
+
+    [Header("Movement metrics")]
+
+    [Tooltip("100 horizontal speed to get 2m/s")]
+    public float horizontalSpeed = 100f;
+
+    public float inAirHorizontalSpeed;
+
+    [Tooltip("15.1 to get a 3m70 jump (feet position)")]
+    public float jumpForce = 15.1f;
+
+    [Header("Ground Detection")]
 
     public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
-    
+    [Tooltip("0.05 to get a fine ground detection, keep it small and precise")]
+    public float groundCheckRadius = 0.05f;
+    public LayerMask groundLayer;
 
-    Vector3 velocity;
-    bool isGrounded;
-
-#if ENABLE_INPUT_SYSTEM
-    InputAction movement;
-    InputAction jump;
-
-    void Start()
+    private void Start()
     {
-        movement = new InputAction("PlayerMovement", binding: "<Gamepad>/leftStick");
-        movement.AddCompositeBinding("Dpad")
-            .With("Up", "<Keyboard>/w")
-            .With("Up", "<Keyboard>/upArrow")
-            .With("Down", "<Keyboard>/s")
-            .With("Down", "<Keyboard>/downArrow")
-            .With("Left", "<Keyboard>/a")
-            .With("Left", "<Keyboard>/leftArrow")
-            .With("Right", "<Keyboard>/d")
-            .With("Right", "<Keyboard>/rightArrow");
-        
-        jump = new InputAction("PlayerJump", binding: "<Gamepad>/a");
-        jump.AddBinding("<Keyboard>/space");
-
-        movement.Enable();
-        jump.Enable();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        jumpInput.performed += Jump;
     }
-#endif
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        float x;
-        float z;
-        bool jumpPressed = false;
+        _horizontalMovement = horizontalInput.ReadValue<float>();
 
-#if ENABLE_INPUT_SYSTEM
-        var delta = movement.ReadValue<Vector2>();
-        x = delta.x;
-        z = delta.y;
-        jumpPressed = Mathf.Approximately(jump.ReadValue<float>(), 1);
-#else
-        x = Input.GetAxis("Horizontal");
-        z = Input.GetAxis("Vertical");
-        jumpPressed = Input.GetButtonDown("Jump");
-#endif
-
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if (isGrounded && velocity.y < 0)
+        if (_horizontalMovement != 0f)
         {
-            velocity.y = -2f;
+            _facingRight = Mathf.Sign(_horizontalMovement) == 1f;
         }
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        controller.Move(move * speed * Time.deltaTime);
-
-        if(jumpPressed && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
-
-        velocity.y += gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
     }
+
+    private void FixedUpdate()
+    {
+        if (IsGrounded())
+        {
+            _rigidbody.velocity = new Vector2(_horizontalMovement * horizontalSpeed * Time.fixedDeltaTime, _rigidbody.velocity.y);
+        }
+        else
+        {
+            _rigidbody.velocity = new Vector2(_horizontalMovement * inAirHorizontalSpeed * Time.fixedDeltaTime, _rigidbody.velocity.y);
+        }
+    }
+
+    private void Jump(InputAction.CallbackContext ctx)
+    {
+        if (IsGrounded())
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpForce);
+        }
+    }
+
+    private bool IsGrounded()
+    {
+
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_rigidbody == null) return;
+
+        GUIStyle redStyle = new GUIStyle();
+        redStyle.normal.textColor = Color.red;
+
+        GUIStyle greenStyle = new GUIStyle();
+        greenStyle.normal.textColor = Color.green;
+
+        //Ground check radius
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        //Velocity direction
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(new Ray(transform.position, _rigidbody.velocity.normalized));
+
+        //Stats
+        Handles.Label(transform.position + Vector3.up * 2f, "IsGrounded : " + IsGrounded(), IsGrounded() ? greenStyle : redStyle);
+        Handles.Label(transform.position + Vector3.up * 2.5f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
+    }
+
+    private void OnEnable()
+    {
+        horizontalInput.Enable();
+        jumpInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+        horizontalInput.Disable();
+        jumpInput.Disable();
+    }
+
 }
