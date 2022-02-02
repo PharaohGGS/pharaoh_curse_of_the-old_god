@@ -27,6 +27,14 @@ namespace Pharaoh.Gameplay.Component
         
         [SerializeField] private float damagePerHit;
 
+        /// <summary>
+        /// Hit a gameobject if he possess a HealthComponent
+        /// </summary>
+        /// <remarks>
+        /// If use with physics collision, one of the 2 object need a rigidbody, they both need collider
+        /// </remarks>
+        /// <param name="objectToHit"> GameObject you want to hit</param>
+        /// <exception cref="ArgumentOutOfRangeException"> DamageDealing exception thrown when unknown </exception>
         public void Hit(GameObject objectToHit)
         {
             switch (damageDealingType)
