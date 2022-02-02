@@ -4,15 +4,17 @@ namespace Pharaoh.Tools
 {
     public enum MessageType
     {
-        Log, Warning, Error
+        Log, 
+        Warning, 
+        Error
     }
 
-    public class LogHandler : Singleton<LogHandler>
+    public class LogHandler
     {
         public delegate void DSendMessage(string message, MessageType type);
         public static event DSendMessage OnSendMessage;
 
-        public void SendMessage(string message, MessageType type)
+        public static void SendMessage(string message, MessageType type)
         {
             OnSendMessage?.Invoke(message, type);
         }

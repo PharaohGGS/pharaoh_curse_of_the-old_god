@@ -39,7 +39,7 @@ namespace Pharaoh.Gameplay.Component
             }
         }
 
-        public float CurrentPercentHealth => CurrentHealth / MaxHealth;
+        public float CurrentHealthPercent => CurrentHealth / MaxHealth;
 
         public float UpdateHealth(float val, HealthOperation operation)
         {
@@ -72,17 +72,17 @@ namespace Pharaoh.Gameplay.Component
         {
             if (!this.IsSharingSameInstance(objectHit))
             {
-                LogHandler.Instance?.SendMessage("[HealthComponent] Not sharing the same gameobject as damage receiver.", MessageType.Error);
+                LogHandler.SendMessage("[HealthComponent] Not sharing the same gameobject as damage receiver.", MessageType.Error);
                 return;
             }
 
             if (!TryUpdateHealth(damage, HealthOperation.Decrease, out float updated))
             {
-                LogHandler.Instance?.SendMessage($"[HealthComponent] Health hasn't been updated, current: {updated}", MessageType.Warning);
+                LogHandler.SendMessage($"[HealthComponent] Health hasn't been updated, current: {updated}", MessageType.Warning);
                 return;
             }
             
-            LogHandler.Instance?.SendMessage($"{gameObject.name} health: {updated}", MessageType.Log);
+            LogHandler.SendMessage($"{gameObject.name} health: {updated}", MessageType.Log);
         }
 
         private void Start()
