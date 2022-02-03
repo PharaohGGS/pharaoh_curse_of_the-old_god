@@ -1,4 +1,5 @@
-﻿using Pharaoh.Tools.BehaviourTree;
+﻿using Pharaoh.Tools;
+using Pharaoh.Tools.BehaviourTree;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay.AI
@@ -15,9 +16,8 @@ namespace Pharaoh.Gameplay.AI
         public override NodeState Evaluate()
         {
             Transform target = (Transform) GetData("target");
-
-            if (target == null) return NodeState.FAILURE;
-
+            //LogHandler.SendMessage($"[{this.GetType().Name}] target : {target}", target == null ? MessageType.Error : MessageType.Log);
+            
             if (Vector3.Distance(_transform.position, target.position) > 0.01f)
             {
                 _transform.position = Vector3.MoveTowards(

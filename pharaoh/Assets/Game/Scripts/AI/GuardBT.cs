@@ -15,9 +15,9 @@ namespace Pharaoh.Gameplay.AI
 
         protected override Node SetupTree()
         {
-            Node root = new Selector<GuardBT>(this, new List<Node>
+            Node root = new Selector(new List<Node>
             {
-                new Sequence<GuardBT>(this, new List<Node>
+                new Sequence(new List<Node>
                 {
                     new CheckEnemyInFOVRange(this, transform),
                     new TaskGoToTarget(this, transform),
