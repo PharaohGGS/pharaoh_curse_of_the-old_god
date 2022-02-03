@@ -1,6 +1,6 @@
-﻿using Pharaoh.Tools.BehaviourTree;
+﻿using Pharaoh.Tools.BehaviourTree.CSharp;
 using UnityEngine;
-using Tree = Pharaoh.Tools.BehaviourTree.Tree;
+using Tree = Pharaoh.Tools.BehaviourTree.CSharp.Tree;
 
 namespace Pharaoh.Gameplay.AI
 {

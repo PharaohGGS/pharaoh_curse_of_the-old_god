@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace Pharaoh.Tools.BehaviourTree
+namespace Pharaoh.Tools.BehaviourTree.CSharp
 {
     public enum NodeState
     {

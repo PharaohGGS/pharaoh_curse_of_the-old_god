@@ -1,5 +1,5 @@
 ﻿using Pharaoh.Tools;
-using Pharaoh.Tools.BehaviourTree;
+using Pharaoh.Tools.BehaviourTree.CSharp;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay.AI

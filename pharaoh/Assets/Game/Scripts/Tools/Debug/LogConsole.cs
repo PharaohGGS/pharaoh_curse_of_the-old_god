@@ -1,7 +1,8 @@
 ﻿using System;
+using Pharaoh.Tools.DesignPatterns;
 using UnityEngine;
 
-namespace Pharaoh.Tools
+namespace Pharaoh.Tools.Debug
 {
     public class LogConsole : MonoSingleton<LogConsole>
     {
@@ -25,13 +26,13 @@ namespace Pharaoh.Tools
             switch (type)
             {
                 case MessageType.Log:
-                    Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(logColor)}>{message}</color>");
+                    UnityEngine.Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(logColor)}>{message}</color>");
                     break;
                 case MessageType.Warning:
-                    Debug.LogWarning($"<color=#{ColorUtility.ToHtmlStringRGB(warningColor)}>{message}</color>");
+                    UnityEngine.Debug.LogWarning($"<color=#{ColorUtility.ToHtmlStringRGB(warningColor)}>{message}</color>");
                     break;
                 case MessageType.Error:
-                    Debug.LogError($"<color=#{ColorUtility.ToHtmlStringRGB(errorColor)}>{message}</color>");
+                    UnityEngine.Debug.LogError($"<color=#{ColorUtility.ToHtmlStringRGB(errorColor)}>{message}</color>");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

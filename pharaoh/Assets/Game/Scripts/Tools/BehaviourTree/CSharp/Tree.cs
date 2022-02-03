@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Pharaoh.Tools.BehaviourTree
+namespace Pharaoh.Tools.BehaviourTree.CSharp
 {
     public abstract class Tree : MonoBehaviour
     {

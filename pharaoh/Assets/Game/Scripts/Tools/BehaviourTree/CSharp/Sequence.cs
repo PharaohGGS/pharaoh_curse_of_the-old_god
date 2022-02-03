@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Pharaoh.Tools.BehaviourTree
+namespace Pharaoh.Tools.BehaviourTree.CSharp
 {
     public class Sequence<T> : Sequence where T : Tree
     {

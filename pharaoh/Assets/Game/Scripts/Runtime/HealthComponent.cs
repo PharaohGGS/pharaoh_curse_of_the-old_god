@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Pharaoh.Tools;
+using Pharaoh.Tools.Debug;
 
 namespace Pharaoh.Gameplay.Component
 {

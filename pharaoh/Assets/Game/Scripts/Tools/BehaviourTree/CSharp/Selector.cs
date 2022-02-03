@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pharaoh.Tools.BehaviourTree
+namespace Pharaoh.Tools.BehaviourTree.CSharp
 {
     public class Selector<T> : Selector where T : Tree
     {

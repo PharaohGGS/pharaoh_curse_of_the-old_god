@@ -1,4 +1,4 @@
-﻿namespace Pharaoh.Tools.BehaviourTree
+﻿namespace Pharaoh.Tools.BehaviourTree.CSharp
 {
     public static class NodeExtensions
     {

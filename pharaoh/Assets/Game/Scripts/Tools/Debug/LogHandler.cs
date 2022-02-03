@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Pharaoh.Tools
+namespace Pharaoh.Tools.Debug
 {
     public enum MessageType
     {
