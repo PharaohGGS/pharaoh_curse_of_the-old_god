@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/*
+ * Used to measure the time it took for the player to cross Départ and then Arrivée
+ * It really is a debug thingy
+ */
 public class TestChrono : MonoBehaviour
 {
 
