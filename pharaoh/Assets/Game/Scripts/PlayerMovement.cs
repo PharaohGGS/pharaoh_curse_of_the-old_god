@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Recover the player's input and smooths it - vel is unused but necessary
-        Vector2 movement = movementInput.ReadValue<Vector2>(), vel = Vector2.zero;
+        Vector2 movement = movementInput.ReadValue<Vector2>().normalized, vel = Vector2.zero;
         _smoothMovement = Vector2.SmoothDamp(_smoothMovement, movement, ref vel, smoothInput);
 
         // Jumping
@@ -79,8 +79,10 @@ public class PlayerMovement : MonoBehaviour
         // Dashing
         if (dashInput.triggered && !_isDashing && _isDashAvailable && !_hasDashedInAir)
         {
-            _rigidbody.AddForce(Vector2.right * dashForce * Mathf.Sign(_smoothMovement.x), ForceMode2D.Impulse);
-            
+            // Resets the velocity and adds the dash force towards facing direction
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.AddForce((_isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
+
             _isDashing = true;
             _isDashAvailable = false;
             _hasDashedInAir = !_isGrounded;
@@ -95,25 +97,6 @@ public class PlayerMovement : MonoBehaviour
         UpdateStates();
     }
 
-    private void UpdateStates()
-    {
-        // Limit the dash to one use per air-time
-        if (_hasDashedInAir && _isGrounded)
-            _hasDashedInAir = false;
-
-        // Updates the direction the player is facing
-        if (_rigidbody.velocity.x != 0f)
-            _isFacingRight = Mathf.Sign(_rigidbody.velocity.x) == 1f;
-
-        // Updates whether the player is running or not
-        if (_smoothMovement.x != 0f) _isRunning = true;
-        else _isRunning = false;
-
-        // Updates the grounded state - check if one or both "feet" are on a ground
-        _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
-           || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
-    }
-
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
@@ -124,6 +107,25 @@ public class PlayerMovement : MonoBehaviour
             else
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
         }
+    }
+
+    private void UpdateStates()
+    {
+        // Limit the dash to one use per air-time
+        if (_hasDashedInAir && _isGrounded)
+            _hasDashedInAir = false;
+
+        // Updates the direction the player is facing
+        if (_smoothMovement.x != 0f)
+            _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
+
+        // Updates whether the player is running or not
+        if (_smoothMovement.x != 0f) _isRunning = true;
+        else _isRunning = false;
+
+        // Updates the grounded state - check if one or both "feet" are on a ground
+        _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
+           || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
     }
 
     // Coroutine for the duration of the dash (not much use for now)
