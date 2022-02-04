@@ -35,14 +35,16 @@ public class BehaviourTreeEditor : EditorWindow
 
         treeView = root.Q<BehaviourTreeView>();
         inspectorView = root.Q<InspectorView>();
+
+        OnSelectionChange();
     }
 
     private void OnSelectionChange()
     {
-        BehaviourTree bt  = Selection.activeObject as BehaviourTree;
-        if (bt)
+        BehaviourTree behaviourTree  = Selection.activeObject as BehaviourTree;
+        if (behaviourTree)
         {
-            treeView.PopulateView(bt);
+            treeView.PopulateView(behaviourTree);
         }
     }
 }
