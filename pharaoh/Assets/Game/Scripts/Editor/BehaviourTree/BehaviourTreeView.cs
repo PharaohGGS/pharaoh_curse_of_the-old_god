@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Pharaoh.Tools.BehaviourTree.ScriptableObjects;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -6,6 +8,7 @@ using Node = Pharaoh.Tools.BehaviourTree.ScriptableObjects.Node;
 
 public class BehaviourTreeView : GraphView
 {
+    public System.Action<NodeView> OnNodeSelected;
     private BehaviourTree tree;
 
     public new class UxmlFactory : UxmlFactory<BehaviourTreeView, GraphView.UxmlTraits> {}
@@ -22,18 +25,45 @@ public class BehaviourTreeView : GraphView
         styleSheets.Add(styleSheet);
     }
 
+    private NodeView FindNodeView(Node node)
+    {
+        return GetNodeByGuid(node.guid) as NodeView;
+    }
+
     public void PopulateView(BehaviourTree bt)
     {
         this.tree = bt;
 
-        graphViewChanged -= GraphViewChanged;
+        graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
-        graphViewChanged += GraphViewChanged;
+        graphViewChanged += OnGraphViewChanged;
 
+        if (tree.root != null)
+        {
+            tree.root = tree.CreateNode(typeof(RootNode)) as RootNode;
+            EditorUtility.SetDirty(tree);
+            AssetDatabase.SaveAssets();
+        }
+
+        // Create node views
         tree.nodes.ForEach(node => CreateNodeView(node));
+
+        // Create edges
+        tree.nodes.ForEach(node =>
+        {
+            var children = tree.GetChildren(node);
+            children.ForEach(child =>
+            {
+                var parentView = FindNodeView(node);
+                var childView = FindNodeView(child);
+
+                var edge = parentView.output.ConnectTo(childView.input);
+                AddElement(edge);
+            });
+        });
     }
 
-    private GraphViewChange GraphViewChanged(GraphViewChange graphviewchange)
+    private GraphViewChange OnGraphViewChanged(GraphViewChange graphviewchange)
     {
         if (graphviewchange.elementsToRemove != null)
         {
@@ -44,9 +74,35 @@ public class BehaviourTreeView : GraphView
                 {
                     tree.DeleteNode(nodeView.node);
                 }
+
+                var edge = element as Edge;
+                if (edge != null)
+                {
+                    var parentView = edge.output.node as NodeView;
+                    var childView = edge.input.node as NodeView;
+                    tree.RemoveChild(parentView.node, childView.node);
+                }
             });
         }
+
+        if (graphviewchange.edgesToCreate != null)
+        {
+            graphviewchange.edgesToCreate.ForEach(edge =>
+            {
+                var parentView = edge.output.node as NodeView;
+                var childView = edge.input.node as NodeView;
+                tree.AddChild(parentView.node, childView.node);
+            });
+        }
+
         return graphviewchange;
+    }
+
+    public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+    {
+        return ports.ToList().Where(endPort => 
+            endPort.direction != startPort.direction && endPort.node != startPort.node)
+            .ToList();
     }
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -78,7 +134,9 @@ public class BehaviourTreeView : GraphView
 
     private void CreateNodeView(Node node)
     {
-        NodeView nodeView = new NodeView(node);
+        var nodeView = new NodeView(node);
+        nodeView.OnNodeSelected = OnNodeSelected;
         AddElement(nodeView);
     }
+
 }

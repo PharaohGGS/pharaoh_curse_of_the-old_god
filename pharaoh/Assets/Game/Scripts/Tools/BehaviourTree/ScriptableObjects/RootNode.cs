@@ -2,8 +2,13 @@
 
 namespace Pharaoh.Tools.BehaviourTree.ScriptableObjects
 {
-    public abstract class DecoratorNode : Node
+    public class RootNode : Node
     {
         [HideInInspector] public Node child;
+
+        protected override NodeState OnUpdate()
+        {
+            return child.Evaluate();
+        }
     }
 }
