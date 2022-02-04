@@ -13,6 +13,7 @@ namespace Pharaoh.Tools.BehaviourTree.ScriptableObjects
     {
         public NodeState state;
         public bool hasStart = false;
+        public string guid = null;
 
         protected virtual void OnStart() {}
         protected virtual void OnStop() {}
