@@ -23,10 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
 
-    [Tooltip("100 horizontal speed to get 2m/s")]
+    [Tooltip("5m/s : given metrics")]
     public float horizontalSpeed = 100f;
 
-    public float inAirHorizontalSpeed;
+    [Tooltip("5m/s : given metrics")]
+    public float inAirHorizontalSpeed = 5f;
 
     [Tooltip("15.1 to get a 3m70 jump (feet position)")]
     public float jumpForce = 15.1f;
