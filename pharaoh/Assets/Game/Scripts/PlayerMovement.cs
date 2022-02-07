@@ -62,6 +62,14 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
     public float dashCooldown = 0.5f;
 
+    [Header("Animations")]
+
+    [Tooltip("Animator controlling the player")]
+    public Animator animator;
+
+    [Tooltip("Model transform to turn the player around")]
+    public Transform modelTransform;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -118,11 +126,16 @@ public class PlayerMovement : MonoBehaviour
 
         // Updates the direction the player is facing
         if (_smoothMovement.x != 0f)
+        {
             _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
+            modelTransform.localScale = _isFacingRight? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
+        }
 
         // Updates whether the player is running or not
         if (_smoothMovement.x != 0f) _isRunning = true;
         else _isRunning = false;
+        animator.SetBool("Is Running", _isRunning);
+
 
         // Updates the grounded state - check if one or both "feet" are on a ground
         _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
