@@ -1,16 +1,16 @@
-﻿using Pharaoh.Tools.BehaviourTree.ScriptableObjects;
-using Pharaoh.Tools.Debug;
+﻿
+using BehaviourTree.Tools;
 
 namespace Pharaoh.AI.Actions
 {
     public class LogNode : ActionNode
     {
         public string message;
-        public MessageType type;
+        //public MessageType type;
 
         protected override NodeState OnUpdate()
         {
-            LogHandler.SendMessage($"{message}", type);
+            //LogHandler.SendMessage($"{message}", type);
             return NodeState.Success;
         }
     }

@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 106627896}
   - component: {fileID: 106627895}
   - component: {fileID: 106627894}
-  - component: {fileID: 106627893}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -159,28 +158,6 @@ Transform:
   m_Father: {fileID: 1755125447}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &106627893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106627891}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0532cef5eadb938489385fa3d95d86d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 670541906}
-  - {fileID: 1803597076}
-  - {fileID: 700666164}
-  - {fileID: 1189778880}
-  moveSpeed: 2
-  fovRange: 6
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 2
 --- !u!114 &106627894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,7 +1083,6 @@ GameObject:
   - component: {fileID: 1298932075}
   - component: {fileID: 1298932074}
   - component: {fileID: 1298932073}
-  - component: {fileID: 1298932077}
   m_Layer: 0
   m_Name: Hittable
   m_TagString: Untagged
@@ -1205,24 +1181,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298932071}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1298932077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298932071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0532cef5eadb938489385fa3d95d86d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints: []
-  moveSpeed: 2
-  fovRange: 6
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1358581171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,6 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b63bfa64d59fe948adf1bd28eb3d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tree: {fileID: 0}
 --- !u!1 &1601068920
 GameObject:
   m_ObjectHideFlags: 0
