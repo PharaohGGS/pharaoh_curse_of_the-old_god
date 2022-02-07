@@ -96,6 +96,8 @@ public class PlayerMovement : MonoBehaviour
             _isDashAvailable = false;
             _hasDashedInAir = !_isGrounded;
 
+            animator.SetBool("Is Dashing", _isDashing);
+
             StartCoroutine(Dashing());
         }
 
@@ -116,6 +118,8 @@ public class PlayerMovement : MonoBehaviour
             else
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
         }
+
+        animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
     }
 
     private void UpdateStates()
@@ -140,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         // Updates the grounded state - check if one or both "feet" are on a ground
         _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
            || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
+        animator.SetBool("Is Grounded", _isGrounded);
     }
 
     // Coroutine for the duration of the dash (not much use for now)
@@ -148,6 +153,8 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
 
         _isDashing = false;
+
+        animator.SetBool("Is Dashing", _isDashing);
 
         StartCoroutine(DashCooldown());
     }
