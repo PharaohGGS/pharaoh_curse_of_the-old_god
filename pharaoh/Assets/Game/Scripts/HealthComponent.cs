@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pharaoh.Tools;
 
 namespace Pharaoh.Gameplay.Component
 {
@@ -38,7 +39,7 @@ namespace Pharaoh.Gameplay.Component
             }
         }
 
-        public float CurrentPercentHealth => CurrentHealth / MaxHealth;
+        public float CurrentHealthPercent => CurrentHealth / MaxHealth;
 
         public float UpdateHealth(float val, HealthOperation operation)
         {
@@ -60,16 +61,43 @@ namespace Pharaoh.Gameplay.Component
             return CurrentHealth;
         }
 
-        public bool TryUpdateCurrency(float val, HealthOperation operation, out float updated)
+        public bool TryUpdateHealth(float val, HealthOperation operation, out float updated)
         {
             var beforeUpdate = CurrentHealth;
             updated = UpdateHealth(val, operation);
             return Mathf.Abs(beforeUpdate - updated) > Mathf.Epsilon;
         }
 
+        private void ReceiveDamage(GameObject objectHit, float damage)
+        {
+            if (!this.IsSharingSameInstance(objectHit))
+            {
+                LogHandler.SendMessage("[HealthComponent] Not sharing the same gameobject as damage receiver.", MessageType.Error);
+                return;
+            }
+
+            if (!TryUpdateHealth(damage, HealthOperation.Decrease, out float updated))
+            {
+                LogHandler.SendMessage($"[HealthComponent] Health hasn't been updated, current: {updated}", MessageType.Warning);
+                return;
+            }
+            
+            LogHandler.SendMessage($"{gameObject.name} health: {updated}", MessageType.Log);
+        }
+
         private void Start()
         {
             CurrentHealth = MaxHealth;
+        }
+
+        private void OnEnable()
+        {
+            DamageComponent.OnApplyDamage += ReceiveDamage;
+        }
+
+        private void OnDisable()
+        {
+            DamageComponent.OnApplyDamage -= ReceiveDamage;
         }
     }
 }
