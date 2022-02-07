@@ -15,6 +15,8 @@ namespace BehaviourTree.Tools
         [HideInInspector] public bool hasStart = false;
         [HideInInspector] public string guid = null;
         [HideInInspector] public Vector2 position;
+        [HideInInspector] public Blackboard blackboard;
+        [TextArea] public string description;
 
         public virtual Node Clone() => Instantiate(this);
         protected virtual void OnStart() {}

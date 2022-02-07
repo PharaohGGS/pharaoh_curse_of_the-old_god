@@ -1,6 +1,11 @@
+using System;
+using System.Text;
+using BehaviourTree.Tools;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor.Callbacks;
+
 using Tree = BehaviourTree.Tools.Tree;
 
 namespace BehaviourTree.Editor
@@ -9,6 +14,10 @@ namespace BehaviourTree.Editor
     {
         private BehaviourTreeView treeView;
         private InspectorView inspectorView;
+        private IMGUIContainer blackboardView;
+
+        private SerializedObject treeObject;
+        private SerializedProperty blackboardProperty;
 
 
         [MenuItem("BehaviourTreeEditor/Editor ...")]
@@ -16,6 +25,18 @@ namespace BehaviourTree.Editor
         {
             BehaviourTreeEditor wnd = GetWindow<BehaviourTreeEditor>();
             wnd.titleContent = new GUIContent("BehaviourTreeEditor");
+        }
+
+        [OnOpenAsset]
+        public static bool OnOpenAsset(int instanceId, int line)
+        {
+            if (Selection.activeObject is Tree tree)
+            {
+                OpenWindow();
+                return true;
+            }
+
+            return false;
         }
 
         public void CreateGUI()
@@ -34,16 +55,76 @@ namespace BehaviourTree.Editor
 
             treeView = root.Q<BehaviourTreeView>();
             inspectorView = root.Q<InspectorView>();
+            blackboardView = root.Q<IMGUIContainer>();
+            blackboardView.onGUIHandler = () =>
+            {
+                if (treeObject == null) return;
+                treeObject.Update();
+                EditorGUILayout.PropertyField(blackboardProperty);
+                treeObject.ApplyModifiedProperties();
+            };
+
             treeView.OnNodeSelected = OnNodeSelectionChanged;
             OnSelectionChange();
+        }
+
+        private void OnEnable()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+        }
+
+        private void OnPlayModeStateChanged(PlayModeStateChange playModeStateChange)
+        {
+            switch (playModeStateChange)
+            {
+                case PlayModeStateChange.EnteredEditMode:
+                    OnSelectionChange();
+                    break;
+                case PlayModeStateChange.ExitingEditMode:
+                    break;
+                case PlayModeStateChange.EnteredPlayMode:
+                    OnSelectionChange();
+                    break;
+                case PlayModeStateChange.ExitingPlayMode:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(playModeStateChange), playModeStateChange, null);
+            }
         }
 
         private void OnSelectionChange()
         {
             var tree  = Selection.activeObject as Tree;
-            if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+            if (!tree && Selection.activeGameObject)
             {
-                treeView.PopulateView(tree);
+                if (Selection.activeGameObject.TryGetComponent(out BehaviourTreeRunner runner))
+                {
+                    tree = runner.tree;
+                }
+            }
+
+            if (tree)
+            {
+                if (Application.isPlaying)
+                {
+                    treeView?.PopulateView(tree);
+                }
+                else
+                {
+                    if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+                    {
+                        treeView?.PopulateView(tree);
+                    }
+                }
+
+                treeObject = new SerializedObject(tree);
+                blackboardProperty = treeObject.FindProperty("blackboard");
             }
         }
 
@@ -51,6 +132,10 @@ namespace BehaviourTree.Editor
         {
             inspectorView.UpdateSelection(nodeView);
         }
-    }
 
+        private void OnInspectorUpdate()
+        {
+            treeView.UpdateNodeStates();
+        }
+    }
 }

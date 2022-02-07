@@ -1,5 +1,26 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5561565963338997983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b831ac2af9c554fb0a62c44e163262, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 2ffce26fc9a04494ebf6fcf04770671d
+  position: {x: 311, y: 243.334}
+  blackboard:
+    keyData: []
+  description: 
+  children:
+  - {fileID: 817304564431449398}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16,6 +37,31 @@ MonoBehaviour:
   treeState: 0
   nodes:
   - {fileID: 1247898270007183805}
+  - {fileID: 817304564431449398}
+  - {fileID: -5561565963338997983}
+  blackboard:
+    keyData: []
+--- !u!114 &817304564431449398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4d1a753649e29479bdcdc4cec08e42, type: 3}
+  m_Name: LogNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 3ea386b5b44db6a4c9025dd66373f081
+  position: {x: 311, y: 373.12}
+  blackboard:
+    keyData: []
+  description: 
+  message: Caca
+  type: 0
 --- !u!114 &1247898270007183805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31,5 +77,8 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 8f2352b41bcf5484ebfe6a70ef2986a6
-  position: {x: 0, y: 0}
-  child: {fileID: 0}
+  position: {x: 311, y: 135}
+  blackboard:
+    keyData: []
+  description: 
+  child: {fileID: -5561565963338997983}

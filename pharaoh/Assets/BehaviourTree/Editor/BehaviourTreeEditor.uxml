@@ -5,11 +5,19 @@
     </uie:Toolbar>
     <BehaviourTree.Editor.SplitView fixed-pane-initial-dimension="300">
         <ui:VisualElement name="left-panel">
-            <ui:Label text="Inspector" display-tooltip-when-elided="true" />
-            <BehaviourTree.Editor.InspectorView />
+            <BehaviourTree.Editor.SplitView orientation="Vertical" fixed-pane-initial-dimension="300">
+                <ui:VisualElement name="inspector-container">
+                    <ui:Label text="Inspector" display-tooltip-when-elided="true" style="background-color: rgb(29, 29, 29);" />
+                    <BehaviourTree.Editor.InspectorView />
+                </ui:VisualElement>
+                <ui:VisualElement name="blackboard-container">
+                    <ui:Label text="Blackboard" display-tooltip-when-elided="true" style="background-color: rgb(29, 29, 29);" />
+                    <ui:IMGUIContainer />
+                </ui:VisualElement>
+            </BehaviourTree.Editor.SplitView>
         </ui:VisualElement>
         <ui:VisualElement name="right-panel">
-            <ui:Label text="TreeView" display-tooltip-when-elided="true" />
+            <ui:Label text="TreeView" display-tooltip-when-elided="true" style="background-color: rgb(29, 29, 29);" />
             <BehaviourTree.Editor.BehaviourTreeView focusable="true" style="flex-grow: 1;" />
         </ui:VisualElement>
     </BehaviourTree.Editor.SplitView>

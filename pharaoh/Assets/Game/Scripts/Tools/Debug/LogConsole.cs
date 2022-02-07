@@ -1,5 +1,5 @@
 ﻿using System;
-using Pharaoh.Tools.DesignPatterns;
+using DesignPatterns;
 using UnityEngine;
 
 namespace Pharaoh.Tools.Debug

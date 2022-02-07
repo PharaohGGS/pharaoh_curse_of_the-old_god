@@ -1,7 +1,10 @@
+using System;
 using BehaviourTree.Tools;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 using Node = BehaviourTree.Tools.Node;
 
 
@@ -15,17 +18,43 @@ namespace BehaviourTree.Editor
         public Port input;
         public Port output;
 
-        public NodeView(Node node)
+        public NodeView(Node node) : base("Assets/BehaviourTree/Editor/NodeView.uxml")
         {
             this.node = node;
-            this.title = node.name;
-            this.viewDataKey = node.guid;
+            title = node.name;
+            viewDataKey = node.guid;
 
             style.left = node.position.x;
             style.top = node.position.y;
 
             CreateInputPorts();
             CreateOutputPorts();
+
+            SetupClasses();
+
+            Label descriptionLabel = this.Q<Label>("description");
+            descriptionLabel.bindingPath = "description";
+            descriptionLabel.Bind(new SerializedObject(node));
+        }
+
+        private void SetupClasses()
+        {
+            if (node is RootNode rootNode)
+            {
+                AddToClassList("root");
+            }
+            else if (node is ActionNode actionNode)
+            {
+                AddToClassList("action");
+            }
+            else if (node is CompositeNode compositeNode)
+            {
+                AddToClassList("composite");
+            }
+            else if (node is DecoratorNode decoratorNode)
+            {
+                AddToClassList("decorator");
+            }
         }
 
         private void CreateInputPorts()
@@ -35,20 +64,21 @@ namespace BehaviourTree.Editor
             }
             else if (node is ActionNode actionNode)
             {
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
             }
             else if (node is CompositeNode compositeNode)
             {
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
             }
             else if (node is DecoratorNode decoratorNode)
             {
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
             }
 
             if (input != null)
             {
                 input.portName = "";
+                input.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(input);
             }
         }
@@ -60,20 +90,21 @@ namespace BehaviourTree.Editor
             }
             else if (node is CompositeNode compositeNode)
             {
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
             }
             else if (node is DecoratorNode decoratorNode)
             {
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
             }
             else if (node is RootNode rootNode)
             {
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
             }
 
             if (output != null)
             {
                 output.portName = "";
+                output.style.flexDirection = FlexDirection.Column;
                 outputContainer.Add(output);
             }
         }
@@ -82,14 +113,56 @@ namespace BehaviourTree.Editor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
+            Undo.RecordObject(node, "Behaviour Tree (Set Position)");
             node.position.x = newPos.xMin;
             node.position.y = newPos.yMin;
+            EditorUtility.SetDirty(node);
         }
 
         public override void OnSelected()
         {
             base.OnSelected();
             OnNodeSelected?.Invoke(this);
+        }
+
+        public void SortChildren()
+        {
+            if (node is CompositeNode compositeNode)
+            {
+                compositeNode.children.Sort(SortByHorizontalPosition);
+            }
+        }
+
+        private int SortByHorizontalPosition(Node left, Node right)
+        {
+            return (left.position.x < right.position.x) ? -1 : 1;
+        }
+
+        public void UpdateState()
+        {
+            RemoveFromClassList("running");
+            RemoveFromClassList("success");
+            RemoveFromClassList("failure");
+
+            if (!Application.isPlaying) return;
+
+            switch (node.state)
+            {
+                case NodeState.Running:
+                    if (node.hasStart)
+                    {
+                        AddToClassList("running");
+                    }
+                    break;
+                case NodeState.Success:
+                    AddToClassList("success");
+                    break;
+                case NodeState.Failure:
+                    AddToClassList("failure");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

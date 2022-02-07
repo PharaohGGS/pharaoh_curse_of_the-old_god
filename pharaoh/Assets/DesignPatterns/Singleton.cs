@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pharaoh.Tools.DesignPatterns
+namespace DesignPatterns
 {
     public class Singleton<T> : object where T : Singleton<T>, new()
     {

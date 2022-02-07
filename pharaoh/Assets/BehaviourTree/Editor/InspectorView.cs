@@ -25,7 +25,14 @@ namespace BehaviourTree.Editor
 
             UnityEngine.Object.DestroyImmediate(_editor);
             _editor = UnityEditor.Editor.CreateEditor(nodeView.node);
-            IMGUIContainer container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
+            IMGUIContainer container = new IMGUIContainer(() =>
+            {
+                //_editor.OnInspectorGUI();
+                if (_editor.target)
+                {
+                    _editor.OnInspectorGUI();
+                }
+            });
             Add(container);
 
         }

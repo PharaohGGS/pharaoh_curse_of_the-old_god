@@ -1,17 +1,17 @@
 
 using UnityEngine;
-using Tree = BehaviourTree.Tools.Tree;
 
-namespace BehaviourTree.Runtime
+namespace BehaviourTree.Tools
 {
     public class BehaviourTreeRunner : MonoBehaviour
     {
-        [SerializeField] private Tree tree;
+        public Tree tree;
 
         // Start is called before the first frame update
         void Start()
         {
             tree = tree.Clone();
+            tree.Bind();
         }
 
         // Update is called once per frame

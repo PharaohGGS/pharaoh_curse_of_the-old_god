@@ -30,6 +30,14 @@ namespace BehaviourTree.Editor
                 AssetDatabase.LoadAssetAtPath<StyleSheet>(
                     "Assets/BehaviourTree/Editor/BehaviourTreeEditor.uss");
             styleSheets.Add(styleSheet);
+
+            Undo.undoRedoPerformed += OnUndoRedo;
+        }
+
+        private void OnUndoRedo()
+        {
+            PopulateView(_tree);
+            AssetDatabase.SaveAssets();
         }
 
         private NodeView FindNodeView(Node node)
@@ -37,9 +45,9 @@ namespace BehaviourTree.Editor
             return GetNodeByGuid(node.guid) as NodeView;
         }
 
-        public void PopulateView(Tree bt)
+        public void PopulateView(Tree tree)
         {
-            this._tree = bt;
+            _tree = tree;
 
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
@@ -53,7 +61,7 @@ namespace BehaviourTree.Editor
             }
 
             // Create node views
-            _tree.nodes.ForEach(node => CreateNodeView(node));
+            _tree.nodes.ForEach(CreateNodeView);
 
             // Create edges
             _tree.nodes.ForEach(node =>
@@ -70,37 +78,45 @@ namespace BehaviourTree.Editor
             });
         }
 
-        private GraphViewChange OnGraphViewChanged(GraphViewChange graphviewchange)
+        private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
         {
-            if (graphviewchange.elementsToRemove != null)
+            if (graphViewChange.elementsToRemove != null)
             {
-                graphviewchange.elementsToRemove.ForEach(element =>
+                graphViewChange.elementsToRemove.ForEach(element =>
                 {
-                    if (element is NodeView nodeView)
+                    switch (element)
                     {
-                        _tree.DeleteNode(nodeView.node);
-                    }
-
-                    if (element is Edge edge)
-                    {
-                        var parentView = edge.output.node as NodeView;
-                        var childView = edge.input.node as NodeView;
-                        _tree.RemoveChild(parentView.node, childView.node);
+                        case NodeView nodeView:
+                            _tree.DeleteNode(nodeView.node);
+                            break;
+                        case Edge edge:
+                        {
+                            var parentView = edge.output.node as NodeView;
+                            var childView = edge.input.node as NodeView;
+                            _tree.RemoveChild(parentView.node, childView.node);
+                            break;
+                        }
                     }
                 });
             }
 
-            if (graphviewchange.edgesToCreate != null)
+            graphViewChange.edgesToCreate?.ForEach(edge =>
             {
-                graphviewchange.edgesToCreate.ForEach(edge =>
+                var parentView = edge.output.node as NodeView;
+                var childView = edge.input.node as NodeView;
+                _tree.AddChild(parentView.node, childView.node);
+            });
+
+            if (graphViewChange.movedElements != null)
+            {
+                nodes.ForEach(n =>
                 {
-                    var parentView = edge.output.node as NodeView;
-                    var childView = edge.input.node as NodeView;
-                    _tree.AddChild(parentView.node, childView.node);
+                    var view = n as NodeView;
+                    view?.SortChildren();
                 });
             }
 
-            return graphviewchange;
+            return graphViewChange;
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -144,5 +160,13 @@ namespace BehaviourTree.Editor
             AddElement(nodeView);
         }
 
+        public void UpdateNodeStates()
+        {
+            nodes.ForEach(n =>
+            {
+                var view = n as NodeView;
+                view?.UpdateState();
+            });
+        }
     }
 }
