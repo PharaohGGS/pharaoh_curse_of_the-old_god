@@ -7,40 +7,13 @@ using UnityEngine;
 
 public class CameraManager : MonoSingleton<CameraManager>
 {
-    public delegate void RoomChange();
-    public event RoomChange OnRoomChange;
-    
     private Transform _currentRoom;
-    public Transform CurrentRoom
+    private Bounds _currentRoomBoundaries;
+    
+    public Transform CurrentRoom { get; set; }
+    public Bounds CurrentRoomBoundaries
     {
-        get => _currentRoom;
-        set
-        {
-            _currentRoom = value;
-            OnRoomChange?.Invoke();
-        }
-    }
-
-    private void OnEnable()
-    {
-        OnRoomChange += ChangeRoom;
-    }
-
-    private void OnDisable()
-    {
-        OnRoomChange -= ChangeRoom;
-    }
-
-    private void ChangeRoom()
-    {
-        if (TryGetComponent(out CinemachineVirtualCamera virtualCamera))
-        {
-            //virtualCamera.Follow = CurrentRoom;
-            if (TryGetComponent(out CinemachineConfiner2D confiner) &&
-                CurrentRoom.TryGetComponent(out PolygonCollider2D polygonCollider2D))
-            {
-                confiner.m_BoundingShape2D = polygonCollider2D;
-            }
-        }
+        get => CurrentRoom.TryGetComponent(out BoxCollider2D boxCollider2D) ? boxCollider2D.bounds : new Bounds();
+        private set => _currentRoomBoundaries = value;
     }
 }

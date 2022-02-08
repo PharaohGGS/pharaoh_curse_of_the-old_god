@@ -16,7 +16,7 @@ public class SceneLoader : MonoBehaviour
     public Transform player;
     public CheckMethod checkMethod;
     public float loadRange;
-    public List<SceneLoader> neighbours;
+    public List<Transform> neighbours;
 
     private bool _isLoaded;
     private bool _shouldLoad;
@@ -52,9 +52,9 @@ public class SceneLoader : MonoBehaviour
 
     private void NeighboursCheck()
     {
-        if (player.TryGetComponent(out Player playerComponent) &&
-            playerComponent.CurrentSceneLoader.neighbours.Contains(this) ||
-            playerComponent.CurrentSceneLoader == this)
+        if (CameraManager.Instance.CurrentRoom.TryGetComponent(out SceneLoader sceneLoader) &&
+            sceneLoader.neighbours.Contains(transform) ||
+            sceneLoader.transform == transform)
         {
             LoadScene();
         }
