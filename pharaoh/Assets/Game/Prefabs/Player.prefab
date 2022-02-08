@@ -477,8 +477,8 @@ MonoBehaviour:
       m_Action: Dash Input
       m_Flags: 0
     m_Flags: 0
-  horizontalSpeed: 2
-  inAirHorizontalSpeed: 2
+  horizontalSpeed: 5
+  inAirHorizontalSpeed: 5
   jumpForce: 15.1
   smoothInput: 0.03
   movementDeadRange: 0.5
@@ -488,11 +488,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  dashForce: 50
+  dashForce: 30
   dashTime: 0.1
   dashCooldown: 0.5
   animator: {fileID: 8166273275227085034}
   modelTransform: {fileID: 6861086339056602702}
+  tr: {fileID: 5732736215052742473}
 --- !u!114 &5732736215046696850
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashing = false;
     private bool _hasDashedInAir = false;
     private bool _isDashAvailable = true;
+    private float _previousGravityScale;
 
     [Header("Key Bindings")]
 
@@ -96,6 +97,9 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce((_isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
 
+            _previousGravityScale = _rigidbody.gravityScale;
+            _rigidbody.gravityScale = 0f;
+
             _isDashing = true;
             _isDashAvailable = false;
             _hasDashedInAir = !_isGrounded;
@@ -157,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
     System.Collections.IEnumerator Dashing()
     {
         yield return new WaitForSeconds(dashTime);
+
+        _rigidbody.gravityScale = _previousGravityScale;
 
         _isDashing = false;
 
