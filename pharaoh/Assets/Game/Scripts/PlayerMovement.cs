@@ -70,6 +70,10 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Model transform to turn the player around")]
     public Transform modelTransform;
 
+    [Header("DEBUG")]
+
+    public TrailRenderer tr;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -97,6 +101,8 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = !_isGrounded;
 
             animator.SetBool("Is Dashing", _isDashing);
+
+            tr.startColor = Color.red;
 
             StartCoroutine(Dashing());
         }
@@ -136,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Updates whether the player is running or not
-        if (_smoothMovement.x != 0f) _isRunning = true;
+        if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
         else _isRunning = false;
         animator.SetBool("Is Running", _isRunning);
 
@@ -155,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
         _isDashing = false;
 
         animator.SetBool("Is Dashing", _isDashing);
+
+        tr.startColor = Color.blue;
 
         StartCoroutine(DashCooldown());
     }
