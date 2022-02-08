@@ -10,7 +10,7 @@ public class Room : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player") && col.gameObject.TryGetComponent(out Player player))
         {
-            player.ChangeRoom(transform);
+            CameraManager.Instance.CurrentRoom = transform;
             if (TryGetComponent(out SceneLoader sceneLoader) && sceneLoader.checkMethod == CheckMethod.Neighbours)
             {
                 player.CurrentSceneLoader = sceneLoader;

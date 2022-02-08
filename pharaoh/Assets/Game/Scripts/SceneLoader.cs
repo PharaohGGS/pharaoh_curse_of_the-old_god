@@ -21,24 +21,20 @@ public class SceneLoader : MonoBehaviour
     private bool _isLoaded;
     private bool _shouldLoad;
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
-        if (checkMethod == CheckMethod.Distance)
+        switch (checkMethod)
         {
-            DistanceCheck();
-        }
-        else if (checkMethod == CheckMethod.Trigger)
-        {
-            
-        }
-        else if (checkMethod == CheckMethod.Neighbours)
-        {
-            NeighboursCheck();
+            case CheckMethod.Distance:
+                DistanceCheck();
+                break;
+            case CheckMethod.Trigger:
+                break;
+            case CheckMethod.Neighbours:
+                NeighboursCheck();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -68,21 +64,17 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public void LoadScene()
+    private void LoadScene()
     {
-        if (!_isLoaded)
-        {
-            SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
-            _isLoaded = true;
-        }
+        if (_isLoaded) return;
+        SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
+        _isLoaded = true;
     }
 
-    public void UnloadScene()
+    private void UnloadScene()
     {
-        if (_isLoaded)
-        {
-            SceneManager.UnloadSceneAsync(gameObject.name);
-            _isLoaded = false;
-        }
+        if (!_isLoaded) return;
+        SceneManager.UnloadSceneAsync(gameObject.name);
+        _isLoaded = false;
     }
 }

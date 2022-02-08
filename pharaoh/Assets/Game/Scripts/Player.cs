@@ -1,5 +1,6 @@
 using System;
 using Cinemachine;
+using Pharaoh.Gameplay.Component;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,5 +31,13 @@ public class Player : MonoBehaviour
     public void ChangeRoom(Transform room)
     {
         virtualCamera.Follow = room;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (TryGetComponent(out DamageComponent damageComponent))
+        {
+            damageComponent.Hit(col.gameObject);
+        }
     }
 }
