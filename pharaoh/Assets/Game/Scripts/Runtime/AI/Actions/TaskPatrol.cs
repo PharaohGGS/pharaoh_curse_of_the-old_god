@@ -1,60 +1,61 @@
-﻿using UnityEngine;
+﻿using BehaviourTree.Tools;
+using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public class TaskPatrol : ScriptableObject
+    public class TaskPatrol : ActionNode
     {
-        private Transform _transform;
-        private Transform[] _waypoints;
+        [SerializeField] private Transform _transform;
+        [SerializeField] private Transform[] _waypoints;
 
         ///* Patrol attributes *///
-        private int _currentWaypointIndex = 0;
+        [SerializeField] private int _currentWaypointIndex = 0;
 
-        private float _waitTime = 1f;
-        private float _waitCounter = 0f;
-        private bool _waiting = false;
+        [SerializeField] private float _waitTime = 1f;
+        [SerializeField] private float _waitCounter = 0f;
+        [SerializeField] private bool _waiting = false;
 
-        //public TaskPatrol(GuardBT tree, Transform transform, Transform[] waypoints) : base(tree)
-        //{
-        //    _transform = transform;
-        //    _waypoints = waypoints;
-        //}
+        protected override void OnStart()
+        {
+            _transform = agent.transform;
+            _waypoints = agent.waypoints;
+        }
 
-        //public override NodeState Evaluate()
-        //{
-        //    state = NodeState.RUNNING;
+        protected override NodeState OnUpdate()
+        {
+            state = NodeState.Running;
 
-        //    if (_waiting)
-        //    {
-        //        _waitCounter += Time.deltaTime;
-        //        if (_waitCounter >= _waitTime)
-        //        {
-        //            _waiting = false;
-        //        }
+            if (_waiting)
+            {
+                _waitCounter += Time.deltaTime;
+                if (_waitCounter >= _waitTime)
+                {
+                    _waiting = false;
+                }
 
-        //        return state;
-        //    }
+                return state;
+            }
 
-        //    if (_waypoints.Length <= 0) return state;
+            if (_waypoints.Length <= 0) return state;
 
-        //    Transform wp = _waypoints[_currentWaypointIndex];
-        //    if (Vector3.Distance(_transform.position, wp.position) < 0.01f)
-        //    {
-        //        _transform.position = wp.position;
-        //        _waitCounter = 0f;
-        //        _waiting = true;
+            Transform wp = _waypoints[_currentWaypointIndex];
+            if (Vector3.Distance(_transform.position, wp.position) < 0.01f)
+            {
+                _transform.position = wp.position;
+                _waitCounter = 0f;
+                _waiting = true;
 
-        //        _currentWaypointIndex = (_currentWaypointIndex + 1) % _waypoints.Length;
-        //    }
-        //    else
-        //    {
-        //        _transform.position = Vector3.MoveTowards(
-        //            _transform.position, wp.position, 
-        //            tree.moveSpeed * Time.deltaTime);
-        //        _transform.LookAt(wp.position);
-        //    }
-            
-        //    return state;
-        //}
+                _currentWaypointIndex = (_currentWaypointIndex + 1) % _waypoints.Length;
+            }
+            else
+            {
+                _transform.position = Vector3.MoveTowards(
+                    _transform.position, wp.position,
+                    agent.moveSpeed * Time.deltaTime);
+                _transform.LookAt(wp.position);
+            }
+
+            return state;
+        }
     }
 }

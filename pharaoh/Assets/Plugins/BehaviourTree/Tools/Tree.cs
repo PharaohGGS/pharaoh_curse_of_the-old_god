@@ -143,11 +143,12 @@ namespace BehaviourTree.Tools
             return tree;
         }
 
-        public void Bind()
+        public void Bind(AiAgent agent)
         {
             Traverse(root, node =>
             {
                 node.blackboard = blackboard;
+                node.agent = agent;
             });
         }
     }

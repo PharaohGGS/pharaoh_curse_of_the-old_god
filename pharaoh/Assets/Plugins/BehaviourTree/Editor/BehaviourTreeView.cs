@@ -28,7 +28,7 @@ namespace BehaviourTree.Editor
 
             var styleSheet =
                 AssetDatabase.LoadAssetAtPath<StyleSheet>(
-                    "Assets/BehaviourTree/Editor/BehaviourTreeEditor.uss");
+                    "Assets/Plugins/BehaviourTree/UiBuilder/BehaviourTreeEditor.uss");
             styleSheets.Add(styleSheet);
 
             Undo.undoRedoPerformed += OnUndoRedo;

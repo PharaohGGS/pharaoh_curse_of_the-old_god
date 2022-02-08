@@ -115,10 +115,6 @@
     top: 0;
     right: 0;
     bottom: 0;
-    border-left-color: rgb(0, 0, 0);
-    border-right-color: rgb(0, 0, 0);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -126,22 +122,13 @@
 }
 
 .running #node-state {
-    border-left-color: rgb(255, 187, 0);
-    border-right-color: rgb(255, 187, 0);
-    border-top-color: rgb(255, 187, 0);
-    border-bottom-color: rgb(255, 187, 0);
+    background-color: rgb(255, 187, 0);
 }
 
 .success #node-state {
-    border-left-color: rgba(0, 255, 99, 0.59);
-    border-right-color: rgba(0, 255, 99, 0.59);
-    border-top-color: rgba(0, 255, 99, 0.59);
-    border-bottom-color: rgba(0, 255, 99, 0.59);
+    background-color: rgba(0, 255, 99, 0.59);
 }
 
 .failure #node-state {
-    border-left-color: rgba(219, 36, 0, 0.78);
-    border-right-color: rgba(219, 36, 0, 0.78);
-    border-top-color: rgba(219, 36, 0, 0.78);
-    border-bottom-color: rgba(219, 36, 0, 0.78);
+    background-color: rgba(219, 36, 0, 0.78);
 }

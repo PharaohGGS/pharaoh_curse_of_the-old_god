@@ -18,7 +18,7 @@ namespace BehaviourTree.Editor
         public Port input;
         public Port output;
 
-        public NodeView(Node node) : base("Assets/BehaviourTree/Editor/NodeView.uxml")
+        public NodeView(Node node) : base($"Assets/Plugins/BehaviourTree/UiBuilder/NodeView.uxml")
         {
             this.node = node;
             title = node.name;
@@ -129,7 +129,7 @@ namespace BehaviourTree.Editor
         {
             if (node is CompositeNode compositeNode)
             {
-                compositeNode.children.Sort(SortByHorizontalPosition);
+                compositeNode.children?.Sort(SortByHorizontalPosition);
             }
         }
 

@@ -8,18 +8,23 @@ namespace BehaviourTree.Tools
     [Serializable]
     public class Blackboard
     {
-        private Dictionary<string, dynamic> _datas = new Dictionary<string, dynamic>();
+        private Dictionary<string, object> _datas = new Dictionary<string, dynamic>();
         private Dictionary<string, System.Type> _dataTypes = new Dictionary<string, System.Type>();
+
+        #region Debug
+
         [SerializeField] private List<string> keyData = new List<string>();
         [SerializeField] private List<string> typeData = new List<string>();
         [SerializeField] private List<string> valueData = new List<string>();
 
-        public dynamic GetData(string key)
+        #endregion
+
+        public object GetData(string key)
         {
             return _datas.TryGetValue(key, out dynamic value) ? value : null;
         }
 
-        public void SetData(string key, dynamic value)
+        public void SetData(string key, object value)
         {
             if (_datas.ContainsKey(key))
             {

@@ -11,13 +11,12 @@ namespace BehaviourTree.Tools
         void Start()
         {
             tree = tree.Clone();
-            tree.Bind();
         }
 
         // Update is called once per frame
         void Update()
         {
-            tree.Evaluate();
+            tree?.Evaluate();
         }
     }
 }

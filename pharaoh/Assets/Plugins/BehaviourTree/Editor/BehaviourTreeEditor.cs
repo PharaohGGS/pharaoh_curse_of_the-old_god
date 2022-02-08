@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using BehaviourTree.Tools;
 using UnityEditor;
@@ -12,12 +14,12 @@ namespace BehaviourTree.Editor
 {
     public class BehaviourTreeEditor : EditorWindow
     {
-        private BehaviourTreeView treeView;
-        private InspectorView inspectorView;
-        private IMGUIContainer blackboardView;
+        private BehaviourTreeView _treeView;
+        private InspectorView _inspectorView;
+        private IMGUIContainer _blackboardView;
 
-        private SerializedObject treeObject;
-        private SerializedProperty blackboardProperty;
+        private SerializedObject _treeObject;
+        private SerializedProperty _blackboardProperty;
 
 
         [MenuItem("BehaviourTreeEditor/Editor ...")]
@@ -43,28 +45,30 @@ namespace BehaviourTree.Editor
         {
             // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
-            
+            var uiBuilderPath = this.GetAssetPath().Replace("Editor/BehaviourTreeEditor.cs", "UiBuilder");
+            Debug.Log(uiBuilderPath);
+
             // Import UXML
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/BehaviourTree/Editor/BehaviourTreeEditor.uxml");
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{uiBuilderPath}/BehaviourTreeEditor.uxml");
             visualTree.CloneTree(root);
 
             // A stylesheet can be added to a VisualElement.
             // The style will be applied to the VisualElement and all of its children.
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/BehaviourTree/Editor/BehaviourTreeEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>($"{uiBuilderPath}/BehaviourTreeEditor.uss");
             root.styleSheets.Add(styleSheet);
 
-            treeView = root.Q<BehaviourTreeView>();
-            inspectorView = root.Q<InspectorView>();
-            blackboardView = root.Q<IMGUIContainer>();
-            blackboardView.onGUIHandler = () =>
+            _treeView = root.Q<BehaviourTreeView>();
+            _inspectorView = root.Q<InspectorView>();
+            _blackboardView = root.Q<IMGUIContainer>();
+            _blackboardView.onGUIHandler = () =>
             {
-                if (treeObject == null) return;
-                treeObject.Update();
-                EditorGUILayout.PropertyField(blackboardProperty);
-                treeObject.ApplyModifiedProperties();
+                if (_treeObject == null) return;
+                _treeObject.Update();
+                EditorGUILayout.PropertyField(_blackboardProperty, true);
+                _treeObject.ApplyModifiedProperties();
             };
 
-            treeView.OnNodeSelected = OnNodeSelectionChanged;
+            _treeView.OnNodeSelected = OnNodeSelectionChanged;
             OnSelectionChange();
         }
 
@@ -113,29 +117,29 @@ namespace BehaviourTree.Editor
             {
                 if (Application.isPlaying)
                 {
-                    treeView?.PopulateView(tree);
+                    _treeView?.PopulateView(tree);
                 }
                 else
                 {
                     if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
                     {
-                        treeView?.PopulateView(tree);
+                        _treeView?.PopulateView(tree);
                     }
                 }
 
-                treeObject = new SerializedObject(tree);
-                blackboardProperty = treeObject.FindProperty("blackboard");
+                _treeObject = new SerializedObject(tree);
+                _blackboardProperty = _treeObject.FindProperty("blackboard");
             }
         }
 
         private void OnNodeSelectionChanged(NodeView nodeView)
         {
-            inspectorView.UpdateSelection(nodeView);
+            _inspectorView.UpdateSelection(nodeView);
         }
 
         private void OnInspectorUpdate()
         {
-            treeView.UpdateNodeStates();
+            _treeView.UpdateNodeStates();
         }
     }
 }

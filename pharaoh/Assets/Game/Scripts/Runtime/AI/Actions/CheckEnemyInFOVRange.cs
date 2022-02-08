@@ -1,43 +1,49 @@
 ﻿using System;
 using BehaviourTree.Tools;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
     public class CheckEnemyInFOVRange : ActionNode
     {
-        private Transform _transform;
-        private Collider[] _colliders;
+        [SerializeField] private Transform _transform;
+        [SerializeField] private Collider[] _colliders;
 
         private void Awake()
         {
-
             _colliders = new Collider[8];
+        }
+
+        protected override void OnStart()
+        {
+            _transform = agent.transform;
         }
 
         protected override NodeState OnUpdate()
         {
-            //var t = GetData("target");
+            var t = blackboard.GetData("target") as Transform;
 
-            //    if (t != null)
-            //    {
-            //        state = NodeState.SUCCESS;
-            //        return state;
-            //    }
+            if (t != null)
+            {
+                state = NodeState.Success;
+                return state;
+            }
 
-            //    int size = Physics.OverlapSphereNonAlloc(
-            //        _transform.position, tree.fovRange, 
-            //        _colliders, tree.enemyLayerMask);
+            var size = Physics.OverlapSphereNonAlloc(
+                _transform.position, agent.fovRange,
+                _colliders, agent.enemyLayerMask);
 
-            //    if (size > 0)
-            //    {
-            //        var root = this.GetRootNode();
-            //        root.SetData("target", _colliders[0].transform);
-            //        state = NodeState.SUCCESS;
-            //        return state;
-            //    }
+            LogHandler.SendMessage($"OverlapSphere found {size} colliders", MessageType.Log);
 
-            //    state = NodeState.FAILURE;
+            if (size > 0)
+            {
+                blackboard.SetData("target", _colliders[0].transform);
+                state = NodeState.Success;
+                return state;
+            }
+
+            state = NodeState.Failure;
             return state;
         }
     }
