@@ -13,4 +13,19 @@ public class Room : MonoBehaviour
             CameraManager.Instance.CurrentRoom = transform;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Player")) return;
+        Debug.Log(gameObject.name);
+        foreach (var obj in FindObjectsOfType(typeof(Enemy)))
+        {
+            var enemy = (Enemy) obj;
+            if (gameObject.name == enemy.gameObject.scene.name)
+            {
+                SaveManager.SaveEnemy(enemy);
+                enemy.Reset();
+            }
+        }
+    }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3962847204059290552}
   - component: {fileID: 3962847204059290553}
   - component: {fileID: 3962847204059290554}
+  - component: {fileID: 4500440988599970257}
   - component: {fileID: 3962847204059290557}
   - component: {fileID: 3962847204059290558}
   - component: {fileID: 3962847204059290559}
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: d72ccb99945d5134092d39a56e8fafaf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,6 +87,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4500440988599970257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3962847204059290564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd888a986947b4e4ba0215a87738920e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3962847204059290557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7a24c2e54ddd649b551ffaafda9be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 10
+  <MaxHealth>k__BackingField: 100
 --- !u!58 &3962847204059290558
 CircleCollider2D:
   m_ObjectHideFlags: 0

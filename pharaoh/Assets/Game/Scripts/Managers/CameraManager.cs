@@ -5,7 +5,7 @@ using Cinemachine;
 using Pharaoh.Tools;
 using UnityEngine;
 
-public class CameraManager : MonoSingleton<CameraManager>
+public class CameraManager : Singleton<CameraManager>
 {
     private Transform _currentRoom;
     private Bounds _currentRoomBoundaries;
