@@ -2,16 +2,16 @@
 
 namespace BehaviourTree.Tools
 {
-    public class RootNode : Node
+    public class RootNode : BNode
     {
-        [HideInInspector] public Node child;
+        [HideInInspector] public BNode child;
 
         protected override NodeState OnUpdate()
         {
             return child.Evaluate();
         }
 
-        public override Node Clone()
+        public override BNode Clone()
         {
             RootNode root = Instantiate(this);
             root.child = child.Clone();

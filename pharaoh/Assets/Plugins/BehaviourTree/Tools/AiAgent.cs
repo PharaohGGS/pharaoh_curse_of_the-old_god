@@ -17,11 +17,5 @@ namespace BehaviourTree.Tools
         {
             _runner = GetComponent<BehaviourTreeRunner>();
         }
-
-        private IEnumerator Start()
-        {
-            while (_runner.tree == null) yield return null;
-            _runner.tree.Bind(this);
-        }
     }
 }

@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace BehaviourTree.Tools
 {
-    public abstract class CompositeNode : Node
+    public abstract class CompositeNode : BNode
     {
-        [HideInInspector] public List<Node> children;
+        [HideInInspector] public List<BNode> children;
 
-        public override Node Clone()
+        public override BNode Clone()
         {
             CompositeNode composite = Instantiate(this);
             composite.children = children.ConvertAll(c => c.Clone());

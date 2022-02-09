@@ -8,20 +8,25 @@ namespace BehaviourTree.Tools
     [Serializable]
     public class Blackboard
     {
-        private Dictionary<string, object> _datas = new Dictionary<string, dynamic>();
-        private Dictionary<string, System.Type> _dataTypes = new Dictionary<string, System.Type>();
+        [Serializable]
+        private struct Data
+        {
+            public string key;
+            public string type;
+            public string value;
+        }
+
+        private Dictionary<string, object> _datas = new Dictionary<string, object>();
 
         #region Debug
 
-        [SerializeField] private List<string> keyData = new List<string>();
-        [SerializeField] private List<string> typeData = new List<string>();
-        [SerializeField] private List<string> valueData = new List<string>();
+        [SerializeField] private List<Data> debugData = new List<Data>();
 
         #endregion
 
         public object GetData(string key)
         {
-            return _datas.TryGetValue(key, out dynamic value) ? value : null;
+            return _datas.TryGetValue(key, out var value) ? value : null;
         }
 
         public void SetData(string key, object value)
@@ -29,12 +34,10 @@ namespace BehaviourTree.Tools
             if (_datas.ContainsKey(key))
             {
                 _datas[key] = value;
-                _dataTypes[key] = value.GetType();
             }
             else
             {
                 _datas.Add(key, value);
-                _dataTypes.Add(key, value.GetType());
             }
 
             SetupListDebug();
@@ -46,7 +49,6 @@ namespace BehaviourTree.Tools
             if (_datas.ContainsKey(key))
             {
                 _datas.Remove(key);
-                _dataTypes.Remove(key);
                 result = true;
             }
 
@@ -57,14 +59,18 @@ namespace BehaviourTree.Tools
 
         private void SetupListDebug()
         {
-            keyData = _datas.Keys.ToList();
-            valueData.Clear();
-            typeData.Clear();
-            _datas.Values.ToList().ForEach(v =>
+            debugData.Clear();
+            var keyData = _datas.Keys.ToList();
+            foreach (var key in keyData)
             {
-                valueData.Add(v.ToString());
-                typeData.Add(v.GetType().Name);
-            });
+                var value = _datas[key];
+                debugData.Add(new Data
+                {
+                    key = key,
+                    type = value.GetType().ToString(),
+                    value = value.ToString(),
+                });
+            }
         }
     }
 }

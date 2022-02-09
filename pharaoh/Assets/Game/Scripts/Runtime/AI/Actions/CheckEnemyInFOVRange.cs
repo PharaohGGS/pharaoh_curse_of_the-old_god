@@ -7,7 +7,6 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckEnemyInFOVRange : ActionNode
     {
-        [SerializeField] private Transform _transform;
         [SerializeField] private Collider[] _colliders;
 
         private void Awake()
@@ -15,14 +14,9 @@ namespace Pharaoh.AI.Actions
             _colliders = new Collider[8];
         }
 
-        protected override void OnStart()
-        {
-            _transform = agent.transform;
-        }
-
         protected override NodeState OnUpdate()
         {
-            var t = blackboard.GetData("target") as Transform;
+            var t = Blackboard.GetData("target") as Transform;
 
             if (t != null)
             {
@@ -31,19 +25,20 @@ namespace Pharaoh.AI.Actions
             }
 
             var size = Physics.OverlapSphereNonAlloc(
-                _transform.position, agent.fovRange,
-                _colliders, agent.enemyLayerMask);
+                Agent.transform.position, Agent.fovRange,
+                _colliders, Agent.enemyLayerMask);
 
-            LogHandler.SendMessage($"OverlapSphere found {size} colliders", MessageType.Log);
-
-            if (size > 0)
+            if (size <= 0)
             {
-                blackboard.SetData("target", _colliders[0].transform);
-                state = NodeState.Success;
+                state = NodeState.Failure;
                 return state;
             }
 
-            state = NodeState.Failure;
+            
+            Blackboard.SetData("target", _colliders[0].transform);
+            LogHandler.SendMessage($"OverlapSphere found {size} colliders, {Blackboard.GetData("target")}", MessageType.Log);
+
+            state = NodeState.Success;
             return state;
         }
     }

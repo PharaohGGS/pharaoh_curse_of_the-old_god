@@ -17,8 +17,8 @@ namespace Pharaoh.AI.Actions
 
         protected override void OnStart()
         {
-            _transform = agent.transform;
-            _waypoints = agent.waypoints;
+            _transform = Agent.transform;
+            _waypoints = Agent.waypoints;
         }
 
         protected override NodeState OnUpdate()
@@ -51,7 +51,7 @@ namespace Pharaoh.AI.Actions
             {
                 _transform.position = Vector3.MoveTowards(
                     _transform.position, wp.position,
-                    agent.moveSpeed * Time.deltaTime);
+                    Agent.moveSpeed * Time.deltaTime);
                 _transform.LookAt(wp.position);
             }
 

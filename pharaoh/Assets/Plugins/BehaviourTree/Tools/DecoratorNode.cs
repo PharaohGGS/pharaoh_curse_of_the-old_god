@@ -2,11 +2,11 @@
 
 namespace BehaviourTree.Tools
 {
-    public abstract class DecoratorNode : Node
+    public abstract class DecoratorNode : BNode
     {
-        [HideInInspector] public Node child;
+        [HideInInspector] public BNode child;
 
-        public override Node Clone()
+        public override BNode Clone()
         {
             DecoratorNode decorator = Instantiate(this);
             decorator.child = child.Clone();

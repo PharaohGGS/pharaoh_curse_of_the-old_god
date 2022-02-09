@@ -4,14 +4,13 @@ using BehaviourTree.Tools;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using Node = BehaviourTree.Tools.Node;
 
 namespace BehaviourTree.Editor
 {
     public class BehaviourTreeView : GraphView
     {
         public System.Action<NodeView> OnNodeSelected;
-        private Tree _tree;
+        private BTree _tree;
 
         public new class UxmlFactory : UxmlFactory<BehaviourTreeView, GraphView.UxmlTraits>
         {
@@ -40,12 +39,12 @@ namespace BehaviourTree.Editor
             AssetDatabase.SaveAssets();
         }
 
-        private NodeView FindNodeView(Node node)
+        private NodeView FindNodeView(BNode node)
         {
             return GetNodeByGuid(node.guid) as NodeView;
         }
 
-        public void PopulateView(Tree tree)
+        public void PopulateView(BTree tree)
         {
             _tree = tree;
 
@@ -87,13 +86,17 @@ namespace BehaviourTree.Editor
                     switch (element)
                     {
                         case NodeView nodeView:
-                            _tree.DeleteNode(nodeView.node);
+                            _tree?.DeleteNode(nodeView.node);
                             break;
                         case Edge edge:
                         {
                             var parentView = edge.output.node as NodeView;
                             var childView = edge.input.node as NodeView;
-                            _tree.RemoveChild(parentView.node, childView.node);
+
+                            //if (parentView != null && childView != null)
+                            {
+                                _tree?.RemoveChild(parentView.node, childView.node);
+                            }
                             break;
                         }
                     }
@@ -104,7 +107,10 @@ namespace BehaviourTree.Editor
             {
                 var parentView = edge.output.node as NodeView;
                 var childView = edge.input.node as NodeView;
-                _tree.AddChild(parentView.node, childView.node);
+                //if (parentView != null && childView != null)
+                {
+                    _tree?.AddChild(parentView.node, childView.node);
+                }
             });
 
             if (graphViewChange.movedElements != null)
@@ -153,7 +159,7 @@ namespace BehaviourTree.Editor
             CreateNodeView(node);
         }
 
-        private void CreateNodeView(Node node)
+        private void CreateNodeView(BNode node)
         {
             var nodeView = new NodeView(node);
             nodeView.OnNodeSelected = OnNodeSelected;

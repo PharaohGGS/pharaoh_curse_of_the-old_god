@@ -9,17 +9,18 @@ namespace BehaviourTree.Tools
         Failure,
     }
 
-    public abstract class Node : ScriptableObject
+    public abstract class BNode : ScriptableObject
     {
         [HideInInspector] public NodeState state;
         [HideInInspector] public bool hasStart = false;
         [HideInInspector] public string guid = null;
         [HideInInspector] public Vector2 position;
-        [HideInInspector] public Blackboard blackboard;
-        [HideInInspector] public AiAgent agent;
         [TextArea] public string description;
 
-        public virtual Node Clone() => Instantiate(this);
+        public Blackboard Blackboard { get; set; }
+        public AiAgent Agent { get; set; }
+
+        public virtual BNode Clone() => Instantiate(this);
         protected virtual void OnStart() {}
         protected virtual void OnStop() {}
         protected abstract NodeState OnUpdate();

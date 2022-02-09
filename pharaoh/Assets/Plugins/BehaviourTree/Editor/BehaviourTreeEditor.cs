@@ -8,8 +8,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.Callbacks;
 
-using Tree = BehaviourTree.Tools.Tree;
-
 namespace BehaviourTree.Editor
 {
     public class BehaviourTreeEditor : EditorWindow
@@ -32,7 +30,7 @@ namespace BehaviourTree.Editor
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            if (Selection.activeObject is Tree tree)
+            if (Selection.activeObject is BTree tree)
             {
                 OpenWindow();
                 return true;
@@ -46,7 +44,6 @@ namespace BehaviourTree.Editor
             // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
             var uiBuilderPath = this.GetAssetPath().Replace("Editor/BehaviourTreeEditor.cs", "UiBuilder");
-            Debug.Log(uiBuilderPath);
 
             // Import UXML
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{uiBuilderPath}/BehaviourTreeEditor.uxml");
@@ -63,6 +60,7 @@ namespace BehaviourTree.Editor
             _blackboardView.onGUIHandler = () =>
             {
                 if (_treeObject == null) return;
+
                 _treeObject.Update();
                 EditorGUILayout.PropertyField(_blackboardProperty, true);
                 _treeObject.ApplyModifiedProperties();
@@ -104,32 +102,30 @@ namespace BehaviourTree.Editor
 
         private void OnSelectionChange()
         {
-            var tree  = Selection.activeObject as Tree;
-            if (!tree && Selection.activeGameObject)
+            BehaviourTreeRunner runner = null;
+            BTree tree  = Selection.activeObject as BTree;
+
+            if (tree == null && Selection.activeGameObject?.TryGetComponent(out runner) == true)
             {
-                if (Selection.activeGameObject.TryGetComponent(out BehaviourTreeRunner runner))
-                {
-                    tree = runner.tree;
-                }
+                tree = runner.tree;
             }
 
-            if (tree)
+            if (tree == null) return;
+
+            if (Application.isPlaying)
             {
-                if (Application.isPlaying)
+                _treeView?.PopulateView(tree);
+            }
+            else
+            {
+                if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
                 {
                     _treeView?.PopulateView(tree);
                 }
-                else
-                {
-                    if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
-                    {
-                        _treeView?.PopulateView(tree);
-                    }
-                }
-
-                _treeObject = new SerializedObject(tree);
-                _blackboardProperty = _treeObject.FindProperty("blackboard");
             }
+
+            _treeObject = new SerializedObject(tree);
+            _blackboardProperty = _treeObject.FindProperty("blackboard");
         }
 
         private void OnNodeSelectionChanged(NodeView nodeView)

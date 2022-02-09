@@ -2,7 +2,7 @@
 
 namespace BehaviourTree.Tools
 {
-    public abstract class ActionNode : Node
+    public abstract class ActionNode : BNode
     {
         
     }

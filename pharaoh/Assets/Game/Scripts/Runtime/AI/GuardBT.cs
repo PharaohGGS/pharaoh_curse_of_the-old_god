@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Pharaoh.AI
 {
-    public class GuardBT : ScriptableObject // Tree
+    public class GuardBT : ScriptableObject // BTree
     {
         public Transform[] waypoints;
 
@@ -11,11 +11,11 @@ namespace Pharaoh.AI
         public float fovRange = 6f;
         public LayerMask enemyLayerMask;
 
-        //protected override Node SetupTree()
+        //protected override BNode SetupTree()
         //{
-        //    Node root = new Selector(new List<Node>
+        //    BNode root = new Selector(new List<BNode>
         //    {
-        //        new Sequence(new List<Node>
+        //        new Sequence(new List<BNode>
         //        {
         //            new CheckEnemyInFOVRange(this, transform),
         //            new TaskGoToTarget(this, transform),

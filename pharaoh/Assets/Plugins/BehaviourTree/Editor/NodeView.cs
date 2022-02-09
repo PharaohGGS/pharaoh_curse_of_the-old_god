@@ -5,7 +5,6 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Node = BehaviourTree.Tools.Node;
 
 
 namespace BehaviourTree.Editor
@@ -13,12 +12,12 @@ namespace BehaviourTree.Editor
     public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         public System.Action<NodeView> OnNodeSelected;
-        public Node node;
+        public BNode node;
 
         public Port input;
         public Port output;
 
-        public NodeView(Node node) : base($"Assets/Plugins/BehaviourTree/UiBuilder/NodeView.uxml")
+        public NodeView(BNode node) : base($"Assets/Plugins/BehaviourTree/UiBuilder/NodeView.uxml")
         {
             this.node = node;
             title = node.name;
@@ -113,7 +112,7 @@ namespace BehaviourTree.Editor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
-            Undo.RecordObject(node, "Behaviour Tree (Set Position)");
+            Undo.RecordObject(node, "Behaviour BTree (Set Position)");
             node.position.x = newPos.xMin;
             node.position.y = newPos.yMin;
             EditorUtility.SetDirty(node);
@@ -133,7 +132,7 @@ namespace BehaviourTree.Editor
             }
         }
 
-        private int SortByHorizontalPosition(Node left, Node right)
+        private int SortByHorizontalPosition(BNode left, BNode right)
         {
             return (left.position.x < right.position.x) ? -1 : 1;
         }
