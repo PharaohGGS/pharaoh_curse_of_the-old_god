@@ -34,6 +34,7 @@ namespace Pharaoh.Gameplay.Component
                 if (_currentHealth <= 0.0f)
                 {
                     OnHealthUnderZero?.Invoke(this);
+                    //Destroy(gameObject);
                 }
             }
         }

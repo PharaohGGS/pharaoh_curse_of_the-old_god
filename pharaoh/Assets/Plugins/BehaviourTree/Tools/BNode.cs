@@ -14,7 +14,7 @@ namespace BehaviourTree.Tools
         [HideInInspector] public NodeState state;
         [HideInInspector] public bool hasStart = false;
         [HideInInspector] public string guid = null;
-        [HideInInspector] public Vector2 position;
+        public Vector2 position;
         [TextArea] public string description;
 
         public Blackboard Blackboard { get; set; }

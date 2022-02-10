@@ -39,6 +39,8 @@ namespace BehaviourTree.Editor
 
         private SerializedObject _treeObject;
         private SerializedProperty _blackboardProperty;
+
+        public Vector2 mousePositionInEditorWindow { get; private set; }
         
         [MenuItem("BehaviourTreeEditor/Editor ...")]
         public static void OpenWindow()
@@ -74,7 +76,11 @@ namespace BehaviourTree.Editor
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>($"{uiBuilderPath}/BehaviourTreeEditor.uss");
             root.styleSheets.Add(styleSheet);
 
+            rootVisualElement.RegisterCallback<MouseMoveEvent>(OnMouseMove, TrickleDown.TrickleDown);
+
             _treeView = root.Q<BehaviourTreeView>();
+            _treeView.window = this;
+
             _inspectorView = root.Q<InspectorView>();
             _blackboardView = root.Q<IMGUIContainer>();
             _blackboardView.onGUIHandler = () =>
@@ -88,6 +94,11 @@ namespace BehaviourTree.Editor
 
             _treeView.OnNodeSelected = OnNodeSelectionChanged;
             OnSelectionChange();
+        }
+
+        private void OnMouseMove(MouseMoveEvent evt)
+        {
+            mousePositionInEditorWindow = evt.mousePosition;
         }
 
         private void OnEnable()
@@ -130,24 +141,26 @@ namespace BehaviourTree.Editor
                 tree = runner.tree;
             }
 
-            if (tree == null) return;
-
-            if (Application.isPlaying)
+            if (tree)
             {
-                _treeView?.PopulateView(tree);
-            }
-            else
-            {
-                if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+                if (Application.isPlaying)
                 {
                     _treeView?.PopulateView(tree);
                 }
+                else
+                {
+                    if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+                    {
+                        _treeView?.PopulateView(tree);
+                    }
+                }
+
+                _treeObject = new SerializedObject(tree);
             }
 
-            _treeObject = new SerializedObject(tree);
-            _blackboardProperty = _treeObject.FindProperty("blackboard");
+            _blackboardProperty = _treeObject?.FindProperty("blackboard");
 
-            if (_blackboardProperty.isArray)
+            if (_blackboardProperty?.isArray == true)
             {
                 _blackboardProperty?.RemoveEmptyArrayElements();
             }

@@ -5,7 +5,7 @@ namespace BehaviourTree.Tools
 {
     public abstract class CompositeNode : BNode
     {
-        [HideInInspector] public List<BNode> children;
+        [HideInInspector] public List<BNode> children = new List<BNode>();
 
         public override BNode Clone()
         {

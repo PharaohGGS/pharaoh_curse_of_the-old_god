@@ -22,7 +22,7 @@ namespace BehaviourTree.Editor
             this.node = node;
             title = node.name;
             viewDataKey = node.guid;
-
+            
             style.left = node.position.x;
             style.top = node.position.y;
 
@@ -107,8 +107,7 @@ namespace BehaviourTree.Editor
                 outputContainer.Add(output);
             }
         }
-
-
+        
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);

@@ -3,6 +3,7 @@ using System.Linq;
 using BehaviourTree.Tools;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace BehaviourTree.Editor
@@ -11,6 +12,8 @@ namespace BehaviourTree.Editor
     {
         public System.Action<NodeView> OnNodeSelected;
         private BTree _tree;
+
+        public EditorWindow window;
 
         public new class UxmlFactory : UxmlFactory<BehaviourTreeView, GraphView.UxmlTraits>
         {
@@ -60,20 +63,26 @@ namespace BehaviourTree.Editor
             }
 
             // Create node views
-            _tree.nodes.ForEach(CreateNodeView);
+            _tree.nodes.ForEach((n) => CreateNodeView(n, Vector2.zero));
 
             // Create edges
             _tree.nodes.ForEach(node =>
             {
                 var children = _tree.GetChildren(node);
-                children.ForEach(child =>
+                
+                children?.ForEach(child =>
                 {
+                    if (child == null) return;
+
                     var parentView = FindNodeView(node);
                     var childView = FindNodeView(child);
-                    
+
+                    if (parentView == null || childView == null) return;
+
                     var edge = parentView.output.ConnectTo(childView.input);
                     AddElement(edge);
                 });
+                
             });
         }
 
@@ -156,16 +165,28 @@ namespace BehaviourTree.Editor
         private void CreateNode(System.Type type)
         {
             var node = _tree.CreateNode(type);
-            CreateNodeView(node);
+
+            var worldMousePosition = ((BehaviourTreeEditor)window).mousePositionInEditorWindow;
+            var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
+            
+            CreateNodeView(node, localMousePosition);
         }
 
-        private void CreateNodeView(BNode node)
+        private void CreateNodeView(BNode node, Vector2 position)
         {
             var nodeView = new NodeView(node);
             nodeView.OnNodeSelected = OnNodeSelected;
             AddElement(nodeView);
-        }
+            
+            //var worldMousePosition = window.rootVisualElement.ChangeCoordinatesTo(window.rootVisualElement.parent,
+            //    nodeView.GetPosition().position - window.position.position);
+            
+            if (node is RootNode || position == Vector2.zero) return;
 
+            nodeView.SetPosition(new Rect(position,
+                new Vector2(nodeView.style.width.value.value, nodeView.style.height.value.value)));
+        }
+        
         public void UpdateNodeStates()
         {
             nodes.ForEach(n =>

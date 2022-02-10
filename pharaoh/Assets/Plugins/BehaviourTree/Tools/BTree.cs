@@ -12,7 +12,7 @@ namespace BehaviourTree.Tools
         public NodeState treeState;
         public List<BNode> nodes;
         public Blackboard blackboard;
-
+        
         private void Awake()
         {
             treeState = NodeState.Running;
