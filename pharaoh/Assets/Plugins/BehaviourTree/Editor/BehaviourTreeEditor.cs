@@ -10,6 +10,27 @@ using UnityEditor.Callbacks;
 
 namespace BehaviourTree.Editor
 {
+    public static class EditorHelper
+    {
+        public static int RemoveEmptyArrayElements(this SerializedProperty list)
+        {
+            var elementsRemoved = 0;
+            if (list.serializedObject != null)
+            {
+                for (int i = list.arraySize - 1; i >= 0; i--)
+                {
+                    if (list.GetArrayElementAtIndex(i).objectReferenceValue == null)
+                    {
+                        list.DeleteArrayElementAtIndex(i);
+                        elementsRemoved++;
+                    }
+                }
+            }
+     
+            return elementsRemoved;
+        }
+    }
+
     public class BehaviourTreeEditor : EditorWindow
     {
         private BehaviourTreeView _treeView;
@@ -18,8 +39,7 @@ namespace BehaviourTree.Editor
 
         private SerializedObject _treeObject;
         private SerializedProperty _blackboardProperty;
-
-
+        
         [MenuItem("BehaviourTreeEditor/Editor ...")]
         public static void OpenWindow()
         {
@@ -61,9 +81,9 @@ namespace BehaviourTree.Editor
             {
                 if (_treeObject == null) return;
 
-                _treeObject.Update();
+                _treeObject?.Update();
                 EditorGUILayout.PropertyField(_blackboardProperty, true);
-                _treeObject.ApplyModifiedProperties();
+                _treeObject?.ApplyModifiedProperties();
             };
 
             _treeView.OnNodeSelected = OnNodeSelectionChanged;
@@ -126,6 +146,11 @@ namespace BehaviourTree.Editor
 
             _treeObject = new SerializedObject(tree);
             _blackboardProperty = _treeObject.FindProperty("blackboard");
+
+            if (_blackboardProperty.isArray)
+            {
+                _blackboardProperty?.RemoveEmptyArrayElements();
+            }
         }
 
         private void OnNodeSelectionChanged(NodeView nodeView)
