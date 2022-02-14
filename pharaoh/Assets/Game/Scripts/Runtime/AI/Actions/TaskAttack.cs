@@ -26,15 +26,15 @@ namespace Pharaoh.AI.Actions
         {
             var t = blackboard.GetData("target") as Transform;
 
-            if (t != _lastTarget && t != null && t.TryGetComponent(out HealthComponent healthComponent))
+            if (t != null && t != _lastTarget)
             {
                 _lastTarget = t;
 
-                if (_healthComponent != null)
+                if (t.TryGetComponent(out HealthComponent healthComponent) && _healthComponent != healthComponent)
                 {
-                    _healthComponent.OnDeath.RemoveListener(OnTargetDeath);
+                    _healthComponent?.OnDeath?.RemoveListener(OnTargetDeath);
                     _healthComponent = healthComponent;
-                    _healthComponent.OnDeath.AddListener(OnTargetDeath);
+                    _healthComponent?.OnDeath?.AddListener(OnTargetDeath);
                 }
             }
 

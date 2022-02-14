@@ -10,29 +10,6 @@ using UnityEditor.Callbacks;
 
 namespace BehaviourTree.Editor
 {
-    public static class BehaviourTreeEditorHelper
-    {
-        public static int RemoveEmptyArrayElements(this SerializedProperty list)
-        {
-            var elementsRemoved = 0;
-            if (list.serializedObject != null)
-            {
-                for (int i = list.arraySize - 1; i >= 0; i--)
-                {
-                    if (list.GetArrayElementAtIndex(i).objectReferenceValue == null)
-                    {
-                        list.DeleteArrayElementAtIndex(i);
-                        elementsRemoved++;
-                    }
-                }
-            }
-     
-            return elementsRemoved;
-        }
-
-    }
-
-
     public class BehaviourTreeEditor : EditorWindow
     {
         private BehaviourTreeView _treeView;
@@ -86,7 +63,7 @@ namespace BehaviourTree.Editor
             _blackboardView.MarkDirtyLayout();
             _blackboardView.onGUIHandler = () =>
             {
-                if (_blackboardProperty.serializedObject == null) return;
+                if (_blackboardProperty == null) return;
 
                 _treeObject?.Update();
                 EditorGUI.BeginChangeCheck();
@@ -130,7 +107,7 @@ namespace BehaviourTree.Editor
                 
             _treeObject = new SerializedObject(tree);
             _blackboardProperty = _treeObject.FindProperty("blackboard");
-            _blackboardProperty.FindPropertyRelative("debugData").RemoveEmptyArrayElements();
+            _blackboardProperty?.FindPropertyRelative("debugData")?.RemoveEmptyArrayElements();
         }
 
         private void OnInspectorUpdate()
