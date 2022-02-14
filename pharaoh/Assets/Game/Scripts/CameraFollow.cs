@@ -11,7 +11,6 @@ public class CameraFollow : MonoBehaviour
     private BoxCollider2D _cameraBox;
     
     private Vector3 _velocity = Vector3.zero;
-    private float _waitForSeconds = 0.5f;
     
     private void Start()
     {
@@ -24,10 +23,11 @@ public class CameraFollow : MonoBehaviour
     private void Update()
     {
         CalculateCameraBox();
-        if (_waitForSeconds > 0)
-            _waitForSeconds -= Time.deltaTime;
-        else
-            FollowPlayer();
+    }
+
+    private void LateUpdate()
+    {
+        FollowPlayer();
     }
 
     private void FollowPlayer()

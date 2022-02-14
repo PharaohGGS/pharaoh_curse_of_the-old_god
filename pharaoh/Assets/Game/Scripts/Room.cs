@@ -11,6 +11,8 @@ public class Room : MonoBehaviour
         if (col.gameObject.CompareTag("Player") && col.gameObject.TryGetComponent(out Player player))
         {
             CameraManager.Instance.CurrentRoom = transform;
+            GameObject.Find("VC_Base").GetComponent<CinemachineConfiner2D>().m_BoundingShape2D =
+                GetComponent<PolygonCollider2D>();
         }
     }
 
