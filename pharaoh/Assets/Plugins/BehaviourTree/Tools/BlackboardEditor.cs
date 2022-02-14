@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BehaviourTree.Tools
 {
-    //[CustomEditor(typeof(Blackboard))]
+    //[CustomEditor(typeof(blackboard))]
     //[CanEditMultipleObjects]
     //public class BlackboardEditor : Editor
     //{

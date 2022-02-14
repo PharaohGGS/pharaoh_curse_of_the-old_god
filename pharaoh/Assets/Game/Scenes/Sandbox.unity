@@ -135,12 +135,10 @@ GameObject:
   - component: {fileID: 106627897}
   - component: {fileID: 106627896}
   - component: {fileID: 106627895}
-  - component: {fileID: 106627894}
-  - component: {fileID: 106627899}
-  - component: {fileID: 106627898}
-  - component: {fileID: 106627900}
   - component: {fileID: 106627902}
-  - component: {fileID: 106627901}
+  - component: {fileID: 106627900}
+  - component: {fileID: 106627903}
+  - component: {fileID: 106627899}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -163,19 +161,6 @@ Transform:
   m_Father: {fileID: 1755125447}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &106627894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106627891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a24c2e54ddd649b551ffaafda9be9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 100
 --- !u!135 &106627895
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -239,28 +224,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106627891}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &106627898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106627891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e0dc250ccb8fe4a922d3fe427979e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  fovRange: 6
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 2
-  waypoints:
-  - {fileID: 670541906}
-  - {fileID: 1803597076}
-  - {fileID: 700666164}
-  - {fileID: 1189778880}
 --- !u!114 &106627899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b63bfa64d59fe948adf1bd28eb3d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 4a5cfc8c781f4964296a4f911c920347, type: 2}
+  tree: {fileID: 11400000, guid: 4b17b64ff48a9d146b9f18d249d54439, type: 2}
 --- !u!114 &106627900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,26 +246,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 106627891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63e650c844135dd4bbd9933f0867586d, type: 3}
+  m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageDealingType: 1
-  fireRate: 0
-  damagePerRate: 0
-  damagePerHit: 10
---- !u!114 &106627901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106627891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a53e3dc8d6d36774f9b5a96563158a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageComponent: {fileID: 0}
+  <Damage>k__BackingField: 10
 --- !u!54 &106627902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -319,6 +266,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &106627903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106627891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011e43d7012684b4ea75775d8c4ac34a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyAgentRuntimeSet: {fileID: 11400000, guid: abaeb1ab7ac1c3e458d7ddf8de3055c3, type: 2}
+  moveSpeed: 5
+  fovRange: 6
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 2
+  waypoints:
+  - {fileID: 670541906}
+  - {fileID: 1803597076}
+  - {fileID: 700666164}
+  - {fileID: 1189778880}
 --- !u!1 &307934639
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,10 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e650c844135dd4bbd9933f0867586d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageDealingType: 0
-  fireRate: 0
-  damagePerRate: 0
-  damagePerHit: 0
 --- !u!114 &307934644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,7 +522,6 @@ GameObject:
   - component: {fileID: 670541906}
   - component: {fileID: 670541909}
   - component: {fileID: 670541908}
-  - component: {fileID: 670541907}
   m_Layer: 0
   m_Name: Waypoint (0)
   m_TagString: Untagged
@@ -579,19 +544,6 @@ Transform:
   m_Father: {fileID: 899843710}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &670541907
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 670541905}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &670541908
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -653,7 +605,6 @@ GameObject:
   - component: {fileID: 700666164}
   - component: {fileID: 700666167}
   - component: {fileID: 700666166}
-  - component: {fileID: 700666165}
   m_Layer: 0
   m_Name: Waypoint (2)
   m_TagString: Untagged
@@ -676,19 +627,6 @@ Transform:
   m_Father: {fileID: 899843710}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &700666165
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 700666163}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &700666166
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1068,7 +1006,6 @@ GameObject:
   - component: {fileID: 1189778880}
   - component: {fileID: 1189778883}
   - component: {fileID: 1189778882}
-  - component: {fileID: 1189778881}
   m_Layer: 0
   m_Name: Waypoint (3)
   m_TagString: Untagged
@@ -1091,19 +1028,6 @@ Transform:
   m_Father: {fileID: 899843710}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1189778881
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1189778879}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1189778882
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1166,7 +1090,7 @@ GameObject:
   - component: {fileID: 1298932076}
   - component: {fileID: 1298932075}
   - component: {fileID: 1298932074}
-  - component: {fileID: 1298932073}
+  - component: {fileID: 1298932077}
   m_Layer: 0
   m_Name: Hittable
   m_TagString: Untagged
@@ -1189,19 +1113,6 @@ Transform:
   m_Father: {fileID: 735399859}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1298932073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298932071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a24c2e54ddd649b551ffaafda9be9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 100
 --- !u!135 &1298932074
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1265,6 +1176,62 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298932071}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1298932077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298932071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <maxHealth>k__BackingField: 100
+  <health>k__BackingField: 100
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: fdb349524d149714f86e0ed765ca1d86, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: fbc476d41ac2495468d0bd6bcbb914eb, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1298932071}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1358581171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf25fbab940012940853c4dd8623dfa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
   logColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   errorColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1357,7 +1323,6 @@ GameObject:
   - component: {fileID: 1803597076}
   - component: {fileID: 1803597079}
   - component: {fileID: 1803597078}
-  - component: {fileID: 1803597077}
   m_Layer: 0
   m_Name: Waypoint (1)
   m_TagString: Untagged
@@ -1380,19 +1345,6 @@ Transform:
   m_Father: {fileID: 899843710}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1803597077
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803597075}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1803597078
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1568,7 +1520,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 2006490029}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7a24c2e54ddd649b551ffaafda9be9, type: 3}
+  m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 100
+  <maxHealth>k__BackingField: 100
+  <health>k__BackingField: 100
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: fdb349524d149714f86e0ed765ca1d86, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: fbc476d41ac2495468d0bd6bcbb914eb, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2006490029}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

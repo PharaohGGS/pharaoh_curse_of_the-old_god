@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DesignPatterns
 {
-    public class MonoSingleton<T> : MonoBehaviour where T : Component
+    public class PersistantMonoSingleton<T> : MonoBehaviour where T : Component
     {
         private static T _instance;
 
@@ -20,6 +19,7 @@ namespace DesignPatterns
                     };
 
                     _instance = go.AddComponent<T>();
+                    DontDestroyOnLoad(go);
                 }
 
                 return _instance;
@@ -36,6 +36,7 @@ namespace DesignPatterns
             if (_instance == null)
             {
                 _instance = this as T;
+                DontDestroyOnLoad(gameObject);
             }
             else
             {

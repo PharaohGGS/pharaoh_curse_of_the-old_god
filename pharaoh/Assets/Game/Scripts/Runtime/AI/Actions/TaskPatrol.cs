@@ -1,24 +1,30 @@
 ﻿using BehaviourTree.Tools;
+using Pharaoh.Gameplay.Components;
 using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
     public class TaskPatrol : ActionNode
     {
-        [SerializeField] private Transform _transform;
-        [SerializeField] private Transform[] _waypoints;
+        [SerializeField] private Transform transform;
+        [SerializeField] private Transform[] waypoints;
 
         ///* Patrol attributes *///
-        [SerializeField] private int _currentWaypointIndex = 0;
+        [SerializeField] private int currentWaypointIndex = 0;
 
-        [SerializeField] private float _waitTime = 1f;
-        [SerializeField] private float _waitCounter = 0f;
-        [SerializeField] private bool _waiting = false;
+        [SerializeField] private float waitTime = 1f;
+        
+        private float _waitCounter = 0f;
+        
+        private bool _waiting = false;
+
+        private EnemyAgent _enemyAgent;
 
         protected override void OnStart()
         {
-            _transform = Agent.transform;
-            _waypoints = Agent.waypoints;
+            _enemyAgent = agent as EnemyAgent;
+            transform = agent.transform;
+            waypoints = _enemyAgent.waypoints;
         }
 
         protected override NodeState OnUpdate()
@@ -28,7 +34,7 @@ namespace Pharaoh.AI.Actions
             if (_waiting)
             {
                 _waitCounter += Time.deltaTime;
-                if (_waitCounter >= _waitTime)
+                if (_waitCounter >= waitTime)
                 {
                     _waiting = false;
                 }
@@ -36,23 +42,23 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_waypoints.Length <= 0) return state;
+            if (waypoints.Length <= 0) return state;
 
-            Transform wp = _waypoints[_currentWaypointIndex];
-            if (Vector3.Distance(_transform.position, wp.position) < 0.01f)
+            Transform wp = waypoints[currentWaypointIndex];
+            if (Vector3.Distance(transform.position, wp.position) < 0.01f)
             {
-                _transform.position = wp.position;
+                transform.position = wp.position;
                 _waitCounter = 0f;
                 _waiting = true;
 
-                _currentWaypointIndex = (_currentWaypointIndex + 1) % _waypoints.Length;
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
             }
             else
             {
-                _transform.position = Vector3.MoveTowards(
-                    _transform.position, wp.position,
-                    Agent.moveSpeed * Time.deltaTime);
-                _transform.LookAt(wp.position);
+                transform.position = Vector3.MoveTowards(
+                    transform.position, wp.position,
+                    _enemyAgent.moveSpeed * Time.deltaTime);
+                transform.LookAt(wp.position);
             }
 
             return state;

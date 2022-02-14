@@ -28,8 +28,7 @@ namespace BehaviourTree.Editor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
-            var styleSheet =
-                AssetDatabase.LoadAssetAtPath<StyleSheet>(
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(
                     "Assets/Plugins/BehaviourTree/UiBuilder/BehaviourTreeEditor.uss");
             styleSheets.Add(styleSheet);
 
@@ -70,15 +69,10 @@ namespace BehaviourTree.Editor
             {
                 var children = _tree.GetChildren(node);
                 
-                children?.ForEach(child =>
+                children.ForEach(child =>
                 {
-                    if (child == null) return;
-
                     var parentView = FindNodeView(node);
                     var childView = FindNodeView(child);
-
-                    if (parentView == null || childView == null) return;
-
                     var edge = parentView.output.ConnectTo(childView.input);
                     AddElement(edge);
                 });
@@ -88,38 +82,28 @@ namespace BehaviourTree.Editor
 
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
         {
-            if (graphViewChange.elementsToRemove != null)
-            {
-                graphViewChange.elementsToRemove.ForEach(element =>
-                {
-                    switch (element)
-                    {
-                        case NodeView nodeView:
-                            _tree?.DeleteNode(nodeView.node);
-                            break;
-                        case Edge edge:
-                        {
-                            var parentView = edge.output.node as NodeView;
-                            var childView = edge.input.node as NodeView;
+            if (_tree == null) return graphViewChange;
 
-                            //if (parentView != null && childView != null)
-                            {
-                                _tree?.RemoveChild(parentView.node, childView.node);
-                            }
-                            break;
-                        }
-                    }
-                });
-            }
+            graphViewChange.elementsToRemove?.ForEach(element =>
+            {
+                switch (element)
+                {
+                    case NodeView nodeView:
+                        _tree.DeleteNode(nodeView.node);
+                        break;
+                    case Edge edge:
+                        var parentView = edge.output.node as NodeView;
+                        var childView = edge.input.node as NodeView;
+                        _tree.RemoveChild(parentView.node, childView.node);
+                        break;
+                }
+            });
 
             graphViewChange.edgesToCreate?.ForEach(edge =>
             {
                 var parentView = edge.output.node as NodeView;
                 var childView = edge.input.node as NodeView;
-                //if (parentView != null && childView != null)
-                {
-                    _tree?.AddChild(parentView.node, childView.node);
-                }
+                _tree.AddChild(parentView.node, childView.node);
             });
 
             if (graphViewChange.movedElements != null)
@@ -127,7 +111,7 @@ namespace BehaviourTree.Editor
                 nodes.ForEach(n =>
                 {
                     var view = n as NodeView;
-                    view?.SortChildren();
+                    view.SortChildren();
                 });
             }
 
@@ -136,30 +120,23 @@ namespace BehaviourTree.Editor
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
-            return ports.ToList().Where(endPort =>
-                    endPort.direction != startPort.direction && endPort.node != startPort.node)
-                .ToList();
+            return ports.ToList().Where(endPort => endPort.direction != startPort.direction && endPort.node != startPort.node).ToList();
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            var actionTypes = TypeCache.GetTypesDerivedFrom<ActionNode>();
-            foreach (var type in actionTypes)
+            void CreateTypeNodes(TypeCache.TypeCollection collection)
             {
-                evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", (a) => CreateNode(type));
+                foreach (var type in collection)
+                {
+                    evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", 
+                        (a) => CreateNode(type));
+                }
             }
 
-            var compositeTypes = TypeCache.GetTypesDerivedFrom<CompositeNode>();
-            foreach (var type in compositeTypes)
-            {
-                evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", (a) => CreateNode(type));
-            }
-
-            var decoratorTypes = TypeCache.GetTypesDerivedFrom<DecoratorNode>();
-            foreach (var type in decoratorTypes)
-            {
-                evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", (a) => CreateNode(type));
-            }
+            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<ActionNode>());
+            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<CompositeNode>());
+            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<DecoratorNode>());
         }
 
         private void CreateNode(System.Type type)
@@ -192,7 +169,7 @@ namespace BehaviourTree.Editor
             nodes.ForEach(n =>
             {
                 var view = n as NodeView;
-                view?.UpdateState();
+                view.UpdateState();
             });
         }
     }

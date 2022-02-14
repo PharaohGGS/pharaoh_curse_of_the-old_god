@@ -30,6 +30,7 @@ namespace BehaviourTree.Tools
             return treeState;
         }
 
+#if UNITY_EDITOR
         public BNode CreateNode(System.Type type)
         {
             var node = ScriptableObject.CreateInstance(type) as BNode;
@@ -79,6 +80,7 @@ namespace BehaviourTree.Tools
                     break;
             }
         }
+        
         public void RemoveChild(BNode parent, BNode child)
         {
             switch (parent)
@@ -100,6 +102,7 @@ namespace BehaviourTree.Tools
                     break;
             }
         }
+#endif
 
         public List<BNode> GetChildren(BNode parent)
         {
@@ -109,7 +112,7 @@ namespace BehaviourTree.Tools
                 case DecoratorNode decorator when decorator.child != null:
                     children.Add(decorator.child);
                     break;
-                case RootNode rootNode:
+                case RootNode rootNode when rootNode.child != null:
                     children.Add(rootNode.child);
                     break;
                 case CompositeNode composite:
@@ -119,34 +122,30 @@ namespace BehaviourTree.Tools
             return children;
         }
 
-        public void Traverse(BNode bNode, System.Action<BNode> visiter)
+        public void Traverse(BNode node, System.Action<BNode> visiter)
         {
-            if (bNode)
-            {
-                visiter?.Invoke(bNode);
-                var children = GetChildren(bNode);
-                children.ForEach((n) => Traverse(n, visiter));
-            }
+            if (!node) return;
+
+            visiter?.Invoke(node);
+            var children = GetChildren(node);
+            children.ForEach((n) => Traverse(n, visiter));
         }
 
         public BTree Clone()
         {
-            BTree bTree = Instantiate(this);
-            bTree.root = bTree.root.Clone();
-            bTree.nodes = new List<BNode>();
-            Traverse(bTree.root, (n) =>
-            {
-                bTree.nodes.Add(n);
-            });
-            return bTree;
+            var tree = Instantiate(this);
+            tree.root = tree.root.Clone();
+            tree.nodes = new List<BNode>();
+            Traverse(tree.root, (n) => tree.nodes.Add(n));
+            return tree;
         }
 
         public void Bind(AiAgent agent)
         {
             Traverse(root, node =>
             {
-                node.Blackboard = blackboard;
-                node.Agent = agent;
+                node.blackboard = blackboard;
+                node.agent = agent;
             });
         }
     }

@@ -10,7 +10,7 @@ using UnityEditor.Callbacks;
 
 namespace BehaviourTree.Editor
 {
-    public static class EditorHelper
+    public static class BehaviourTreeEditorHelper
     {
         public static int RemoveEmptyArrayElements(this SerializedProperty list)
         {
@@ -29,7 +29,9 @@ namespace BehaviourTree.Editor
      
             return elementsRemoved;
         }
+
     }
+
 
     public class BehaviourTreeEditor : EditorWindow
     {
@@ -52,13 +54,10 @@ namespace BehaviourTree.Editor
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            if (Selection.activeObject is BTree tree)
-            {
-                OpenWindow();
-                return true;
-            }
+            if (Selection.activeObject is not BTree) return false;
 
-            return false;
+            OpenWindow();
+            return true;
         }
 
         public void CreateGUI()
@@ -79,26 +78,23 @@ namespace BehaviourTree.Editor
             rootVisualElement.RegisterCallback<MouseMoveEvent>(OnMouseMove, TrickleDown.TrickleDown);
 
             _treeView = root.Q<BehaviourTreeView>();
+            _treeView.OnNodeSelected = OnNodeSelectionChanged;
             _treeView.window = this;
 
             _inspectorView = root.Q<InspectorView>();
             _blackboardView = root.Q<IMGUIContainer>();
+            _blackboardView.MarkDirtyLayout();
             _blackboardView.onGUIHandler = () =>
             {
-                if (_treeObject == null) return;
+                if (_blackboardProperty.serializedObject == null) return;
 
                 _treeObject?.Update();
-                EditorGUILayout.PropertyField(_blackboardProperty, true);
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(_blackboardProperty);
                 _treeObject?.ApplyModifiedProperties();
             };
 
-            _treeView.OnNodeSelected = OnNodeSelectionChanged;
             OnSelectionChange();
-        }
-
-        private void OnMouseMove(MouseMoveEvent evt)
-        {
-            mousePositionInEditorWindow = evt.mousePosition;
         }
 
         private void OnEnable()
@@ -112,18 +108,50 @@ namespace BehaviourTree.Editor
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
         }
 
+        private void OnSelectionChange()
+        {
+            var tree  = Selection.activeObject as BTree;
+
+            if (tree == null && Selection.activeGameObject != null && 
+                Selection.activeGameObject.TryGetComponent(out BehaviourTreeRunner runner))
+            {
+                tree = runner.tree;
+            }
+
+            if (tree == null) return;
+
+            switch (Application.isPlaying)
+            {
+                case true:
+                case false when AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()):
+                    _treeView?.PopulateView(tree);
+                    break;
+            }
+                
+            _treeObject = new SerializedObject(tree);
+            _blackboardProperty = _treeObject.FindProperty("blackboard");
+            _blackboardProperty.FindPropertyRelative("debugData").RemoveEmptyArrayElements();
+        }
+
+        private void OnInspectorUpdate()
+        {
+            _treeView?.UpdateNodeStates();
+        }
+
+        private void OnMouseMove(MouseMoveEvent evt)
+        {
+            mousePositionInEditorWindow = evt.mousePosition;
+        }
+
         private void OnPlayModeStateChanged(PlayModeStateChange playModeStateChange)
         {
             switch (playModeStateChange)
             {
                 case PlayModeStateChange.EnteredEditMode:
-                    OnSelectionChange();
-                    break;
-                case PlayModeStateChange.ExitingEditMode:
-                    break;
                 case PlayModeStateChange.EnteredPlayMode:
                     OnSelectionChange();
                     break;
+                case PlayModeStateChange.ExitingEditMode:
                 case PlayModeStateChange.ExitingPlayMode:
                     break;
                 default:
@@ -131,49 +159,9 @@ namespace BehaviourTree.Editor
             }
         }
 
-        private void OnSelectionChange()
-        {
-            BehaviourTreeRunner runner = null;
-            BTree tree  = Selection.activeObject as BTree;
-
-            if (tree == null && Selection.activeGameObject?.TryGetComponent(out runner) == true)
-            {
-                tree = runner.tree;
-            }
-
-            if (tree)
-            {
-                if (Application.isPlaying)
-                {
-                    _treeView?.PopulateView(tree);
-                }
-                else
-                {
-                    if (AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
-                    {
-                        _treeView?.PopulateView(tree);
-                    }
-                }
-
-                _treeObject = new SerializedObject(tree);
-            }
-
-            _blackboardProperty = _treeObject?.FindProperty("blackboard");
-
-            if (_blackboardProperty?.isArray == true)
-            {
-                _blackboardProperty?.RemoveEmptyArrayElements();
-            }
-        }
-
         private void OnNodeSelectionChanged(NodeView nodeView)
         {
             _inspectorView.UpdateSelection(nodeView);
-        }
-
-        private void OnInspectorUpdate()
-        {
-            _treeView.UpdateNodeStates();
         }
     }
 }

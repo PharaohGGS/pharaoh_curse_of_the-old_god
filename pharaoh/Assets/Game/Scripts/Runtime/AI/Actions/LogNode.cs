@@ -11,7 +11,7 @@ namespace Pharaoh.AI.Actions
 
         protected override void OnStart()
         {
-            Blackboard.SetData("message", message);
+            blackboard.SetData("message", message);
         }
 
         protected override NodeState OnUpdate()

@@ -14,11 +14,11 @@ namespace BehaviourTree.Tools
         [HideInInspector] public NodeState state;
         [HideInInspector] public bool hasStart = false;
         [HideInInspector] public string guid = null;
-        public Vector2 position;
+        [HideInInspector] public Vector2 position;
         [TextArea] public string description;
 
-        public Blackboard Blackboard { get; set; }
-        public AiAgent Agent { get; set; }
+        [HideInInspector] public Blackboard blackboard;
+        [HideInInspector] public AiAgent agent;
 
         public virtual BNode Clone() => Instantiate(this);
         protected virtual void OnStart() {}

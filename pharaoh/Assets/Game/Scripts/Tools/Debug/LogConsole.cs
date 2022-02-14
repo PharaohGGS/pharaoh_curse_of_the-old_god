@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Pharaoh.Tools.Debug
 {
-    public class LogConsole : MonoSingleton<LogConsole>
+    public class LogConsole : PersistantMonoSingleton<LogConsole>
     {
         [SerializeField] private Color logColor = Color.white;
         [SerializeField] private Color warningColor = Color.yellow;

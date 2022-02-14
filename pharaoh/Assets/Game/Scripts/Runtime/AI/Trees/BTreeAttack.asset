@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7734708282509550058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09553e84a6b274841bdc8371e70cb2bd, type: 3}
+  m_Name: CheckTargetInFovRange
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 161a77d064db8da4d8f4098d1fbd07bb
+  position: {x: -255.59998, y: 501.59998}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  colliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fovRange: 6
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &-7423210214105691865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4e9c6548fad7c4d887db71df10dc8e, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 01ba0037d3ea1c44e9440d604777aaab
+  position: {x: 0, y: 154.79999}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -4515494466446858112}
+  - {fileID: -1648399046828418868}
+  - {fileID: 2405255340232358766}
+--- !u!114 &-7416022359906798282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c175358d1845504089121d208a34ad1, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: ba56d7c43f8d4414baf1dae2b93453a8
+  position: {x: 0, y: 0}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  child: {fileID: -7423210214105691865}
+--- !u!114 &-4515494466446858112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 942060d764798794d87ff2bbbb4b7c92
+  position: {x: -582.2, y: 332.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: 7758351463197390362}
+  - {fileID: 9160260900232421967}
+--- !u!114 &-2962014241288984556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6829c9572cabda4dac157e6564dc7d7, type: 3}
+  m_Name: TaskGoToTarget
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: aa506cefc86d44344932e71c597a3b1f
+  position: {x: -74.79993, y: 500.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+--- !u!114 &-1648399046828418868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 656004a2c998a2a4c8825ba43cac83ed
+  position: {x: -179.59998, y: 332.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -7734708282509550058}
+  - {fileID: -2962014241288984556}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ec8275fb4705c46b9a82a48e2a8bd4, type: 3}
+  m_Name: BTreeAttack
+  m_EditorClassIdentifier: 
+  root: {fileID: -7416022359906798282}
+  treeState: 0
+  nodes:
+  - {fileID: -7416022359906798282}
+  - {fileID: -7423210214105691865}
+  - {fileID: -4515494466446858112}
+  - {fileID: -1648399046828418868}
+  - {fileID: 2405255340232358766}
+  - {fileID: 7758351463197390362}
+  - {fileID: -7734708282509550058}
+  - {fileID: 9160260900232421967}
+  - {fileID: -2962014241288984556}
+  blackboard:
+    debugData: []
+--- !u!114 &2405255340232358766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d73eb20fc38c84cb214044c069ed05, type: 3}
+  m_Name: TaskPatrol
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 6b69c4415c7db7d4595b1fae0fc3e255
+  position: {x: 272.40002, y: 354.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  transform: {fileID: 0}
+  waypoints: []
+  currentWaypointIndex: 0
+  waitTime: 1
+--- !u!114 &7758351463197390362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b629fbf9a77e12469507a045b93e6f8, type: 3}
+  m_Name: CheckTargetInAttackRange
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 4d2eafd4535bc664bb9d1fb490ddaf50
+  position: {x: -704.6, y: 501.60004}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  attackRange: 0.5
+--- !u!114 &9160260900232421967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db31c96d19a7c6c4da5bdb075ebcd1ad, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 69c3463aa0e2f744ea158a9b12c50bae
+  position: {x: -504.8, y: 500.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  attackRate: 0.5

@@ -38,74 +38,63 @@ namespace BehaviourTree.Editor
 
         private void SetupClasses()
         {
-            if (node is RootNode rootNode)
+            switch (node)
             {
-                AddToClassList("root");
-            }
-            else if (node is ActionNode actionNode)
-            {
-                AddToClassList("action");
-            }
-            else if (node is CompositeNode compositeNode)
-            {
-                AddToClassList("composite");
-            }
-            else if (node is DecoratorNode decoratorNode)
-            {
-                AddToClassList("decorator");
+                case RootNode rootNode:
+                    AddToClassList("root");
+                    break;
+                case ActionNode actionNode:
+                    AddToClassList("action");
+                    break;
+                case CompositeNode compositeNode:
+                    AddToClassList("composite");
+                    break;
+                case DecoratorNode decoratorNode:
+                    AddToClassList("decorator");
+                    break;
             }
         }
 
         private void CreateInputPorts()
         {
-            if (node is RootNode rootNode)
+            switch (node)
             {
-            }
-            else if (node is ActionNode actionNode)
-            {
-                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
-            }
-            else if (node is CompositeNode compositeNode)
-            {
-                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
-            }
-            else if (node is DecoratorNode decoratorNode)
-            {
-                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
+                case RootNode rootNode:
+                    break;
+                case ActionNode actionNode:
+                case CompositeNode compositeNode:
+                case DecoratorNode decoratorNode:
+                    input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
+                    break;
             }
 
-            if (input != null)
-            {
-                input.portName = "";
-                input.style.flexDirection = FlexDirection.Column;
-                inputContainer.Add(input);
-            }
+            if (input == null) return;
+
+            input.portName = "";
+            input.style.flexDirection = FlexDirection.Column;
+            inputContainer.Add(input);
         }
 
         private void CreateOutputPorts()
         {
-            if (node is ActionNode actionNode)
+            switch (node)
             {
-            }
-            else if (node is CompositeNode compositeNode)
-            {
-                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
-            }
-            else if (node is DecoratorNode decoratorNode)
-            {
-                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
-            }
-            else if (node is RootNode rootNode)
-            {
-                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
+                case ActionNode actionNode:
+                    break;
+                case CompositeNode compositeNode:
+                    output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
+                    break;
+                case DecoratorNode decoratorNode:
+                case RootNode rootNode:
+                    output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
+                    break;
             }
 
-            if (output != null)
-            {
-                output.portName = "";
-                output.style.flexDirection = FlexDirection.Column;
-                outputContainer.Add(output);
-            }
+            if (output == null) return;
+
+            output.portName = "";
+            output.style.flexDirection = FlexDirection.Column;
+            outputContainer.Add(output);
         }
         
         public override void SetPosition(Rect newPos)
@@ -127,7 +116,7 @@ namespace BehaviourTree.Editor
         {
             if (node is CompositeNode compositeNode)
             {
-                compositeNode.children?.Sort(SortByHorizontalPosition);
+                compositeNode.children.Sort(SortByHorizontalPosition);
             }
         }
 
