@@ -76,7 +76,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: b13440239a15c0e4baa8593503fbc462
-  position: {x: 260.46002, y: 489.0001}
+  position: {x: 385, y: 489}
   description: 
   blackboard:
     debugData: []
@@ -105,6 +105,29 @@ MonoBehaviour:
   children:
   - {fileID: -202544834717103389}
   - {fileID: 3877651723054851050}
+--- !u!114 &-296634645880429238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 3b8e666f66f1b7641b5fb5917477fc7e
+  position: {x: 310, y: 320}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: 4181057966134932998}
+  - {fileID: -434897171179383084}
 --- !u!114 &-202544834717103389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +181,8 @@ MonoBehaviour:
   - {fileID: -202544834717103389}
   - {fileID: -4520443291870835227}
   - {fileID: 3877651723054851050}
-  - {fileID: 7843698926523000465}
+  - {fileID: 4181057966134932998}
+  - {fileID: -296634645880429238}
   blackboard:
     debugData: []
 --- !u!114 &3877651723054851050
@@ -181,6 +205,28 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &4181057966134932998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da607eded8435e04fb818e2e62ee720b, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 451ec5aecae46cf448cad429a8ec8274
+  position: {x: 214, y: 489}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  duration: 1
+  timeSince: 0
 --- !u!114 &4371565709285988904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,26 +273,4 @@ MonoBehaviour:
   children:
   - {fileID: 4371565709285988904}
   - {fileID: -312466018821222187}
-  - {fileID: 7843698926523000465}
---- !u!114 &7843698926523000465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: a01644b16bfb33445a18a44d2f7f4d18
-  position: {x: 310, y: 334}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  children:
-  - {fileID: -434897171179383084}
+  - {fileID: -296634645880429238}

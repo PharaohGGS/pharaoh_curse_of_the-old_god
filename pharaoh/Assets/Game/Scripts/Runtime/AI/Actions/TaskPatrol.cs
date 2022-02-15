@@ -29,10 +29,11 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            Transform wp = _agent.movement.waypoints[currentWaypointIndex];
+            var wp = _agent.movement.waypoints[currentWaypointIndex];
             if (Vector3.Distance(agent.transform.position, wp.position) < 0.01f)
             {
                 agent.transform.position = wp.position;
+                blackboard.SetData("isWaiting", true);
                 currentWaypointIndex = (currentWaypointIndex + 1) % _agent.movement.waypoints.Length;
             }
             else

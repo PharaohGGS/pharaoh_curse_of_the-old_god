@@ -9,24 +9,34 @@ namespace BehaviourTree.Runtime.Actions
         public float duration = 1;
         private float _startTime = 0f;
 
-        private object _isWaiting = null;
-
+        public float timeSince;
+        
         protected override void OnStart()
         {
             _startTime = Time.time;
-
-            _isWaiting = blackboard.GetData("isWaiting");
-            if (_isWaiting == null)
-            {
-                blackboard.SetData("isWaiting", false);
-            }
+            var isWaiting = blackboard.GetData("isWaiting");
+            if (isWaiting == null) blackboard.SetData("isWaiting", false);
         }
 
         protected override NodeState OnUpdate()
         {
-            state = Time.time - _startTime > duration ? NodeState.Success : NodeState.Running;
+            if (state == NodeState.Success) return state;
+
+            timeSince = Time.time - _startTime;
+            state = timeSince <= duration 
+                ? NodeState.Running : NodeState.Success;
+
             blackboard.SetData("isWaiting", state == NodeState.Running);
+            
             return state;
+        }
+
+        protected override void OnStop()
+        {
+            if (blackboard.GetData("isWaiting") is true)
+            {
+                state = NodeState.Running;
+            }
         }
     }
 }
