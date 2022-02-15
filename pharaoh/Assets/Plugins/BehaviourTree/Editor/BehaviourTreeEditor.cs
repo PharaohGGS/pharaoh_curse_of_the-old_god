@@ -107,7 +107,7 @@ namespace BehaviourTree.Editor
                 
             _treeObject = new SerializedObject(tree);
             _blackboardProperty = _treeObject.FindProperty("blackboard");
-            _blackboardProperty?.FindPropertyRelative("debugData")?.RemoveEmptyArrayElements();
+            //_blackboardProperty?.FindPropertyRelative("debugData")?.RemoveEmptyArrayElements();
         }
 
         private void OnInspectorUpdate()

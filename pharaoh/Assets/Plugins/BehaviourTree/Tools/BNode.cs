@@ -11,7 +11,7 @@ namespace BehaviourTree.Tools
 
     public abstract class BNode : ScriptableObject
     {
-        [HideInInspector] public NodeState state;
+        public NodeState state;
         [HideInInspector] public bool hasStart = false;
         [HideInInspector] public string guid = null;
         [HideInInspector] public Vector2 position;

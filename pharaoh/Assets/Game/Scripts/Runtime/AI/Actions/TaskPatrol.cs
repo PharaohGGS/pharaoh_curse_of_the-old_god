@@ -19,9 +19,13 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Running;
-
+            var isWaiting = blackboard.GetData("isWaiting");
+            
+            if (isWaiting is true) return state;
+            
             if (!_agent || !_agent.movement || _agent.movement.waypoints.Length <= 0)
             {
+                state = NodeState.Failure;
                 return state;
             }
 
@@ -30,7 +34,6 @@ namespace Pharaoh.AI.Actions
             {
                 agent.transform.position = wp.position;
                 currentWaypointIndex = (currentWaypointIndex + 1) % _agent.movement.waypoints.Length;
-                state = NodeState.Success;
             }
             else
             {
