@@ -9,17 +9,10 @@ namespace BehaviourTree.Tools
     public class BTree : ScriptableObject
     {
         public BNode root;
-        public NodeState treeState;
-        public List<BNode> nodes;
-        public Blackboard blackboard;
+        public NodeState treeState = NodeState.Running;
+        public List<BNode> nodes = new List<BNode>();
+        public Blackboard blackboard = new Blackboard();
         
-        private void Awake()
-        {
-            treeState = NodeState.Running;
-            nodes = new List<BNode>();
-            blackboard = new Blackboard();
-        }
-
         public NodeState Evaluate()
         {
             if (root.state == NodeState.Running)
