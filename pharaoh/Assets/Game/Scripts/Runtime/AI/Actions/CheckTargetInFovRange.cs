@@ -9,19 +9,13 @@ namespace Pharaoh.AI.Actions
     public class CheckTargetInFovRange : ActionNode
     {
         [SerializeField] private Collider[] colliders;
-        [SerializeField] private float fovRange = 6;
-        [SerializeField] private LayerMask enemyLayerMask = 1<<6;
-
-        private EnemyAgent _enemyAgent;
-
-        private void Awake()
-        {
-            colliders = new Collider[8];
-        }
+        
+        private EnemyAgent _agent = null;
 
         protected override void OnStart()
         {
-            _enemyAgent = agent as EnemyAgent;
+            colliders = new Collider[8];
+            _agent = agent as EnemyAgent;
         }
 
         protected override NodeState OnUpdate()
@@ -34,9 +28,15 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
+            if (_agent == null)
+            {
+                state = NodeState.Failure;
+                return state;
+            }
+
             var size = Physics.OverlapSphereNonAlloc(
-                agent.transform.position, fovRange,
-                colliders, enemyLayerMask);
+                agent.transform.position, _agent.detection.fovRange,
+                colliders, _agent.detection.detectionLayer);
 
             if (size <= 0)
             {

@@ -16,27 +16,27 @@ namespace Pharaoh.Gameplay.Components
 
     public class HealthComponent : MonoBehaviour
     {
-        [field: SerializeField] public float maxHealth { get; private set; } = 100;
-        [field: SerializeField] public float health { get; private set; } = 100;
+        [field: SerializeField] public float max { get; private set; } = 100;
 
         public UnityEvent<float> OnHealthChange;
         public UnityEvent OnDeath;
 
-        public float Percent => health / maxHealth;
+        public float current { get; private set; }
+        public float percent => current / max;
 
         public void ApplyChange(float val, FloatOperation operation)
         {
-            health = operation switch
+            current = operation switch
             {
-                FloatOperation.Define => Mathf.Min(val, maxHealth),
-                FloatOperation.Increase => Mathf.Min(health + val, maxHealth),
-                FloatOperation.Decrease => Mathf.Max(health - val, 0.0f),
+                FloatOperation.Define => Mathf.Min(val, max),
+                FloatOperation.Increase => Mathf.Min(current + val, max),
+                FloatOperation.Decrease => Mathf.Max(current - val, 0.0f),
                 _ => throw new ArgumentOutOfRangeException(nameof(operation), operation, null)
             };
 
-            OnHealthChange?.Invoke(health);
+            OnHealthChange?.Invoke(current);
 
-            if (health <= 0.0f)
+            if (current <= 0.0f)
             {
                 OnDeath?.Invoke();
             } 
@@ -44,7 +44,7 @@ namespace Pharaoh.Gameplay.Components
 
         private void Start()
         {
-            health = maxHealth;
+            current = max;
         }
 
         private void OnDisable()

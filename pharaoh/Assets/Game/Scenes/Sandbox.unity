@@ -136,9 +136,12 @@ GameObject:
   - component: {fileID: 106627896}
   - component: {fileID: 106627895}
   - component: {fileID: 106627902}
-  - component: {fileID: 106627900}
-  - component: {fileID: 106627903}
   - component: {fileID: 106627899}
+  - component: {fileID: 106627903}
+  - component: {fileID: 106627900}
+  - component: {fileID: 106627906}
+  - component: {fileID: 106627905}
+  - component: {fileID: 106627904}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -249,7 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 10
+  <attackRate>k__BackingField: 0.5
+  <value>k__BackingField: 10
 --- !u!54 &106627902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -279,16 +283,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAgentRuntimeSet: {fileID: 11400000, guid: abaeb1ab7ac1c3e458d7ddf8de3055c3, type: 2}
-  moveSpeed: 5
-  fovRange: 6
-  enemyLayerMask:
+--- !u!114 &106627904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106627891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <fovRange>k__BackingField: 6
+  <attackRange>k__BackingField: 1
+  <detectionLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 2
-  waypoints:
+    m_Bits: 66
+--- !u!114 &106627905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106627891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c911a2dd3d349144aafa7d92db3a3d09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <moveSpeed>k__BackingField: 5
+  <waypoints>k__BackingField:
   - {fileID: 670541906}
   - {fileID: 1803597076}
   - {fileID: 700666164}
   - {fileID: 1189778880}
+--- !u!114 &106627906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106627891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <max>k__BackingField: 100
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &307934639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,8 +1271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHealth>k__BackingField: 100
-  <health>k__BackingField: 100
+  <max>k__BackingField: 100
   OnHealthChange:
     m_PersistentCalls:
       m_Calls:
@@ -1558,8 +1605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHealth>k__BackingField: 100
-  <health>k__BackingField: 100
+  <max>k__BackingField: 100
   OnHealthChange:
     m_PersistentCalls:
       m_Calls:

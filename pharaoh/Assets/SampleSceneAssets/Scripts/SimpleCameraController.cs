@@ -59,7 +59,7 @@ namespace UnityTemplateProjects
         CameraState m_TargetCameraState = new CameraState();
         CameraState m_InterpolatingCameraState = new CameraState();
 
-        [Header("Movement Settings")]
+        [Header("movement Settings")]
         [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
         public float boost = 3.5f;
 
@@ -92,7 +92,7 @@ namespace UnityTemplateProjects
 
             lookAction = map.AddAction("look", binding: "<Mouse>/delta");
             movementAction = map.AddAction("move", binding: "<Gamepad>/leftStick");
-            verticalMovementAction = map.AddAction("Vertical Movement");
+            verticalMovementAction = map.AddAction("Vertical movement");
             boostFactorAction = map.AddAction("Boost Factor", binding: "<Mouse>/scroll");
 
             lookAction.AddBinding("<Gamepad>/rightStick").WithProcessor("scaleVector2(x=15, y=15)");

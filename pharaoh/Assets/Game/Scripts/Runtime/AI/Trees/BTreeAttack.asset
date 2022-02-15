@@ -20,7 +20,6 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  attackRange: 1
 --- !u!114 &-4520443291870835227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,7 +40,6 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  attackRate: 0.5
 --- !u!114 &-1531565399544789534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,15 +76,12 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: b13440239a15c0e4baa8593503fbc462
-  position: {x: 276, y: 334}
+  position: {x: 460, y: 489}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  transform: {fileID: 0}
-  waypoints: []
   currentWaypointIndex: 0
-  waitTime: 1
 --- !u!114 &-312466018821222187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,10 +134,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  fovRange: 6
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 66
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,8 +158,31 @@ MonoBehaviour:
   - {fileID: -202544834717103389}
   - {fileID: -4520443291870835227}
   - {fileID: 3877651723054851050}
+  - {fileID: 7843698926523000465}
+  - {fileID: 2617326281630570588}
   blackboard:
     debugData: []
+--- !u!114 &2617326281630570588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da607eded8435e04fb818e2e62ee720b, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 0f7c3e376cb5bbf4890585fd175ce0f4
+  position: {x: 265, y: 489}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  duration: 1
 --- !u!114 &3877651723054851050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +241,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 79021469e0dcde24f81f3b5db6efef38
-  position: {x: 0, y: 150}
+  position: {x: 0, y: 140}
   description: 
   blackboard:
     debugData: []
@@ -235,4 +249,27 @@ MonoBehaviour:
   children:
   - {fileID: 4371565709285988904}
   - {fileID: -312466018821222187}
+  - {fileID: 7843698926523000465}
+--- !u!114 &7843698926523000465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: a01644b16bfb33445a18a44d2f7f4d18
+  position: {x: 310, y: 334}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: 2617326281630570588}
   - {fileID: -434897171179383084}

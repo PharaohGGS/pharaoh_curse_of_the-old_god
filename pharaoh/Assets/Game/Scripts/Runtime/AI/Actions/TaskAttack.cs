@@ -7,18 +7,19 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        [SerializeField] private float attackRate = 0.5f;
         private float _timeSinceLastAttack = 0f;
 
         private Transform _lastTarget;
         private HealthComponent _healthComponent;
-        private DamageComponent _damageComponent;
 
+        private EnemyAgent _agent = null;
+        
         protected override void OnStart()
         {
-            if (_damageComponent != null || !agent.TryGetComponent(out _damageComponent))
+            _agent = agent as EnemyAgent;
+            if (_agent.damage == null)
             {
-                LogHandler.SendMessage($"Can't attack enemies", MessageType.Warning);
+                LogHandler.SendMessage($"[{_agent.name}] Can't attack enemies", MessageType.Warning);
             }
         }
 
@@ -39,9 +40,9 @@ namespace Pharaoh.AI.Actions
             }
 
             _timeSinceLastAttack += Time.deltaTime;
-            if (_timeSinceLastAttack >= attackRate)
+            if (_agent && _timeSinceLastAttack >= _agent.damage.attackRate)
             {
-                _healthComponent?.ApplyChange(_damageComponent.Damage, FloatOperation.Decrease);
+                _healthComponent?.ApplyChange(_agent.damage.value, FloatOperation.Decrease);
                 _timeSinceLastAttack = 0f;
             }
 
