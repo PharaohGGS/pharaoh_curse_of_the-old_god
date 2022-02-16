@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private Vector2 _smoothMovement;
+    private PlayerInput _playerInput;
     private bool _isGrounded = false;
     private bool _isRunning = false;
     private bool _isFacingRight = true;
@@ -16,16 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashAvailable = true;
     private float _previousGravityScale;
 
-    [Header("Key Bindings")]
-
-    public InputAction movementInput;
-    public InputAction jumpInput;
-    public InputAction dashInput;
-
     [Header("Movement")]
 
     [Tooltip("5m/s : given metrics")]
-    public float horizontalSpeed = 100f;
+    public float horizontalSpeed = 5f;
 
     [Tooltip("5m/s : given metrics")]
     public float inAirHorizontalSpeed = 5f;
@@ -55,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash")]
 
     [Tooltip("Dashing force, 50 works well")]
-    public float dashForce = 5f;
+    public float dashForce = 30f;
 
     [Tooltip("Dashing time, 0.1 works well")]
     public float dashTime = 0.1f;
@@ -74,24 +69,25 @@ public class PlayerMovement : MonoBehaviour
     [Header("DEBUG")]
 
     public TrailRenderer tr;
-
-    private void Start()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _playerInput = new PlayerInput();
+        _playerInput.CharacterControls.Jump.started += OnJump;
+        _playerInput.CharacterControls.Dash.started += OnDash;
     }
 
-    private void Update()
+    private void OnJump(InputAction.CallbackContext ctx)
     {
-        // Recover the player's input and smooths it - vel is unused but necessary
-        Vector2 movement = movementInput.ReadValue<Vector2>().normalized, vel = Vector2.zero;
-        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, movement, ref vel, smoothInput);
-
         // Jumping
-        if (jumpInput.triggered && _isGrounded && !_isDashing)
+        if (_isGrounded && !_isDashing)
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
         // Dashing
-        if (dashInput.triggered && !_isDashing && _isDashAvailable && !_hasDashedInAir)
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir)
         {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
@@ -110,6 +106,13 @@ public class PlayerMovement : MonoBehaviour
 
             StartCoroutine(Dashing());
         }
+    }
+
+    private void Update()
+    {
+        // Recover the player's input and smooths it - vel is unused but necessary
+        Vector2 movement = _playerInput.CharacterControls.Move.ReadValue<Vector2>(), vel = Vector2.zero;
+        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, movement, ref vel, smoothInput);
 
         // Cuts off the smoothdamp movement when decelerating
         if (movement.x == 0f && _smoothMovement.x > -movementDeadRange && _smoothMovement.x < movementDeadRange)
@@ -142,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
         if (_smoothMovement.x != 0f)
         {
             _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
-            modelTransform.localScale = _isFacingRight? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
+            modelTransform.localScale = _isFacingRight ? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
         }
 
         // Updates whether the player is running or not
@@ -183,16 +186,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        movementInput.Enable();
-        jumpInput.Enable();
-        dashInput.Enable();
+        _playerInput.Enable();
     }
 
     private void OnDisable()
     {
-        movementInput.Disable();
-        jumpInput.Disable();
-        dashInput.Disable();
+        _playerInput.Disable();
     }
 
     // Displays a bunch of stats while the game is playing
