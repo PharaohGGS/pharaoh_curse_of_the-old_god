@@ -16,27 +16,8 @@ namespace Pharaoh.Gameplay.Components
             this.initialVelocity = initialVelocity;
             this.timeToTarget = timeToTarget;
         }
-    }
 
-    public class LauncherComponent : MonoBehaviour
-    {
-        [SerializeField] private float gravity = 9.81f;
-        [SerializeField] private float height = 2f;
-
-        private LaunchData _latestLaunchData;
-
-        public Rigidbody launched;
-
-        public void Shoot(Vector3 target)
-        {
-            if (!launched) return;
-
-            _latestLaunchData = CalculateLaunchData(target, launched.position);
-            Physics.gravity = Vector3.up * gravity * -2f;
-            launched.useGravity = true;
-            launched.velocity = _latestLaunchData.initialVelocity;
-        }
-        private LaunchData CalculateLaunchData(Vector3 target, Vector3 position)
+        public static LaunchData Calculate(float gravity, float height, Vector3 target, Vector3 position)
         {
             float g = gravity * -2;
 

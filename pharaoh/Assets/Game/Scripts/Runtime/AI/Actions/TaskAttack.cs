@@ -17,7 +17,7 @@ namespace Pharaoh.AI.Actions
         protected override void OnStart()
         {
             _agent = agent as EnemyAgent;
-            if (_agent.damage == null)
+            if (_agent?.weapon == null)
             {
                 LogHandler.SendMessage($"[{_agent.name}] Can't attack enemies", MessageType.Warning);
             }
@@ -40,9 +40,10 @@ namespace Pharaoh.AI.Actions
             }
 
             _timeSinceLastAttack += Time.deltaTime;
-            if (_agent && _agent.damage && _timeSinceLastAttack >= _agent.damage.attackRate)
+            if (_agent && _agent.weapon && _agent.weapon.data && 
+                _timeSinceLastAttack >= _agent.weapon.data.attackRate)
             {
-                _agent.damage.ApplyDamage(_healthComponent);
+                //_agent.weapon;
                 _timeSinceLastAttack = 0f;
             }
 
