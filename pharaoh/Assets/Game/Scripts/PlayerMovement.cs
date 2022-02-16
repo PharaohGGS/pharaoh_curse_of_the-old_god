@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private Rigidbody2D _rigidbody;
+    private Vector2 _movementInput;
     private Vector2 _smoothMovement;
     private PlayerInput _playerInput;
     private bool _isGrounded = false;
@@ -68,41 +69,55 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("DEBUG")]
 
-    public TrailRenderer tr;
+    public TrailRenderer tr; //DEBUG
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerInput = new PlayerInput();
-        _playerInput.CharacterControls.Jump.started += OnJump;
-        _playerInput.CharacterControls.Dash.started += OnDash;
+
+        // Movement's events binding
+        _playerInput.CharacterControls.Move.started += OnMove; //player starts moving
+        _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
+        _playerInput.CharacterControls.Jump.started += OnJump; //player jumps
+        _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
     }
 
+    // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        // Recover the player's input and smooths it - vel is unused but necessary
+        _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
+    }
+
+    // Triggers when the player jumps
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        // Jumping
         if (_isGrounded && !_isDashing)
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
+    // Triggers when the player dashes
     private void OnDash(InputAction.CallbackContext ctx)
     {
-        // Dashing
         if (!_isDashing && _isDashAvailable && !_hasDashedInAir)
         {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce((_isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
 
+            // Disables gravity while dashing to avoid falling
             _previousGravityScale = _rigidbody.gravityScale;
             _rigidbody.gravityScale = 0f;
 
+            // Updates states
             _isDashing = true;
             _isDashAvailable = false;
             _hasDashedInAir = !_isGrounded;
 
             animator.SetBool("Is Dashing", _isDashing);
 
-            tr.startColor = Color.red;
+            tr.startColor = Color.red; //DEBUG
 
             StartCoroutine(Dashing());
         }
@@ -110,12 +125,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // Recover the player's input and smooths it - vel is unused but necessary
-        Vector2 movement = _playerInput.CharacterControls.Move.ReadValue<Vector2>(), vel = Vector2.zero;
-        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, movement, ref vel, smoothInput);
+        Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
+        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, smoothInput);
 
-        // Cuts off the smoothdamp movement when decelerating
-        if (movement.x == 0f && _smoothMovement.x > -movementDeadRange && _smoothMovement.x < movementDeadRange)
+        // Cuts off the smoothdamp movement when decelerating and there is no player input
+        if (_movementInput.x == 0f && _smoothMovement.x > -movementDeadRange && _smoothMovement.x < movementDeadRange)
             _smoothMovement.x = 0f;
 
         UpdateStates();
@@ -165,13 +179,15 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(dashTime);
 
+        // Re-enables gravity on the player
         _rigidbody.gravityScale = _previousGravityScale;
 
+        // Updates current state
         _isDashing = false;
 
         animator.SetBool("Is Dashing", _isDashing);
 
-        tr.startColor = Color.blue;
+        tr.startColor = Color.blue; //DEBUG
 
         StartCoroutine(DashCooldown());
     }
