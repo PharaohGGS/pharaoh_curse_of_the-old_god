@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         _playerInput = new PlayerInput();
 
         // Movement's events binding
-        _playerInput.CharacterControls.Move.started += OnMove; //player starts moving
+        _playerInput.CharacterControls.Move.performed += OnMove; //player starts moving
         _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
         _playerInput.CharacterControls.Jump.started += OnJump; //player jumps
         _playerInput.CharacterControls.Dash.started += OnDash; //player dashes

@@ -116,7 +116,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""id"": ""168a6d32-8d03-40dc-b999-bc4b40e3a63d"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
