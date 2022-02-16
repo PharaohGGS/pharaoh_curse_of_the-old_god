@@ -40,9 +40,9 @@ namespace Pharaoh.AI.Actions
             }
 
             _timeSinceLastAttack += Time.deltaTime;
-            if (_agent && _timeSinceLastAttack >= _agent.damage.attackRate)
+            if (_agent && _agent.damage && _timeSinceLastAttack >= _agent.damage.attackRate)
             {
-                _healthComponent?.ApplyChange(_agent.damage.value, FloatOperation.Decrease);
+                _agent.damage.ApplyDamage(_healthComponent);
                 _timeSinceLastAttack = 0f;
             }
 

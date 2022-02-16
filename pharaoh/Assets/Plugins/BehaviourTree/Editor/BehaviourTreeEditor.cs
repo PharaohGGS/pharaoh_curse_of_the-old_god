@@ -63,7 +63,7 @@ namespace BehaviourTree.Editor
             _blackboardView.MarkDirtyLayout();
             _blackboardView.onGUIHandler = () =>
             {
-                if (_blackboardProperty.FindPropertyRelative("debugData") == null) return;
+                if (_blackboardProperty?.FindPropertyRelative("debugData") == null) return;
 
                 _treeObject?.Update();
                 EditorGUI.BeginChangeCheck();
