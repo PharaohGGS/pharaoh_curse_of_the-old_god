@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1481.7754, g: 1835.8867, b: 2430.4492, a: 1}
+  m_IndirectSpecularColor: {r: 262.36157, g: 325.07837, b: 430.26367, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -254,6 +254,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <attackRate>k__BackingField: 0.5
   <value>k__BackingField: 10
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &106627902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1173,7 +1176,6 @@ GameObject:
   - component: {fileID: 1298932076}
   - component: {fileID: 1298932075}
   - component: {fileID: 1298932074}
-  - component: {fileID: 1298932077}
   m_Layer: 0
   m_Name: Hittable
   m_TagString: Untagged
@@ -1259,61 +1261,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298932071}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1298932077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298932071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <max>k__BackingField: 100
-  OnHealthChange:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: fdb349524d149714f86e0ed765ca1d86, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
-        m_MethodName: Raise
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: fbc476d41ac2495468d0bd6bcbb914eb, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
-        m_MethodName: Raise
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1298932071}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1358581171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,10 +1556,11 @@ MonoBehaviour:
   OnHealthChange:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: fdb349524d149714f86e0ed765ca1d86, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+      - m_Target: {fileID: 11400000, guid: c65dca8d6f16faf40a2eca8806721427, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.AbstractGameEvent`1[[System.Single,
+          mscorlib
         m_MethodName: Raise
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1624,8 +1572,9 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: fbc476d41ac2495468d0bd6bcbb914eb, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.GameEvent, Pharaoh
+      - m_Target: {fileID: 11400000, guid: 3d5c15cff52b0a94e91c9354544de77e, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.VoidGameEvent,
+          Pharaoh
         m_MethodName: Raise
         m_Mode: 1
         m_Arguments:
