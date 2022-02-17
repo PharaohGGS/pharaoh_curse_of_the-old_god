@@ -1,0 +1,243 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEditor;
+
+[RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
+public class PlayerMovement : MonoBehaviour
+{
+
+    private Rigidbody2D _rigidbody;
+    private Vector2 _movementInput;
+    private Vector2 _smoothMovement;
+    private PlayerInput _playerInput;
+    private bool _isGrounded = false;
+    private bool _isRunning = false;
+    private bool _isFacingRight = true;
+    private bool _isDashing = false;
+    private bool _hasDashedInAir = false;
+    private bool _isDashAvailable = true;
+    private float _previousGravityScale;
+
+    [Header("Movement")]
+
+    [Tooltip("5m/s : given metrics")]
+    public float horizontalSpeed = 5f;
+
+    [Tooltip("5m/s : given metrics")]
+    public float inAirHorizontalSpeed = 5f;
+
+    [Tooltip("15.1 to get a 3m70 jump (feet position)")]
+    public float jumpForce = 15.1f;
+
+    [Tooltip("Smooths the player movement, 0.03 works well")]
+    public float smoothInput = 0.03f;
+
+    [Tooltip("Stops the player movement when in this range and no horizontal input is held")]
+    public float movementDeadRange = 0.5f;
+
+    [Header("Ground Detection")]
+
+    [Tooltip("Rightmost ground check")]
+    public Transform rightGroundCheck;
+
+    [Tooltip("Leftmost ground check")]
+    public Transform leftGroundCheck;
+
+    [Tooltip("0.05 to get a fine ground detection, keep it small and precise")]
+    public float groundCheckRadius = 0.05f;
+
+    public LayerMask groundLayer;
+
+    [Header("Dash")]
+
+    [Tooltip("Dashing force, 50 works well")]
+    public float dashForce = 30f;
+
+    [Tooltip("Dashing time, 0.1 works well")]
+    public float dashTime = 0.1f;
+
+    [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
+    public float dashCooldown = 0.5f;
+
+    [Header("Animations")]
+
+    [Tooltip("Animator controlling the player")]
+    public Animator animator;
+
+    [Tooltip("Model transform to turn the player around")]
+    public Transform modelTransform;
+
+    [Header("DEBUG")]
+
+    public TrailRenderer tr; //DEBUG
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _playerInput = new PlayerInput();
+
+        // Movement's events binding
+        _playerInput.CharacterControls.Move.performed += OnMove; //player starts moving
+        _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
+        _playerInput.CharacterControls.Jump.started += OnJump; //player jumps
+        _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
+    }
+
+    // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        // Recover the player's input and smooths it - vel is unused but necessary
+        _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
+    }
+
+    // Triggers when the player jumps
+    private void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (_isGrounded && !_isDashing)
+            _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    // Triggers when the player dashes
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir)
+        {
+            // Resets the velocity and adds the dash force towards facing direction
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.AddForce((_isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
+
+            // Disables gravity while dashing to avoid falling
+            _previousGravityScale = _rigidbody.gravityScale;
+            _rigidbody.gravityScale = 0f;
+
+            // Updates states
+            _isDashing = true;
+            _isDashAvailable = false;
+            _hasDashedInAir = !_isGrounded;
+
+            animator.SetBool("Is Dashing", _isDashing);
+
+            tr.startColor = Color.red; //DEBUG
+
+            StartCoroutine(Dashing());
+        }
+    }
+
+    private void Update()
+    {
+        Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
+        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, smoothInput);
+
+        // Cuts off the smoothdamp movement when decelerating and there is no player input
+        if (_movementInput.x == 0f && _smoothMovement.x > -movementDeadRange && _smoothMovement.x < movementDeadRange)
+            _smoothMovement.x = 0f;
+
+        UpdateStates();
+    }
+
+    private void FixedUpdate()
+    {
+        // Moves the player horizontally with according speeds while not dashing
+        if (!_isDashing)
+        {
+            if (_isGrounded)
+                _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
+            else
+                _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
+        }
+
+        animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
+    }
+
+    private void UpdateStates()
+    {
+        // Limit the dash to one use per air-time
+        if (_hasDashedInAir && _isGrounded)
+            _hasDashedInAir = false;
+
+        // Updates the direction the player is facing
+        if (_smoothMovement.x != 0f)
+        {
+            _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
+            modelTransform.localScale = _isFacingRight ? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
+        }
+
+        // Updates whether the player is running or not
+        if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
+        else _isRunning = false;
+        animator.SetBool("Is Running", _isRunning);
+
+
+        // Updates the grounded state - check if one or both "feet" are on a ground
+        _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
+           || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
+        animator.SetBool("Is Grounded", _isGrounded);
+    }
+
+    // Coroutine for the duration of the dash (not much use for now)
+    System.Collections.IEnumerator Dashing()
+    {
+        yield return new WaitForSeconds(dashTime);
+
+        // Re-enables gravity on the player
+        _rigidbody.gravityScale = _previousGravityScale;
+
+        // Updates current state
+        _isDashing = false;
+
+        animator.SetBool("Is Dashing", _isDashing);
+
+        tr.startColor = Color.blue; //DEBUG
+
+        StartCoroutine(DashCooldown());
+    }
+
+    // Coroutine re-enabling the dash after it's cooldown
+    System.Collections.IEnumerator DashCooldown()
+    {
+        yield return new WaitForSeconds(dashCooldown);
+
+        _isDashAvailable = true;
+    }
+
+    private void OnEnable()
+    {
+        _playerInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.Disable();
+    }
+
+    // Displays a bunch of stats while the game is playing
+    private void OnDrawGizmosSelected()
+    {
+        if (_rigidbody == null) return;
+
+        // Styles used to display stats
+        GUIStyle redStyle = new GUIStyle();
+        GUIStyle greenStyle = new GUIStyle();
+        redStyle.normal.textColor = Color.red;
+        greenStyle.normal.textColor = Color.green;
+
+        // Displays the ground checks radiuses
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(rightGroundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireSphere(leftGroundCheck.position, groundCheckRadius);
+
+        // Displays the velocity
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
+
+        // Displays stats on top of the player
+        Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsDashAvailable : " + _isDashAvailable, _isDashAvailable ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "IsFacingRight : " + _isFacingRight, _isFacingRight ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "IsGrounded : " + _isGrounded, _isGrounded ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
+    }
+
+}

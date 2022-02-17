@@ -1,4 +1,7 @@
-﻿namespace Pharaoh.Tools
+﻿using UnityEditor;
+using UnityEngine;
+
+namespace Pharaoh.Tools
 {
     public static class Helper
     {
