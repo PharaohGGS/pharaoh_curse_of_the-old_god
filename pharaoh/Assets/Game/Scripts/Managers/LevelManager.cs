@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Pharaoh.Tools;
-using UnityEngine;
+using DesignPatterns;
 
 public class LevelManager : MonoSingleton<LevelManager>
 {

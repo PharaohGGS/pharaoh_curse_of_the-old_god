@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CinemachineBlend
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: VirtualCamera
-    m_To: '**ANY CAMERA**'
+  - m_From: '**ANY CAMERA**'
+    m_To: PoF Virtual Camera
     m_Blend:
       m_Style: 7
       m_Time: 2
@@ -42,8 +42,8 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0
-  - m_From: '**ANY CAMERA**'
-    m_To: VirtualCamera
+  - m_From: PoF Virtual Camera
+    m_To: '**ANY CAMERA**'
     m_Blend:
       m_Style: 7
       m_Time: 1

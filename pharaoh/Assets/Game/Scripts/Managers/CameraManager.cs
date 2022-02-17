@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
-using Pharaoh.Tools;
+using DesignPatterns;
 using UnityEngine;
 
 public class CameraManager : Singleton<CameraManager>
