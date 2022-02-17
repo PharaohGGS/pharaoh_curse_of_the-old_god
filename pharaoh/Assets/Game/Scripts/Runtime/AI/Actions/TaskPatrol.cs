@@ -1,5 +1,6 @@
 ﻿using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 
 namespace Pharaoh.AI.Actions
@@ -9,11 +10,14 @@ namespace Pharaoh.AI.Actions
         ///* Patrol attributes *///
         [SerializeField] private int currentWaypointIndex = 0;
         
-        private EnemyAgent _agent;
+        private EnemyPawn _pawn;
 
         protected override void OnStart()
         {
-            _agent = agent as EnemyAgent;
+            if (_pawn == null && !agent.TryGetComponent(out _pawn))
+            {
+                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+            }
         }
 
         protected override NodeState OnUpdate()
@@ -23,24 +27,24 @@ namespace Pharaoh.AI.Actions
             
             if (isWaiting is true) return state;
             
-            if (!_agent || !_agent.movement || _agent.movement.waypoints.Length <= 0)
+            if (!_pawn || !_pawn.movement || _pawn.movement.waypoints.Length <= 0)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            var wp = _agent.movement.waypoints[currentWaypointIndex];
+            var wp = _pawn.movement.waypoints[currentWaypointIndex];
             if (Vector3.Distance(agent.transform.position, wp.position) < 0.01f)
             {
                 agent.transform.position = wp.position;
                 blackboard.SetData("isWaiting", true);
-                currentWaypointIndex = (currentWaypointIndex + 1) % _agent.movement.waypoints.Length;
+                currentWaypointIndex = (currentWaypointIndex + 1) % _pawn.movement.waypoints.Length;
             }
             else
             {
                 agent.transform.position = Vector3.MoveTowards(
                     agent.transform.position, wp.position,
-                    _agent.movement.moveSpeed * Time.deltaTime);
+                    _pawn.movement.moveSpeed * Time.deltaTime);
                 agent.transform.LookAt(wp.position);
             }
 

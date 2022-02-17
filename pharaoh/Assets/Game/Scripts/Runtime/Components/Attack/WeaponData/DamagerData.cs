@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
 {
-    [CreateAssetMenu(fileName = "New WeaponData", menuName = "Weapons/", order = 0)]
-    public abstract class WeaponData : ScriptableObject
+    [CreateAssetMenu(fileName = "New DamagerData", menuName = "Weapons/", order = 0)]
+    public abstract class DamagerData : ScriptableObject
     {
-        public string name;
+        public string description;
         public bool canThrow;
         public float damage;
         public float attackRate;
+        public float attackRange;
         public GameObject prefab;
     }
 }

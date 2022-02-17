@@ -10,5 +10,7 @@ namespace Pharaoh.Tools
         {
             return objectToCompare.gameObject.GetInstanceID() == comparisonObject.GetInstanceID();
         }
+
+        public static bool IsInLayerMask(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
     }
 }

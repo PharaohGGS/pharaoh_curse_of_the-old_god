@@ -4,7 +4,7 @@ using UnityEditor;
 namespace Pharaoh.Gameplay.Components
 {
 
-    [CustomEditor(typeof(RangeWeaponData))]
+    [CustomEditor(typeof(RangeDamagerData))]
     public class RangeWeaponDataEditor : Editor
     {
         private SerializedProperty useGravityProperty;

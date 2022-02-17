@@ -12,20 +12,32 @@ namespace Pharaoh.AI.Actions
         private Transform _lastTarget;
         private HealthComponent _healthComponent;
 
-        private EnemyAgent _agent = null;
+        private EnemyPawn _pawn = null;
+        private Weapon _weapon = null;
         
         protected override void OnStart()
         {
-            _agent = agent as EnemyAgent;
-            if (_agent?.weapon == null)
+            if (_pawn == null && !agent.TryGetComponent(out _pawn))
             {
-                LogHandler.SendMessage($"[{_agent.name}] Can't attack enemies", MessageType.Warning);
+                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+                return;
             }
+
+            if (_weapon != null) return;
+
+            if (_pawn.weapon == null)
+            {
+                LogHandler.SendMessage($"[{_pawn.name}] Can't attack enemies", MessageType.Warning);
+                return;
+            }
+
+            _weapon = _pawn.weapon;
         }
 
         protected override NodeState OnUpdate()
         {
             var t = blackboard.GetData("target") as Transform;
+            state = NodeState.Running;
 
             if (t != null && t != _lastTarget)
             {
@@ -39,15 +51,22 @@ namespace Pharaoh.AI.Actions
                 }
             }
 
+            if (!t || !_weapon || !_weapon.data) return state;
+
             _timeSinceLastAttack += Time.deltaTime;
-            if (_agent && _agent.weapon && _agent.weapon.data && 
-                _timeSinceLastAttack >= _agent.weapon.data.attackRate)
+            if (_timeSinceLastAttack < _weapon.data.attackRate) return state;
+
+            if (!_weapon.data.canThrow)
             {
-                //_agent.weapon;
+                _pawn.Attack();
                 _timeSinceLastAttack = 0f;
+                return state;
             }
 
-            state = NodeState.Running;
+            if (_weapon.isThrown) return state;
+
+            _weapon.Throw(t.position);
+            _timeSinceLastAttack = 0f;
             return state;
         }
 

@@ -10,12 +10,15 @@ namespace Pharaoh.AI.Actions
     {
         [SerializeField] private Collider[] colliders;
         
-        private EnemyAgent _agent = null;
+        private EnemyPawn _pawn = null;
 
         protected override void OnStart()
         {
             colliders = new Collider[8];
-            _agent = agent as EnemyAgent;
+            if (_pawn == null && !agent.TryGetComponent(out _pawn))
+            {
+                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+            }
         }
 
         protected override NodeState OnUpdate()
@@ -28,15 +31,15 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_agent == null)
+            if (_pawn == null)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
             var size = Physics.OverlapSphereNonAlloc(
-                agent.transform.position, _agent.detection.fovRange,
-                colliders, _agent.detection.detectionLayer);
+                agent.transform.position, _pawn.detection.fovRange,
+                colliders, _pawn.detection.detectionLayer);
 
             if (size <= 0)
             {
@@ -44,9 +47,7 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            
             blackboard.SetData("target", colliders[0].transform);
-            LogHandler.SendMessage($"OverlapSphere found {size} colliders, {blackboard.GetData("target")}", MessageType.Log);
 
             state = NodeState.Success;
             return state;
