@@ -31,7 +31,7 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_pawn == null)
+            if (_pawn == null || _pawn.holder.weapon.transform.parent == null)
             {
                 state = NodeState.Failure;
                 return state;

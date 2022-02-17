@@ -11,6 +11,6 @@ namespace Pharaoh.Gameplay.Components
         public float damage;
         public float attackRate;
         public float attackRange;
-        public GameObject prefab;
+        public Damager prefab;
     }
 }

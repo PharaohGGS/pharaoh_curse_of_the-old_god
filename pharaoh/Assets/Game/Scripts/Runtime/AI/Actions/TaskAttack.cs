@@ -1,4 +1,5 @@
-﻿using BehaviourTree.Tools;
+﻿using System.Linq;
+using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
@@ -17,21 +18,21 @@ namespace Pharaoh.AI.Actions
         
         protected override void OnStart()
         {
-            if (_pawn == null && !agent.TryGetComponent(out _pawn))
+            if (!_pawn && !agent.TryGetComponent(out _pawn))
             {
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
                 return;
             }
 
-            if (_weapon != null) return;
+            if (_weapon) return;
 
-            if (_pawn.weapon == null)
+            if (!_pawn.holder?.weapon)
             {
                 LogHandler.SendMessage($"[{_pawn.name}] Can't attack enemies", MessageType.Warning);
                 return;
             }
 
-            _weapon = _pawn.weapon;
+            _weapon = _pawn.holder.weapon;
         }
 
         protected override NodeState OnUpdate()
@@ -43,7 +44,8 @@ namespace Pharaoh.AI.Actions
             {
                 _lastTarget = t;
 
-                if (t.TryGetComponent(out HealthComponent healthComponent) && _healthComponent != healthComponent)
+                if (t.TryGetComponent(out HealthComponent healthComponent) && 
+                    _healthComponent != healthComponent)
                 {
                     _healthComponent?.OnDeath?.RemoveListener(OnTargetDeath);
                     _healthComponent = healthComponent;
@@ -63,9 +65,9 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_weapon.isThrown) return state;
+            if (_weapon.isThrown || _weapon.transform.parent == null) return state;
 
-            _weapon.Throw(t.position);
+            _weapon.Throw(t.position + Vector3.up);
             _timeSinceLastAttack = 0f;
             return state;
         }

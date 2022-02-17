@@ -21,13 +21,13 @@ namespace Pharaoh.AI.Actions
         {
             var t = blackboard.GetData("target") as Transform;
 
-            if (!t || !_pawn || !_pawn.weapon)
+            if (!t || !_pawn || !_pawn.holder.weapon || _pawn.holder.weapon.transform.parent == null)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            if (Vector3.Distance(agent.transform.position, t.position) <= _pawn.weapon.data.attackRange)
+            if (Vector3.Distance(agent.transform.position, t.position) <= _pawn.holder.weapon.data.attackRange)
             {
                 state = NodeState.Success;
                 return state;

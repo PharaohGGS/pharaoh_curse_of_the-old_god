@@ -12,12 +12,17 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] private float height = 2f;
 
         public bool isThrown { get; private set; }
+        public bool isOnGround { get; private set; }
 
         private void FixedUpdate()
         {
             if (isThrown)
             {
                 _rigidbody?.AddForce(Vector3.up * (gravity * -2f));
+                //_rigidbody.rotation = Quaternion.LookRotation(_rigidbody.velocity.normalized, Vector3.up);
+                _rigidbody.rotation = Quaternion.RotateTowards(_rigidbody.rotation,
+                    Quaternion.LookRotation(_rigidbody.velocity.normalized, Vector3.up)/* * Quaternion.Euler(90, 0, 0)*/,
+                    _rigidbody.velocity.magnitude /** Time.fixedDeltaTime*/);
             }
         }
 
@@ -25,13 +30,27 @@ namespace Pharaoh.Gameplay.Components
         {
             if (collision.gameObject.IsInLayerMask(collidingLayers))
             {
-                isThrown = false;
+                isOnGround = true;
+                _rigidbody.velocity = _rigidbody.angularVelocity = Vector3.zero;
+                _rigidbody.isKinematic = true;
+                _rigidbody.useGravity = false;
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_rigidbody)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity.normalized * 2f);
             }
         }
 
         public void Parenting(Transform parent = null)
         {
             transform.parent = parent;
+            isThrown = transform.parent == null;
+            isOnGround = false;
         }
 
         public void Throw(Vector3 target)
@@ -48,7 +67,6 @@ namespace Pharaoh.Gameplay.Components
             _rigidbody.isKinematic = false;
             _rigidbody.useGravity = true;
             _rigidbody.velocity = launchData.initialVelocity;
-            isThrown = true;
         }
     }
 }

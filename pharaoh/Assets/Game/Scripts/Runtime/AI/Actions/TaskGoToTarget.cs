@@ -20,6 +20,8 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             var target = blackboard.GetData("target") as Transform;
+
+            if (blackboard.GetData("isWaiting") is true) return state;
             
             if (target != null && _pawn)
             {

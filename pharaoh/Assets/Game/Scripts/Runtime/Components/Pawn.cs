@@ -24,7 +24,6 @@ namespace Game.Scripts.Runtime.Components
 
         public void TakeHit(Damager damager)
         {
-
             if (colliders.Length == 0) return;
 
             foreach (var col in colliders)

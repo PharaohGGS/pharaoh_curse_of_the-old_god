@@ -10,7 +10,7 @@ namespace Pharaoh.AI
     public class EnemyPawn : Pawn
     {
         public EnemyPawnRuntimeSet enemyPawnRuntimeSet;
-        public Weapon weapon;
+        public WeaponHolder holder;
 
         public DetectionComponent detection { get; private set; }
 
@@ -20,6 +20,8 @@ namespace Pharaoh.AI
             enemyPawnRuntimeSet?.Add(this);
             
             if (detection == null && TryGetComponent(out DetectionComponent dtct)) detection = dtct;
+
+            holder = GetComponentInChildren<WeaponHolder>();
         }
 
         private void OnDisable()
@@ -30,10 +32,6 @@ namespace Pharaoh.AI
         public void Attack()
         {
             // play animation of attack or throw weapon
-
-            {
-
-            }
         }
     }
 }
