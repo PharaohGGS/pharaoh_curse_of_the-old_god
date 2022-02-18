@@ -20,10 +20,8 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             var target = blackboard.GetData("target") as Transform;
-
-            if (blackboard.GetData("isWaiting") is true) return state;
             
-            if (target != null && _pawn)
+            if (target && _pawn)
             {
                 var tr = agent.transform;
                 if (Vector3.Distance(tr.position, target.position) > 0.01f)

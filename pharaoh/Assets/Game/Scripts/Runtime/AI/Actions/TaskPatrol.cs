@@ -23,9 +23,6 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Running;
-            var isWaiting = blackboard.GetData("isWaiting");
-            
-            if (isWaiting is true) return state;
             
             if (!_pawn || !_pawn.movement || _pawn.movement.waypoints.Length <= 0)
             {
@@ -33,19 +30,20 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            var wp = _pawn.movement.waypoints[currentWaypointIndex];
-            if (Vector3.Distance(agent.transform.position, wp.position) < 0.01f)
+            var target = _pawn.movement.waypoints[currentWaypointIndex].position;
+            if (Vector3.Distance(agent.transform.position, target) < 0.01f)
             {
-                agent.transform.position = wp.position;
                 blackboard.SetData("isWaiting", true);
+                agent.transform.position = target;
                 currentWaypointIndex = (currentWaypointIndex + 1) % _pawn.movement.waypoints.Length;
             }
             else
             {
                 agent.transform.position = Vector3.MoveTowards(
-                    agent.transform.position, wp.position,
+                    agent.transform.position, target,
                     _pawn.movement.moveSpeed * Time.deltaTime);
-                agent.transform.LookAt(wp.position);
+                target.y = agent.transform.position.y;
+                agent.transform.LookAt(target);
             }
 
             return state;

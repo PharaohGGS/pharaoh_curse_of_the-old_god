@@ -37,14 +37,17 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_holder.weapon.transform.parent && !_holder.weapon.isThrown)
+            if (_holder.weapon.transform.parent)
             {
                 state = NodeState.Success;
             }
             else
             {
                 state = NodeState.Failure;
-                blackboard.SetData("target", _pawn.holder.weapon.transform);
+                if (_holder.weapon.isThrown && _holder.weapon.isOnGround)
+                {
+                    blackboard.SetData("target", _pawn.holder.weapon.transform);
+                }
             }
 
             return state;

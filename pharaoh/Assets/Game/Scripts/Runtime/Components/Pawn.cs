@@ -9,14 +9,14 @@ namespace Game.Scripts.Runtime.Components
     public class Pawn : MonoBehaviour
     {
         public Collider[] colliders { get; protected set; }
-        public Rigidbody physicsBody { get; protected set; }
+        public Rigidbody rigidBody { get; protected set; }
         public HealthComponent health { get; protected set; }
         public MovementComponent movement { get; protected set; }
 
         protected virtual void OnEnable()
         {
             colliders = GetComponents<Collider>();
-            physicsBody = GetComponent<Rigidbody>();
+            rigidBody = GetComponent<Rigidbody>();
             movement = GetComponent<MovementComponent>();
 
             if (health == null && TryGetComponent(out HealthComponent hlth)) health = hlth;

@@ -18,27 +18,19 @@ namespace Pharaoh.Gameplay.Components
 
         public Collider lastTriggerEnter { get; protected set; }
         protected Rigidbody _rigidbody;
+        protected Collider _collider;
 
         protected virtual void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            TryGetComponent(out _rigidbody);
+            TryGetComponent(out _collider);
             _rigidbody.useGravity = false;
         }
 
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == gameObject) return;
-
-            if (other.gameObject.IsInLayerMask(collidingLayers))
-            {
-                if (TryGetComponent(out Collider col))
-                {
-                    col.isTrigger = false;
-                }
-
-                return;
-            }
-
+            
             if (!other.gameObject.IsInLayerMask(damagingLayers)) return;
 
             lastTriggerEnter = other;

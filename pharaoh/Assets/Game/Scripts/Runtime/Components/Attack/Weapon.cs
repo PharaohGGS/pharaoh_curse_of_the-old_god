@@ -26,6 +26,17 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
+        protected override void OnTriggerEnter(Collider other)
+        {
+            if (isThrown && other.gameObject.IsInLayerMask(collidingLayers))
+            {
+                _collider.isTrigger = false;
+                return;
+            }
+
+            base.OnTriggerEnter(other);
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.IsInLayerMask(collidingLayers))
@@ -37,20 +48,16 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        private void OnDrawGizmos()
-        {
-            if (_rigidbody)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity.normalized * 2f);
-            }
-        }
-
         public void Parenting(Transform parent = null)
         {
             transform.parent = parent;
             isThrown = transform.parent == null;
             isOnGround = false;
+
+            if (!isOnGround && !isThrown)
+            {
+                _collider.isTrigger = true;
+            }
         }
 
         public void Throw(Vector3 target)
