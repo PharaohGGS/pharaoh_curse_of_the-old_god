@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public float inAirHorizontalSpeed = 5f;
 
     [Tooltip("15.1 to get a 3m70 jump (feet position)")]
-    public float jumpForce = 15.1f;
+    public float jumpForce = 16f;
 
     [Tooltip("Smooths the player movement, 0.03 works well")]
     public float smoothInput = 0.03f;
