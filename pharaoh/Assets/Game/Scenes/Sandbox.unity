@@ -1357,6 +1357,7 @@ GameObject:
   - component: {fileID: 2006490037}
   - component: {fileID: 2006490039}
   - component: {fileID: 2006490038}
+  - component: {fileID: 2006490041}
   m_Layer: 11
   m_Name: Damager
   m_TagString: Untagged
@@ -1571,6 +1572,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a47c3cdf954eb4d9ee36ffe284a14d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2006490041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006490029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <fovRange>k__BackingField: 6
+  <pickupRange>k__BackingField: 1
+  <detectionLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <weaponLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &7079046523857876656
 PrefabInstance:
   m_ObjectHideFlags: 0

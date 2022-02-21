@@ -13,7 +13,6 @@ namespace Pharaoh.Gameplay.Components
     {
         public DamagerData data;
         public LayerMask damagingLayers;
-        public LayerMask collidingLayers;
         public UnityEvent<Damager> OnHit;
 
         public Collider lastTriggerEnter { get; protected set; }

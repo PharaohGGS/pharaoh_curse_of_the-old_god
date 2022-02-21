@@ -8,25 +8,17 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        private Transform _lastTarget;
         private HealthComponent _healthComponent;
         
-        private WeaponHolder _holder = null;
+        private AttackComponent _attack = null;
         
         protected override void OnStart()
         {
-            if (_holder) return;
+            if (_attack) return;
 
-            var holder = agent.TryGetComponent(out WeaponHolder h) 
-                ? h : agent.GetComponentInChildren<WeaponHolder>();
+            if (agent.TryGetComponent(out _attack)) return;
 
-            if (!holder?.weapon)
-            {
-                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
-                return;
-            }
-
-            _holder = holder;
+            LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
@@ -34,12 +26,11 @@ namespace Pharaoh.AI.Actions
             var hasTarget = blackboard.TryGetData("target", out Transform t);
             state = NodeState.Running;
 
-            if (hasTarget && t != _lastTarget)
+            if (hasTarget && t != _attack.target && t.TryGetComponent(out HealthComponent healthComponent))
             {
-                _lastTarget = t;
+                _attack.target = t;
 
-                if (t.TryGetComponent(out HealthComponent healthComponent) && 
-                    _healthComponent != healthComponent)
+                if (_healthComponent != healthComponent)
                 {
                     _healthComponent?.OnDeath?.RemoveListener(OnTargetDeath);
                     _healthComponent = healthComponent;
@@ -47,33 +38,19 @@ namespace Pharaoh.AI.Actions
                 }
             }
 
-            if (!hasTarget || !_holder || !_holder.data) return state;
+            var data = _attack.holder?.weapon?.data;
+            if (!hasTarget || !data) return state;
             
-            if (blackboard.TryGetData("isWaiting", out bool isWaiting) && isWaiting) return state;
-
-            if (!_holder.data.canThrow)
-            {
-                _holder.Attack();
-                WaitUntilNextAttack(_holder.data.attackRate);
-                return state;
-            }
-
-            if (_holder.weapon.isThrown || _holder.transform.parent == null) return state;
-
-            _holder.weapon.Throw(t.position + Vector3.up);
-            WaitUntilNextAttack(_holder.data.attackRate);
+            _attack.Attack();
+            blackboard.SetData("isWaiting", true);
+            blackboard.SetData("waitTime", data.attackRate);
             return state;
         }
 
         private void OnTargetDeath()
         {
             blackboard.ClearData("target");
-        }
-
-        private void WaitUntilNextAttack(float time)
-        {
-            blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", time);
+            _attack.target = null;
         }
     }
 }

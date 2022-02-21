@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 7079046523897001458}
   - component: {fileID: 7079046523897001457}
   - component: {fileID: 7079046523897001456}
+  - component: {fileID: 994795391430697508}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -205,7 +206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPawnRuntimeSet: {fileID: 11400000, guid: abaeb1ab7ac1c3e458d7ddf8de3055c3, type: 2}
-  holder: {fileID: 0}
 --- !u!114 &7079046523897001458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,3 +302,31 @@ MonoBehaviour:
   <weaponLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 4160
+--- !u!114 &994795391430697508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnAimFor:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.AbstractGameEvent`1[[UnityEngine.Transform,
+          UnityEngine
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

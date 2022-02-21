@@ -54,6 +54,7 @@ namespace Pharaoh.Gameplay.Components
         private void OnDisable()
         {
             OnHealthChange.RemoveAllListeners();
+            OnDeath.RemoveAllListeners();
         }
     }
 }

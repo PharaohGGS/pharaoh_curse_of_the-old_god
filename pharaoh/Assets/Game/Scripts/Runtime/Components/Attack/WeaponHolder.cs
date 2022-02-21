@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Pharaoh.Tools.Debug;
+using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
 {
     public class WeaponHolder : MonoBehaviour
     {
-        public DamagerData data;
-        public Weapon weapon { get; private set; }
+        [SerializeField] private DamagerData data;
 
+        public Weapon weapon { get; private set; }
 
         public float timeAfterPickingWeapon = 1f;
 
@@ -15,10 +16,6 @@ namespace Pharaoh.Gameplay.Components
             if (data == null) return;
 
             weapon = GameObject.Instantiate(data.prefab, transform.position, transform.rotation, transform) as Weapon;
-        }
-
-        public void Attack()
-        {
         }
     }
 }
