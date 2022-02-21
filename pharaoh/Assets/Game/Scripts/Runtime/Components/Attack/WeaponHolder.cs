@@ -7,6 +7,7 @@ namespace Pharaoh.Gameplay.Components
         public DamagerData data;
         public Weapon weapon { get; private set; }
 
+
         public float timeAfterPickingWeapon = 1f;
 
         private void Awake()
@@ -14,6 +15,10 @@ namespace Pharaoh.Gameplay.Components
             if (data == null) return;
 
             weapon = GameObject.Instantiate(data.prefab, transform.position, transform.rotation, transform) as Weapon;
+        }
+
+        public void Attack()
+        {
         }
     }
 }

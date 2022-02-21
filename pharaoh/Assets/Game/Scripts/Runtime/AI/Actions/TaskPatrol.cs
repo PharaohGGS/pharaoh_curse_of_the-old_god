@@ -10,7 +10,7 @@ namespace Pharaoh.AI.Actions
         ///* Patrol attributes *///
         [SerializeField] private int currentWaypointIndex = 0;
         
-        private EnemyPawn _pawn;
+        private Pawn _pawn;
 
         protected override void OnStart()
         {

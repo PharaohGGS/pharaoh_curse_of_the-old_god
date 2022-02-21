@@ -11,7 +11,7 @@ namespace Pharaoh.AI.Actions
         [SerializeField] private Collider[] colliders;
         
         private EnemyPawn _pawn = null;
-
+        
         protected override void OnStart()
         {
             colliders = new Collider[8];
@@ -29,7 +29,7 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_pawn == null || _pawn.holder.weapon.transform.parent == null)
+            if (_pawn == null)
             {
                 state = NodeState.Failure;
                 return state;

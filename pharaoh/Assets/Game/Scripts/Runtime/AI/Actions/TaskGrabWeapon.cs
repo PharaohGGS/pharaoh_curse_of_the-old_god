@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskGrabWeapon : ActionNode
     {
-        private EnemyPawn _pawn = null;
+        private Pawn _pawn = null;
         private WeaponHolder _holder = null;
 
         protected override void OnStart()
@@ -21,13 +21,16 @@ namespace Pharaoh.AI.Actions
 
             if (_holder) return;
 
-            if (_holder == null && !_pawn.holder)
+            var holder = agent.TryGetComponent(out WeaponHolder h)
+                ? h : agent.GetComponentInChildren<WeaponHolder>();
+
+            if (!holder?.weapon)
             {
-                LogHandler.SendMessage($"Can't have a weapon !", MessageType.Error);
+                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
             }
 
-            _holder = _pawn.holder;
+            _holder = holder;
         }
 
         protected override NodeState OnUpdate()
@@ -60,7 +63,7 @@ namespace Pharaoh.AI.Actions
                     _pawn.rigidBody.velocity = _pawn.rigidBody.angularVelocity = Vector3.zero;
                     blackboard.ClearData("target");
                     blackboard.SetData("isWaiting", true);
-                    blackboard.SetData("waitTime", _pawn.holder.timeAfterPickingWeapon);
+                    blackboard.SetData("waitTime", _holder.timeAfterPickingWeapon);
                     state = NodeState.Success;
                     break;
                 }

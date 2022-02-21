@@ -10,27 +10,23 @@ namespace Pharaoh.AI.Actions
     {
         private Transform _lastTarget;
         private HealthComponent _healthComponent;
-
-        private EnemyPawn _pawn = null;
-        private Weapon _weapon = null;
+        
+        private WeaponHolder _holder = null;
         
         protected override void OnStart()
         {
-            if (!_pawn && !agent.TryGetComponent(out _pawn))
+            if (_holder) return;
+
+            var holder = agent.TryGetComponent(out WeaponHolder h) 
+                ? h : agent.GetComponentInChildren<WeaponHolder>();
+
+            if (!holder?.weapon)
             {
-                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
             }
 
-            if (_weapon) return;
-
-            if (!_pawn.holder?.weapon)
-            {
-                LogHandler.SendMessage($"[{_pawn.name}] Can't attack enemies", MessageType.Warning);
-                return;
-            }
-
-            _weapon = _pawn.holder.weapon;
+            _holder = holder;
         }
 
         protected override NodeState OnUpdate()
@@ -51,21 +47,21 @@ namespace Pharaoh.AI.Actions
                 }
             }
 
-            if (!hasTarget || !_weapon || !_weapon.data) return state;
+            if (!hasTarget || !_holder || !_holder.data) return state;
             
             if (blackboard.TryGetData("isWaiting", out bool isWaiting) && isWaiting) return state;
 
-            if (!_weapon.data.canThrow)
+            if (!_holder.data.canThrow)
             {
-                _pawn.Attack();
-                WaitUntilNextAttack(_weapon.data.attackRate);
+                _holder.Attack();
+                WaitUntilNextAttack(_holder.data.attackRate);
                 return state;
             }
 
-            if (_weapon.isThrown || _weapon.transform.parent == null) return state;
+            if (_holder.weapon.isThrown || _holder.transform.parent == null) return state;
 
-            _weapon.Throw(t.position + Vector3.up);
-            WaitUntilNextAttack(_weapon.data.attackRate);
+            _holder.weapon.Throw(t.position + Vector3.up);
+            WaitUntilNextAttack(_holder.data.attackRate);
             return state;
         }
 

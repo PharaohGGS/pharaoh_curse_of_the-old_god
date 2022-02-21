@@ -7,31 +7,27 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckHoldingWeapon : ActionNode
     {
-        private EnemyPawn _pawn = null;
         private WeaponHolder _holder = null;
 
         protected override void OnStart()
         {
-            if (_pawn == null && !agent.TryGetComponent(out _pawn))
-            {
-                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
-                return;
-            }
-
             if (_holder) return;
 
-            if (_holder == null && !_pawn.holder)
+            var holder = agent.TryGetComponent(out WeaponHolder h)
+                ? h : agent.GetComponentInChildren<WeaponHolder>();
+
+            if (!holder?.weapon)
             {
-                LogHandler.SendMessage($"Can't have a weapon !", MessageType.Error);
+                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
             }
 
-            _holder = _pawn.holder;
+            _holder = holder;
         }
 
         protected override NodeState OnUpdate()
         {
-            if (!_pawn || !_pawn.holder)
+            if (!_holder)
             {
                 state = NodeState.Failure;
                 return state;
@@ -46,7 +42,7 @@ namespace Pharaoh.AI.Actions
                 state = NodeState.Failure;
                 if (_holder.weapon.isThrown && _holder.weapon.isOnGround)
                 {
-                    blackboard.SetData("target", _pawn.holder.weapon.transform);
+                    blackboard.SetData("target", _holder.weapon.transform);
                 }
             }
 

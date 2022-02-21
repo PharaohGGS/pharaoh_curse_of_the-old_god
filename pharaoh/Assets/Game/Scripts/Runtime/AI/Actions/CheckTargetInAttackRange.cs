@@ -1,5 +1,6 @@
 ﻿using System;
 using BehaviourTree.Tools;
+using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 
@@ -7,28 +8,36 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        private EnemyPawn _pawn = null;
+        private WeaponHolder _holder = null;
 
         protected override void OnStart()
         {
-            if (_pawn == null && !agent.TryGetComponent(out _pawn))
+            if (_holder) return;
+
+            var holder = agent.TryGetComponent(out WeaponHolder h)
+                ? h : agent.GetComponentInChildren<WeaponHolder>();
+
+            if (!holder?.weapon)
             {
-                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
+                return;
             }
+
+            _holder = holder;
         }
 
         protected override NodeState OnUpdate()
         {
             if (!blackboard.TryGetData("target", out Transform t) || 
-                !_pawn || !_pawn.holder.weapon || _pawn.holder.weapon.transform.parent == null)
+                !_holder || !_holder.weapon || _holder.weapon.transform.parent == null)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            if (Vector3.Distance(agent.transform.position, t.position) <= _pawn.holder.weapon.data.attackRange)
+            if (Vector3.Distance(agent.transform.position, t.position) <= _holder.weapon.data.attackRange)
             {
-                blackboard.SetData("waitTime", _pawn.holder.weapon.data.attackRate);
+                blackboard.SetData("waitTime", _holder.weapon.data.attackRate);
                 state = NodeState.Success;
                 return state;
             }

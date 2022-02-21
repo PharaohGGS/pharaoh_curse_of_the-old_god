@@ -7,7 +7,7 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskGoToTarget : ActionNode
     {
-        private EnemyPawn _pawn = null;
+        private Pawn _pawn = null;
 
         protected override void OnStart()
         {
