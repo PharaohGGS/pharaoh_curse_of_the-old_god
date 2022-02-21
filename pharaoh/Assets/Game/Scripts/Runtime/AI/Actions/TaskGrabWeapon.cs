@@ -59,6 +59,8 @@ namespace Pharaoh.AI.Actions
                     weapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     _pawn.rigidBody.velocity = _pawn.rigidBody.angularVelocity = Vector3.zero;
                     blackboard.ClearData("target");
+                    blackboard.SetData("isWaiting", true);
+                    blackboard.SetData("waitTime", _pawn.holder.timeAfterPickingWeapon);
                     state = NodeState.Success;
                     break;
                 }

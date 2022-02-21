@@ -19,17 +19,15 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            var target = blackboard.GetData("target") as Transform;
-            
-            if (target && _pawn)
+            if (_pawn && blackboard.TryGetData("target", out Transform t))
             {
                 var tr = agent.transform;
-                if (Vector3.Distance(tr.position, target.position) > 0.01f)
+                if (Vector3.Distance(tr.position, t.position) > 0.01f)
                 {
                     tr.position = Vector3.MoveTowards(
-                        tr.position, target.position,
+                        tr.position, t.position,
                         _pawn.movement.moveSpeed * Time.deltaTime);
-                    tr.LookAt(target.position);
+                    tr.LookAt(t.position);
                 }
             }
 

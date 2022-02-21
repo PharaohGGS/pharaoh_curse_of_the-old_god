@@ -1,16 +1,14 @@
-﻿using System;
-using BehaviourTree.Tools;
+﻿using BehaviourTree.Tools;
 using UnityEngine;
 
-namespace BehaviourTree.Runtime.Actions
+namespace Pharaoh.AI.Actions
 {
-    public class WaitNode : ActionNode
+    public class TaskWait : ActionNode
     {
-        public float duration = 1;
         private float _startTime = 0f;
-
-        public float timeSince;
         
+        [SerializeField] private float timeSince;
+
         protected override void OnStart()
         {
             _startTime = Time.time;
@@ -22,20 +20,24 @@ namespace BehaviourTree.Runtime.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (state == NodeState.Success) return state;
+            if (state == NodeState.Success || 
+                !blackboard.TryGetData("waitTime", out float waitTime))
+            {
+                return state;
+            }
 
             timeSince = Time.time - _startTime;
-            state = timeSince <= duration 
+            state = timeSince <= waitTime
                 ? NodeState.Running : NodeState.Success;
 
             blackboard.SetData("isWaiting", state == NodeState.Running);
-            
+
             return state;
         }
 
         protected override void OnStop()
         {
-            if (blackboard.GetData<bool>("isWaiting"))
+            if (blackboard.TryGetData("isWaiting", out bool isWaiting) && isWaiting)
             {
                 state = NodeState.Running;
             }

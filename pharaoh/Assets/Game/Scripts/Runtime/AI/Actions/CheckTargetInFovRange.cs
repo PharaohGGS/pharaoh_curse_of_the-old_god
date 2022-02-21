@@ -23,9 +23,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            var t = blackboard.GetData("target") as Transform;
-
-            if (t != null)
+            if (blackboard.TryGetData("target", out Transform t))
             {
                 state = NodeState.Success;
                 return state;

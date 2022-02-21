@@ -6,7 +6,7 @@ namespace Pharaoh.AI.Actions
     {
         protected override NodeState OnUpdate()
         {
-            state = blackboard.GetData("isWaiting") is true 
+            state = blackboard.TryGetData("isWaiting", out bool value) && value 
                 ? NodeState.Success : NodeState.Failure;
             return state;
         }

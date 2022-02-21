@@ -18,6 +18,10 @@ namespace Pharaoh.AI.Actions
             {
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
             }
+
+            if (!_pawn.movement) return;
+
+            blackboard.SetData("waitTime", _pawn.movement.timeBetweenWaypoints);
         }
 
         protected override NodeState OnUpdate()
@@ -34,6 +38,7 @@ namespace Pharaoh.AI.Actions
             if (Vector3.Distance(agent.transform.position, target) < 0.01f)
             {
                 blackboard.SetData("isWaiting", true);
+                blackboard.SetData("waitTime", _pawn.movement.timeBetweenWaypoints);
                 agent.transform.position = target;
                 currentWaypointIndex = (currentWaypointIndex + 1) % _pawn.movement.waypoints.Length;
             }

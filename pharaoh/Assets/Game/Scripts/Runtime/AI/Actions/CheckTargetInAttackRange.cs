@@ -19,9 +19,8 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            var t = blackboard.GetData("target") as Transform;
-
-            if (!t || !_pawn || !_pawn.holder.weapon || _pawn.holder.weapon.transform.parent == null)
+            if (!blackboard.TryGetData("target", out Transform t) || 
+                !_pawn || !_pawn.holder.weapon || _pawn.holder.weapon.transform.parent == null)
             {
                 state = NodeState.Failure;
                 return state;
@@ -29,6 +28,7 @@ namespace Pharaoh.AI.Actions
 
             if (Vector3.Distance(agent.transform.position, t.position) <= _pawn.holder.weapon.data.attackRange)
             {
+                blackboard.SetData("waitTime", _pawn.holder.weapon.data.attackRate);
                 state = NodeState.Success;
                 return state;
             }

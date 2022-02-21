@@ -7,6 +7,8 @@ namespace Pharaoh.Gameplay.Components
         public DamagerData data;
         public Weapon weapon { get; private set; }
 
+        public float timeAfterPickingWeapon = 1f;
+
         private void Awake()
         {
             if (data == null) return;

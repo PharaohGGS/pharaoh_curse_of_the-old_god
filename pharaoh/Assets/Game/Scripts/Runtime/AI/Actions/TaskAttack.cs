@@ -8,8 +8,6 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        private float _timeSinceLastAttack = 0f;
-
         private Transform _lastTarget;
         private HealthComponent _healthComponent;
 
@@ -37,10 +35,10 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            var t = blackboard.GetData("target") as Transform;
+            var hasTarget = blackboard.TryGetData("target", out Transform t);
             state = NodeState.Running;
 
-            if (t != null && t != _lastTarget)
+            if (hasTarget && t != _lastTarget)
             {
                 _lastTarget = t;
 
@@ -53,28 +51,33 @@ namespace Pharaoh.AI.Actions
                 }
             }
 
-            if (!t || !_weapon || !_weapon.data) return state;
-
-            _timeSinceLastAttack += Time.deltaTime;
-            if (_timeSinceLastAttack < _weapon.data.attackRate) return state;
+            if (!hasTarget || !_weapon || !_weapon.data) return state;
+            
+            if (blackboard.TryGetData("isWaiting", out bool isWaiting) && isWaiting) return state;
 
             if (!_weapon.data.canThrow)
             {
                 _pawn.Attack();
-                _timeSinceLastAttack = 0f;
+                WaitUntilNextAttack(_weapon.data.attackRate);
                 return state;
             }
 
             if (_weapon.isThrown || _weapon.transform.parent == null) return state;
 
             _weapon.Throw(t.position + Vector3.up);
-            _timeSinceLastAttack = 0f;
+            WaitUntilNextAttack(_weapon.data.attackRate);
             return state;
         }
 
         private void OnTargetDeath()
         {
             blackboard.ClearData("target");
+        }
+
+        private void WaitUntilNextAttack(float time)
+        {
+            blackboard.SetData("isWaiting", true);
+            blackboard.SetData("waitTime", time);
         }
     }
 }
