@@ -57,7 +57,7 @@ namespace Pharaoh.AI.Actions
                 {
                     if (!collider.TryGetComponent(out Weapon w) || w != weapon) continue;
                     
-                    weapon.attach = _holder.transform;
+                    weapon.socket = _holder.transform;
                     weapon.transform.localPosition = Vector3.zero;
                     weapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     _pawn.rigidBody.velocity = _pawn.rigidBody.angularVelocity = Vector3.zero;

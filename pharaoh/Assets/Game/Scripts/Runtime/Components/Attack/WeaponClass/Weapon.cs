@@ -14,20 +14,20 @@ namespace Pharaoh.Gameplay.Components
         public UnityEvent onThrown;
         public UnityEvent onGroundHit;
 
-        private Transform _attach;
-        public Transform attach
+        private Transform _socket;
+        public Transform socket
         {
-            get => _attach;
+            get => _socket;
             set
             {
                 if (!rigidbody)
                 {
-                    LogHandler.SendMessage($"Can't attach damager.", MessageType.Warning);
+                    LogHandler.SendMessage($"Can't socket damager.", MessageType.Warning);
                     return;
                 }
                 
                 isOnGround = false;
-                _attach = transform.parent = value;
+                _socket = transform.parent = value;
                 rigidbody.isKinematic = value;
                 rigidbody.useGravity = isThrown = !value;
 
@@ -41,7 +41,7 @@ namespace Pharaoh.Gameplay.Components
         protected override void Awake()
         {
             base.Awake();
-            attach = transform.parent;
+            socket = transform.parent;
         }
 
         protected override void OnTriggerEnter(Collider other)

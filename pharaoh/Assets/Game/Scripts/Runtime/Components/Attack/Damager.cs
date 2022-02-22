@@ -13,7 +13,7 @@ namespace Pharaoh.Gameplay.Components
     {
         public DamagerData data;
         public LayerMask damagingLayers;
-        public UnityEvent<Damager> OnHit;
+        public UnityEvent<Damager> onHit;
 
         public Collider lastTriggerEnter { get; protected set; }
         public Rigidbody rigidbody { get; protected set; }
@@ -33,7 +33,7 @@ namespace Pharaoh.Gameplay.Components
             if (!other.gameObject.IsInLayerMask(damagingLayers)) return;
 
             lastTriggerEnter = other;
-            OnHit?.Invoke(this);
+            onHit?.Invoke(this);
         }
 
         protected virtual void OnTriggerExit(Collider other)

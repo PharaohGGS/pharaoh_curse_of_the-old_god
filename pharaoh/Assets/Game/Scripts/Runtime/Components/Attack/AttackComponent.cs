@@ -23,7 +23,7 @@ namespace Pharaoh.Gameplay.Components
             {
                 onAimFor?.Invoke(holder.weapon, target);
 
-                holder.weapon.attach = null;
+                holder.weapon.socket = null;
                 holder.weapon.onThrown?.Invoke();
             }
         }

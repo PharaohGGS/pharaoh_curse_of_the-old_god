@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        private WeaponHolder _holder = null;
+        [SerializeField] private WeaponHolder _holder = null;
 
         protected override void OnStart()
         {

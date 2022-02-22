@@ -81,15 +81,12 @@ MonoBehaviour:
   damagingLayers:
     serializedVersion: 2
     m_Bits: 2048
-  collidingLayers:
-    serializedVersion: 2
-    m_Bits: 1024
-  OnHit:
+  onHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.AbstractGameEvent`1[[UnityEngine.Collider,
-          UnityEngine
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Damager,
+          Pharaoh
         m_MethodName: Raise
         m_Mode: 0
         m_Arguments:
@@ -100,8 +97,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  gravity: 9.81
-  height: 2
+  collidingLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  onThrown:
+    m_PersistentCalls:
+      m_Calls: []
+  onGroundHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4801419161417651369
 GameObject:
   m_ObjectHideFlags: 0
