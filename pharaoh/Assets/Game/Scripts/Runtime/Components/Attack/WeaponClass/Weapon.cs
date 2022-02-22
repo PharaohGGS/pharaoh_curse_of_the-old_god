@@ -1,4 +1,5 @@
-﻿using Pharaoh.Tools;
+﻿using System;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,37 +12,48 @@ namespace Pharaoh.Gameplay.Components
         public bool isThrown { get; protected set; }
         public bool isOnGround { get; protected set; }
 
-        public UnityEvent onThrown;
-        public UnityEvent onGroundHit;
+        public UnityEvent onThrown = new UnityEvent();
+        public UnityEvent onGroundHit = new UnityEvent();
+        public UnityEvent<Transform> onSocketAttach = new UnityEvent<Transform>();
 
-        private Transform _socket;
-        public Transform socket
+        private Transform _parent = null;
+
+        private void OnEnable()
         {
-            get => _socket;
-            set
-            {
-                if (!rigidbody)
-                {
-                    LogHandler.SendMessage($"Can't socket damager.", MessageType.Warning);
-                    return;
-                }
-                
-                isOnGround = false;
-                _socket = transform.parent = value;
-                rigidbody.isKinematic = value;
-                rigidbody.useGravity = isThrown = !value;
+            onSocketAttach?.AddListener(SocketAttach);
+        }
 
-                if (!isOnGround && !isThrown)
-                {
-                    collider.isTrigger = true;
-                }
+        private void OnDisable()
+        {
+            onSocketAttach?.RemoveListener(SocketAttach);
+        }
+
+        public void Update()
+        {
+            if (_parent != transform.parent)
+            {
+                onSocketAttach?.Invoke(transform.parent);
             }
         }
 
-        protected override void Awake()
+        private void SocketAttach(Transform socket)
         {
-            base.Awake();
-            socket = transform.parent;
+            if (!rigidbody)
+            {
+                LogHandler.SendMessage($"Can't socket damager.", MessageType.Warning);
+                return;
+            }
+
+            _parent = socket;
+            rigidbody.isKinematic = socket;
+            rigidbody.useGravity = !socket;
+
+            isOnGround = false;
+            isThrown = !socket;
+            if (!isThrown && !isOnGround)
+            {
+                collider.isTrigger = true;
+            }
         }
 
         protected override void OnTriggerEnter(Collider other)
@@ -65,6 +77,11 @@ namespace Pharaoh.Gameplay.Components
                 rigidbody.isKinematic = true;
                 rigidbody.useGravity = false;
             }
+        }
+
+        public void Throw()
+        {
+            onThrown?.Invoke();
         }
     }
 }

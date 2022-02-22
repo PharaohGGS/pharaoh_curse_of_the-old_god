@@ -18,7 +18,7 @@ namespace Pharaoh.Gameplay.Components
         public Collider lastTriggerEnter { get; protected set; }
         public Rigidbody rigidbody { get; protected set; }
         public Collider collider { get; protected set; }
-
+        
         protected virtual void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();

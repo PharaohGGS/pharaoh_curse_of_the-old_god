@@ -7,24 +7,37 @@ namespace Pharaoh.Gameplay.Components
     public class AttackComponent : MonoBehaviour
     {
         public Transform target { get; set; }
-        public WeaponHolder holder { get; private set; }
-
-        public UnityEvent<Weapon, Transform> onAimFor;
+        public DamagerHolder holder { get; private set; }
+        
+        public UnityEvent<Damager> onAttack = new UnityEvent<Damager>();
+        public UnityEvent<Damager, Transform> onAimFor = new UnityEvent<Damager, Transform>();
 
         private void Awake()
         {
-            holder = TryGetComponent(out WeaponHolder wh) 
-                ? wh : GetComponentInChildren<WeaponHolder>();
+            holder = TryGetComponent(out DamagerHolder wh) 
+                ? wh : GetComponentInChildren<DamagerHolder>();
         }
 
-        public void Attack()
+        private void OnEnable()
         {
-            if (holder.weapon.TryGetComponent(out Ballistic ballistic))
-            {
-                onAimFor?.Invoke(holder.weapon, target);
+            onAttack?.AddListener(AimTarget);
+        }
 
-                holder.weapon.socket = null;
-                holder.weapon.onThrown?.Invoke();
+        private void OnDisable()
+        {
+            onAttack?.RemoveListener(AimTarget);
+        }
+
+        public void Attack() => onAttack?.Invoke(holder.damager);
+
+        public void AimTarget(Damager damager)
+        {
+            onAimFor?.Invoke(damager, target);
+
+            if (holder.damager is Weapon weapon && weapon.TryGetComponent(out Ballistic ballistic))
+            {
+                weapon.transform.parent = null;
+                weapon.Throw();
             }
         }
     }

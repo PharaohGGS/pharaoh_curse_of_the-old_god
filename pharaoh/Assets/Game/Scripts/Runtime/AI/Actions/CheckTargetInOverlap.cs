@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInOverlap : ActionNode
     {
-        [SerializeField] private Collider[] _detectedColliders;
+        [SerializeField] private Collider[] colliders;
 
         private Collider _collider;
         private DetectionComponent _detection;
@@ -24,32 +24,30 @@ namespace Pharaoh.AI.Actions
 
             if (_collider) return;
 
-            _detectedColliders = new Collider[8];
+            colliders = new Collider[8];
 
             if (!agent.TryGetComponent(out _collider))
             {
                 LogHandler.SendMessage($"No collider on this agent.", MessageType.Warning);
             }
-
-            LogHandler.SendMessage($"{_collider.name}", MessageType.Error);
         }
 
         protected override NodeState OnUpdate()
         {
             int size = 0;
+            Vector3 center = Vector3.zero;
             switch (_collider)
             {
                 case BoxCollider box:
+                    center = box.transform.TransformPoint(box.center);
                     size = Physics.OverlapBoxNonAlloc(
-                        box.center, box.size / 2, _detectedColliders, box.transform.rotation,
+                        center, box.size / 2, colliders, box.transform.rotation,
                         _detection.detectionLayer);
-                    
-                    Debug.DrawLine(box.center, box.center + box.size / 2, Color.red);
-                    Debug.DrawLine(box.center, box.center - box.size / 2, Color.red);
                     break;
                 case SphereCollider sphere:
+                    center = sphere.transform.TransformPoint(sphere.center);
                     size = Physics.OverlapSphereNonAlloc(
-                        sphere.center, sphere.radius, _detectedColliders,
+                        center, sphere.radius, colliders,
                         _detection.detectionLayer);
                     break;
                 case CapsuleCollider capsule:
@@ -62,13 +60,27 @@ namespace Pharaoh.AI.Actions
                     var radius = Enumerable.Range(0, 3).Select(xyz => xyz == capsule.direction ? 0 : r[xyz])
                         .Select(Mathf.Abs).Max();
                     size = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, 
-                        _detectedColliders, _detection.detectionLayer);
+                        colliders, _detection.detectionLayer);
                     break;
                 default:
                     break;
             }
+            
+            int index = 0;
+            if (colliders[0] && colliders[0].transform == agent.transform)
+            {
+                index++;
+            }
 
-            state = size > 0 ? NodeState.Success : NodeState.Failure;
+            if (size <= index)
+            {
+                blackboard.ClearData("target");
+                state = NodeState.Running;
+                return state;
+            }
+            
+            blackboard.SetData("target", colliders[index].transform);
+            state = NodeState.Success;
             return state;
         }
     }

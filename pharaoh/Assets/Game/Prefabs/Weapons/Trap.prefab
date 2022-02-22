@@ -93,6 +93,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6684974063385550921}
   - component: {fileID: 2708876881622631689}
+  - component: {fileID: 3567611914596130899}
+  - component: {fileID: 6703301558977159026}
+  - component: {fileID: 1507483770201521569}
+  - component: {fileID: 3920669754758298515}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
@@ -130,6 +134,95 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 3, z: 1}
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &3567611914596130899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198938675935875298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAttack:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Damager,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onAimFor:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Damager,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6703301558977159026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198938675935875298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <fovRange>k__BackingField: 6
+  <pickupRange>k__BackingField: 1
+  <detectionLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 2112
+  <weaponLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &1507483770201521569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198938675935875298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b63bfa64d59fe948adf1bd28eb3d301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tree: {fileID: 11400000, guid: db7b53810ba92c642a2f8f7192a34344, type: 2}
+--- !u!114 &3920669754758298515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198938675935875298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e0dc250ccb8fe4a922d3fe427979e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8320480193897227975
 GameObject:
   m_ObjectHideFlags: 0

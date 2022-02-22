@@ -38,7 +38,7 @@ namespace Pharaoh.AI.Actions
                 }
             }
 
-            var data = _attack.holder?.weapon?.data;
+            var data = _attack.holder?.damager?.data;
             if (!hasTarget || !data) return state;
             
             _attack.Attack();

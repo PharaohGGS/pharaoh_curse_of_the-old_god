@@ -7,16 +7,16 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckHoldingWeapon : ActionNode
     {
-        private WeaponHolder _holder = null;
+        private DamagerHolder _holder = null;
 
         protected override void OnStart()
         {
             if (_holder) return;
 
-            var holder = agent.TryGetComponent(out WeaponHolder h)
-                ? h : agent.GetComponentInChildren<WeaponHolder>();
+            var holder = agent.TryGetComponent(out DamagerHolder h)
+                ? h : agent.GetComponentInChildren<DamagerHolder>();
 
-            if (!holder?.weapon)
+            if (!holder?.damager)
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
@@ -33,16 +33,18 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (_holder.weapon.transform.parent)
+            if (_holder.damager.transform.parent)
             {
                 state = NodeState.Success;
             }
             else
             {
                 state = NodeState.Failure;
-                if (_holder.weapon.isThrown && _holder.weapon.isOnGround)
+                if (_holder.damager is not Weapon weapon) return state;
+
+                if (weapon.isThrown && weapon.isOnGround)
                 {
-                    blackboard.SetData("target", _holder.weapon.transform);
+                    blackboard.SetData("target", _holder.damager.transform);
                 }
             }
 

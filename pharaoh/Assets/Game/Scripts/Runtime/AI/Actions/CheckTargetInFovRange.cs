@@ -39,13 +39,16 @@ namespace Pharaoh.AI.Actions
                 agent.transform.position, _pawn.detection.fovRange,
                 colliders, _pawn.detection.detectionLayer);
 
-            if (size <= 0)
+            int index = 0;
+            if (colliders[0].transform == agent.transform) index++;
+
+            if (size <= index)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            blackboard.SetData("target", colliders[0].transform);
+            blackboard.SetData("target", colliders[index].transform);
 
             state = NodeState.Success;
             return state;

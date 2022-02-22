@@ -9,7 +9,7 @@ namespace Pharaoh.AI.Actions
     public class TaskGrabWeapon : ActionNode
     {
         private Pawn _pawn = null;
-        private WeaponHolder _holder = null;
+        private DamagerHolder _holder = null;
 
         protected override void OnStart()
         {
@@ -21,10 +21,10 @@ namespace Pharaoh.AI.Actions
 
             if (_holder) return;
 
-            var holder = agent.TryGetComponent(out WeaponHolder h)
-                ? h : agent.GetComponentInChildren<WeaponHolder>();
+            var holder = agent.TryGetComponent(out DamagerHolder h)
+                ? h : agent.GetComponentInChildren<DamagerHolder>();
 
-            if (!holder?.weapon)
+            if (!holder?.damager)
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
@@ -36,37 +36,38 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Running;
-            var weapon = _holder.weapon;
+            var damager = _holder.damager;
 
-            if (weapon && weapon.isThrown && weapon.isOnGround)
+            if (damager is not Weapon weapon) return state;
+            if (!weapon.isThrown || !weapon.isOnGround) return state;
+
+            var detection = _pawn.detection;
+
+            var overlap = Physics.OverlapSphere(agent.transform.position, 
+                detection.pickupRange, detection.weaponLayer);
+            
+            if (overlap.Length <= 0) return state;
+
+            if (overlap.Length > 1)
             {
-                var detection = _pawn.detection;
-                var overlap = Physics.OverlapSphere(agent.transform.position, 
-                    detection.pickupRange, detection.weaponLayer);
+                Array.Sort(overlap, (x, y) =>
+                    Vector3.Distance(agent.transform.position, x.transform.position).CompareTo(
+                        Vector3.Distance(agent.transform.position, y.transform.position)));
+            }
+
+            foreach (var collider in overlap)
+            {
+                if (!collider.TryGetComponent(out Weapon w) || w != weapon) continue;
                 
-                if (overlap.Length <= 0) return state;
-
-                if (overlap.Length > 1)
-                {
-                    Array.Sort(overlap, (x, y) =>
-                        Vector3.Distance(agent.transform.position, x.transform.position).CompareTo(
-                            Vector3.Distance(agent.transform.position, y.transform.position)));
-                }
-
-                foreach (var collider in overlap)
-                {
-                    if (!collider.TryGetComponent(out Weapon w) || w != weapon) continue;
-                    
-                    weapon.socket = _holder.transform;
-                    weapon.transform.localPosition = Vector3.zero;
-                    weapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                    _pawn.rigidBody.velocity = _pawn.rigidBody.angularVelocity = Vector3.zero;
-                    blackboard.ClearData("target");
-                    blackboard.SetData("isWaiting", true);
-                    blackboard.SetData("waitTime", _holder.timeAfterPickingWeapon);
-                    state = NodeState.Success;
-                    break;
-                }
+                weapon.transform.parent = _holder.transform;
+                weapon.transform.localPosition = Vector3.zero;
+                weapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                _pawn.rigidBody.velocity = _pawn.rigidBody.angularVelocity = Vector3.zero;
+                blackboard.ClearData("target");
+                blackboard.SetData("isWaiting", true);
+                blackboard.SetData("waitTime", _holder.timeAfterPickingWeapon);
+                state = NodeState.Success;
+                break;
             }
             
             return state;

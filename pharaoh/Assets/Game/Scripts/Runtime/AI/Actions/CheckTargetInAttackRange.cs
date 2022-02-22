@@ -8,16 +8,16 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        [SerializeField] private WeaponHolder _holder = null;
+        [SerializeField] private DamagerHolder _holder = null;
 
         protected override void OnStart()
         {
             if (_holder) return;
 
-            var holder = agent.TryGetComponent(out WeaponHolder h)
-                ? h : agent.GetComponentInChildren<WeaponHolder>();
+            var holder = agent.TryGetComponent(out DamagerHolder h)
+                ? h : agent.GetComponentInChildren<DamagerHolder>();
 
-            if (!holder?.weapon)
+            if (!holder?.damager)
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
                 return;
@@ -29,15 +29,15 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             if (!blackboard.TryGetData("target", out Transform t) || 
-                !_holder || !_holder.weapon || _holder.weapon.transform.parent == null)
+                !_holder || !_holder.damager || _holder.damager.transform.parent == null)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            if (Vector3.Distance(agent.transform.position, t.position) <= _holder.weapon.data.attackRange)
+            if (Vector3.Distance(agent.transform.position, t.position) <= _holder.damager.data.attackRange)
             {
-                blackboard.SetData("waitTime", _holder.weapon.data.attackRate);
+                blackboard.SetData("waitTime", _holder.damager.data.attackRate);
                 state = NodeState.Success;
                 return state;
             }
