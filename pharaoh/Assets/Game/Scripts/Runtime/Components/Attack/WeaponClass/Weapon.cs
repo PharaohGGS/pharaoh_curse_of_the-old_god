@@ -2,7 +2,6 @@
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
-using Void = Pharaoh.Gameplay.Components.Events.Void;
 
 namespace Pharaoh.Gameplay.Components
 {
@@ -21,22 +20,28 @@ namespace Pharaoh.Gameplay.Components
             get => _attach;
             set
             {
-                if (!rigidBody)
+                if (!rigidbody)
                 {
-                    LogHandler.SendMessage($"Can't attach weapon.", MessageType.Warning);
+                    LogHandler.SendMessage($"Can't attach damager.", MessageType.Warning);
                     return;
                 }
                 
                 isOnGround = false;
-                transform.parent = value;
-                isThrown = rigidBody.isKinematic = value;
-                rigidBody.useGravity = !value;
+                _attach = transform.parent = value;
+                rigidbody.isKinematic = value;
+                rigidbody.useGravity = isThrown = !value;
 
                 if (!isOnGround && !isThrown)
                 {
                     collider.isTrigger = true;
                 }
             }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            attach = transform.parent;
         }
 
         protected override void OnTriggerEnter(Collider other)
@@ -56,9 +61,9 @@ namespace Pharaoh.Gameplay.Components
             {
                 isOnGround = true;
                 onGroundHit?.Invoke();
-                rigidBody.velocity = rigidBody.angularVelocity = Vector3.zero;
-                rigidBody.isKinematic = true;
-                rigidBody.useGravity = false;
+                rigidbody.velocity = rigidbody.angularVelocity = Vector3.zero;
+                rigidbody.isKinematic = true;
+                rigidbody.useGravity = false;
             }
         }
     }

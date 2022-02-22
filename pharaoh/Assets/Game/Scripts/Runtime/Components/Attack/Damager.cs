@@ -16,14 +16,14 @@ namespace Pharaoh.Gameplay.Components
         public UnityEvent<Damager> OnHit;
 
         public Collider lastTriggerEnter { get; protected set; }
-        public Rigidbody rigidBody { get; protected set; }
+        public Rigidbody rigidbody { get; protected set; }
         public Collider collider { get; protected set; }
 
         protected virtual void Awake()
         {
-            rigidBody = GetComponent<Rigidbody>();
+            rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
-            rigidBody.useGravity = false;
+            rigidbody.useGravity = false;
         }
 
         protected virtual void OnTriggerEnter(Collider other)

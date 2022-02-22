@@ -6,20 +6,10 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AttackComponent : MonoBehaviour
     {
-        private Transform _target;
-        public Transform target
-        {
-            get => _target;
-            set
-            {
-                _target = value;
-                OnAimFor?.Invoke(target);
-            }
-        }
-
+        public Transform target { get; set; }
         public WeaponHolder holder { get; private set; }
 
-        public UnityEvent<Transform> OnAimFor;
+        public UnityEvent<Weapon, Transform> onAimFor;
 
         private void Awake()
         {
@@ -31,6 +21,8 @@ namespace Pharaoh.Gameplay.Components
         {
             if (holder.weapon.TryGetComponent(out Ballistic ballistic))
             {
+                onAimFor?.Invoke(holder.weapon, target);
+
                 holder.weapon.attach = null;
                 holder.weapon.onThrown?.Invoke();
             }

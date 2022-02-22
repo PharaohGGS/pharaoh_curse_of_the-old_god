@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
@@ -9,23 +10,46 @@ namespace Pharaoh.Gameplay.Components
         public float gravity = 9.81f;
         public float height = 2f;
 
+        [field: SerializeField] public Damager damager { get; set; }
+
         private Rigidbody _rigidbody;
         private LaunchData _launchData;
 
         private Coroutine _updateVelocity;
         private WaitForFixedUpdate _waitForFixedUpdate;
-
+        
         private void Awake()
         {
+            if (!damager && TryGetComponent(out Damager d))
+            {
+                damager = d;
+            }
+
             _rigidbody = GetComponent<Rigidbody>();
             _waitForFixedUpdate = new WaitForFixedUpdate();
         }
 
-        public void AimForImpact(Transform target)
+        public void AimForImpact(Damager d, Transform target)
         {
-            if (!_rigidbody || !target) return;
+            if (!_rigidbody)
+            {
+                LogHandler.SendMessage($"[{name}] doesn't have rigidbody to perform ballistic", MessageType.Warning);
+                return;
+            }
 
-            _launchData = LaunchData.Calculate(gravity, height, target.position, _rigidbody.position);
+            if (!target)
+            {
+                LogHandler.SendMessage($"[{name}] target is null", MessageType.Warning);
+                return;
+            }
+
+            if (damager != d)
+            {
+                LogHandler.SendMessage($"[{name}] damager is not the launcher", MessageType.Warning);
+                return;
+            }
+
+            _launchData = LaunchData.Calculate(gravity, height, target.position + Vector3.up, _rigidbody.position);
         }
 
         public void Apply()
@@ -48,15 +72,18 @@ namespace Pharaoh.Gameplay.Components
 
         private IEnumerator UpdateVelocity()
         {
-            _rigidbody.AddForce(Vector3.up * (gravity * -2f));
-            if (_rigidbody.velocity.normalized.magnitude >= Mathf.Epsilon)
+            while (true)
             {
-                _rigidbody.rotation = Quaternion.RotateTowards(_rigidbody.rotation,
-                    Quaternion.LookRotation(_rigidbody.velocity.normalized,
-                        Vector3.up), _rigidbody.velocity.magnitude);
-            }
+                _rigidbody.AddForce(Vector3.up * (gravity * -2f));
+                if (_rigidbody.velocity.normalized.magnitude >= Mathf.Epsilon)
+                {
+                    _rigidbody.rotation = Quaternion.RotateTowards(_rigidbody.rotation,
+                        Quaternion.LookRotation(_rigidbody.velocity.normalized,
+                            Vector3.up), _rigidbody.velocity.magnitude);
+                }
 
-            yield return _waitForFixedUpdate;
+                yield return _waitForFixedUpdate;
+            }
         }
     }
 }

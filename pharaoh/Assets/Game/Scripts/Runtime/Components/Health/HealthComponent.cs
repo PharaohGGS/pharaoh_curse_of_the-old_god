@@ -1,8 +1,5 @@
 using System;
-using Pharaoh.Gameplay.Components.Events;
 using UnityEngine;
-using Pharaoh.Tools;
-using Pharaoh.Tools.Debug;
 using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components

@@ -1,5 +1,5 @@
 ﻿using Pharaoh.Gameplay.Components;
-using Pharaoh.Gameplay.Sets;
+using Pharaoh.Sets;
 
 namespace Pharaoh.AI
 {

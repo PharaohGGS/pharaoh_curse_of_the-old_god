@@ -4510,6 +4510,49 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-295654964873902271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673519014285010721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815006fa4ebf8f047909a042b5ffa6a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2188176925853243991}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
+        m_MethodName: AimForImpact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2188176925853243991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673519014285010721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47baec73016afd34b931f55a5a838c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: 9.81
+  height: 2
+  <damager>k__BackingField: {fileID: 2821259172650236877}
 --- !u!114 &2821259172650236877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4526,9 +4569,6 @@ MonoBehaviour:
   damagingLayers:
     serializedVersion: 2
     m_Bits: 2048
-  collidingLayers:
-    serializedVersion: 2
-    m_Bits: 1024
   OnHit:
     m_PersistentCalls:
       m_Calls:
