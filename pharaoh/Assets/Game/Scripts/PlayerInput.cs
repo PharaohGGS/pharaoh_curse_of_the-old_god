@@ -53,6 +53,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NOCLIP"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9fd0602-871e-43a3-83bf-44ea53b65059"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,6 +174,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f100b5b-bd23-4a2c-90bd-33a5fcf47d68"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NOCLIP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -176,6 +196,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Move = m_CharacterControls.FindAction("Move", throwIfNotFound: true);
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
+        m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +259,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Move;
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Dash;
+    private readonly InputAction m_CharacterControls_NOCLIP;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -245,6 +267,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_CharacterControls_Move;
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
+        public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +286,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
+                @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +302,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @NOCLIP.started += instance.OnNOCLIP;
+                @NOCLIP.performed += instance.OnNOCLIP;
+                @NOCLIP.canceled += instance.OnNOCLIP;
             }
         }
     }
@@ -285,5 +314,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnNOCLIP(InputAction.CallbackContext context);
     }
 }

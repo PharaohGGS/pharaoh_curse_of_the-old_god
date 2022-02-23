@@ -22,12 +22,15 @@ public class PlayerMovement : MonoBehaviour
     private bool _hasDashedInAir = false;
     private bool _isDashAvailable = true;
     private bool _isJumping = false;
+    private bool _noclip; //DEBUG
 
     [Header("Horizontal Movement")]
-    [Tooltip("5m/s : given metrics")]
+    [Tooltip("Grounded horizontal speed (m/s)")]
     public float horizontalSpeed = 5f;
-    [Tooltip("5m/s : given metrics")]
+    [Tooltip("In-air horizontal speed (m/s)")]
     public float inAirHorizontalSpeed = 5f;
+    [Tooltip("NOCLIP mode speed (m/s)")]
+    public float noclipSpeed = 10f;
 
     [Header("Jump")]
     [Tooltip("Defines the force added to the player when initiating the jump")]
@@ -74,6 +77,8 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.CharacterControls.Jump.started += OnJump; //player starts jumping
         _playerInput.CharacterControls.Jump.canceled += OnJump; //player ends jumping
         _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
+
+        _playerInput.CharacterControls.NOCLIP.performed += OnNoclip; //enter NOCLIP mode
     }
 
     // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
@@ -126,6 +131,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // DEBUG
+    private void OnNoclip(InputAction.CallbackContext ctx)
+    {
+        _noclip = !_noclip;
+
+        if (_noclip)
+        {
+            _rigidbody.gravityScale = 0f;
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else
+        {
+            _rigidbody.gravityScale = 3f;
+            GetComponent<BoxCollider2D>().enabled = true;
+        }
+    }
+
     private void Update()
     {
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
@@ -152,6 +174,10 @@ public class PlayerMovement : MonoBehaviour
             else
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
         }
+
+        // DEBUG
+        if (_noclip)
+            _rigidbody.velocity = _movementInput * noclipSpeed;
 
         // Moves the player upward while holding the jump button
         if (_isJumping)
@@ -242,14 +268,15 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
-        Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 3f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsDashAvailable : " + _isDashAvailable, _isDashAvailable ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "IsFacingRight : " + _isFacingRight, _isFacingRight ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "IsGrounded : " + _isGrounded, _isGrounded ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3f, "IsDashAvailable : " + _isDashAvailable, _isDashAvailable ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsFacingRight : " + _isFacingRight, _isFacingRight ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "IsGrounded : " + _isGrounded, _isGrounded ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
     }
 
 }
