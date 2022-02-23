@@ -11,6 +11,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _movementInput;
     private Vector2 _smoothMovement;
     private PlayerInput _playerInput;
+    private float _previousGravityScale;
+    private float _jumpClock = 0f; //used to measure for how long the jump input is held
+    private float _smoothInput = 0.03f;
+    private float _movementDeadRange = 0.5f;
     private bool _isGrounded = false;
     private bool _isRunning = false;
     private bool _isFacingRight = true;
@@ -18,25 +22,28 @@ public class PlayerMovement : MonoBehaviour
     private bool _hasDashedInAir = false;
     private bool _isDashAvailable = true;
     private bool _isJumping = false;
-    private float _jumpClock = 0f; //used to measure since how long the jump input is held
-    private float _previousGravityScale;
 
-    [Header("Movement")]
-
+    [Header("Horizontal Movement")]
     [Tooltip("5m/s : given metrics")]
     public float horizontalSpeed = 5f;
     [Tooltip("5m/s : given metrics")]
     public float inAirHorizontalSpeed = 5f;
-    [Tooltip("Defines the force added to the player when jumping")]
-    public float jumpForce = 16f;
-    [Tooltip("How long the player have to hold down the jump button")]
-    public float minJumpHold = 0.1f;
-    [Tooltip("How long the player can hold down the jump button")]
+
+    [Header("Jump")]
+    [Tooltip("Defines the force added to the player when initiating the jump")]
+    public float initialJumpForce = 12f;
+    [Tooltip("Defines the force added to the player while holding the jump button")]
+    public float heldJumpForce = 16f;
+    [Tooltip("How long the player can hold down the jump button after jumping")]
     public float maxJumpHold = 0.3f;
-    [Tooltip("Smooths the player movement, 0.03 works well")]
-    public float smoothInput = 0.03f;
-    [Tooltip("Stops the player movement when in this range and no horizontal input is held")]
-    public float movementDeadRange = 0.5f;
+
+    [Header("Dash")]
+    [Tooltip("Dashing force, 50 works well")]
+    public float dashForce = 30f;
+    [Tooltip("Dashing time, 0.1 works well")]
+    public float dashTime = 0.1f;
+    [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
+    public float dashCooldown = 0.5f;
 
     [Header("Ground Detection")]
     [Tooltip("Rightmost ground check")]
@@ -46,14 +53,6 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("0.05 to get a fine ground detection, keep it small and precise")]
     public float groundCheckRadius = 0.05f;
     public LayerMask groundLayer;
-
-    [Header("Dash")]
-    [Tooltip("Dashing force, 50 works well")]
-    public float dashForce = 30f;
-    [Tooltip("Dashing time, 0.1 works well")]
-    public float dashTime = 0.1f;
-    [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
-    public float dashCooldown = 0.5f;
 
     [Header("Animations")]
     [Tooltip("Animator controlling the player")]
@@ -72,15 +71,15 @@ public class PlayerMovement : MonoBehaviour
         // Movement's events binding
         _playerInput.CharacterControls.Move.performed += OnMove; //player starts moving
         _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
-        _playerInput.CharacterControls.Jump.started += OnJump; //player jumps
-        _playerInput.CharacterControls.Jump.canceled += OnJump; //player jumps
+        _playerInput.CharacterControls.Jump.started += OnJump; //player starts jumping
+        _playerInput.CharacterControls.Jump.canceled += OnJump; //player ends jumping
         _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
     }
 
     // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        // Recover the player's input and smooths it - vel is unused but necessary
+        // Recover the player's input
         _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
     }
 
@@ -89,11 +88,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ctx.started && _isGrounded && !_isDashing)
         {
+            // The player jumps using an impulse force
+            _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
             _jumpClock = Time.time;
             _isJumping = true;
         }
-        //else if (ctx.canceled)
-            //_isJumping = false;
+        else if (ctx.canceled)
+        {
+            // The player released the jump button
+            _isJumping = false;
+        }
     }
 
     // Triggers when the player dashes
@@ -125,16 +129,14 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
-        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, smoothInput);
+        _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, _smoothInput);
 
         // Cuts off the smoothdamp movement when decelerating and there is no player input
-        if (_movementInput.x == 0f && _smoothMovement.x > -movementDeadRange && _smoothMovement.x < movementDeadRange)
+        if (_movementInput.x == 0f && _smoothMovement.x > -_movementDeadRange && _smoothMovement.x < _movementDeadRange)
             _smoothMovement.x = 0f;
 
+        // Stops the jump if held for too long
         if (_isJumping && _jumpClock + maxJumpHold < Time.time)
-            _isJumping = false;
-
-        if (_isJumping && !_playerInput.CharacterControls.Jump.IsPressed() && _jumpClock + minJumpHold < Time.time)
             _isJumping = false;
 
         UpdateStates();
@@ -151,10 +153,9 @@ public class PlayerMovement : MonoBehaviour
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
         }
 
+        // Moves the player upward while holding the jump button
         if (_isJumping)
-        {
-            _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
-        }
+            _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
 
         animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
     }
