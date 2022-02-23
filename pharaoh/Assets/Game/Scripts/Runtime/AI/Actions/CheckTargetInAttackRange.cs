@@ -8,36 +8,38 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        [SerializeField] private DamagerHolder _holder = null;
+        public DamagerData data;
+        private AttackComponent _attack;
 
         protected override void OnStart()
         {
-            if (_holder) return;
+            if (_attack) return;
 
-            var holder = agent.TryGetComponent(out DamagerHolder h)
-                ? h : agent.GetComponentInChildren<DamagerHolder>();
+            if (agent.TryGetComponent(out _attack)) return;
 
-            if (!holder?.damager)
-            {
-                LogHandler.SendMessage($"[{agent.name}] Can't attack enemies", MessageType.Warning);
-                return;
-            }
-
-            _holder = holder;
+            LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            if (!blackboard.TryGetData("target", out Transform t) || 
-                !_holder || !_holder.damager || _holder.damager.transform.parent == null)
+
+            if (!blackboard.TryGetData("target", out Transform t) || !_attack)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            if (Vector3.Distance(agent.transform.position, t.position) <= _holder.damager.data.attackRange)
+            var holder = _attack.dataHolders[data];
+
+            if (!holder || !holder.damager || holder.damager.transform.parent == null)
             {
-                blackboard.SetData("waitTime", _holder.damager.data.attackRate);
+                state = NodeState.Failure;
+                return state;
+            }
+
+            if (Vector3.Distance(agent.transform.position, t.position) <= holder.damager.data.attackRange)
+            {
+                blackboard.SetData("waitTime", holder.damager.data.attackRate);
                 state = NodeState.Success;
                 return state;
             }

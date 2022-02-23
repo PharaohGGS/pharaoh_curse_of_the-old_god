@@ -8,8 +8,9 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
+        public DamagerData data;
         private HealthComponent _healthComponent;
-        
+
         private AttackComponent _attack = null;
         
         protected override void OnStart()
@@ -37,11 +38,10 @@ namespace Pharaoh.AI.Actions
                     _healthComponent?.OnDeath?.AddListener(OnTargetDeath);
                 }
             }
-
-            var data = _attack.holder?.damager?.data;
+            
             if (!hasTarget || !data) return state;
             
-            _attack.Attack();
+            _attack.Attack(data);
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", data.attackRate);
             return state;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,38 +8,33 @@ namespace Pharaoh.Gameplay.Components
     public class AttackComponent : MonoBehaviour
     {
         public Transform target { get; set; }
-        public DamagerHolder holder { get; private set; }
-        
-        public UnityEvent<Damager> onAttack = new UnityEvent<Damager>();
-        public UnityEvent<Damager, Transform> onAimFor = new UnityEvent<Damager, Transform>();
+        [field: SerializeField] public DamagerHolder[] holders { get; private set; }
+        public Dictionary<DamagerData, DamagerHolder> dataHolders { get; private set; }
+
+        public UnityEvent<Damager> onDamagerAttack = new UnityEvent<Damager>();
+        public UnityEvent<Damager, Transform> onDamagerAimTarget = new UnityEvent<Damager, Transform>();
 
         private void Awake()
         {
-            holder = TryGetComponent(out DamagerHolder wh) 
-                ? wh : GetComponentInChildren<DamagerHolder>();
-        }
-
-        private void OnEnable()
-        {
-            onAttack?.AddListener(AimTarget);
-        }
-
-        private void OnDisable()
-        {
-            onAttack?.RemoveListener(AimTarget);
-        }
-
-        public void Attack() => onAttack?.Invoke(holder.damager);
-
-        public void AimTarget(Damager damager)
-        {
-            onAimFor?.Invoke(damager, target);
-
-            if (holder.damager is Weapon weapon && weapon.TryGetComponent(out Ballistic ballistic))
+            if (holders.Length <= 0)
             {
-                weapon.transform.parent = null;
-                weapon.Throw();
+                holders = GetComponentsInChildren<DamagerHolder>();
             }
+
+            dataHolders = new Dictionary<DamagerData, DamagerHolder>();
+            foreach (var holder in holders)
+            {
+                dataHolders.TryAdd(holder.data, holder);
+            }
+        }
+
+        public void Attack(DamagerData data)
+        {
+            var damager = dataHolders[data]?.damager;
+            if (damager == null) return;
+            
+            onDamagerAimTarget?.Invoke(damager, target);
+            onDamagerAttack?.Invoke(damager);
         }
     }
 }

@@ -24,6 +24,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onThrown.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -72,6 +76,10 @@ PrefabInstance:
       value: Apply
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onGroundHit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -80,12 +88,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7451239046983173651}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onGroundHit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Stop
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onGroundHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Stop
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Apply
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onThrown.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -104,6 +124,10 @@ PrefabInstance:
       value: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onThrown.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -117,6 +141,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: onGroundHit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313051582693364802, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: onWeaponThrown.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7259607460147939371, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
@@ -181,7 +209,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1941270978020066559, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
   m_PrefabInstance: {fileID: 8043259587408131642}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6420228004978959910
+--- !u!114 &7451239046983173651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462160696281281221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47baec73016afd34b931f55a5a838c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: 9.81
+  height: 2
+  <damager>k__BackingField: {fileID: 5730542256249676408}
+--- !u!114 &8292906907054658976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,7 +252,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7451239046983173651
+--- !u!114 &4299332175705398009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,9 +261,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 8462160696281281221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47baec73016afd34b931f55a5a838c52, type: 3}
+  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 9.81
-  height: 2
-  <damager>k__BackingField: {fileID: 5730542256249676408}
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5730542256249676408}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Weapon, Pharaoh
+        m_MethodName: Throw
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

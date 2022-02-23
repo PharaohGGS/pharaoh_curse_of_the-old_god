@@ -12,7 +12,7 @@ namespace Pharaoh.Gameplay.Components
         public bool isThrown { get; protected set; }
         public bool isOnGround { get; protected set; }
 
-        public UnityEvent onThrown = new UnityEvent();
+        public UnityEvent onWeaponThrown = new UnityEvent();
         public UnityEvent onGroundHit = new UnityEvent();
         public UnityEvent<Transform> onSocketAttach = new UnityEvent<Transform>();
 
@@ -79,9 +79,12 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public void Throw()
+        public void Throw(Damager damager)
         {
-            onThrown?.Invoke();
+            if (damager != this || !TryGetComponent(out Ballistic ballistic)) return;
+
+            transform.parent = null;
+            onWeaponThrown?.Invoke();
         }
     }
 }

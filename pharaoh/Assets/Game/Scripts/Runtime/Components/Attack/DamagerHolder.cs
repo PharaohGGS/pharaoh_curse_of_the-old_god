@@ -5,8 +5,7 @@ namespace Pharaoh.Gameplay.Components
 {
     public class DamagerHolder : MonoBehaviour
     {
-        [SerializeField] private DamagerData data;
-
+        [field: SerializeField] public DamagerData data { get; private set; }
         public Damager damager { get; private set; }
 
         public float timeAfterPickingWeapon = 1f;

@@ -146,7 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onAttack:
+  <holders>k__BackingField: []
+  onDamagerAttack:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
@@ -162,7 +163,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onAimFor:
+  onDamagerAimTarget:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
@@ -267,5 +268,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9439ad64a29f0bc45a964727188303fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: be1b4a59b00dcb14280d695e429ebfe5, type: 2}
+  <data>k__BackingField: {fileID: 0}
   timeAfterPickingWeapon: 0

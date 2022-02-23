@@ -10,34 +10,36 @@ namespace Pharaoh.AI.Actions
     {
         [SerializeField] private Collider[] colliders;
         
-        private EnemyPawn _pawn = null;
+        private DetectionComponent _detection = null;
         
         protected override void OnStart()
         {
             colliders = new Collider[8];
-            if (_pawn == null && !agent.TryGetComponent(out _pawn))
-            {
-                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
-            }
+
+            if (_detection) return;
+
+            if (agent.TryGetComponent(out _detection)) return;
+
+            LogHandler.SendMessage($"[{agent.name}] Can't detect enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
+            if (!_detection)
+            {
+                state = NodeState.Failure;
+                return state;
+            }
+
             if (blackboard.TryGetData("target", out Transform t))
             {
                 state = NodeState.Success;
                 return state;
             }
 
-            if (_pawn == null)
-            {
-                state = NodeState.Failure;
-                return state;
-            }
-
             var size = Physics.OverlapSphereNonAlloc(
-                agent.transform.position, _pawn.detection.fovRange,
-                colliders, _pawn.detection.detectionLayer);
+                agent.transform.position, _detection.fovRange,
+                colliders, _detection.detectionLayer);
 
             int index = 0;
             if (colliders[0].transform == agent.transform) index++;

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 
@@ -8,10 +10,15 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInOverlap : ActionNode
     {
-        [SerializeField] private Collider[] colliders;
+        [SerializeField] private Collider[] colliders3D;
+        [SerializeField] private Collider2D[] colliders2D;
 
-        private Collider _collider;
+        private Collider _collider3D;
+        private Collider2D _collider2D;
+
         private DetectionComponent _detection;
+
+        private bool _is2D = false;
 
         protected override void OnStart()
         {
@@ -22,54 +29,36 @@ namespace Pharaoh.AI.Actions
                 LogHandler.SendMessage($"No detection possible with this agent.", MessageType.Warning);
             }
 
-            if (_collider) return;
+            if (_collider3D || _collider2D) return;
 
-            colliders = new Collider[8];
-
-            if (!agent.TryGetComponent(out _collider))
+            if (agent.TryGetComponent(out _collider3D))
             {
-                LogHandler.SendMessage($"No collider on this agent.", MessageType.Warning);
+                colliders3D = new Collider[8];
             }
+
+            if (agent.TryGetComponent(out _collider2D))
+            {
+                colliders2D = new Collider2D[8];
+                _is2D = true;
+            }
+
+            LogHandler.SendMessage($"No collider on this agent.", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            int size = 0;
-            Vector3 center = Vector3.zero;
-            switch (_collider)
-            {
-                case BoxCollider box:
-                    center = box.transform.TransformPoint(box.center);
-                    size = Physics.OverlapBoxNonAlloc(
-                        center, box.size / 2, colliders, box.transform.rotation,
-                        _detection.detectionLayer);
-                    break;
-                case SphereCollider sphere:
-                    center = sphere.transform.TransformPoint(sphere.center);
-                    size = Physics.OverlapSphereNonAlloc(
-                        center, sphere.radius, colliders,
-                        _detection.detectionLayer);
-                    break;
-                case CapsuleCollider capsule:
-                    ///* https://roundwide.com/physics-overlap-capsule/ *///
-                    var direction = new Vector3 { [capsule.direction] = 1 };
-                    var offset = capsule.height / 2 - capsule.radius;
-                    var point0 = capsule.transform.TransformPoint(capsule.center - direction * offset);
-                    var point1 = capsule.transform.TransformPoint(capsule.center + direction * offset);
-                    var r = capsule.transform.TransformVector(capsule.radius, capsule.radius, capsule.radius);
-                    var radius = Enumerable.Range(0, 3).Select(xyz => xyz == capsule.direction ? 0 : r[xyz])
-                        .Select(Mathf.Abs).Max();
-                    size = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, 
-                        colliders, _detection.detectionLayer);
-                    break;
-                default:
-                    break;
-            }
-            
+            int size;
             int index = 0;
-            if (colliders[0] && colliders[0].transform == agent.transform)
+
+            if (_is2D)
             {
-                index++;
+                size = _collider2D.OverlapNonAlloc(ref colliders2D, _detection.detectionLayer);
+                if (colliders2D[0] && colliders2D[0].transform == agent.transform) index++;
+            }
+            else
+            {
+                size = _collider3D.OverlapNonAlloc(ref colliders3D, _detection.detectionLayer);
+                if (colliders3D[0] && colliders3D[0].transform == agent.transform) index++;
             }
 
             if (size <= index)
@@ -79,7 +68,7 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
             
-            blackboard.SetData("target", colliders[index].transform);
+            blackboard.SetData("target", colliders3D[index].transform);
             state = NodeState.Success;
             return state;
         }
