@@ -15,6 +15,8 @@ public class PlayerSkills : MonoBehaviour
     private VisualEffect _teleportVFX;
     private PlayerMovement _playerMovement;
 
+    public GameObject[] meshes;
+
 
     private void OnEnable()
     {
@@ -28,9 +30,9 @@ public class PlayerSkills : MonoBehaviour
 
     void Start()
     {
-        if (transform.TryGetComponent(out VisualEffect vfx))
+        if (TryGetComponent(out VisualEffect vfx))
             _teleportVFX = vfx;
-        if (transform.TryGetComponent(out PlayerMovement playerMovement))
+        if (TryGetComponent(out PlayerMovement playerMovement))
             _playerMovement = playerMovement;
         action.performed += _ => Teleport();
     }
@@ -46,9 +48,8 @@ public class PlayerSkills : MonoBehaviour
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         RigidbodyConstraints2D initialConstraints = rb.constraints;
         rb.constraints = initialConstraints | RigidbodyConstraints2D.FreezePosition;
-        
-        _playerMovement.TogglePlayerInput(false);
-        transform.Find("Model").gameObject.SetActive(false);
+
+        foreach (var mesh in meshes) { mesh.SetActive(false); }
         
         Vector3 target = _teleportVFX.GetVector3("TargetPosition");
         float z = transform.Find("Model").localScale.z;
@@ -77,8 +78,7 @@ public class PlayerSkills : MonoBehaviour
         else
             transform.position += new Vector3(target.z, target.y, target.x);
         
-        transform.Find("Model").gameObject.SetActive(true);
-        _playerMovement.TogglePlayerInput(true);
+        foreach (var mesh in meshes) { mesh.SetActive(true); }
         rb.constraints = initialConstraints;
         action.Enable();
     }

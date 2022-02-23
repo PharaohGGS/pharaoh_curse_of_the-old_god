@@ -15,15 +15,15 @@ public class Room : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         virtualCamera.SetActive(true);
-        if (_fading != null) StopCoroutine(_fading);
-        _fading = StartCoroutine(Fade(0f, .3f));
+        // if (_fading != null) StopCoroutine(_fading);
+        // _fading = StartCoroutine(Fade(0f, .3f));
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         virtualCamera.SetActive(false);
-        if (_fading != null) StopCoroutine(_fading);
-        _fading = StartCoroutine(Fade(1f, .3f));
+        // if (_fading != null) StopCoroutine(_fading);
+        // _fading = StartCoroutine(Fade(1f, .3f));
     }
 
     private IEnumerator Fade(float alpha, float time)
