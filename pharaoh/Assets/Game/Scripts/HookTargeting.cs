@@ -13,6 +13,7 @@ public class HookTargeting : MonoBehaviour
 
     [SerializeField, Tooltip("Distance to hooked transform")] 
     private float offsetHook = 0.5f;
+    [SerializeField] private float speed = 19f;
     private Transform _hooked;
     private bool _isOnHook = false;
 
@@ -52,6 +53,7 @@ public class HookTargeting : MonoBehaviour
         _playerInput.CharacterActions.Hook.performed += OnHook;
         _playerInput.CharacterControls.Move.performed += OnMove;
         _playerInput.CharacterControls.Jump.started += OnJump;
+        _playerInput.CharacterControls.Dash.started += OnDash;
     }
 
     private void OnDisable()
@@ -59,6 +61,7 @@ public class HookTargeting : MonoBehaviour
         _playerInput.CharacterActions.Hook.performed -= OnHook;
         _playerInput.CharacterControls.Move.performed -= OnMove;
         _playerInput.CharacterControls.Jump.started -= OnJump;
+        _playerInput.CharacterControls.Dash.started -= OnDash;
         _playerInput.Disable();
     }
 
@@ -104,6 +107,11 @@ public class HookTargeting : MonoBehaviour
     }
 
     private void OnJump(InputAction.CallbackContext obj)
+    {
+        if (!_hooked) return;
+        UnHook();
+    }
+    private void OnDash(InputAction.CallbackContext obj)
     {
         if (!_hooked) return;
         UnHook();
@@ -198,7 +206,7 @@ public class HookTargeting : MonoBehaviour
             _isOnHook = false;
             var direction = hooked.position - transform.position;
             var velocity = new Vector2(direction.x, direction.y);
-            _rigidbody.MovePosition(_rigidbody.position + velocity * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + velocity.normalized * (speed * Time.fixedDeltaTime));
             yield return _waitForFixedUpdate;
         }
 

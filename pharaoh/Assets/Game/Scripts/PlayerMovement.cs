@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Moves the player upward while holding the jump button
         if (_isJumping)
-            _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
+           _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
 
         animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
     }
