@@ -161,6 +161,12 @@ public class PlayerMovement : MonoBehaviour
         _canMove = true;
     }
 
+    public void OnEndHookMovement()
+    {
+        _isGrounded = true; 
+        animator.SetBool("Is Grounded", _isGrounded);
+    }
+
     private void Update()
     {
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
@@ -217,10 +223,11 @@ public class PlayerMovement : MonoBehaviour
         else _isRunning = false;
         animator.SetBool("Is Running", _isRunning);
 
-
+        if (!_canMove) return;
+        
         // Updates the grounded state - check if one or both "feet" are on a ground
         _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
-           || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
+                      || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
         animator.SetBool("Is Grounded", _isGrounded);
     }
 

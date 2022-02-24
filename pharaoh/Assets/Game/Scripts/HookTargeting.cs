@@ -38,6 +38,7 @@ public class HookTargeting : MonoBehaviour
     [Header("Events")]
     public UnityEvent onHook = new UnityEvent();
     public UnityEvent onUnHook = new UnityEvent();
+    public UnityEvent onEndHookMovement = new UnityEvent();
 
     private void Awake()
     {
@@ -119,8 +120,8 @@ public class HookTargeting : MonoBehaviour
     private void Hook()
     {
         _hooked = null;
-        if (_bestTargetLeft && !_bestTargetRight) _hooked = _bestTargetLeft.transform;
-        if (!_bestTargetLeft && _bestTargetRight) _hooked = _bestTargetRight.transform;
+        if (_bestTargetLeft && !_playerMovement.IsFacingRight) _hooked = _bestTargetLeft.transform;
+        if (_bestTargetRight && _playerMovement.IsFacingRight) _hooked = _bestTargetRight.transform;
         if (_bestTargetLeft && _bestTargetRight)
         {
             _hooked = _playerMovement.IsFacingRight 
@@ -146,7 +147,6 @@ public class HookTargeting : MonoBehaviour
 
         _hooked = null;
         _isOnHook = false;
-        _rigidbody.velocity = Vector2.zero;
         _rigidbody.gravityScale = _gravityScale;
         onUnHook?.Invoke();
     }
@@ -203,6 +203,7 @@ public class HookTargeting : MonoBehaviour
         }
 
         _isOnHook = true;
+        onEndHookMovement?.Invoke();
     }
 
 }
