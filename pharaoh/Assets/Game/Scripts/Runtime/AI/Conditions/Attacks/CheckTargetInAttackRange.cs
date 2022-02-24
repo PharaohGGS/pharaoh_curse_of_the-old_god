@@ -23,27 +23,19 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Failure;
-            if (!_attack || !blackboard.TryGetData("target", out Transform t))
+            if (!_attack || !_attack.dataHolders.TryGetValue(data, out var holder))
             {
                 return state;
             }
 
-            if (!_attack.dataHolders.TryGetValue(data, out var holder))
+            if (!blackboard.TryGetData("target", out Transform t) || 
+                Vector3.Distance(agent.transform.position, t.position) > data.attackRange)
             {
                 return state;
             }
 
-            if (!holder || !holder.damager || holder.damager.transform.parent == null)
-            {
-                return state;
-            }
-
-            if (Vector3.Distance(agent.transform.position, t.position) <= holder.damager.data.attackRange)
-            {
-                blackboard.SetData("waitTime", holder.damager.data.attackRate);
-                state = NodeState.Success;
-            }
-            
+            blackboard.SetData("waitTime", data.attackRate);
+            state = NodeState.Success;
             return state;
         }
     }
