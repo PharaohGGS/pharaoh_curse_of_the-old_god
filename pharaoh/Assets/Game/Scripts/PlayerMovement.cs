@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _isJumping = false;
     private bool _noclip; //DEBUG
 
+    public bool IsFacingRight { get => _isFacingRight; }
+
     [Header("Horizontal Movement")]
     [Tooltip("Grounded horizontal speed (m/s)")]
     public float horizontalSpeed = 5f;
