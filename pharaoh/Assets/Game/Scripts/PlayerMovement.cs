@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashAvailable = true;
     private bool _isJumping = false;
     private bool _noclip; //DEBUG
+    private bool _canMove = true;
 
     public bool IsFacingRight { get => _isFacingRight; }
 
@@ -150,6 +151,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void OnHook()
+    {
+        _canMove = false;
+    }
+
+    public void OnUnHook()
+    {
+        _canMove = true;
+    }
+
     private void Update()
     {
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
@@ -169,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing)
+        if (!_isDashing && _canMove)
         {
             if (_isGrounded)
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
