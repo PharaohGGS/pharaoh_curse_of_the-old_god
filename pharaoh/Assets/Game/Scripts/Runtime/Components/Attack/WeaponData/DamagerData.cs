@@ -7,10 +7,10 @@ namespace Pharaoh.Gameplay.Components
     public abstract class DamagerData : ScriptableObject
     {
         public string description;
-        public bool canThrow;
+        public bool throwable;
         public float damage;
-        public float attackRate;
-        public float attackRange;
+        public float rate;
+        public float range;
         public Damager prefab;
     }
 }

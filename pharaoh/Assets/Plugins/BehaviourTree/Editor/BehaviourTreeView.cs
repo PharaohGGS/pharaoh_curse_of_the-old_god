@@ -129,7 +129,12 @@ namespace BehaviourTree.Editor
             {
                 foreach (var type in collection)
                 {
-                    evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", 
+                    if (type.IsAbstract) continue;
+
+                    var baseTypeName = type.BaseType.IsGenericType 
+                        ? type.BaseType.BaseType.Name : type.BaseType.Name;
+
+                    evt.menu.AppendAction($"[{baseTypeName}] {type.Name}", 
                         (a) => CreateNode(type));
                 }
             }
