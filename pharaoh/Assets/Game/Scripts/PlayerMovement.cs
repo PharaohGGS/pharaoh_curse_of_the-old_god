@@ -202,7 +202,6 @@ public class PlayerMovement : MonoBehaviour
         // Updates whether the player is running or not
         if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
         else _isRunning = false;
-        animator.SetBool("Is Running", _isRunning);
 
 
         // Updates the grounded state - check if one or both "feet" are on a ground
