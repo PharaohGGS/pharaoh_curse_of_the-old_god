@@ -8,7 +8,6 @@ namespace Pharaoh.AI.Actions
 {
     public abstract class CheckTargetInAttackRange<T> : ActionNode where T : DamagerData
     {
-        public T data;
         private AttackComponent _attack;
 
         protected override void OnStart()
@@ -23,18 +22,18 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Failure;
-            if (!_attack || !_attack.dataHolders.TryGetValue(data, out var holder))
+            if (!_attack || !_attack.TryGetHolder<T>(out var holder))
             {
                 return state;
             }
 
             if (!blackboard.TryGetData("target", out Transform t) || 
-                Vector3.Distance(agent.transform.position, t.position) > data.attackRange)
+                Vector3.Distance(agent.transform.position, t.position) > holder.data.range)
             {
                 return state;
             }
 
-            blackboard.SetData("waitTime", data.attackRate);
+            blackboard.SetData("waitTime", holder.data.rate);
             state = NodeState.Success;
             return state;
         }

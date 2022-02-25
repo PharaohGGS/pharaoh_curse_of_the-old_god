@@ -7,9 +7,8 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AttackComponent : MonoBehaviour
     {
+        [SerializeField] private DamagerHolder[] holders;
         public Transform target { get; set; }
-        [field: SerializeField] public DamagerHolder[] holders { get; private set; }
-        public Dictionary<DamagerData, DamagerHolder> dataHolders { get; private set; }
 
         public UnityEvent<Damager> onDamagerAttack = new UnityEvent<Damager>();
         public UnityEvent<Damager, Transform> onDamagerAimTarget = new UnityEvent<Damager, Transform>();
@@ -20,21 +19,30 @@ namespace Pharaoh.Gameplay.Components
             {
                 holders = GetComponentsInChildren<DamagerHolder>();
             }
-
-            dataHolders = new Dictionary<DamagerData, DamagerHolder>();
-            foreach (var holder in holders)
-            {
-                dataHolders.TryAdd(holder.data, holder);
-            }
         }
 
-        public void Attack(DamagerData data)
+        public void Attack(DamagerHolder holder)
         {
-            var damager = dataHolders[data]?.damager;
-            if (damager == null) return;
+            if (holder == null) return;
             
-            onDamagerAimTarget?.Invoke(damager, target);
-            onDamagerAttack?.Invoke(damager);
+            onDamagerAimTarget?.Invoke(holder.damager, target);
+            onDamagerAttack?.Invoke(holder.damager);
+        }
+
+        public bool TryGetHolder<T>(out DamagerHolder holder) where T : DamagerData
+        {
+            holder = null;
+            if (holders.Length <= 0) return false;
+
+            foreach (var h in holders)
+            {
+                if (h.data.GetType() != typeof(T)) continue;
+
+                holder = h;
+                return true;
+            }
+
+            return false;
         }
     }
 }

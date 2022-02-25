@@ -7,7 +7,6 @@ namespace Pharaoh.AI.Actions
 {
     public abstract class CheckHoldingWeapon<T> : ActionNode where T : DamagerData
     {
-        public T data;
         private AttackComponent _attack;
 
         protected override void OnStart()
@@ -27,7 +26,7 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (!_attack.dataHolders.TryGetValue(data, out DamagerHolder holder))
+            if (!_attack.TryGetHolder<T>(out var holder))
             {
                 state = NodeState.Failure;
                 return state;

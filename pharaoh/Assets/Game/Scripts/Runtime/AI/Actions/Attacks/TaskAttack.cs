@@ -8,7 +8,6 @@ namespace Pharaoh.AI.Actions
 {
     public abstract class TaskAttack<T> : ActionNode where T : DamagerData
     {
-        public T data;
         private HealthComponent _healthComponent;
 
         private AttackComponent _attack = null;
@@ -25,13 +24,11 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             state = NodeState.Failure;
-            if (!_attack || !_attack.dataHolders.ContainsKey(data))
+            if (!_attack || !_attack.TryGetHolder<T>(out var holder) || 
+                !blackboard.TryGetData("target", out Transform t))
             {
                 return state;
             }
-
-            var hasTarget = blackboard.TryGetData("target", out Transform t);
-            if (!hasTarget) return state;
 
             state = NodeState.Running;
 
@@ -47,9 +44,9 @@ namespace Pharaoh.AI.Actions
                 }
             }
             
-            _attack.Attack(data);
+            _attack.Attack(holder);
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", data.attackRate);
+            blackboard.SetData("waitTime", holder.data.rate);
             return state;
         }
 
