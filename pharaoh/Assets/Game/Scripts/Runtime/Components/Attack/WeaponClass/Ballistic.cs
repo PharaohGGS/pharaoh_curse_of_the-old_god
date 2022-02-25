@@ -31,21 +31,11 @@ namespace Pharaoh.Gameplay.Components
 
         public void AimForImpact(Damager d, Transform target)
         {
+            if (damager != d || !target) return;
+
             if (!_rigidbody)
             {
                 LogHandler.SendMessage($"[{name}] doesn't have rigidbody to perform ballistic", MessageType.Warning);
-                return;
-            }
-
-            if (!target)
-            {
-                LogHandler.SendMessage($"[{name}] target is null", MessageType.Warning);
-                return;
-            }
-
-            if (damager != d)
-            {
-                LogHandler.SendMessage($"[{name}] damager is not the launcher", MessageType.Warning);
                 return;
             }
 
