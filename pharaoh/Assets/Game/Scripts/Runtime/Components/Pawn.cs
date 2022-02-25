@@ -1,23 +1,20 @@
-﻿using System;
-using Pharaoh.Gameplay.Components;
-using Pharaoh.Tools.Debug;
+﻿using Pharaoh.Tools.Debug;
 using UnityEngine;
 
-namespace Game.Scripts.Runtime.Components
+namespace Pharaoh.Gameplay.Components
 {
-    [RequireComponent(typeof(Rigidbody), typeof(MovementComponent))]
-    public class Pawn : MonoBehaviour
+    [RequireComponent(typeof(Rigidbody), typeof(MovementComponent), typeof(DetectionComponent))]
+    public class Pawn : Actor
     {
-        public Collider[] colliders { get; protected set; }
-        public Rigidbody rigidBody { get; protected set; }
         public HealthComponent health { get; protected set; }
         public MovementComponent movement { get; protected set; }
+        public DetectionComponent detection { get; protected set; }
 
-        protected virtual void OnEnable()
+        protected override void Awake()
         {
-            colliders = GetComponents<Collider>();
-            rigidBody = GetComponent<Rigidbody>();
+            base.Awake();
             movement = GetComponent<MovementComponent>();
+            detection = GetComponent<DetectionComponent>();
 
             if (health == null && TryGetComponent(out HealthComponent hlth)) health = hlth;
         }

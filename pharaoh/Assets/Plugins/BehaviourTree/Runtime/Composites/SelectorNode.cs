@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace BehaviourTree.Runtime.Composites
 {
+    /// <summary>
+    /// Fail when all of the child is failing
+    /// Success when first success encounter
+    /// Running when first running encounter
+    /// </summary>
     public class SelectorNode : CompositeNode
     {
         protected override NodeState OnUpdate()
