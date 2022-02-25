@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashAvailable = true;
     private bool _isJumping = false;
     private bool _noclip; //DEBUG
+    private bool _canMove = true;
 
     public bool IsFacingRight { get => _isFacingRight; }
 
@@ -151,6 +152,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void OnHook()
+    {
+        _canMove = false;
+    }
+
+    public void OnUnHook()
+    {
+        _canMove = true;
+    }
+
+    public void OnEndHookMovement()
+    {
+        _isGrounded = true; 
+        animator.SetBool("Is Grounded", _isGrounded);
+    }
+
     private void Update()
     {
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
@@ -166,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing)
+        if (!_isDashing && _canMove)
         {
             if (_isGrounded)
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
@@ -180,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Moves the player upward while holding the jump button
         if (_isJumping)
-            _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
+           _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
 
         animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
         animator.SetFloat("Horizontal Velocity", _rigidbody.velocity.x);
@@ -203,10 +220,11 @@ public class PlayerMovement : MonoBehaviour
         if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
         else _isRunning = false;
 
-
+        if (!_canMove) return;
+        
         // Updates the grounded state - check if one or both "feet" are on a ground
         _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
-           || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
+                      || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
         animator.SetBool("Is Grounded", _isGrounded);
     }
 
