@@ -130,7 +130,6 @@ public class PlayerMovement : MonoBehaviour
             _isDashAvailable = false;
             _hasDashedInAir = !_isGrounded;
 
-            animator.SetBool("Is Dashing", _isDashing);
             animator.SetTrigger("Dashing");
 
             tr.startColor = Color.red; //DEBUG
@@ -255,8 +254,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Updates current state
         _isDashing = false;
-
-        animator.SetBool("Is Dashing", _isDashing);
 
         tr.startColor = Color.blue; //DEBUG
 
