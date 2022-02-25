@@ -215,18 +215,20 @@ public class HookTargeting : MonoBehaviour
             
             if (hit2Ds.Length > 0)
             {
-                if (hit2Ds.Length > 1)
-                {
-                    Array.Sort(hit2Ds, (x, y) => x.distance.CompareTo(y.distance));
-                }
+                UnHook();
 
-                var bounds = hit2Ds[0].collider.bounds;
-                var bottom = bounds.center - Vector3.up * bounds.extents.y;
-                var top = bounds.center + Vector3.up * bounds.extents.y;
+                //if (hit2Ds.Length > 1)
+                //{
+                //    Array.Sort(hit2Ds, (x, y) => x.distance.CompareTo(y.distance));
+                //}
 
-                var distTop = Vector3.Distance(transform.position, top);
-                var distBottom = Vector3.Distance(transform.position, bottom);
-                position.y += distTop < distBottom ? distTop : -distBottom;
+                //var bounds = hit2Ds[0].collider.bounds;
+                //var bottom = bounds.center - Vector3.up * bounds.extents.y;
+                //var top = bounds.center + Vector3.up * bounds.extents.y;
+
+                //var distTop = Vector3.Distance(transform.position, top);
+                //var distBottom = Vector3.Distance(transform.position, bottom);
+                //position.y += distTop < distBottom ? distTop : -distBottom;
             }
 
             _rigidbody.MovePosition(_rigidbody.position + position + velocity.normalized * (speed * Time.fixedDeltaTime));
