@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: feb78949a1f693e4fa8d4163dad5f3fa
-  position: {x: -518.81274, y: 838.4}
+  position: {x: -596.2821, y: 838.3999}
   description: 
   blackboard:
     debugData: []
@@ -77,55 +77,11 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: faa80934c5c56c949bdd73fbcd2edbab
-  position: {x: -1067.2003, y: 625.35504}
+  position: {x: -665.08215, y: 529.6}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
---- !u!114 &-5108213897792666219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10c879d514c27fd43bd7f839050ee85a, type: 3}
-  m_Name: TaskGoToTarget
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 3bd8e92e6b03601458a8eeb43a8bf2f2
-  position: {x: -717.6003, y: 625.35504}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
---- !u!114 &-3936055380678318755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 456be3667f2139c4d98bfccd9e6d8c68
-  position: {x: -870.8001, y: 369.6}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  children:
-  - {fileID: -5196779309447961558}
-  - {fileID: 3094699350794921156}
-  - {fileID: -5108213897792666219}
 --- !u!114 &-2544149763600791116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +165,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 1773fc4c5e985df408d81e0869ad382a
-  position: {x: -369.21277, y: 678.39996}
+  position: {x: -446.68216, y: 678.4}
   description: 
   blackboard:
     debugData: []
@@ -270,10 +226,7 @@ MonoBehaviour:
   - {fileID: -8096251022630008292}
   - {fileID: 3350457442567734327}
   - {fileID: 7543306493078875024}
-  - {fileID: -3936055380678318755}
   - {fileID: -5196779309447961558}
-  - {fileID: 3094699350794921156}
-  - {fileID: -5108213897792666219}
   blackboard:
     debugData: []
 --- !u!114 &1246385073974385994
@@ -320,7 +273,6 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: -3936055380678318755}
   - {fileID: 7746393604834486671}
   - {fileID: -2544149763600791116}
   - {fileID: 1246385073974385994}
@@ -344,26 +296,6 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
---- !u!114 &3094699350794921156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9db51a66067c9147933bac24e0bc632, type: 3}
-  m_Name: TaskLookAtTarget
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 64d0820be1edd1d40bda47a39ce3ccd3
-  position: {x: -868.00037, y: 625.35504}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
 --- !u!114 &3350457442567734327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +311,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 0e93d729dc38a8446b8663ac9a98b606
-  position: {x: -369.21277, y: 838.4}
+  position: {x: -446.68216, y: 838.3999}
   description: 
   blackboard:
     debugData: []
@@ -440,7 +372,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5f847bccfb23ac848a08ecbc9727a9eb
-  position: {x: -369.21277, y: 524.7999}
+  position: {x: -446.68216, y: 524.7999}
   description: 
   blackboard:
     debugData: []
@@ -463,7 +395,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: a13311ce14fcbba48b02b2a05541ee8a
-  position: {x: -574.01276, y: 524.7999}
+  position: {x: -869.60004, y: 529.6001}
   description: 
   blackboard:
     debugData: []
@@ -483,13 +415,14 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: fbf433b75f543414eb53b77729b19c87
-  position: {x: -369.21277, y: 338.39993}
+  position: {x: -446.68216, y: 338.39996}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
   - {fileID: 7543306493078875024}
+  - {fileID: -5196779309447961558}
   - {fileID: 7061892331425943572}
 --- !u!114 &9182453372911218589
 MonoBehaviour:
@@ -506,7 +439,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 582e6c3d730321e4f9cfa5a712f191cf
-  position: {x: -518.81274, y: 678.39996}
+  position: {x: -596.2821, y: 678.4}
   description: 
   blackboard:
     debugData: []
