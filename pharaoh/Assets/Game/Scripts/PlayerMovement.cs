@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private float _previousGravityScale;
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
     private float _smoothInput = 0.03f;
+    private float _turnSpeed = 7f; //value defined with Clémence
+    private float _backOrientationIdle = -135f; //value defined with Clémence
+    private float _backOrientationRunning = -90.1f; //value defined with Clémence
     private bool _isGrounded = false;
     private bool _isRunning = false;
     private bool _isFacingRight = true;
@@ -160,6 +163,17 @@ public class PlayerMovement : MonoBehaviour
         if (_isJumping && _jumpClock + maxJumpHold < Time.time)
             _isJumping = false;
 
+        // Turns the character model around when facing the other direction
+        Quaternion from = modelTransform.localRotation;
+        Quaternion toIdle = _isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationIdle, 0f));
+        Quaternion toRunning = _isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
+        // Lerps between a given orientation when idle facing left and when running facing left
+        // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
+        Quaternion to = _movementInput.x == 0f ?
+            Quaternion.Lerp(toIdle, toRunning, 0f)
+            : Quaternion.Lerp(toRunning, toIdle, 0f);
+        modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
+
         UpdateStates();
     }
 
@@ -196,7 +210,8 @@ public class PlayerMovement : MonoBehaviour
         if (_smoothMovement.x != 0f)
         {
             _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
-            modelTransform.localScale = _isFacingRight ? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
+            //modelTransform.localScale = _isFacingRight ? new Vector3(1f, 1f, 1f) : new Vector3(1f, 1f, -1f);
+            //modelTransform.localRotation = _isFacingRight ? Quaternion.Euler(new Vector3(0f, 90f, 0f)) : Quaternion.Euler(new Vector3(0f, -90f, 0f));
         }
 
         // Updates whether the player is running or not
