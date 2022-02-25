@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     private float _previousGravityScale;
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
     private float _smoothInput = 0.03f;
-    private float _movementDeadRange = 0.5f;
     private bool _isGrounded = false;
     private bool _isRunning = false;
     private bool _isFacingRight = true;
@@ -99,6 +98,8 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
             _jumpClock = Time.time;
             _isJumping = true;
+
+            animator.SetTrigger("Jumping");
         }
         else if (ctx.canceled)
         {
@@ -155,10 +156,6 @@ public class PlayerMovement : MonoBehaviour
         Vector2 vel = Vector2.zero; //useless but necessary for the SmoothDamp
         _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, _smoothInput);
 
-        // Cuts off the smoothdamp movement when decelerating and there is no player input
-        if (_movementInput.x == 0f && _smoothMovement.x > -_movementDeadRange && _smoothMovement.x < _movementDeadRange)
-            _smoothMovement.x = 0f;
-
         // Stops the jump if held for too long
         if (_isJumping && _jumpClock + maxJumpHold < Time.time)
             _isJumping = false;
@@ -186,6 +183,7 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
 
         animator.SetFloat("Vertical Velocity", _rigidbody.velocity.y);
+        animator.SetFloat("Horizontal Velocity", _rigidbody.velocity.x);
     }
 
     private void UpdateStates()
