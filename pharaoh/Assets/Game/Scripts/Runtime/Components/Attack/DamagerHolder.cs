@@ -8,8 +8,6 @@ namespace Pharaoh.Gameplay.Components
         [field: SerializeField] public DamagerData data { get; private set; }
         public Damager damager { get; private set; }
 
-        public float timeAfterPickingWeapon = 1f;
-
         private void Awake()
         {
             if (data == null) return;

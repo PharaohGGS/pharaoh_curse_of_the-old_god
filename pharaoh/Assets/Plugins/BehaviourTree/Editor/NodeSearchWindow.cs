@@ -79,9 +79,18 @@ namespace BehaviourTree.Editor
             var mousePosition = window.rootVisualElement.ChangeCoordinatesTo(window.rootVisualElement.parent,
                 context.screenMousePosition - window.position.position);
             var graphMousePosition = graphView.contentViewContainer.WorldToLocal(mousePosition);
-            
-            graphView.CreateNode(SearchTreeEntry.userData.GetType());
-            return true;
+
+            switch (SearchTreeEntry.userData)
+            {
+                case Type type: 
+                    graphView.CreateNode(type, graphMousePosition);
+                    return true;
+                default:
+                    break;
+            }
+
+            return false;
+
         }
     }
 }

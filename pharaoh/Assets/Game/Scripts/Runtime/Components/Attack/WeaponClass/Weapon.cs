@@ -81,7 +81,7 @@ namespace Pharaoh.Gameplay.Components
 
         public void Throw(Damager damager)
         {
-            if (damager != this || !TryGetComponent(out Ballistic ballistic)) return;
+            if (!data.throwable || damager != this || !TryGetComponent(out Ballistic ballistic)) return;
 
             transform.parent = null;
             onWeaponThrown?.Invoke();

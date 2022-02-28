@@ -159,14 +159,10 @@ namespace BehaviourTree.Editor
         //    CreateTypeNodes(TypeCache.GetTypesDerivedFrom<DecoratorNode>());
         //}
 
-        public void CreateNode(System.Type type)
+        public void CreateNode(System.Type type, Vector2 position)
         {
             var node = _tree.CreateNode(type);
-
-            var worldMousePosition = ((BehaviourTreeEditor)editorWindow).mousePositionInEditorWindow;
-            var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
-            
-            CreateNodeView(node, localMousePosition);
+            CreateNodeView(node, position);
         }
 
         private void CreateNodeView(BNode node, Vector2 position)

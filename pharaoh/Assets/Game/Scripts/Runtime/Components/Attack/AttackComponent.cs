@@ -29,6 +29,21 @@ namespace Pharaoh.Gameplay.Components
             onDamagerAttack?.Invoke(holder.damager);
         }
 
+        public bool TryGetHolder(DamagerData data, out DamagerHolder holder)
+        {
+            holder = null;
+            if (holders.Length <= 0) return false;
+            foreach (var h in holders)
+            {
+                if (h.data == null || h.data != data) continue;
+
+                holder = h;
+                return true;
+            }
+
+            return false;
+        }
+
         public bool TryGetHolder<T>(out DamagerHolder holder) where T : DamagerData
         {
             holder = null;

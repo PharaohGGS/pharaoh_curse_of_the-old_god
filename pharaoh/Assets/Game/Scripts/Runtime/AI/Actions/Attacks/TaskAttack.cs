@@ -16,9 +16,10 @@ namespace Pharaoh.AI.Actions
         {
             if (_attack) return;
 
-            if (agent.TryGetComponent(out _attack)) return;
-
-            LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
+            if (!agent.TryGetComponent(out _attack))
+            {
+                LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
+            }
         }
 
         protected override NodeState OnUpdate()
