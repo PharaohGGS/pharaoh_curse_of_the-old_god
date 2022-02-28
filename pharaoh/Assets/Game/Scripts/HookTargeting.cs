@@ -1,3 +1,4 @@
+using System;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEditor;
@@ -23,6 +24,7 @@ public class HookTargeting : MonoBehaviour
 
     private PlayerInput _playerInput;
     private Rigidbody2D _rigidbody;
+    private Collider2D _collider;
     private PlayerMovement _playerMovement;
     private GameObject _bestTargetRight;
     private GameObject _bestTargetLeft;
@@ -45,6 +47,7 @@ public class HookTargeting : MonoBehaviour
     {
         _playerInput = new PlayerInput();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<Collider2D>();
         _playerMovement = GetComponent<PlayerMovement>();
     }
     private void OnEnable()
@@ -128,12 +131,18 @@ public class HookTargeting : MonoBehaviour
     private void Hook()
     {
         _hooked = null;
-        if (_bestTargetLeft && !_playerMovement.IsFacingRight) _hooked = _bestTargetLeft.transform;
-        if (_bestTargetRight && _playerMovement.IsFacingRight) _hooked = _bestTargetRight.transform;
-        if (_bestTargetLeft && _bestTargetRight)
+        
+        if (!_playerMovement.IsFacingRight)
         {
-            _hooked = _playerMovement.IsFacingRight 
-                ? _bestTargetRight.transform : _bestTargetLeft.transform;
+            _hooked = _bestTargetRight && !_bestTargetLeft 
+                ? _bestTargetRight.transform 
+                : _bestTargetLeft.transform;
+        }
+        else
+        {
+            _hooked = _bestTargetLeft && !_bestTargetRight 
+                ? _bestTargetLeft.transform 
+                : _bestTargetRight.transform;
         }
 
         if (!_hooked) return;
@@ -204,9 +213,31 @@ public class HookTargeting : MonoBehaviour
         while (Vector3.Distance(transform.position, hooked.position) > offsetHook)
         {
             _isOnHook = false;
+            var position = Vector2.zero;
             var direction = hooked.position - transform.position;
+            var distance = Vector3.Distance(transform.position, hooked.position);
             var velocity = new Vector2(direction.x, direction.y);
-            _rigidbody.MovePosition(_rigidbody.position + velocity.normalized * (speed * Time.fixedDeltaTime));
+            var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsWall);
+            
+            if (hit2Ds.Length > 0)
+            {
+                UnHook();
+
+                //if (hit2Ds.Length > 1)
+                //{
+                //    Array.Sort(hit2Ds, (x, y) => x.distance.CompareTo(y.distance));
+                //}
+
+                //var bounds = hit2Ds[0].collider.bounds;
+                //var bottom = bounds.center - Vector3.up * bounds.extents.y;
+                //var top = bounds.center + Vector3.up * bounds.extents.y;
+
+                //var distTop = Vector3.Distance(transform.position, top);
+                //var distBottom = Vector3.Distance(transform.position, bottom);
+                //position.y += distTop < distBottom ? distTop : -distBottom;
+            }
+
+            _rigidbody.MovePosition(_rigidbody.position + position + velocity.normalized * (speed * Time.fixedDeltaTime));
             yield return _waitForFixedUpdate;
         }
 
