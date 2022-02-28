@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float _turnSpeed = 7f; //value defined with Clémence
     private float _backOrientationIdle = -135f; //value defined with Clémence
     private float _backOrientationRunning = -90.1f; //value defined with Clémence
+    private float _initialFallHeight;
     private bool _isGrounded = false;
     private bool _isRunning = false;
     private bool _isFacingRight = true;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _hasDashedInAir = false;
     private bool _isDashAvailable = true;
     private bool _isJumping = false;
+    private bool _isStunned = false;
     private bool _noclip; //DEBUG
     private bool _canMove = true;
 
@@ -44,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
     public float heldJumpForce = 16f;
     [Tooltip("How long the player can hold down the jump button after jumping")]
     public float maxJumpHold = 0.3f;
+    [Tooltip("How high the fall has to be to stun the player")]
+    public float stunFallDistance = 1.85f * 3f;
+    [Tooltip("How long the player is stunned when falling from too high")]
+    public float fallStunDuration = 1.5f;
 
     [Header("Dash")]
     [Tooltip("Dashing force, 50 works well")]
@@ -96,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player jumps
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started && _isGrounded && !_isDashing)
+        if (ctx.started && _isGrounded && !_isDashing && !_isStunned)
         {
             // The player jumps using an impulse force
             _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
@@ -115,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player dashes
     private void OnDash(InputAction.CallbackContext ctx)
     {
-        if (!_isDashing && _isDashAvailable && !_hasDashedInAir)
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned)
         {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
@@ -186,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion toRunning = _isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
         // Lerps between a given orientation when idle facing left and when running facing left
         // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-        Quaternion to = _movementInput.x == 0f && !_isDashing ?
+        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned ?
             Quaternion.Lerp(toIdle, toRunning, 0f)
             : Quaternion.Lerp(toRunning, toIdle, 0f);
         modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
@@ -197,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing && _canMove)
+        if (!_isDashing && _canMove && !_isStunned)
         {
             if (_isGrounded)
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
@@ -210,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.velocity = _movementInput * noclipSpeed;
 
         // Moves the player upward while holding the jump button
-        if (_isJumping)
+        if (_isJumping && !_isStunned)
             _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
     }
 
@@ -227,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = false;
 
         // Updates the direction the player is facing
-        if (_smoothMovement.x != 0f)
+        if (_smoothMovement.x != 0f && !_isStunned)
         {
             _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
         }
@@ -236,15 +242,38 @@ public class PlayerMovement : MonoBehaviour
         if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
         else _isRunning = false;
 
-        if (!_canMove) return;
-        
+        //if (!_canMove) return; //Donno c'est quoi ça ?
+
+        bool wasGrounded = _isGrounded;
+
         // Updates the grounded state - check if one or both "feet" are on a ground
         _isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
                       || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
         animator.SetBool("Is Grounded", _isGrounded);
+
+        // Updates the in-air distance traveled and stuns if necessary
+        if (wasGrounded != _isGrounded && wasGrounded)
+        {
+            // The player leaves the ground
+            _initialFallHeight = _rigidbody.position.y;
+        }
+        else if (wasGrounded != _isGrounded && !wasGrounded)
+        {
+            // Player reached the ground
+            if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
+            {
+                // Player fell from too high -> Stun
+                _rigidbody.velocity = Vector2.zero;
+                _isStunned = true;
+
+                StartCoroutine(Stunned());
+
+                animator.SetTrigger("Stunned");
+            }
+        }
     }
 
-    // Coroutine for the duration of the dash (not much use for now)
+    // Coroutine for the duration of the dash
     System.Collections.IEnumerator Dashing()
     {
         yield return new WaitForSeconds(dashTime);
@@ -266,6 +295,15 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashCooldown);
 
         _isDashAvailable = true;
+    }
+
+    // Coroutine for the duration of the stun
+    System.Collections.IEnumerator Stunned()
+    {
+        yield return new WaitForSeconds(fallStunDuration);
+
+        // Updates current state
+        _isStunned = false;
     }
 
     private void OnEnable()
@@ -299,6 +337,8 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
+        Handles.Label(_rigidbody.position + Vector2.up * 4f, "FallDistance : " + (_initialFallHeight - _rigidbody.position.y), (_initialFallHeight - _rigidbody.position.y) > stunFallDistance ? redStyle : greenStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
