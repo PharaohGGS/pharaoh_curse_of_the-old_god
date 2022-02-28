@@ -33,10 +33,9 @@ namespace Pharaoh.Gameplay.Components
         {
             holder = null;
             if (holders.Length <= 0) return false;
-
             foreach (var h in holders)
             {
-                if (h.data.GetType() != typeof(T)) continue;
+                if (h.data == null || h.data.GetType() != typeof(T)) continue;
 
                 holder = h;
                 return true;
