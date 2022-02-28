@@ -1,5 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8320637575540843297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4e9c6548fad7c4d887db71df10dc8e, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 05ae046ce35421f4ea31e1298e072117
+  position: {x: -1091.2, y: 568}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -3484942059432108537}
+  - {fileID: 8724522672860842792}
 --- !u!114 &-8096251022630008292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,7 +38,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: feb78949a1f693e4fa8d4163dad5f3fa
-  position: {x: -596.2821, y: 838.3999}
+  position: {x: -404.3695, y: 961.5908}
   description: 
   blackboard:
     debugData: []
@@ -41,6 +64,26 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   child: {fileID: 1374317325339367763}
+--- !u!114 &-6865809191538465504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e074221104d1f49a28adfcbde09e6b, type: 3}
+  m_Name: CheckHoldingMeleeWeapon
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 2cf561b87352e474dbfe177c54182963
+  position: {x: -1436.74, y: 684.80005}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
 --- !u!114 &-6841170305744374862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,11 +120,52 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: faa80934c5c56c949bdd73fbcd2edbab
-  position: {x: -665.08215, y: 529.6}
+  position: {x: -473.16943, y: 652.7908}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &-3484942059432108537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507a9e4a75ea743419768363852a9ec7, type: 3}
+  m_Name: CheckWaiting
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: e61167629b797f64da089bf422001df1
+  position: {x: -1254.4, y: 789.9001}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+--- !u!114 &-2631843933423554884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6bf28af6a775f4a959c7b44339ec1d, type: 3}
+  m_Name: InverterNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: ae85f4aed6c72674594bfcd9a573ee39
+  position: {x: -1404, y: 568}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  child: {fileID: -6865809191538465504}
 --- !u!114 &-2544149763600791116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +249,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 1773fc4c5e985df408d81e0869ad382a
-  position: {x: -446.4, y: 678.40015}
+  position: {x: -254.7695, y: 801.5908}
   description: 
   blackboard:
     debugData: []
@@ -173,6 +257,34 @@ MonoBehaviour:
   children:
   - {fileID: -8096251022630008292}
   - {fileID: 3350457442567734327}
+--- !u!114 &-631526478281702863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfb9fb978ee6c14c93140708d9d6dc8, type: 3}
+  m_Name: CheckTargetInOverlap
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 7e6ef1f6096b8d74b9f6cf4b4f01660e
+  position: {x: -1191.9998, y: 928.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  colliderLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  colliders3D: []
+  colliders2D: []
 --- !u!114 &-251212995895321325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +339,41 @@ MonoBehaviour:
   - {fileID: 3350457442567734327}
   - {fileID: 7543306493078875024}
   - {fileID: -5196779309447961558}
+  - {fileID: 134662878739127715}
+  - {fileID: -6865809191538465504}
+  - {fileID: -2631843933423554884}
+  - {fileID: -8320637575540843297}
+  - {fileID: 5836152643204091999}
+  - {fileID: 8882861617515160213}
+  - {fileID: -631526478281702863}
+  - {fileID: -3484942059432108537}
+  - {fileID: 8724522672860842792}
   blackboard:
     debugData: []
+--- !u!114 &134662878739127715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 78010740c8fb9114383cf6b91a55727e
+  position: {x: -1091.0592, y: 369.60007}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -2631843933423554884}
+  - {fileID: 8882861617515160213}
+  - {fileID: -8320637575540843297}
 --- !u!114 &1246385073974385994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,6 +418,7 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
+  - {fileID: 134662878739127715}
   - {fileID: 7746393604834486671}
   - {fileID: -2544149763600791116}
   - {fileID: 1246385073974385994}
@@ -311,7 +457,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 0e93d729dc38a8446b8663ac9a98b606
-  position: {x: -446.68216, y: 838.3999}
+  position: {x: -254.7695, y: 961.5908}
   description: 
   blackboard:
     debugData: []
@@ -336,6 +482,27 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &5836152643204091999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0ab3a9d72dc63c49ac5b8649516a8d0, type: 3}
+  m_Name: TaskGrabWeapon
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 085deffaceae9b54b9284ec5f5af57ec
+  position: {x: -1015.99976, y: 928.8}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  grabbingDistance: 0
 --- !u!114 &6391869510671860528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +539,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5f847bccfb23ac848a08ecbc9727a9eb
-  position: {x: -446.68216, y: 524.7999}
+  position: {x: -254.7695, y: 647.99084}
   description: 
   blackboard:
     debugData: []
@@ -395,7 +562,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: a13311ce14fcbba48b02b2a05541ee8a
-  position: {x: -892.08264, y: 529.60004}
+  position: {x: -688, y: 652.8}
   description: 
   blackboard:
     debugData: []
@@ -424,6 +591,50 @@ MonoBehaviour:
   - {fileID: 7543306493078875024}
   - {fileID: -5196779309447961558}
   - {fileID: 7061892331425943572}
+--- !u!114 &8724522672860842792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 8c99498d1f183ac459946e134551e2cd
+  position: {x: -1091.1997, y: 777.6001}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -631526478281702863}
+  - {fileID: 5836152643204091999}
+--- !u!114 &8882861617515160213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff57ff5370a7104483f3e18bb527dc8, type: 3}
+  m_Name: TaskWait
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: de9ad466f786f7e4e8383ae8b0fc7a49
+  position: {x: -1254.4, y: 568}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  timeSince: 0
 --- !u!114 &9182453372911218589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,7 +650,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 582e6c3d730321e4f9cfa5a712f191cf
-  position: {x: -596.2821, y: 678.4}
+  position: {x: -404.3695, y: 801.5908}
   description: 
   blackboard:
     debugData: []

@@ -9,6 +9,8 @@ namespace Pharaoh.AI.Actions
     public class TaskGrabWeapon : ActionNode
     {
         private AttackComponent _attack = null;
+
+        public float grabbingDistance = .5f;
         
         protected override void OnStart()
         {
@@ -28,6 +30,7 @@ namespace Pharaoh.AI.Actions
             if (!t.TryGetComponent(out Damager damager) || damager is not Weapon weapon) return state;
             if (!weapon.isThrown || !weapon.isOnGround) return state;
             if (!_attack.TryGetHolder(weapon.data, out DamagerHolder holder)) return state;
+            if (Vector3.Distance(weapon.transform.position, agent.transform.position) > grabbingDistance) return state;
 
             weapon.transform.parent = holder.transform;
             weapon.transform.localPosition = Vector3.zero;
