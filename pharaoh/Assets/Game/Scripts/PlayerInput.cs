@@ -193,7 +193,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ""id"": ""74dc7952-b854-4390-8fb2-c53642c0cb1f"",
             ""actions"": [
                 {
-                    ""name"": ""OnHook"",
+                    ""name"": ""Hook"",
                     ""type"": ""Button"",
                     ""id"": ""afba71f3-c9d2-413c-9b27-8049c44df9db"",
                     ""expectedControlType"": ""Button"",
@@ -210,7 +210,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnHook"",
+                    ""action"": ""Hook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -227,7 +227,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
         // CharacterActions
         m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
-        m_CharacterActions_Hook = m_CharacterActions.FindAction("OnHook", throwIfNotFound: true);
+        m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
     }
 
     public void Dispose()
