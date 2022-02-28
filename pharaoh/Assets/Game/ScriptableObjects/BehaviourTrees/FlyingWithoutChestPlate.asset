@@ -15,14 +15,14 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 05ae046ce35421f4ea31e1298e072117
-  position: {x: -1091.2, y: 568}
+  position: {x: -873.5998, y: 691.1998}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
   - {fileID: -3484942059432108537}
-  - {fileID: 8724522672860842792}
+  - {fileID: 5836152643204091999}
 --- !u!114 &-8096251022630008292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 2cf561b87352e474dbfe177c54182963
-  position: {x: -1436.74, y: 684.80005}
+  position: {x: -1315.5999, y: 684.8}
   description: 
   blackboard:
     debugData: []
@@ -140,7 +140,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: e61167629b797f64da089bf422001df1
-  position: {x: -1254.4, y: 789.9001}
+  position: {x: -1024, y: 840}
   description: 
   blackboard:
     debugData: []
@@ -160,7 +160,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: ae85f4aed6c72674594bfcd9a573ee39
-  position: {x: -1404, y: 568}
+  position: {x: -1282.7999, y: 568}
   description: 
   blackboard:
     debugData: []
@@ -272,7 +272,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 7e6ef1f6096b8d74b9f6cf4b4f01660e
-  position: {x: -1191.9998, y: 928.8}
+  position: {x: -1112.4, y: 568}
   description: 
   blackboard:
     debugData: []
@@ -347,7 +347,7 @@ MonoBehaviour:
   - {fileID: 8882861617515160213}
   - {fileID: -631526478281702863}
   - {fileID: -3484942059432108537}
-  - {fileID: 8724522672860842792}
+  - {fileID: 6510653485352117448}
   blackboard:
     debugData: []
 --- !u!114 &134662878739127715
@@ -372,8 +372,8 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: -2631843933423554884}
-  - {fileID: 8882861617515160213}
-  - {fileID: -8320637575540843297}
+  - {fileID: -631526478281702863}
+  - {fileID: 6510653485352117448}
 --- !u!114 &1246385073974385994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,12 +497,12 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 085deffaceae9b54b9284ec5f5af57ec
-  position: {x: -1015.99976, y: 928.8}
+  position: {x: -873.5998, y: 839.99994}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  grabbingDistance: 0
+  grabbingDistance: 0.8
 --- !u!114 &6391869510671860528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,6 +524,29 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   timeSince: 0
+--- !u!114 &6510653485352117448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: d150c55ec6edf0d4692348a55ebb7a75
+  position: {x: -873.5998, y: 564}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: 8882861617515160213}
+  - {fileID: -8320637575540843297}
 --- !u!114 &7061892331425943572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,29 +614,6 @@ MonoBehaviour:
   - {fileID: 7543306493078875024}
   - {fileID: -5196779309447961558}
   - {fileID: 7061892331425943572}
---- !u!114 &8724522672860842792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 8c99498d1f183ac459946e134551e2cd
-  position: {x: -1091.1997, y: 777.6001}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  children:
-  - {fileID: -631526478281702863}
-  - {fileID: 5836152643204091999}
 --- !u!114 &8882861617515160213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: de9ad466f786f7e4e8383ae8b0fc7a49
-  position: {x: -1254.4, y: 568}
+  position: {x: -1023.99976, y: 691.99994}
   description: 
   blackboard:
     debugData: []

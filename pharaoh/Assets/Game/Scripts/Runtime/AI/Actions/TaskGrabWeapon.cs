@@ -24,12 +24,14 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Running;
+            state = NodeState.Failure;
             
             if (!_attack || !blackboard.TryGetData("target", out Transform t)) return state;
             if (!t.TryGetComponent(out Damager damager) || damager is not Weapon weapon) return state;
             if (!weapon.isThrown || !weapon.isOnGround) return state;
             if (!_attack.TryGetHolder(weapon.data, out DamagerHolder holder)) return state;
+            
+            state = NodeState.Running;
             if (Vector3.Distance(weapon.transform.position, agent.transform.position) > grabbingDistance) return state;
 
             weapon.transform.parent = holder.transform;
