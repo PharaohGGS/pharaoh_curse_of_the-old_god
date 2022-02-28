@@ -131,12 +131,18 @@ public class HookTargeting : MonoBehaviour
     private void Hook()
     {
         _hooked = null;
-        if (_bestTargetLeft && !_playerMovement.IsFacingRight) _hooked = _bestTargetLeft.transform;
-        if (_bestTargetRight && _playerMovement.IsFacingRight) _hooked = _bestTargetRight.transform;
-        if (_bestTargetLeft && _bestTargetRight)
+        
+        if (!_playerMovement.IsFacingRight)
         {
-            _hooked = _playerMovement.IsFacingRight 
-                ? _bestTargetRight.transform : _bestTargetLeft.transform;
+            _hooked = _bestTargetRight && !_bestTargetLeft 
+                ? _bestTargetRight.transform 
+                : _bestTargetLeft.transform;
+        }
+        else
+        {
+            _hooked = _bestTargetLeft && !_bestTargetRight 
+                ? _bestTargetLeft.transform 
+                : _bestTargetRight.transform;
         }
 
         if (!_hooked) return;
