@@ -15,14 +15,14 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 05ae046ce35421f4ea31e1298e072117
-  position: {x: -873.5998, y: 691.1998}
+  position: {x: -975.99994, y: 692}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
   - {fileID: -3484942059432108537}
-  - {fileID: 5836152643204091999}
+  - {fileID: 2645413875485789154}
 --- !u!114 &-8096251022630008292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: feb78949a1f693e4fa8d4163dad5f3fa
-  position: {x: -404.3695, y: 961.5908}
+  position: {x: -512.9581, y: 993.99994}
   description: 
   blackboard:
     debugData: []
@@ -79,7 +79,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 2cf561b87352e474dbfe177c54182963
-  position: {x: -1315.5999, y: 684.8}
+  position: {x: -1491.0001, y: 693}
   description: 
   blackboard:
     debugData: []
@@ -120,7 +120,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: faa80934c5c56c949bdd73fbcd2edbab
-  position: {x: -473.16943, y: 652.7908}
+  position: {x: -581.95807, y: 685}
   description: 
   blackboard:
     debugData: []
@@ -140,7 +140,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: e61167629b797f64da089bf422001df1
-  position: {x: -1024, y: 840}
+  position: {x: -1126.0001, y: 850}
   description: 
   blackboard:
     debugData: []
@@ -160,7 +160,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: ae85f4aed6c72674594bfcd9a573ee39
-  position: {x: -1282.7999, y: 568}
+  position: {x: -1452.0002, y: 568}
   description: 
   blackboard:
     debugData: []
@@ -249,7 +249,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 1773fc4c5e985df408d81e0869ad382a
-  position: {x: -254.7695, y: 801.5908}
+  position: {x: -363.95813, y: 834}
   description: 
   blackboard:
     debugData: []
@@ -272,7 +272,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 7e6ef1f6096b8d74b9f6cf4b4f01660e
-  position: {x: -1112.4, y: 568}
+  position: {x: -1302, y: 565}
   description: 
   blackboard:
     debugData: []
@@ -348,6 +348,8 @@ MonoBehaviour:
   - {fileID: -631526478281702863}
   - {fileID: -3484942059432108537}
   - {fileID: 6510653485352117448}
+  - {fileID: 4115414045125897595}
+  - {fileID: 2645413875485789154}
   blackboard:
     debugData: []
 --- !u!114 &134662878739127715
@@ -373,6 +375,7 @@ MonoBehaviour:
   children:
   - {fileID: -2631843933423554884}
   - {fileID: -631526478281702863}
+  - {fileID: 5836152643204091999}
   - {fileID: 6510653485352117448}
 --- !u!114 &1246385073974385994
 MonoBehaviour:
@@ -442,6 +445,26 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &2645413875485789154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c879d514c27fd43bd7f839050ee85a, type: 3}
+  m_Name: TaskGoToTarget
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 57e551c0a4b3db44ca74e328c2dc2699
+  position: {x: -975.9998, y: 850}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
 --- !u!114 &3350457442567734327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +480,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 0e93d729dc38a8446b8663ac9a98b606
-  position: {x: -254.7695, y: 961.5908}
+  position: {x: -363.95813, y: 993.99994}
   description: 
   blackboard:
     debugData: []
@@ -482,6 +505,26 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &4115414045125897595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9db51a66067c9147933bac24e0bc632, type: 3}
+  m_Name: TaskLookAtTarget
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: bc193a2f8f114f94e977d210490f37f1
+  position: {x: -1276.0002, y: 693}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
 --- !u!114 &5836152643204091999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,7 +540,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 085deffaceae9b54b9284ec5f5af57ec
-  position: {x: -873.5998, y: 839.99994}
+  position: {x: -1126, y: 565}
   description: 
   blackboard:
     debugData: []
@@ -539,12 +582,13 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: d150c55ec6edf0d4692348a55ebb7a75
-  position: {x: -873.5998, y: 564}
+  position: {x: -975.99994, y: 565}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
+  - {fileID: 4115414045125897595}
   - {fileID: 8882861617515160213}
   - {fileID: -8320637575540843297}
 --- !u!114 &7061892331425943572
@@ -562,7 +606,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5f847bccfb23ac848a08ecbc9727a9eb
-  position: {x: -254.7695, y: 647.99084}
+  position: {x: -363.95813, y: 680}
   description: 
   blackboard:
     debugData: []
@@ -585,7 +629,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: a13311ce14fcbba48b02b2a05541ee8a
-  position: {x: -688, y: 652.8}
+  position: {x: -796.9581, y: 685}
   description: 
   blackboard:
     debugData: []
@@ -605,7 +649,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: fbf433b75f543414eb53b77729b19c87
-  position: {x: -446.68216, y: 338.39996}
+  position: {x: -555.9581, y: 370}
   description: 
   blackboard:
     debugData: []
@@ -629,7 +673,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: de9ad466f786f7e4e8383ae8b0fc7a49
-  position: {x: -1023.99976, y: 691.99994}
+  position: {x: -1126, y: 693}
   description: 
   blackboard:
     debugData: []
@@ -650,7 +694,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 582e6c3d730321e4f9cfa5a712f191cf
-  position: {x: -404.3695, y: 801.5908}
+  position: {x: -512.9581, y: 834}
   description: 
   blackboard:
     debugData: []
