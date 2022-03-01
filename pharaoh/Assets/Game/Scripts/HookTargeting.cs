@@ -18,14 +18,12 @@ namespace Pharaoh.Gameplay
 
         [SerializeField] private float speed = 19f;
         private bool _isOnHook = false;
-
-        private float _gravityScale;
+        
         private Coroutine _moveToHook;
-        private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
+        private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
 
         private PlayerInput _playerInput;
         private Rigidbody2D _rigidbody;
-        private Collider2D _collider;
         private PlayerMovement _playerMovement;
         
         [Header("Events")] public UnityEvent onHook = new UnityEvent();
@@ -39,7 +37,6 @@ namespace Pharaoh.Gameplay
             base.Awake();
             _playerInput = new PlayerInput();
             _rigidbody = GetComponent<Rigidbody2D>();
-            _collider = GetComponent<Collider2D>();
             _playerMovement = GetComponent<PlayerMovement>();
         }
 
@@ -75,14 +72,14 @@ namespace Pharaoh.Gameplay
                 return;
 
             // Draws the best target to the right (red if not the faced direction)
-            Gizmos.color = _playerMovement.IsFacingRight
+            Gizmos.color = _playerMovement.isFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetRight != null)
                 Gizmos.DrawLine(_rigidbody.position, _bestTargetRight.transform.position);
 
             // Draws the best target to the left (red if not the faced direction)
-            Gizmos.color = !_playerMovement.IsFacingRight
+            Gizmos.color = !_playerMovement.isFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetLeft != null)
@@ -140,7 +137,7 @@ namespace Pharaoh.Gameplay
         {
             _currentTarget = null;
 
-            if (!_playerMovement.IsFacingRight)
+            if (!_playerMovement.isFacingRight)
             {
                 _currentTarget = _bestTargetRight && !_bestTargetLeft
                     ? _bestTargetRight : _bestTargetLeft;
@@ -151,15 +148,14 @@ namespace Pharaoh.Gameplay
                     ? _bestTargetLeft : _bestTargetRight;
             }
 
-            if (!_currentTarget) return;
+            if (!_currentTarget || !_rigidbody) return;
 
-            _gravityScale = _rigidbody.gravityScale;
             _rigidbody.velocity = Vector2.zero;
-            _rigidbody.gravityScale = 0;
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
             LogHandler.SendMessage($"hooking to {_currentTarget.name}", MessageType.Log);
 
-            _moveToHook = StartCoroutine(MoveToHook(_currentTarget.transform));
+            _moveToHook = StartCoroutine(MoveToHook());
             onHook?.Invoke();
         }
 
@@ -170,27 +166,24 @@ namespace Pharaoh.Gameplay
 
             _currentTarget = null;
             _isOnHook = false;
-            _rigidbody.gravityScale = _gravityScale;
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
             onUnHook?.Invoke();
         }
 
-        private System.Collections.IEnumerator MoveToHook(Transform hooked)
+        private System.Collections.IEnumerator MoveToHook()
         {
-            if (!hooked || !_rigidbody) yield break;
+            if (!_rigidbody) yield break;
 
-            while (Vector3.Distance(transform.position, hooked.position) > offsetHook)
+            while (Vector3.Distance(transform.position, _rigidbody.position) > offsetHook)
             {
                 _isOnHook = false;
-                var position = Vector2.zero;
-                var direction = hooked.position - transform.position;
-                var distance = Vector3.Distance(transform.position, hooked.position);
-                var velocity = new Vector2(direction.x, direction.y);
+                Vector2 direction = _rigidbody.position - (Vector2)transform.position;
+                float distance = Vector3.Distance(transform.position, _rigidbody.position);
                 var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
 
                 if (hit2Ds.Length > 0) UnHook();
                 
-                _rigidbody.MovePosition(_rigidbody.position + position +
-                                        velocity.normalized * (speed * Time.fixedDeltaTime));
+                _rigidbody.MovePosition(_rigidbody.position + direction.normalized * (speed * Time.fixedDeltaTime));
                 yield return _waitForFixedUpdate;
             }
 

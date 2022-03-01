@@ -1,5 +1,6 @@
 ﻿using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 
@@ -9,46 +10,48 @@ namespace Pharaoh.AI.Actions
     {
         ///* Patrol attributes *///
         [SerializeField] private int currentWaypointIndex = 0;
-        
-        private Pawn _pawn;
+        [SerializeField] private bool ignoreHeight;
+
+        private MovementComponent _movement;
 
         protected override void OnStart()
         {
-            if (_pawn == null && !agent.TryGetComponent(out _pawn))
+            if (!agent.TryGetComponent(out _movement))
             {
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
             }
 
-            if (!_pawn.movement) return;
+            if (!_movement) return;
 
-            blackboard.SetData("waitTime", _pawn.movement.timeBetweenWaypoints);
+            blackboard.SetData("waitTime", _movement.timeBetweenWaypoints);
         }
 
         protected override NodeState OnUpdate()
         {
             state = NodeState.Running;
             
-            if (!_pawn || !_pawn.movement || _pawn.movement.waypoints.Length <= 0)
+            if (!_movement || _movement.waypoints.Count <= 0)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            var target = _pawn.movement.waypoints[currentWaypointIndex].position;
-            if (Vector3.Distance(agent.transform.position, target) < 0.01f)
+            var target = _movement.waypoints[currentWaypointIndex].position;
+            if (ignoreHeight) target.y = agent.transform.position.y;
+
+            if (Vector2.Distance(agent.transform.position, target) < 0.01f)
             {
                 blackboard.SetData("isWaiting", true);
-                blackboard.SetData("waitTime", _pawn.movement.timeBetweenWaypoints);
+                blackboard.SetData("waitTime", _movement.timeBetweenWaypoints);
                 agent.transform.position = target;
-                currentWaypointIndex = (currentWaypointIndex + 1) % _pawn.movement.waypoints.Length;
+                currentWaypointIndex = (currentWaypointIndex + 1) % _movement.waypoints.Count;
             }
             else
             {
-                agent.transform.position = Vector3.MoveTowards(
+                agent.transform.position = Vector2.MoveTowards(
                     agent.transform.position, target,
-                    _pawn.movement.moveSpeed * Time.deltaTime);
-                target.y = agent.transform.position.y;
-                agent.transform.LookAt(target);
+                    _movement.moveSpeed * Time.deltaTime);
+                agent.transform.LookAt2D(target);
             }
 
             return state;

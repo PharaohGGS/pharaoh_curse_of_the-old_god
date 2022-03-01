@@ -1,5 +1,6 @@
 ﻿using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Pharaoh.AI.Actions
         {
             if (blackboard.TryGetData("target", out Transform t))
             {
-                agent.transform.LookAt(t.position);
+                agent.transform.LookAt2D(t.position);
             }
 
             state = NodeState.Running;

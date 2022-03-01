@@ -25,11 +25,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7259607460147939371, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: m_RootOrder
@@ -77,3 +81,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+--- !u!1 &6313046922157494962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8905800286192309881, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+  m_PrefabInstance: {fileID: 3173824523632018635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &6759262091577931721
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313046922157494962}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.15, y: 0.5}
+  m_Direction: 0

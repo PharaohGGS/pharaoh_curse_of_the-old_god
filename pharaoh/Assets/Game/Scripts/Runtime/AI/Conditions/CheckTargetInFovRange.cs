@@ -42,7 +42,7 @@ namespace Pharaoh.AI.Actions
                 colliders, _detection.detectionLayer);
 
             int index = 0;
-            if (colliders[0].transform == agent.transform) index++;
+            if (colliders[0]?.transform == agent.transform) index++;
 
             if (size <= index)
             {
