@@ -13,7 +13,22 @@ namespace BehaviourTree.Editor
         public System.Action<NodeView> OnNodeSelected;
         private BTree _tree;
 
-        public EditorWindow window;
+        private NodeSearchWindow _searchWindow;
+
+        private EditorWindow _editorWindow;
+
+        public EditorWindow editorWindow
+        {
+            get => _editorWindow;
+            set
+            {
+                _editorWindow = value;
+                _searchWindow = ScriptableObject.CreateInstance<NodeSearchWindow>();
+                _searchWindow.Configure(_editorWindow, this);
+                nodeCreationRequest = context =>
+                    SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchWindow);
+            }
+        }
 
         public new class UxmlFactory : UxmlFactory<BehaviourTreeView, GraphView.UxmlTraits>
         {
@@ -123,30 +138,31 @@ namespace BehaviourTree.Editor
             return ports.ToList().Where(endPort => endPort.direction != startPort.direction && endPort.node != startPort.node).ToList();
         }
 
-        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
-        {
-            void CreateTypeNodes(TypeCache.TypeCollection collection)
-            {
-                foreach (var type in collection)
-                {
-                    evt.menu.AppendAction($"[{type.BaseType.Name}] {type.Name}", 
-                        (a) => CreateNode(type));
-                }
-            }
+        //public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        //{
+        //    void CreateTypeNodes(TypeCache.TypeCollection collection)
+        //    {
+        //        foreach (var type in collection)
+        //        {
+        //            if (type.IsAbstract) continue;
 
-            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<ActionNode>());
-            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<CompositeNode>());
-            CreateTypeNodes(TypeCache.GetTypesDerivedFrom<DecoratorNode>());
-        }
+        //            var baseTypeName = type.BaseType.IsGenericType 
+        //                ? type.BaseType.BaseType.Name : type.BaseType.Name;
 
-        private void CreateNode(System.Type type)
+        //            evt.menu.AppendAction($"[{baseTypeName}] {type.Name}", 
+        //                (a) => CreateNode(type));
+        //        }
+        //    }
+
+        //    CreateTypeNodes(TypeCache.GetTypesDerivedFrom<ActionNode>());
+        //    CreateTypeNodes(TypeCache.GetTypesDerivedFrom<CompositeNode>());
+        //    CreateTypeNodes(TypeCache.GetTypesDerivedFrom<DecoratorNode>());
+        //}
+
+        public void CreateNode(System.Type type, Vector2 position)
         {
             var node = _tree.CreateNode(type);
-
-            var worldMousePosition = ((BehaviourTreeEditor)window).mousePositionInEditorWindow;
-            var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
-            
-            CreateNodeView(node, localMousePosition);
+            CreateNodeView(node, position);
         }
 
         private void CreateNodeView(BNode node, Vector2 position)
@@ -155,8 +171,8 @@ namespace BehaviourTree.Editor
             nodeView.OnNodeSelected = OnNodeSelected;
             AddElement(nodeView);
             
-            //var worldMousePosition = window.rootVisualElement.ChangeCoordinatesTo(window.rootVisualElement.parent,
-            //    nodeView.GetPosition().position - window.position.position);
+            //var worldMousePosition = editorWindow.rootVisualElement.ChangeCoordinatesTo(editorWindow.rootVisualElement.parent,
+            //    nodeView.GetPosition().position - editorWindow.position.position);
             
             if (node is RootNode || position == Vector2.zero) return;
 

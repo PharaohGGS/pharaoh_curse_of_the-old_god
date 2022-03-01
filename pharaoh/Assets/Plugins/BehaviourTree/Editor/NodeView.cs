@@ -20,7 +20,7 @@ namespace BehaviourTree.Editor
         public NodeView(BNode node) : base($"Assets/Plugins/BehaviourTree/UiBuilder/NodeView.uxml")
         {
             this.node = node;
-            title = node.name;
+            title = ObjectNames.NicifyVariableName(node.name.Replace("(Clone)", "").Replace("Node", "")); 
             viewDataKey = node.guid;
             
             style.left = node.position.x;

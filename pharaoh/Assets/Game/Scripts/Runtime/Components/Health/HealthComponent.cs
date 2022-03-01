@@ -1,15 +1,12 @@
 using System;
-using Pharaoh.Gameplay.Components.Events;
 using UnityEngine;
-using Pharaoh.Tools;
-using Pharaoh.Tools.Debug;
 using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
 {
     public enum FloatOperation
     {
-        Define = 0,
+        Set = 0,
         Increase = 1, 
         Decrease = 2,
     }
@@ -24,13 +21,13 @@ namespace Pharaoh.Gameplay.Components
         public float current { get; private set; }
         public float percent => current / max;
 
-        public void ApplyChange(float val, FloatOperation operation)
+        private void ApplyChange(float value, FloatOperation operation)
         {
             current = operation switch
             {
-                FloatOperation.Define => Mathf.Min(val, max),
-                FloatOperation.Increase => Mathf.Min(current + val, max),
-                FloatOperation.Decrease => Mathf.Max(current - val, 0.0f),
+                FloatOperation.Set => Mathf.Min(value, max),
+                FloatOperation.Increase => Mathf.Min(current + value, max),
+                FloatOperation.Decrease => Mathf.Max(current - value, 0.0f),
                 _ => throw new ArgumentOutOfRangeException(nameof(operation), operation, null)
             };
 
@@ -41,7 +38,11 @@ namespace Pharaoh.Gameplay.Components
                 OnDeath?.Invoke();
             } 
         }
-
+        
+        public void Decrease(float value) => ApplyChange(value, FloatOperation.Decrease);
+        public void Increase(float value) => ApplyChange(value, FloatOperation.Increase);
+        public void Set(float value) => ApplyChange(value, FloatOperation.Set);
+        
         private void Start()
         {
             current = max;
@@ -50,6 +51,7 @@ namespace Pharaoh.Gameplay.Components
         private void OnDisable()
         {
             OnHealthChange.RemoveAllListeners();
+            OnDeath.RemoveAllListeners();
         }
     }
 }
