@@ -567,14 +567,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c555161e3743c46a7c24bb77bcde49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetHook: 0.5
+  overlapCount: 5
+  overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 2048
-  whatIsWall:
+  whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 1024
-  targetingRadius: 6
+    m_Bits: 1088
+  offsetHook: 0.5
+  speed: 19
   onHook:
     m_PersistentCalls:
       m_Calls:
