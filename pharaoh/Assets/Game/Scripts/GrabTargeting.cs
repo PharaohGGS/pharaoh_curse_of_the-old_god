@@ -1,9 +1,11 @@
 ﻿using System;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using MessageType = Pharaoh.Tools.Debug.MessageType;
 
 namespace Pharaoh.Gameplay
 {
@@ -28,7 +30,6 @@ namespace Pharaoh.Gameplay
 
         public UnityEvent onGrab = new UnityEvent();
         public UnityEvent onUnGrab = new UnityEvent();
-        public UnityEvent onEndGrabMovement = new UnityEvent();
 
         protected override void Awake()
         {
@@ -55,6 +56,36 @@ namespace Pharaoh.Gameplay
             SearchTargets();
         }
 
+        #region Editor Debug
+
+        private void OnDrawGizmos()
+        {
+            if (!_playerMovement) return;
+
+            // Draws the best target to the right (red if not the faced direction)
+            Gizmos.color = _playerMovement.isFacingRight
+                ? new Color(.5f, 0.7531517f, 0f, 1f)
+                : new Color(.5f, 0.7531517f, 0f, 0.1f);
+            if (_bestTargetRight != null)
+                Gizmos.DrawLine(transform.position, _bestTargetRight.transform.position);
+
+            // Draws the best target to the left (red if not the faced direction)
+            Gizmos.color = !_playerMovement.isFacingRight
+                ? new Color(.5f, 0.7531517f, 0f, 1f)
+                : new Color(.5f, 0.7531517f, 0f, 0.1f);
+            if (_bestTargetLeft != null)
+                Gizmos.DrawLine(transform.position, _bestTargetLeft.transform.position);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            // Draws a disc around the player displaying the targeting range
+            Handles.color = new Color(.5f, 0.7531517f, 0f, 1f);
+            Handles.DrawWireDisc(transform.position, Vector3.forward, overlapingRadius);
+        }
+
+        #endregion
+
         private void OnGrab(InputAction.CallbackContext obj)
         {
             if (!_playerMovement.isGrounded) return;
@@ -74,6 +105,7 @@ namespace Pharaoh.Gameplay
 
             if (_targetRigidbody)
             {
+                //_targetRigidbody.velocity = Vector2.zero;
                 _targetRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 _targetRigidbody = null;
             }
@@ -97,11 +129,14 @@ namespace Pharaoh.Gameplay
             }
 
             if (!_currentTarget) return;
-            if (!_currentTarget.TryGetComponent(out _targetRigidbody)) return;
-            if (!_currentTarget.TryGetComponent(out Weapon weapon)) return;
-            if (weapon.data is not DefenseDamagerData) return;
+
+            var weapon = _currentTarget.TryGetComponent(out Weapon w) 
+                ? w : _currentTarget.GetComponentInParent<Weapon>();
+
+            if (!weapon || weapon.data is not DefenseDamagerData) return;
 
             weapon.transform.parent = null;
+            _targetRigidbody = weapon.rb2D;
             _targetRigidbody.velocity = Vector2.zero;
             _targetRigidbody.bodyType = RigidbodyType2D.Kinematic;
 
@@ -115,7 +150,7 @@ namespace Pharaoh.Gameplay
         {
             if (!_targetRigidbody) yield break;
 
-            while (Vector2.Distance(transform.position, _targetRigidbody.position) > offsetGrab)
+            while (Mathf.Abs(transform.position.x - _targetRigidbody.position.x) > offsetGrab)
             {
                 _hasEndGrabbing = false;
                 Vector2 direction = (Vector2)transform.position - _targetRigidbody.position;
@@ -129,7 +164,7 @@ namespace Pharaoh.Gameplay
             }
 
             _hasEndGrabbing = true;
-            onEndGrabMovement?.Invoke();
+            UnGrab();
         }
     }
 }
