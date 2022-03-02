@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389942009545248705}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.264, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,8 +45,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.6256212, b: 0.1462264, a: 1}
-  m_Intensity: 23.625849
-  m_Range: 26.65
+  m_Intensity: 23.595322
+  m_Range: 5.3
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 296.89117
+  m_Intensity: 296.50757
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
     m_Override: 512
     m_UseOverride: 1
     m_Level: 2
-  m_ShadowDimmer: 0.386
+  m_ShadowDimmer: 0.527
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
@@ -304,6 +304,10 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b943d5878ae0b1b4dad51e8b0e624f92, type: 3}
       propertyPath: m_ReceiveGI
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b943d5878ae0b1b4dad51e8b0e624f92, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b943d5878ae0b1b4dad51e8b0e624f92, type: 3}
       propertyPath: m_Name
