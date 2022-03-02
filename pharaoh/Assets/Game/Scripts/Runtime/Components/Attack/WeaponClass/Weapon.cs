@@ -38,44 +38,43 @@ namespace Pharaoh.Gameplay.Components
 
         private void SocketAttach(Transform socket)
         {
-            if (!rigidbody)
+            if (!rb2D)
             {
                 LogHandler.SendMessage($"Can't socket damager.", MessageType.Warning);
                 return;
             }
 
             _parent = socket;
-            rigidbody.isKinematic = socket;
-            rigidbody.useGravity = !socket;
+            rb2D.bodyType = socket ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
 
             isOnGround = false;
             isThrown = !socket;
             if (!isThrown && !isOnGround)
             {
-                collider.isTrigger = true;
+                coll2D.isTrigger = true;
             }
         }
 
-        protected override void OnTriggerEnter(Collider other)
+        protected override void OnTriggerEnter2D(Collider2D other)
         {
             if (isThrown && other.gameObject.IsInLayerMask(collidingLayers))
             {
-                collider.isTrigger = false;
+                coll2D.isTrigger = false;
                 return;
             }
 
-            base.OnTriggerEnter(other);
+            base.OnTriggerEnter2D(other);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.IsInLayerMask(collidingLayers))
             {
                 isOnGround = true;
                 onGroundHit?.Invoke();
-                rigidbody.velocity = rigidbody.angularVelocity = Vector3.zero;
-                rigidbody.isKinematic = true;
-                rigidbody.useGravity = false;
+                rb2D.angularVelocity = 0f;
+                rb2D.velocity = Vector2.zero;
+                rb2D.bodyType = RigidbodyType2D.Kinematic;
             }
         }
 

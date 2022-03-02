@@ -1,9 +1,12 @@
-﻿using Pharaoh.Gameplay.Components;
+﻿using BehaviourTree.Tools;
+using Pharaoh.Gameplay.Components;
 using Pharaoh.Sets;
+using Pharaoh.Tools.Debug;
+using UnityEngine;
 
 namespace Pharaoh.AI
 {
-    public class EnemyPawn : Pawn
+    public class EnemyAgent : AiAgent
     {
         public EnemyPawnRuntimeSet enemyPawnRuntimeSet;
         
