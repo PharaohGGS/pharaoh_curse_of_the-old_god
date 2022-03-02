@@ -307,6 +307,10 @@ PrefabInstance:
       propertyPath: sandSoldier
       value: 
       objectReference: {fileID: 5732736215046696853, guid: 0cce47b128493b24cbe71fb30990b87f, type: 3}
+    - target: {fileID: 591087842, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
+      propertyPath: timeToMaxRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5732736215046696848, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -454,12 +458,15 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 20
+        m_Name: Force
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 3, y: 0, z: 0}
+      - m_Value: {x: 3.58, y: 0, z: 0}
         m_Name: TargetPosition
         m_Overridden: 1
     m_Vector4f:

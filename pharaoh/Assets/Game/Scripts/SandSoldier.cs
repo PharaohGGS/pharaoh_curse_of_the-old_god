@@ -66,6 +66,7 @@ public class SandSoldier : MonoBehaviour
         Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
         _soldierPreviewInstance = Instantiate(previewIndicator, startPosition, Quaternion.identity);
         _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
+        previewVFX.SetVector3("KillBoxSize", Vector3.zero);
         previewVFX.Play();
     }
 
@@ -81,6 +82,7 @@ public class SandSoldier : MonoBehaviour
         if (_previewCoroutine == null) return;
         
         StopCoroutine(_previewCoroutine);
+        previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
         previewVFX.Stop();
         // float yOffset = sandSoldier.transform.localScale.y / 2f -
         //                 previewIndicator.transform.localScale.y / 2f;
@@ -103,17 +105,17 @@ public class SandSoldier : MonoBehaviour
         while (elapsed < timeToMaxRange)
         {
             Vector3 nextPosition = Vector3.Lerp(startPosition, endPosition, elapsed / timeToMaxRange);
+            previewVFX.SetVector3("TargetPosition", nextPosition - transform.position);
             RaycastHit2D hit = Physics2D.Raycast(nextPosition, Vector2.down, 10f, groundLayer);
             if (hit)
                 nextPosition = hit.point + new Vector2(0f, _soldierPreviewInstance.transform.localScale.y/2f);
             
             _soldierPreviewInstance.transform.position = nextPosition;
-            previewVFX.SetVector3("TargetPosition", nextPosition);
             elapsed += Time.deltaTime;
             yield return null;
         }
         _soldierPreviewInstance.transform.position = endPosition;
-        previewVFX.SetVector3("TargetPosition", endPosition);
+        previewVFX.SetVector3("TargetPosition", endPosition - transform.position);
 
         InputAction.CallbackContext obj = new InputAction.CallbackContext();
         SummonSoldier(obj);
