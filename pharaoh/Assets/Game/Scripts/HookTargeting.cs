@@ -172,13 +172,13 @@ namespace Pharaoh.Gameplay
 
         private System.Collections.IEnumerator MoveToHook()
         {
-            if (!_rigidbody) yield break;
+            if (!_currentTarget || !_rigidbody) yield break;
 
-            while (Vector3.Distance(transform.position, _rigidbody.position) > offsetHook)
+            while (Vector2.Distance(_currentTarget.transform.position, _rigidbody.position) > offsetHook)
             {
                 _isOnHook = false;
-                Vector2 direction = _rigidbody.position - (Vector2)transform.position;
-                float distance = Vector3.Distance(transform.position, _rigidbody.position);
+                Vector2 direction = (Vector2)_currentTarget.transform.position - _rigidbody.position;
+                float distance = Vector2.Distance(_currentTarget.transform.position, _rigidbody.position);
                 var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
 
                 if (hit2Ds.Length > 0) UnHook();
