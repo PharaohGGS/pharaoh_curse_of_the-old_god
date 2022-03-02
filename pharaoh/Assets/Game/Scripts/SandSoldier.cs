@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public class SandSoldier : MonoBehaviour
 {
@@ -28,7 +29,10 @@ public class SandSoldier : MonoBehaviour
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
 
-    private Rigidbody2D _rigidbody;
+    [Header("VFX")]
+    [Tooltip("Soldier position preview VFX")]
+    public VisualEffect previewVFX;
+
     private PlayerInput _playerInput; // Input System
     private Coroutine _previewCoroutine = null; // Stores the preview coroutine
     private GameObject _soldierPreviewInstance; // Stores the reference of the preview object
@@ -36,7 +40,6 @@ public class SandSoldier : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
         _playerInput = new PlayerInput();
     }
 
@@ -63,6 +66,7 @@ public class SandSoldier : MonoBehaviour
         Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
         _soldierPreviewInstance = Instantiate(previewIndicator, startPosition, Quaternion.identity);
         _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
+        previewVFX.Play();
     }
 
     private void SummonSoldier(InputAction.CallbackContext obj)
@@ -77,11 +81,13 @@ public class SandSoldier : MonoBehaviour
         if (_previewCoroutine == null) return;
         
         StopCoroutine(_previewCoroutine);
+        previewVFX.Stop();
         // float yOffset = sandSoldier.transform.localScale.y / 2f -
         //                 previewIndicator.transform.localScale.y / 2f;
         // Vector3 pos = _soldierPreviewInstance.transform.position + new Vector3(0f, yOffset, 0f);
         // _soldier = Instantiate(sandSoldier, pos, Quaternion.identity);
         _soldier = Instantiate(sandSoldier, _soldierPreviewInstance.transform.position, Quaternion.identity);
+        _soldier.transform.GetChild(0).rotation = transform.Find("skin_01").rotation;
         Destroy(_soldierPreviewInstance);
         _soldierPreviewInstance = null;
         _previewCoroutine = null;
@@ -102,10 +108,12 @@ public class SandSoldier : MonoBehaviour
                 nextPosition = hit.point + new Vector2(0f, _soldierPreviewInstance.transform.localScale.y/2f);
             
             _soldierPreviewInstance.transform.position = nextPosition;
+            previewVFX.SetVector3("TargetPosition", nextPosition);
             elapsed += Time.deltaTime;
             yield return null;
         }
         _soldierPreviewInstance.transform.position = endPosition;
+        previewVFX.SetVector3("TargetPosition", endPosition);
 
         InputAction.CallbackContext obj = new InputAction.CallbackContext();
         SummonSoldier(obj);
@@ -127,7 +135,6 @@ public class SandSoldier : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
         GUIStyle greenStyle = new GUIStyle();
         GUIStyle redStyle = new GUIStyle();
         redStyle.normal.textColor = Color.red;
