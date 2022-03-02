@@ -451,6 +451,7 @@ GameObject:
   - component: {fileID: 5732736215046696851}
   - component: {fileID: -8653334070390026152}
   - component: {fileID: 5732736215046696850}
+  - component: {fileID: 591087842}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -543,6 +544,8 @@ MonoBehaviour:
   initialJumpForce: 12
   heldJumpForce: 16
   maxJumpHold: 0.4
+  stunFallDistance: 5.55
+  fallStunDuration: 1.5
   dashForce: 30
   dashTime: 0.1
   dashCooldown: 0.5
@@ -551,7 +554,7 @@ MonoBehaviour:
   groundCheckRadius: 0.05
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 9216
   animator: {fileID: 5233648559756313416}
   modelTransform: {fileID: 2180177035006007602}
   tr: {fileID: 5732736215052742473}
@@ -568,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetHook: 0.5
+  speed: 19
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 2048
@@ -632,6 +636,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32328ac8322d0144898813a8a9b7e197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &591087842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 201fc878f5619e647b42d1378c699010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewIndicator: {fileID: 2857470292283219416, guid: eba925e0aff9a194295c1e2844b5fb60, type: 3}
+  sandSoldier: {fileID: 2857470292283219416, guid: d9b5a4c78c527e241a1606bfebf363b5, type: 3}
+  playerModel: {fileID: 2180177035006007602}
+  minRange: 1
+  maxRange: 6
+  timeToMaxRange: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0
