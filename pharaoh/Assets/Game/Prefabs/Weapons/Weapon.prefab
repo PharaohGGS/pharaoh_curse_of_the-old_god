@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7259607460147939371}
-  - component: {fileID: 2313051582693364802}
   - component: {fileID: 1033959073703909373}
   m_Layer: 12
   m_Name: Weapon
@@ -35,50 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2313051582693364802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941270978020066559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 835f20d8904959e4391c47e8d4194ab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 0c3dacf0fc70dcc4c8d93380cd14a055, type: 2}
-  damagingLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  onHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Damager,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  collidingLayers:
-    serializedVersion: 2
-    m_Bits: 1024
-  onWeaponThrown:
-    m_PersistentCalls:
-      m_Calls: []
-  onGroundHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onSocketAttach:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!50 &1033959073703909373
 Rigidbody2D:
   serializedVersion: 4
@@ -140,7 +95,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4801419161417651369}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
 --- !u!23 &1898606226049890269
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -192,8 +147,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5424043269530809834}
-  m_Layer: 12
-  m_Name: Collider
+  m_Layer: 13
+  m_Name: Detection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

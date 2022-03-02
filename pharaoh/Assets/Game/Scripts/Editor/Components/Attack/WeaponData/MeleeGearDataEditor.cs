@@ -5,8 +5,8 @@ using UnityEditor;
 using UnityEngine;
 
 [CanEditMultipleObjects]
-[CustomEditor(typeof(DamagerData), true)]
-public class DamagerDataEditor : Editor
+[CustomEditor(typeof(MeleeGearData), true)]
+public class MeleeGearDataEditor : Editor
 {
     private SerializedProperty _isThrowable;
     private SerializedProperty _throwableRangeProp;

@@ -14,16 +14,15 @@ namespace Pharaoh.Gameplay.Components
         public DamagerData data;
         public LayerMask damagingLayers;
         public UnityEvent<Damager> onHit;
-        
-        public Collider2D lastTriggerEnter { get; protected set; }
+
         public Rigidbody2D rb2D { get; protected set; }
         public Collider2D coll2D { get; protected set; }
+        public Collider2D lastTriggerEnter { get; protected set; }
 
         protected virtual void Awake()
         {
             rb2D = GetComponent<Rigidbody2D>();
-            coll2D = TryGetComponent(out Collider2D collider2D) 
-                ? collider2D : GetComponentInChildren<Collider2D>();
+            if (TryGetComponent(out Collider2D collider2D)) coll2D = collider2D;
             rb2D.bodyType = RigidbodyType2D.Kinematic;
         }
 

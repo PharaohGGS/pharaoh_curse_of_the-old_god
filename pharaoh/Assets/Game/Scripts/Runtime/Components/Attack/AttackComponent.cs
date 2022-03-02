@@ -7,29 +7,29 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AttackComponent : MonoBehaviour
     {
-        [SerializeField] private DamagerHolder[] holders;
+        [SerializeField] private WeaponHolder[] holders;
         public Transform target { get; set; }
 
-        public UnityEvent<Damager> onDamagerAttack = new UnityEvent<Damager>();
-        public UnityEvent<Damager, Transform> onDamagerAimTarget = new UnityEvent<Damager, Transform>();
+        public UnityEvent<Gear> onDamagerAttack = new UnityEvent<Gear>();
+        public UnityEvent<Gear, Transform> onDamagerAimTarget = new UnityEvent<Gear, Transform>();
 
         private void Awake()
         {
             if (holders.Length <= 0)
             {
-                holders = GetComponentsInChildren<DamagerHolder>();
+                holders = GetComponentsInChildren<WeaponHolder>();
             }
         }
 
-        public void Attack(DamagerHolder holder)
+        public void Attack(WeaponHolder holder)
         {
             if (holder == null) return;
             
-            onDamagerAimTarget?.Invoke(holder.damager, target);
-            onDamagerAttack?.Invoke(holder.damager);
+            onDamagerAimTarget?.Invoke(holder.Gear, target);
+            onDamagerAttack?.Invoke(holder.Gear);
         }
 
-        public bool TryGetHolder(DamagerData data, out DamagerHolder holder)
+        public bool TryGetHolder(DamagerData data, out WeaponHolder holder)
         {
             holder = null;
             if (holders.Length <= 0) return false;
@@ -44,7 +44,7 @@ namespace Pharaoh.Gameplay.Components
             return false;
         }
 
-        public bool TryGetHolder<T>(out DamagerHolder holder) where T : DamagerData
+        public bool TryGetHolder<T>(out WeaponHolder holder) where T : DamagerData
         {
             holder = null;
             if (holders.Length <= 0) return false;

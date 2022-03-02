@@ -130,8 +130,8 @@ namespace Pharaoh.Gameplay
 
             if (!_currentTarget) return;
 
-            var weapon = _currentTarget.TryGetComponent(out Weapon w) 
-                ? w : _currentTarget.GetComponentInParent<Weapon>();
+            var weapon = _currentTarget.TryGetComponent(out Gear w) 
+                ? w : _currentTarget.GetComponentInParent<Gear>();
 
             if (!weapon || weapon.data is not DefenseDamagerData) return;
 

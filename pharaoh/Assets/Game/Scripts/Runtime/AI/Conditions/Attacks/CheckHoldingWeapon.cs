@@ -32,18 +32,17 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (holder.damager.transform.parent)
+            if (holder.Gear.transform.parent)
             {
                 state = NodeState.Success;
             }
             else
             {
                 state = NodeState.Failure;
-                if (holder.damager is not Weapon weapon) return state;
 
-                if (weapon.isThrown && weapon.isOnGround)
+                if (holder.Gear.isThrown && holder.Gear.isGrounded)
                 {
-                    blackboard.SetData("target", holder.damager.transform);
+                    blackboard.SetData("target", holder.Gear.transform);
                 }
             }
 

@@ -25,9 +25,9 @@ namespace Pharaoh.AI.Actions
             state = NodeState.Running;
             
             if (!_attack || !blackboard.TryGetData("target", out Transform t)) return state;
-            if (!t.TryGetComponent(out Damager damager) || damager is not Weapon weapon) return state;
-            if (!weapon.isThrown || !weapon.isOnGround) return state;
-            if (!_attack.TryGetHolder(weapon.data, out DamagerHolder holder)) return state;
+            if (!t.TryGetComponent(out Gear weapon)) return state;
+            if (!weapon.isThrown || !weapon.isGrounded) return state;
+            if (!_attack.TryGetHolder(weapon.data, out WeaponHolder holder)) return state;
 
             weapon.transform.parent = holder.transform;
             weapon.transform.localPosition = Vector3.zero;

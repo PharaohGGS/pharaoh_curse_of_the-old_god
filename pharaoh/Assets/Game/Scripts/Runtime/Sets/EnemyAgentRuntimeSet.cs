@@ -4,5 +4,5 @@ using UnityEngine;
 namespace Pharaoh.Sets
 {
     [CreateAssetMenu]
-    public class EnemyPawnRuntimeSet : RuntimeSet<EnemyAgent> { }
+    public class EnemyAgentRuntimeSet : RuntimeSet<EnemyAgent> { }
 }

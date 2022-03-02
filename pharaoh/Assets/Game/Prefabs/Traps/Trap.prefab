@@ -93,8 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4248821615429891222}
   - component: {fileID: 4082437492315050596}
-  m_Layer: 0
-  m_Name: Collider
+  m_Layer: 13
+  m_Name: Detection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,9 +151,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6684974063385550921}
   - component: {fileID: 3567611914596130899}
-  - component: {fileID: 6703301558977159026}
   - component: {fileID: 1507483770201521569}
-  - component: {fileID: 3920669754758298515}
+  - component: {fileID: 1006042470448372943}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
@@ -224,26 +223,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6703301558977159026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7198938675935875298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <fovRange>k__BackingField: 6
-  <pickupRange>k__BackingField: 1
-  <detectionLayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 2112
-  <weaponLayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &1507483770201521569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: db7b53810ba92c642a2f8f7192a34344, type: 2}
---- !u!114 &3920669754758298515
+--- !u!114 &1006042470448372943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,9 +245,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7198938675935875298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e0dc250ccb8fe4a922d3fe427979e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d39594babef61f49b2463e68aa9b63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trapAgentRuntimeSet: {fileID: 11400000, guid: c84a98961c17f7848a11488e607de536, type: 2}
 --- !u!1 &8320480193897227975
 GameObject:
   m_ObjectHideFlags: 0

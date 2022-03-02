@@ -9,10 +9,5 @@ namespace Pharaoh.Gameplay.Components
         public Damager prefab;
         public string description;
         public float damage;
-        public float rate;
-        public float range;
-        public bool throwable;
-        [HideInInspector] public float throwableRange;
-        [HideInInspector] public float throwablePickingTime = 1f;
     }
 }
