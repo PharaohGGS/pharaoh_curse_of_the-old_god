@@ -54,7 +54,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
     private void Pull(InputAction.CallbackContext ctx)
     {
-        if (_playerMovement.IsHookedToBlock && !_playerMovement.IsPullingBlock)
+        if (_playerMovement.IsHookedToBlock && !_playerMovement.IsPullingBlock && CanPullBlock())
             StartCoroutine(PullingBlock());
     }
 
@@ -71,7 +71,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
         yield return new WaitForSeconds(pullDuration);
 
-        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null)
+        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null || !CanPullBlock())
         {
             // Cancels pulling if not holding the button
             block.gravityScale = 1f;
@@ -91,6 +91,11 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     {
         _movingBlock = null;
         _playerMovement.IsHookedToBlock = false;
+    }
+
+    private bool CanPullBlock()
+    {
+        return _movingBlock != null && (_movingBlock.transform.position.x > (transform.position.x + 1.5f) || _movingBlock.transform.position.x < (transform.position.x - 1.5f));
     }
 
     private void OnDrawGizmos()
@@ -119,11 +124,13 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
             Gizmos.DrawLine(transform.position, _movingBlock.transform.position);
 
             GUIStyle style = new GUIStyle();
-            style.normal.textColor = Color.green;
+            style.normal.textColor = new Color(0f, 0.5f, 0f);
             style.alignment = TextAnchor.MiddleCenter;
-            Handles.Label(_movingBlock.transform.position + Vector3.up, "Target", style);
+            Handles.Label(_movingBlock.transform.position + Vector3.up * 3f, "| Pulling bounds |", style);
+
+            Debug.DrawLine(_movingBlock.transform.position + new Vector3(1.5f, -3f, 0f), _movingBlock.transform.position + new Vector3(1.5f, 3f, 0f), new Color(0f, 0.5f, 0f));
+            Debug.DrawLine(_movingBlock.transform.position + new Vector3(-1.5f, -3f, 0f), _movingBlock.transform.position + new Vector3(-1.5f, 3f, 0f), new Color(0f, 0.5f, 0f));
         }
-        
     }
 
     private void OnEnable()
