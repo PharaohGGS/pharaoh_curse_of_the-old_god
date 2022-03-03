@@ -51,25 +51,33 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     {
         Debug.Log("Pulling block");
 
-        StartCoroutine(PullingBlock());
+        if (!_playerMovement.IsPullingBlock)
+            StartCoroutine(PullingBlock());
     }
 
     private System.Collections.IEnumerator PullingBlock()
     {
         Rigidbody2D block = _movingBlock.transform.parent.GetComponent<Rigidbody2D>();
 
-        Debug.Log("Pull...");
+        // Disables the block's gravity (avoiding friction) and assigning it a velocity to move
         block.gravityScale = 0f;
         block.velocity = (_playerMovement.IsFacingRight ? Vector2.left : Vector2.right) * pullForce;
         _playerMovement.IsPullingBlock = true;
-        
 
         yield return new WaitForSeconds(pullDuration);
 
-        Debug.Log("Stop pulling");
-        block.gravityScale = 1f;
-        block.velocity = Vector2.zero;
-        _playerMovement.IsPullingBlock = false;
+        if (!_playerInput.CharacterActions.HookBlock.IsPressed())
+        {
+            // Cancels pulling if not holding the button
+            block.gravityScale = 1f;
+            block.velocity = Vector2.zero;
+            _playerMovement.IsPullingBlock = false;
+        }
+        else
+        {
+            // Continues pulling if holding the button
+            StartCoroutine(PullingBlock());
+        }
     }
 
     private void UnHook(InputAction.CallbackContext ctx)

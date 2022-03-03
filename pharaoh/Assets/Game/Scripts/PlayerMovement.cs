@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player jumps
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started && (isGrounded || _isHooked) && !_isDashing && !_isStunned)
+        if (ctx.started && (isGrounded || _isHooked) && !_isDashing && !_isStunned && !_isPullingBlock)
         {
             // The player jumps using an impulse force
             _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player dashes
     private void OnDash(InputAction.CallbackContext ctx)
     {
-        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned)
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
         {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing && _canMove && !_isStunned)
+        if (!_isDashing && _canMove && !_isStunned && !_isPullingBlock)
         {
             if (isGrounded || _isHooked)
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
@@ -241,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = false;
 
         // Updates the direction the player is facing
-        if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock)
+        if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock && !_isPullingBlock)
         {
             isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
         }
