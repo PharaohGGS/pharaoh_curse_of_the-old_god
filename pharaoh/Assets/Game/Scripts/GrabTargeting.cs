@@ -130,13 +130,13 @@ namespace Pharaoh.Gameplay
 
             if (!_currentTarget) return;
 
-            var weapon = _currentTarget.TryGetComponent(out Gear w) 
+            var gear = _currentTarget.TryGetComponent(out Gear w) 
                 ? w : _currentTarget.GetComponentInParent<Gear>();
 
-            if (!weapon || weapon.data is not DefenseDamagerData) return;
+            if (!gear || !gear.TryGetData(out DefenseGearData defenseGearData)) return;
 
-            weapon.transform.parent = null;
-            _targetRigidbody = weapon.rb2D;
+            gear.transform.parent = null;
+            _targetRigidbody = gear.rb2D;
             _targetRigidbody.velocity = Vector2.zero;
             _targetRigidbody.bodyType = RigidbodyType2D.Kinematic;
 

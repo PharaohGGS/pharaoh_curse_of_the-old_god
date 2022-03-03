@@ -2,5 +2,5 @@
 
 namespace Pharaoh.AI.Actions
 {
-    public class CheckHoldingMeleeWeapon : CheckHoldingWeapon<MeleeDamagerData> {}
+    public class CheckHoldingMeleeWeapon : CheckHoldingWeapon<MeleeGearData> {}
 }

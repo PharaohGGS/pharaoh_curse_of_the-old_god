@@ -2,5 +2,5 @@
 
 namespace Pharaoh.AI.Actions
 {
-    public class CheckTargetInDefenseRange : CheckTargetInAttackRange<DefenseDamagerData> {}
+    public class CheckTargetInDefenseRange : CheckTargetInAttackRange<DefenseGearData> {}
 }

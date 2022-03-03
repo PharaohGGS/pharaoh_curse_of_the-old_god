@@ -5,5 +5,5 @@ using UnityEngine.Events;
 
 namespace Pharaoh.GameEvents
 {
-    [Serializable] public class AimForTargetUnityEvent : UnityEvent<Damager, Transform> { }
+    [Serializable] public class AimForTargetUnityEvent : UnityEvent<Transform> { }
 }

@@ -5,32 +5,27 @@ using UnityEditor;
 using UnityEngine;
 
 [CanEditMultipleObjects]
-[CustomEditor(typeof(MeleeGearData), true)]
-public class MeleeGearDataEditor : Editor
+[CustomEditor(typeof(MeleeGearData))]
+public class MeleeGearDataEditor : GearDataEditor
 {
-    private SerializedProperty _isThrowable;
-    private SerializedProperty _throwableRangeProp;
-    private SerializedProperty _throwablePickingTimeProp;
+    protected SerializedProperty _isThrowable;
+    protected SerializedProperty _throwableRangeProp;
+    protected SerializedProperty _throwablePickingTimeProp;
     
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _isThrowable = serializedObject.FindProperty("throwable");
         _throwableRangeProp = serializedObject.FindProperty("throwableRange");
         _throwablePickingTimeProp = serializedObject.FindProperty("throwablePickingTime");
     }
 
-    public override void OnInspectorGUI()
+    protected override void DrawSpecificProperties()
     {
-        DrawDefaultInspector();
+        base.DrawSpecificProperties();
 
-        serializedObject.Update();
-
-        if (_isThrowable?.boolValue == true)
-        {
-            EditorGUILayout.PropertyField(_throwableRangeProp);
-            EditorGUILayout.PropertyField(_throwablePickingTimeProp);
-        }
-        
-        serializedObject.ApplyModifiedProperties();
+        if (_isThrowable?.boolValue != true) return;
+        EditorGUILayout.PropertyField(_throwableRangeProp);
+        EditorGUILayout.PropertyField(_throwablePickingTimeProp);
     }
 }

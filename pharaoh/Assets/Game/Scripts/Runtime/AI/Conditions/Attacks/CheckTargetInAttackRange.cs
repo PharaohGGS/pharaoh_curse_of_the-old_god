@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class CheckTargetInAttackRange<T> : ActionNode where T : DamagerData
+    public abstract class CheckTargetInAttackRange<T> : ActionNode where T : GearData
     {
         private AttackComponent _attack;
 
@@ -29,12 +29,13 @@ namespace Pharaoh.AI.Actions
             }
 
             var distance = Vector3.Distance(agent.transform.position, t.position);
-            if (distance > holder.data.range)
+            var data = holder.gear ? holder.gear.GetBaseData() : null;
+            if (!data || distance > data.range)
             {
                 return state;
             }
 
-            blackboard.SetData("waitTime", holder.data.rate);
+            blackboard.SetData("waitTime", data.rate);
             state = NodeState.Success;
             return state;
         }

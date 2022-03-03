@@ -7,35 +7,36 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AttackComponent : MonoBehaviour
     {
-        [SerializeField] private WeaponHolder[] holders;
+        [SerializeField] private GearHolder[] holders;
         public Transform target { get; set; }
 
         public UnityEvent<Gear> onDamagerAttack = new UnityEvent<Gear>();
-        public UnityEvent<Gear, Transform> onDamagerAimTarget = new UnityEvent<Gear, Transform>();
+        public UnityEvent<Transform> onDamagerAimTarget = new UnityEvent<Transform>();
 
         private void Awake()
         {
             if (holders.Length <= 0)
             {
-                holders = GetComponentsInChildren<WeaponHolder>();
+                holders = GetComponentsInChildren<GearHolder>();
             }
         }
 
-        public void Attack(WeaponHolder holder)
+        public void Attack(GearHolder holder)
         {
-            if (holder == null) return;
+            if (!holder || !holder.gear || !holder.gear.GetBaseData().canAttack) return;
             
-            onDamagerAimTarget?.Invoke(holder.Gear, target);
-            onDamagerAttack?.Invoke(holder.Gear);
+            onDamagerAimTarget?.Invoke(target);
+            onDamagerAttack?.Invoke(holder.gear);
         }
 
-        public bool TryGetHolder(DamagerData data, out WeaponHolder holder)
+        public bool TryGetHolder(GearData data, out GearHolder holder)
         {
             holder = null;
             if (holders.Length <= 0) return false;
             foreach (var h in holders)
             {
-                if (h.data == null || h.data != data) continue;
+                var hData = h.gear != null ? h.gear.GetBaseData() : null;
+                if (hData == null || hData != data) continue;
 
                 holder = h;
                 return true;
@@ -44,13 +45,15 @@ namespace Pharaoh.Gameplay.Components
             return false;
         }
 
-        public bool TryGetHolder<T>(out WeaponHolder holder) where T : DamagerData
+        public bool TryGetHolder<T>(out GearHolder holder) where T : GearData
         {
             holder = null;
+            T tData = null;
+
             if (holders.Length <= 0) return false;
             foreach (var h in holders)
             {
-                if (h.data == null || h.data.GetType() != typeof(T)) continue;
+                if (h.gear == null || !h.gear.TryGetData(out tData)) continue;
 
                 holder = h;
                 return true;

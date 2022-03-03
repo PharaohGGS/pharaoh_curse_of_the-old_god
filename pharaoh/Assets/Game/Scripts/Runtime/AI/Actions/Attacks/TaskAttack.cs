@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class TaskAttack<T> : ActionNode where T : DamagerData
+    public abstract class TaskAttack<T> : ActionNode where T : GearData
     {
         private HealthComponent _healthComponent;
 
@@ -46,8 +46,12 @@ namespace Pharaoh.AI.Actions
             }
             
             _attack.Attack(holder);
+
+            var data = holder.gear ? holder.gear.GetBaseData() : null;
+            if (!data) return state;
+
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", holder.data.rate);
+            blackboard.SetData("waitTime", data.rate);
             return state;
         }
 
