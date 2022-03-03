@@ -578,8 +578,59 @@ MonoBehaviour:
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 1088
-  offsetHook: 0.5
-  speed: 19
+  offsetHook: 0.001
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.10507165
+      value: 0.50626683
+      inSlope: 4.7539706
+      outSlope: 4.7539706
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.572692
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1944969
+      value: 0.81301785
+      inSlope: 1.8345739
+      outSlope: 1.8345739
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8544933
+      outWeight: 0.3878686
+    - serializedVersion: 3
+      time: 0.38826036
+      value: 0.96815753
+      inSlope: 0.22532457
+      outSlope: 0.22532457
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33571148
+      outWeight: 0.120873265
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speed: 2
   onHook:
     m_PersistentCalls:
       m_Calls:
