@@ -9,11 +9,17 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     private PlayerMovement _playerMovement;
     private GameObject _movingBlock = null;
 
+    [Header("Pulling")]
+
+    public float pullForce = 1f;
+    public float pullDuration = 1f;
+
     protected override void Awake()
     {
         base.Awake();
         _playerInput = new PlayerInput();
-        _playerInput.CharacterActions.Grab.started += HookToBlock;
+        _playerInput.CharacterActions.HookBlock.started += HookToBlock;
+        _playerInput.CharacterActions.HookBlock.performed += Pull;
         _playerInput.CharacterControls.Move.started += UnHook;
         _playerInput.CharacterControls.Jump.started += UnHook;
         _playerInput.CharacterControls.Dash.started += UnHook;
@@ -27,6 +33,8 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
     private void HookToBlock(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Hooking to block ...");
+
         if (_playerMovement.IsFacingRight)
             _movingBlock = _bestTargetRight != null ? _bestTargetRight : _bestTargetLeft;
         else
@@ -37,6 +45,31 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
             _playerMovement.IsHookedToBlock = true;
             _playerMovement.IsFacingRight = _movingBlock.transform.position.x > transform.position.x;
         }
+    }
+
+    private void Pull(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("Pulling block");
+
+        StartCoroutine(PullingBlock());
+    }
+
+    private System.Collections.IEnumerator PullingBlock()
+    {
+        Rigidbody2D block = _movingBlock.transform.parent.GetComponent<Rigidbody2D>();
+
+        Debug.Log("Pull...");
+        block.gravityScale = 0f;
+        block.velocity = (_playerMovement.IsFacingRight ? Vector2.left : Vector2.right) * pullForce;
+        _playerMovement.IsPullingBlock = true;
+        
+
+        yield return new WaitForSeconds(pullDuration);
+
+        Debug.Log("Stop pulling");
+        block.gravityScale = 1f;
+        block.velocity = Vector2.zero;
+        _playerMovement.IsPullingBlock = false;
     }
 
     private void UnHook(InputAction.CallbackContext ctx)
