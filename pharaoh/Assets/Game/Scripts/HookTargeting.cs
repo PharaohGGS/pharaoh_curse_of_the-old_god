@@ -13,8 +13,9 @@ namespace Pharaoh.Gameplay
     [RequireComponent(typeof(PlayerMovement))]
     public class HookTargeting : Targeting
     {
-        [Header("Movement")] [SerializeField, Tooltip("Distance to hooked transform")]
-        private float offsetHook = 0.5f;
+        [Header("Movement")] 
+        [SerializeField, Tooltip("Distance to hooked transform")] private float offsetHook = 0.5f;
+        [SerializeField] private AnimationCurve smoothCurve;
 
         [SerializeField] private float speed = 19f;
         private bool _isOnHook = false;
@@ -174,6 +175,9 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget || !_rigidbody) yield break;
 
+            Vector2 startPosition = _rigidbody.position;
+            float current = 0f;
+
             while (Vector2.Distance(_currentTarget.transform.position, _rigidbody.position) > offsetHook)
             {
                 _isOnHook = false;
@@ -182,8 +186,9 @@ namespace Pharaoh.Gameplay
                 var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
 
                 if (hit2Ds.Length > 0) UnHook();
-                
-                _rigidbody.MovePosition(_rigidbody.position + direction.normalized * (speed * Time.fixedDeltaTime));
+
+                current = Mathf.MoveTowards(current, 1f, speed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(Vector2.Lerp(startPosition, _currentTarget.transform.position, smoothCurve.Evaluate(current)));
                 yield return _waitForFixedUpdate;
             }
 

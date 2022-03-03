@@ -162,14 +162,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void OnHook()
+    public void LockMovement(bool value)
     {
-        _canMove = false;
-    }
-
-    public void OnUnHook()
-    {
-        _canMove = true;
+        _canMove = !value;
     }
 
     public void OnEndHookMovement()
