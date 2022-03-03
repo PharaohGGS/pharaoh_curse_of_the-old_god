@@ -27,9 +27,14 @@ public class PlayerMovement : MonoBehaviour
     private bool _noclip; //DEBUG
     private bool _canMove = true;
     private bool _isHooked = false;
+    private bool _isHookedToBlock = false;
 
     public bool isFacingRight { get; private set; } = true;
     public bool isGrounded { get; private set; } = false;
+
+    public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
+    public bool IsGrounded { get => isGrounded; set => isGrounded = value; }
+    public bool IsHookedToBlock { get => _isHookedToBlock; set => _isHookedToBlock = value; }
 
     [Header("Horizontal Movement")]
     [Tooltip("Grounded horizontal speed (m/s)")]
@@ -336,6 +341,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
+        Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4f, "FallDistance : " + (_initialFallHeight - _rigidbody.position.y), (_initialFallHeight - _rigidbody.position.y) > stunFallDistance ? redStyle : greenStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
