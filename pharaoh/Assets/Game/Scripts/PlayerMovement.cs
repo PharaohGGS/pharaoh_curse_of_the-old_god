@@ -33,9 +33,17 @@ public class PlayerMovement : MonoBehaviour
     public bool isFacingRight { get; private set; } = true;
     public bool isGrounded { get; private set; } = false;
 
+    public bool IsRunning { get => _isRunning; }
+    public bool IsDashing { get => _isDashing; }
+    public bool IsJumping { get => _isJumping; }
     public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
-    public bool IsGrounded { get => isGrounded; set => isGrounded = value; }
-    public bool IsHookedToBlock { get => _isHookedToBlock; set => _isHookedToBlock = value; }
+    public bool IsGrounded { get => isGrounded; }
+    public bool IsHookedToBlock {
+        get => _isHookedToBlock;
+        set { _isHookedToBlock = value;
+            if (_isHookedToBlock) { _smoothMovement = Vector2.zero; _isRunning = false; }
+        }
+    }
     public bool IsPullingBlock { get => _isPullingBlock; set => _isPullingBlock = value; }
 
     [Header("Horizontal Movement")]
@@ -200,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
         // Lerps between a given orientation when idle facing left and when running facing left
         // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned ?
+        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned || _isPullingBlock ?
             Quaternion.Lerp(toIdle, toRunning, 0f)
             : Quaternion.Lerp(toRunning, toIdle, 0f);
         modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);

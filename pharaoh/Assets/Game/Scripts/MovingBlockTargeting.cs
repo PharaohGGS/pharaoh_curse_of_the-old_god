@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 [RequireComponent(typeof(PlayerMovement))]
 public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
@@ -20,21 +21,24 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         _playerInput = new PlayerInput();
         _playerInput.CharacterActions.HookBlock.started += HookToBlock;
         _playerInput.CharacterActions.HookBlock.performed += Pull;
-        _playerInput.CharacterControls.Move.started += UnHook;
-        _playerInput.CharacterControls.Jump.started += UnHook;
-        _playerInput.CharacterControls.Dash.started += UnHook;
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Update()
     {
         SearchTargets();
+
+        if (_playerMovement.IsHookedToBlock)
+        {
+            if (_playerMovement.IsRunning || _playerMovement.IsJumping || _playerMovement.IsDashing)
+            {
+                UnHook();
+            }
+        }
     }
 
     private void HookToBlock(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Hooking to block ...");
-
         if (_playerMovement.IsFacingRight)
             _movingBlock = _bestTargetRight != null ? _bestTargetRight : _bestTargetLeft;
         else
@@ -43,15 +47,14 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         if (_playerMovement.isGrounded && _movingBlock != null)
         {
             _playerMovement.IsHookedToBlock = true;
+            Debug.Log("Hooking, " + _playerMovement.IsRunning);
             _playerMovement.IsFacingRight = _movingBlock.transform.position.x > transform.position.x;
         }
     }
 
     private void Pull(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Pulling block");
-
-        if (!_playerMovement.IsPullingBlock)
+        if (_playerMovement.IsHookedToBlock && !_playerMovement.IsPullingBlock)
             StartCoroutine(PullingBlock());
     }
 
@@ -68,7 +71,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
         yield return new WaitForSeconds(pullDuration);
 
-        if (!_playerInput.CharacterActions.HookBlock.IsPressed())
+        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null)
         {
             // Cancels pulling if not holding the button
             block.gravityScale = 1f;
@@ -84,7 +87,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         }
     }
 
-    private void UnHook(InputAction.CallbackContext ctx)
+    private void UnHook()
     {
         _movingBlock = null;
         _playerMovement.IsHookedToBlock = false;
@@ -114,6 +117,11 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, _movingBlock.transform.position);
+
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.green;
+            style.alignment = TextAnchor.MiddleCenter;
+            Handles.Label(_movingBlock.transform.position + Vector3.up, "Target", style);
         }
         
     }
