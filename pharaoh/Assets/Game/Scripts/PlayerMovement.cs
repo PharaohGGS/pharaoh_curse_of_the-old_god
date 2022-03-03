@@ -239,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = false;
 
         // Updates the direction the player is facing
-        if (_smoothMovement.x != 0f && !_isStunned)
+        if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock)
         {
             isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
         }
