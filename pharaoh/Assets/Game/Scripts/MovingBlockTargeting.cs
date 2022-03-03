@@ -62,6 +62,8 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         // Disables the block's gravity (avoiding friction) and assigning it a velocity to move
         block.gravityScale = 0f;
         block.velocity = (_playerMovement.IsFacingRight ? Vector2.left : Vector2.right) * pullForce;
+        block.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         _playerMovement.IsPullingBlock = true;
 
         yield return new WaitForSeconds(pullDuration);
@@ -71,6 +73,8 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
             // Cancels pulling if not holding the button
             block.gravityScale = 1f;
             block.velocity = Vector2.zero;
+            block.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+
             _playerMovement.IsPullingBlock = false;
         }
         else
