@@ -47,7 +47,6 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         if (_playerMovement.isGrounded && _movingBlock != null)
         {
             _playerMovement.IsHookedToBlock = true;
-            Debug.Log("Hooking, " + _playerMovement.IsRunning);
             _playerMovement.IsFacingRight = _movingBlock.transform.position.x > transform.position.x;
         }
     }
