@@ -200,6 +200,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""ddebdad3-dc6a-4c3d-9b5d-e7417e1a4674"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -211,6 +220,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6878981f-0bd3-4991-a24a-ff7db503a821"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -228,6 +248,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // CharacterActions
         m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
         m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
+        m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -345,11 +366,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_CharacterActions;
     private ICharacterActionsActions m_CharacterActionsActionsCallbackInterface;
     private readonly InputAction m_CharacterActions_Hook;
+    private readonly InputAction m_CharacterActions_Grab;
     public struct CharacterActionsActions
     {
         private @PlayerInput m_Wrapper;
         public CharacterActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Hook => m_Wrapper.m_CharacterActions_Hook;
+        public InputAction @Grab => m_Wrapper.m_CharacterActions_Grab;
         public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -362,6 +385,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Hook.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
                 @Hook.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
                 @Hook.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Grab.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @Grab.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @Grab.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
             }
             m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -369,6 +395,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Hook.started += instance.OnHook;
                 @Hook.performed += instance.OnHook;
                 @Hook.canceled += instance.OnHook;
+                @Grab.started += instance.OnGrab;
+                @Grab.performed += instance.OnGrab;
+                @Grab.canceled += instance.OnGrab;
             }
         }
     }
@@ -383,5 +412,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface ICharacterActionsActions
     {
         void OnHook(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
     }
 }

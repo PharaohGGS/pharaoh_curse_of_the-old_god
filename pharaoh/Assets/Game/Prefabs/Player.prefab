@@ -450,6 +450,7 @@ GameObject:
   - component: {fileID: 5732736215046696861}
   - component: {fileID: 5732736215046696851}
   - component: {fileID: -8653334070390026152}
+  - component: {fileID: 922357351224818758}
   - component: {fileID: 5732736215046696850}
   m_Layer: 0
   m_Name: Player
@@ -543,6 +544,8 @@ MonoBehaviour:
   initialJumpForce: 12
   heldJumpForce: 16
   maxJumpHold: 0.4
+  stunFallDistance: 5.55
+  fallStunDuration: 1.5
   dashForce: 30
   dashTime: 0.1
   dashCooldown: 0.5
@@ -567,14 +570,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c555161e3743c46a7c24bb77bcde49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetHook: 0.5
+  overlapCount: 5
+  overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 2048
-  whatIsWall:
+  whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 1024
-  targetingRadius: 6
+    m_Bits: 1088
+  offsetHook: 0.5
+  speed: 19
   onHook:
     m_PersistentCalls:
       m_Calls:
@@ -620,6 +625,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &922357351224818758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a103db71f594b43999f8260d79af65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overlapCount: 5
+  overlapingRadius: 6
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 4160
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 1088
+  offsetGrab: 0.75
+  grabSpeed: 19
+  onGrab:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnGrab:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5732736215046696850
 MonoBehaviour:
   m_ObjectHideFlags: 0

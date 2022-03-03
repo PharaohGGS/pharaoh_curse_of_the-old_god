@@ -8,25 +8,26 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Damager : MonoBehaviour
     {
         public DamagerData data;
         public LayerMask damagingLayers;
         public UnityEvent<Damager> onHit;
-
-        public Collider lastTriggerEnter { get; protected set; }
-        public Rigidbody rigidbody { get; protected set; }
-        public Collider collider { get; protected set; }
         
+        public Collider2D lastTriggerEnter { get; protected set; }
+        public Rigidbody2D rb2D { get; protected set; }
+        public Collider2D coll2D { get; protected set; }
+
         protected virtual void Awake()
         {
-            rigidbody = GetComponent<Rigidbody>();
-            collider = GetComponent<Collider>();
-            rigidbody.useGravity = false;
+            rb2D = GetComponent<Rigidbody2D>();
+            coll2D = TryGetComponent(out Collider2D collider2D) 
+                ? collider2D : GetComponentInChildren<Collider2D>();
+            rb2D.bodyType = RigidbodyType2D.Kinematic;
         }
 
-        protected virtual void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject == gameObject) return;
             
@@ -36,7 +37,7 @@ namespace Pharaoh.Gameplay.Components
             onHit?.Invoke(this);
         }
 
-        protected virtual void OnTriggerExit(Collider other)
+        protected virtual void OnTriggerExit2D(Collider2D other)
         {
             lastTriggerEnter = null;
         }
