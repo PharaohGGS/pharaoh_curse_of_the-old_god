@@ -2,5 +2,5 @@
 
 namespace Pharaoh.AI.Actions
 {
-    public class CheckHoldingDistanceWeapon : CheckHoldingWeapon<DistanceDamagerData> {}
+    public class CheckHoldingDistanceWeapon : CheckHoldingWeapon<DistanceGearData> {}
 }

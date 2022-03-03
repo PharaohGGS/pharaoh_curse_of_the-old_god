@@ -5,7 +5,7 @@ using Pharaoh.Tools.Debug;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class CheckHoldingWeapon<T> : ActionNode where T : DamagerData
+    public abstract class CheckHoldingWeapon<T> : ActionNode where T : GearData
     {
         private AttackComponent _attack;
 
@@ -32,18 +32,17 @@ namespace Pharaoh.AI.Actions
                 return state;
             }
 
-            if (holder.damager.transform.parent)
+            if (holder.gear.transform.parent)
             {
                 state = NodeState.Success;
             }
             else
             {
                 state = NodeState.Failure;
-                if (holder.damager is not Weapon weapon) return state;
 
-                if (weapon.isThrown && weapon.isOnGround)
+                if (holder.gear.isThrown && holder.gear.isGrounded)
                 {
-                    blackboard.SetData("target", holder.damager.transform);
+                    blackboard.SetData("target", holder.gear.transform);
                 }
             }
 

@@ -18,6 +18,7 @@ namespace Pharaoh.AI.Actions
         public LayerMask detectionLayer;
 
         private bool _is2D = false;
+        private bool _hasDetectionCollider = false;
         [HideInInspector] public Collider[] colliders3D;
         [HideInInspector] public Collider2D[] colliders2D;
 
@@ -35,24 +36,26 @@ namespace Pharaoh.AI.Actions
                 if (child.TryGetComponent(out _collider3D))
                 {
                     colliders3D = new Collider[8];
+                    _hasDetectionCollider = true;
                     return;
                 }
 
                 if (child.TryGetComponent(out _collider2D))
                 {
                     colliders2D = new Collider2D[8];
+                    _hasDetectionCollider = true;
                     _is2D = true;
                     return;
                 }
             }
 
-            LogHandler.SendMessage($"No collider on this agent.", MessageType.Warning);
+            LogHandler.SendMessage($"No detection collider on this agent.", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
             state = NodeState.Failure;
-            if (!_collider3D && !_collider2D) return state;
+            if (!_hasDetectionCollider) return state;
 
             int size;
             int index = 0;

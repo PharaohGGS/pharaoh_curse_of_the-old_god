@@ -2,5 +2,5 @@
 
 namespace Pharaoh.AI.Actions
 {
-    public class CheckTargetInMeleeRange : CheckTargetInAttackRange<MeleeDamagerData> {}
+    public class CheckTargetInMeleeRange : CheckTargetInAttackRange<MeleeGearData> {}
 }

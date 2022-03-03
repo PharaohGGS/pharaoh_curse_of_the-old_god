@@ -65,8 +65,9 @@ namespace Pharaoh.Gameplay.Components
             {
                 if (col != damager.lastTriggerEnter) continue;
 
-                LogHandler.SendMessage($"Take hit from {damager}", MessageType.Log);
-                Decrease(damager.data.damage);
+                var damage = damager.GetData().damage;
+                LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
+                Decrease(damage);
                 break;
             }
         }

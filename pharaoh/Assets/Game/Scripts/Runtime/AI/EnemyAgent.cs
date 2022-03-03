@@ -8,16 +8,16 @@ namespace Pharaoh.AI
 {
     public class EnemyAgent : AiAgent
     {
-        public EnemyPawnRuntimeSet enemyPawnRuntimeSet;
+        public EnemyAgentRuntimeSet enemyAgentRuntimeSet;
         
         private void OnEnable()
         {
-            enemyPawnRuntimeSet?.Add(this);
+            enemyAgentRuntimeSet?.Add(this);
         }
 
         private void OnDisable()
         {
-            enemyPawnRuntimeSet?.Remove(this);
+            enemyAgentRuntimeSet?.Remove(this);
         }
     }
 }

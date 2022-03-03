@@ -2,11 +2,12 @@ using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
 {
-    public class Trap : Damager
+    public class Trap : MonoBehaviour
     {
-        public void PlayAttackAnimation(Damager damager)
+        public void PlayAttackAnimation(Gear gear)
         {
-            if (damager != this || !TryGetComponent(out Animator animator)) return;
+            if (!TryGetComponent(out Animator animator)) return;
+            if (!TryGetComponent(out Gear thisGear) || gear != thisGear) return;
 
             animator.ResetTrigger("isAttacking");
             animator.SetTrigger("isAttacking");

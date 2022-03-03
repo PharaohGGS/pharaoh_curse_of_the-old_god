@@ -2,5 +2,5 @@
 
 namespace Pharaoh.AI.Actions
 {
-    public class TaskDefenseAttack : TaskAttack<DefenseDamagerData> { }
+    public class TaskDefenseAttack : TaskAttack<DefenseGearData> { }
 }
