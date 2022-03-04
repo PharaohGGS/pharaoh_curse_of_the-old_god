@@ -130,11 +130,8 @@ namespace Pharaoh.Gameplay
             }
 
             if (!_currentTarget) return;
-
-            var gear = _currentTarget.TryGetComponent(out Gear w) 
-                ? w : _currentTarget.GetComponentInParent<Gear>();
-
-            if (!gear || !gear.TryGetData(out DefenseGearData defenseGearData)) return;
+            if (!_currentTarget.TryGetComponent(out Gear gear) || !gear.transform.parent) return;
+            if (!gear.TryGetData(out DefenseGearData defenseGearData)) return;
 
             gear.transform.parent = null;
             _targetRigidbody = gear.rb2D;
