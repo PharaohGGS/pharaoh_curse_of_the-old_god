@@ -567,18 +567,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53c555161e3743c46a7c24bb77bcde49, type: 3}
+  m_Script: {fileID: 11500000, guid: c99b4158b3a8dea4b8ed323b1c73d0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overlapCount: 5
   overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 16448
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 1088
   offsetHook: 0.001
+  moveSpeed: 2
   smoothCurve:
     serializedVersion: 2
     m_Curve:
@@ -592,33 +593,6 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.10507165
-      value: 0.50626683
-      inSlope: 4.7539706
-      outSlope: 4.7539706
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.572692
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1944969
-      value: 0.81301785
-      inSlope: 1.8345739
-      outSlope: 1.8345739
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.8544933
-      outWeight: 0.3878686
-    - serializedVersion: 3
-      time: 0.38826036
-      value: 0.96815753
-      inSlope: 0.22532457
-      outSlope: 0.22532457
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33571148
-      outWeight: 0.120873265
-    - serializedVersion: 3
       time: 1
       value: 1
       inSlope: 0
@@ -630,7 +604,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  speed: 2
   onHook:
     m_PersistentCalls:
       m_Calls:
@@ -674,7 +647,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &922357351224818758
 MonoBehaviour:
@@ -685,11 +658,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a103db71f594b43999f8260d79af65, type: 3}
+  m_Script: {fileID: 11500000, guid: 61489dfad542f7740ae4365df497a5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overlapCount: 5
-  overlapingRadius: 6
+  overlapingRadius: 8
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 4160
@@ -697,7 +670,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1088
   offsetGrab: 0.75
-  grabSpeed: 19
+  grabSpeed: 2
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   onGrab:
     m_PersistentCalls:
       m_Calls:
