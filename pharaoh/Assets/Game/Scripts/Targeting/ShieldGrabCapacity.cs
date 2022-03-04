@@ -10,7 +10,7 @@ using MessageType = Pharaoh.Tools.Debug.MessageType;
 namespace Pharaoh.Gameplay
 {
     [RequireComponent(typeof(PlayerMovement))]
-    public class GrabTargeting : Targeting
+    public class ShieldGrabCapacity : Targeting
     {
         [Header("Grab")] 
         
