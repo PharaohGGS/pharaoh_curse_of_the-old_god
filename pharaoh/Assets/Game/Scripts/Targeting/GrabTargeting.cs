@@ -14,6 +14,7 @@ namespace Pharaoh.Gameplay
     {
         [Header("Grab")] 
         
+        [SerializeField] private bool onlyParentedTarget = true;
         [SerializeField] private float offsetGrab;
         [SerializeField] private float grabSpeed;
         [SerializeField] private AnimationCurve smoothCurve;
@@ -106,7 +107,6 @@ namespace Pharaoh.Gameplay
 
             if (_targetRigidbody)
             {
-                //_targetRigidbody.velocity = Vector2.zero;
                 _targetRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 _targetRigidbody = null;
             }
@@ -117,7 +117,21 @@ namespace Pharaoh.Gameplay
         private void Grab()
         {
             _currentTarget = null;
+            
+            // not a target if it as no parent
+            if (onlyParentedTarget)
+            {
+                if (_bestTargetLeft && !_bestTargetLeft.transform.parent)
+                {
+                    _bestTargetLeft = null;
+                }
 
+                if (_bestTargetRight && !_bestTargetRight.transform.parent)
+                {
+                    _bestTargetRight = null;
+                }
+            }
+            
             if (!_playerMovement.isFacingRight)
             {
                 _currentTarget = _bestTargetRight && !_bestTargetLeft
@@ -130,7 +144,7 @@ namespace Pharaoh.Gameplay
             }
 
             if (!_currentTarget) return;
-            if (!_currentTarget.TryGetComponent(out Gear gear) || !gear.transform.parent) return;
+            if (!_currentTarget.TryGetComponent(out Gear gear)) return;
             if (!gear.TryGetData(out DefenseGearData defenseGearData)) return;
 
             gear.transform.parent = null;
