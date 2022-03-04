@@ -3,8 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamage : MonoBehaviour
 {
+
     private Rigidbody2D _rigidBody;
     private FadeToBlack _fade;
+    private bool _isRespawning = false;
 
     [Tooltip("What layer is the Moving Block ?")]
     public LayerMask whatIsMovingBlock;
@@ -33,25 +35,36 @@ public class PlayerDamage : MonoBehaviour
     {
         // Block falling on the player
         if (whatIsMovingBlock == (whatIsMovingBlock | (1 << collision.gameObject.layer)) && collision.gameObject.GetComponent<Rigidbody2D>().velocity.y < -0.1f)
-            StartCoroutine(DamageAndRespawn());
+            DamageAndRespawn();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
-            StartCoroutine(DamageAndRespawn());
+            DamageAndRespawn();
     }
 
-    private System.Collections.IEnumerator DamageAndRespawn()
+    private void DamageAndRespawn()
     {
+        if (_isRespawning) return; //the player is already respawning due to damage
+
+        // Damage player
+        Debug.Log("PlayerDamage : need to implement the health component to damage (1) the player");
+
+        StartCoroutine(Respawn());
+    }
+
+    private System.Collections.IEnumerator Respawn()
+    {
+        _isRespawning = true;
+
         yield return new WaitForSeconds(delayBeforeRespawn);
 
-        // Damage player and spawn him back to spawnpoint
+        // Fade the screen and respawn the player
         _fade.Fade();
-
-        //damage player
-        Debug.Log("PlayerDamage : need to implement the health component to damage (1) the player");
         _rigidBody.position = DEBUGRespawnPoint.position;
+
+        _isRespawning = false;
     }
 
 }
