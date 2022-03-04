@@ -12,6 +12,8 @@ public class PlayerDamage : MonoBehaviour
     public LayerMask whatIsSpike;
     [Tooltip("Transform at which the player will respawn")]
     public Transform DEBUGRespawnPoint;
+    [Tooltip("Delay before which the player respawns")]
+    public float delayBeforeRespawn = 0.1f;
 
     private void Awake()
     {
@@ -31,17 +33,19 @@ public class PlayerDamage : MonoBehaviour
     {
         // Block falling on the player
         if (whatIsMovingBlock == (whatIsMovingBlock | (1 << collision.gameObject.layer)) && collision.gameObject.GetComponent<Rigidbody2D>().velocity.y < -0.1f)
-            DamageAndRespawn();
+            StartCoroutine(DamageAndRespawn());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
-            DamageAndRespawn();
+            StartCoroutine(DamageAndRespawn());
     }
 
-    private void DamageAndRespawn()
+    private System.Collections.IEnumerator DamageAndRespawn()
     {
+        yield return new WaitForSeconds(delayBeforeRespawn);
+
         // Damage player and spawn him back to spawnpoint
         _fade.Fade();
 
