@@ -452,8 +452,7 @@ GameObject:
   - component: {fileID: -8653334070390026152}
   - component: {fileID: 922357351224818758}
   - component: {fileID: 5365363923977441019}
-  - component: {fileID: -1816454553281655612}
-  - component: {fileID: 5732736215046696850}
+  - component: {fileID: 4348803595439116500}
   m_Layer: 15
   m_Name: Player
   m_TagString: Untagged
@@ -677,7 +676,7 @@ MonoBehaviour:
     m_Bits: 17472
   pullForce: 1
   pullDuration: 1
---- !u!114 &-1816454553281655612
+--- !u!114 &4348803595439116500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -686,21 +685,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc5d2995bf521ae44bf1f7d10d65318d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bca47a7f3765ea4aa5b64ac5e1fbc96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5732736215046696850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32328ac8322d0144898813a8a9b7e197, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  whatIsMovingBlock:
+    serializedVersion: 2
+    m_Bits: 16384
+  whatIsSpike:
+    serializedVersion: 2
+    m_Bits: 65536
+  DEBUGRespawnPoint: {fileID: 0}
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0
