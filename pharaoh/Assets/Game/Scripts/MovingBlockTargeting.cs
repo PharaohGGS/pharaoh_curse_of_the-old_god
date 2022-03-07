@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [RequireComponent(typeof(PlayerMovement))]
 public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
@@ -97,6 +99,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         return _movingBlock != null && (_movingBlock.transform.position.x > (transform.position.x + 1.5f) || _movingBlock.transform.position.x < (transform.position.x - 1.5f));
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (!_playerMovement) return;
@@ -131,6 +134,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
             Debug.DrawLine(_movingBlock.transform.position + new Vector3(-1.5f, -3f, 0f), _movingBlock.transform.position + new Vector3(-1.5f, 3f, 0f), new Color(0f, 0.5f, 0f));
         }
     }
+#endif
 
     private void OnEnable()
     {

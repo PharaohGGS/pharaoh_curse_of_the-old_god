@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine.InputSystem.Interactions;
+#endif
 
 [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
@@ -325,6 +326,7 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.Disable();
     }
 
+#if UNITY_EDITOR
     // Displays a bunch of stats while the game is playing
     private void OnDrawGizmosSelected()
     {
@@ -360,5 +362,6 @@ public class PlayerMovement : MonoBehaviour
         Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
     }
+#endif
 
 }
