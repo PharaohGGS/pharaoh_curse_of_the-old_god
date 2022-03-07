@@ -8,7 +8,7 @@ namespace BehaviourTree.Tools
     {
         private BehaviourTreeRunner _runner;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _runner = GetComponent<BehaviourTreeRunner>();
         }

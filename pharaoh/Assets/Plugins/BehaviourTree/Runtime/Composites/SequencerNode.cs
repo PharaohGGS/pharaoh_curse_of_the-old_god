@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace BehaviourTree.Runtime.Composites
 {
+    /// <summary>
+    /// Fail when one of the child is failing
+    /// Success when all of the child success
+    /// Running when one child is running
+    /// </summary>
     public class SequencerNode : CompositeNode
     {
        protected override NodeState OnUpdate()

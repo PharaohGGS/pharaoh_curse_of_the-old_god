@@ -1,8 +1,6 @@
 using System;
-using Pharaoh.Gameplay.Components.Events;
-using UnityEngine;
-using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
@@ -54,6 +52,24 @@ namespace Pharaoh.Gameplay.Components
         private void OnDisable()
         {
             OnHealthChange.RemoveAllListeners();
+            OnDeath.RemoveAllListeners();
+        }
+
+        public void TakeHit(Damager damager)
+        {
+            var colliders = GetComponents<Collider2D>();
+
+            if (colliders.Length <= 0) return;
+
+            foreach (var col in colliders)
+            {
+                if (col != damager.lastTriggerEnter) continue;
+
+                var damage = damager.GetData().damage;
+                LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
+                Decrease(damage);
+                break;
+            }
         }
     }
 }

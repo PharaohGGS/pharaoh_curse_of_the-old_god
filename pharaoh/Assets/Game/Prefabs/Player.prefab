@@ -450,6 +450,7 @@ GameObject:
   - component: {fileID: 5732736215046696861}
   - component: {fileID: 5732736215046696851}
   - component: {fileID: -8653334070390026152}
+  - component: {fileID: 922357351224818758}
   - component: {fileID: 5732736215046696850}
   m_Layer: 0
   m_Name: Player
@@ -543,6 +544,8 @@ MonoBehaviour:
   initialJumpForce: 12
   heldJumpForce: 16
   maxJumpHold: 0.4
+  stunFallDistance: 5.55
+  fallStunDuration: 1.5
   dashForce: 30
   dashTime: 0.1
   dashCooldown: 0.5
@@ -564,16 +567,164 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53c555161e3743c46a7c24bb77bcde49, type: 3}
+  m_Script: {fileID: 11500000, guid: c99b4158b3a8dea4b8ed323b1c73d0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overlapCount: 5
+  overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
-    m_Bits: 2048
-  whatIsWall:
+    m_Bits: 16448
+  whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 1024
-  targetingRadius: 6
+    m_Bits: 1088
+  offsetHook: 0.001
+  moveSpeed: 2
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  onHook:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onUnHook:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onEndHookMovement:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnEndHookMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &922357351224818758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61489dfad542f7740ae4365df497a5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overlapCount: 5
+  overlapingRadius: 8
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 4160
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 1088
+  offsetGrab: 0.75
+  grabSpeed: 2
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  onGrab:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onUnGrab:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5732736215046696850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,7 +935,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: f9e90fdafc14e8b4e93b63d08224501b, type: 2}
+      objectReference: {fileID: 9100000, guid: f29c844d6b6bf2e4bbea40fc201deaf4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
 --- !u!4 &2180177035006007602 stripped
