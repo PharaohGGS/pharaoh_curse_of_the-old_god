@@ -9,6 +9,9 @@ public class MainMenu : MonoBehaviour
     private GameObject _settingsMenu;
     private readonly int[] _screenSizes = new int[] { 3840, 2160, 2560, 1440, 1920, 1080, 1600, 900, 1366, 768 };
 
+    private readonly int _defaultScreenSize = 4;
+    private readonly bool _defaultWindowMode = true;
+
     public TMPro.TMP_Dropdown windowModeDropdown;
     public TMPro.TMP_Dropdown resolutionDropdown;
 
@@ -18,6 +21,7 @@ public class MainMenu : MonoBehaviour
         _settingsMenu = transform.Find("Settings Menu").gameObject;
 
         UpdateMenus();
+        UpdateScreenSizeAndWindowMode();
     }
 
     public void SwitchMenu()
@@ -25,6 +29,11 @@ public class MainMenu : MonoBehaviour
         _isMainMenuDisplayed = !_isMainMenuDisplayed;
 
         UpdateMenus();
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
     private void UpdateMenus()
@@ -43,9 +52,14 @@ public class MainMenu : MonoBehaviour
 
     public void UpdateScreenSizeAndWindowMode()
     {
-        Debug.Log("Changing resolution to " + _screenSizes[resolutionDropdown.value * 2] + " x " + _screenSizes[(resolutionDropdown.value * 2) + 1] + " " + (windowModeDropdown.value == 0));
         Screen.SetResolution(_screenSizes[resolutionDropdown.value * 2], _screenSizes[(resolutionDropdown.value * 2) + 1], windowModeDropdown.value == 0, _preferredRefreshRate);
-        Debug.Log("Screen changed to " + Screen.currentResolution + " " + Screen.fullScreen);
+    }
+
+    public void ResetSettings()
+    {
+        windowModeDropdown.value = 0;
+        resolutionDropdown.value = _defaultScreenSize;
+        UpdateScreenSizeAndWindowMode();
     }
 
 }
