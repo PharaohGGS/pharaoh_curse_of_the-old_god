@@ -28,9 +28,21 @@ namespace Pharaoh.AI.Actions
         {
             if (!_attack || !gearData) return NodeState.Failure;
 
-            if (!gearData.canAttack || !_attack.TryGetHolder(gearData, out var holder) || 
-                !blackboard.TryGetData("target", out Transform t))
+            if (!gearData.canAttack)
             {
+                LogHandler.SendMessage($"{agent.name} can't attack with his weapon", MessageType.Warning);
+                return NodeState.Failure;
+            }
+
+            if (!_attack.TryGetHolder(gearData, out var holder))
+            {
+                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
+                return NodeState.Failure;
+            }
+
+            if (!blackboard.TryGetData("target", out Transform t))
+            {
+                LogHandler.SendMessage($"{agent.name} doesn't have a target to attack.", MessageType.Error);
                 return NodeState.Failure;
             }
 

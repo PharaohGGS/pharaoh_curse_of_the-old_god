@@ -1,4 +1,5 @@
 ﻿using System;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Pool;
@@ -62,6 +63,7 @@ namespace Pharaoh.Gameplay.Components
 
             var damager = pool.Get();
 
+            LogHandler.SendMessage($"{shootingGear.name} shooting {damager.name}", MessageType.Warning);
         }
     }
 }

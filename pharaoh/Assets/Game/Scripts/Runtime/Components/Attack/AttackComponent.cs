@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,10 +24,24 @@ namespace Pharaoh.Gameplay.Components
 
         public void Attack(GearHolder holder)
         {
-            if (!holder || !holder.gear || !holder.gear.GetBaseData().canAttack) return;
+            if (!holder || !holder.gear) return;
             
             onDamagerAimTarget?.Invoke(target);
             onDamagerAttack?.Invoke(holder.gear);
+        }
+
+        public bool ContainsHolder(GearData data)
+        {
+            if (holders.Length <= 0) return false;
+
+            foreach (var h in holders)
+            {
+                var hData = h.gear != null ? h.gear.GetBaseData() : null;
+                if (hData == null || hData != data) continue;
+                return true;
+            }
+
+            return false;
         }
 
         public bool TryGetHolder(GearData data, out GearHolder holder)
@@ -37,23 +52,6 @@ namespace Pharaoh.Gameplay.Components
             {
                 var hData = h.gear != null ? h.gear.GetBaseData() : null;
                 if (hData == null || hData != data) continue;
-
-                holder = h;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryGetHolder<T>(out GearHolder holder) where T : GearData
-        {
-            holder = null;
-            T tData = null;
-
-            if (holders.Length <= 0) return false;
-            foreach (var h in holders)
-            {
-                if (h.gear == null || !h.gear.TryGetData(out tData)) continue;
 
                 holder = h;
                 return true;

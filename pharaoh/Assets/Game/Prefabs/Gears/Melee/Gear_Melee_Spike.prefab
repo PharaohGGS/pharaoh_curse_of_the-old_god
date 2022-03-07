@@ -4470,31 +4470,6 @@ PrefabInstance:
     - {fileID: 2495619708316309702, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
---- !u!1 &3616115630120187767 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4801419161417651369, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
-  m_PrefabInstance: {fileID: 8110164104083186654}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &650238344812754760
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3616115630120187767}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 52b1d9055ca6a4841a79142af2b76f7a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &6096423440155735090 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
@@ -4583,6 +4558,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  collidingLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  onCollidingHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2673636097581239478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4608,18 +4589,6 @@ MonoBehaviour:
   onWeaponThrown:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2821259172650236877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7673519014285010721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f0afd25b76107478063a0364f5737b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8993833834270516769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4636,9 +4605,21 @@ MonoBehaviour:
   <response>k__BackingField:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2821259172650236877}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Trap, Pharaoh
-        m_MethodName: PlayAttackAnimation
+      - m_Target: {fileID: 2673636097581239478}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: SetAttackState
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2673636097581239478}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: Stab
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

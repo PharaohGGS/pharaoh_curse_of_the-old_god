@@ -33,7 +33,7 @@ namespace Pharaoh.Gameplay.Components
             if (hitDamager != _damager) return;
 
             pool?.Release(hitDamager);
-            hitDamager.transform.position = Vector3.zero;
+            hitDamager.transform.localPosition = Vector3.zero;
         }
     }
 }

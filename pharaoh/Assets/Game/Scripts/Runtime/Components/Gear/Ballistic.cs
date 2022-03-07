@@ -8,6 +8,8 @@ namespace Pharaoh.Gameplay.Components
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ballistic : MonoBehaviour
     {
+        [SerializeField] private bool usePhysics = true;
+
         public float gravity = 9.81f;
         public float height = 2f;
         
@@ -16,7 +18,7 @@ namespace Pharaoh.Gameplay.Components
 
         private Coroutine _updateVelocity;
         private WaitForFixedUpdate _waitForFixedUpdate;
-        
+
         private void Awake()
         {
             _rb2D = GetComponent<Rigidbody2D>();
