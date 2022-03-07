@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class Door : MonoBehaviour
 {
@@ -36,11 +38,13 @@ public class Door : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
         style.normal.textColor = _isOpened ? Color.green : Color.red;
         Handles.Label(transform.position, _isOpened ? "Opened" : "Closed", style);
     }
+#endif
 
 }

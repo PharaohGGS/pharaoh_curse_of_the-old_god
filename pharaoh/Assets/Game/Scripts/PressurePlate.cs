@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class PressurePlate : MonoBehaviour
 {
@@ -34,11 +36,13 @@ public class PressurePlate : MonoBehaviour
         Debug.Log(text);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle(GUI.skin.label);
         style.normal.textColor = _pressCount > 0 ? new Color(0f, 0.5f, 0f) : Color.red;
         Handles.Label(transform.position - (Vector3.up / 2f), (_pressCount > 0 ? "Triggered" : "Released") + "\nPress Count : " + _pressCount, style);
     }
+#endif
 
 }
