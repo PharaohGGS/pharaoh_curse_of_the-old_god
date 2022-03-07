@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: -8653334070390026152}
   - component: {fileID: 922357351224818758}
   - component: {fileID: 5732736215046696850}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -554,7 +554,7 @@ MonoBehaviour:
   groundCheckRadius: 0.05
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 66560
   animator: {fileID: 5233648559756313416}
   modelTransform: {fileID: 2180177035006007602}
   tr: {fileID: 5732736215052742473}
@@ -669,6 +669,7 @@ MonoBehaviour:
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 1088
+  onlyParentedTarget: 1
   offsetGrab: 0.75
   grabSpeed: 2
   smoothCurve:
@@ -734,9 +735,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32328ac8322d0144898813a8a9b7e197, type: 3}
+  m_Script: {fileID: 11500000, guid: ed13486aa816f8c4f8cd20c718e6abc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overlapCount: 5
+  overlapingRadius: 6
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 32832
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 1088
+  pullForce: 1
+  pullDuration: 1
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0

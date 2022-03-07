@@ -209,6 +209,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HookBlock"",
+                    ""type"": ""Button"",
+                    ""id"": ""8dc955b4-4410-4da3-99cb-57f1265aca8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -233,6 +242,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dbe063f-81ce-4467-bd4c-88d25fc65e77"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -249,6 +269,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
         m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
         m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
+        m_CharacterActions_HookBlock = m_CharacterActions.FindAction("HookBlock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -367,12 +388,14 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private ICharacterActionsActions m_CharacterActionsActionsCallbackInterface;
     private readonly InputAction m_CharacterActions_Hook;
     private readonly InputAction m_CharacterActions_Grab;
+    private readonly InputAction m_CharacterActions_HookBlock;
     public struct CharacterActionsActions
     {
         private @PlayerInput m_Wrapper;
         public CharacterActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Hook => m_Wrapper.m_CharacterActions_Hook;
         public InputAction @Grab => m_Wrapper.m_CharacterActions_Grab;
+        public InputAction @HookBlock => m_Wrapper.m_CharacterActions_HookBlock;
         public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -388,6 +411,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Grab.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
                 @Grab.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
                 @Grab.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @HookBlock.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+                @HookBlock.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+                @HookBlock.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
             }
             m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -398,6 +424,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Grab.started += instance.OnGrab;
                 @Grab.performed += instance.OnGrab;
                 @Grab.canceled += instance.OnGrab;
+                @HookBlock.started += instance.OnHookBlock;
+                @HookBlock.performed += instance.OnHookBlock;
+                @HookBlock.canceled += instance.OnHookBlock;
             }
         }
     }
@@ -413,5 +442,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnHook(InputAction.CallbackContext context);
         void OnGrab(InputAction.CallbackContext context);
+        void OnHookBlock(InputAction.CallbackContext context);
     }
 }

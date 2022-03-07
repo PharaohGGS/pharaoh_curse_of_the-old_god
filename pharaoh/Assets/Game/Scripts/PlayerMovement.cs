@@ -27,9 +27,24 @@ public class PlayerMovement : MonoBehaviour
     private bool _noclip; //DEBUG
     private bool _canMove = true;
     private bool _isHooked = false;
+    private bool _isHookedToBlock = false;
+    private bool _isPullingBlock = false;
 
     public bool isFacingRight { get; private set; } = true;
     public bool isGrounded { get; private set; } = false;
+
+    public bool IsRunning { get => _isRunning; }
+    public bool IsDashing { get => _isDashing; }
+    public bool IsJumping { get => _isJumping; }
+    public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
+    public bool IsGrounded { get => isGrounded; }
+    public bool IsHookedToBlock {
+        get => _isHookedToBlock;
+        set { _isHookedToBlock = value;
+            if (_isHookedToBlock) { _smoothMovement = Vector2.zero; _isRunning = false; }
+        }
+    }
+    public bool IsPullingBlock { get => _isPullingBlock; set => _isPullingBlock = value; }
 
     [Header("Horizontal Movement")]
     [Tooltip("Grounded horizontal speed (m/s)")]
@@ -102,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player jumps
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started && (isGrounded || _isHooked) && !_isDashing && !_isStunned)
+        if (ctx.started && (isGrounded || _isHooked) && !_isDashing && !_isStunned && !_isPullingBlock)
         {
             // The player jumps using an impulse force
             _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
@@ -122,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player dashes
     private void OnDash(InputAction.CallbackContext ctx)
     {
-        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned)
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
         {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
@@ -188,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
         // Lerps between a given orientation when idle facing left and when running facing left
         // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned ?
+        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned || _isPullingBlock ?
             Quaternion.Lerp(toIdle, toRunning, 0f)
             : Quaternion.Lerp(toRunning, toIdle, 0f);
         modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
@@ -199,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing && _canMove && !_isStunned)
+        if (!_isDashing && _canMove && !_isStunned && !_isPullingBlock)
         {
             if (isGrounded || _isHooked)
                 _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
@@ -229,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = false;
 
         // Updates the direction the player is facing
-        if (_smoothMovement.x != 0f && !_isStunned)
+        if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock && !_isPullingBlock)
         {
             isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
         }
@@ -331,6 +346,8 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
+        Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4f, "FallDistance : " + (_initialFallHeight - _rigidbody.position.y), (_initialFallHeight - _rigidbody.position.y) > stunFallDistance ? redStyle : greenStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
