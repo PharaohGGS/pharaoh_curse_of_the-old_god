@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     private readonly int[] _screenSizes = new int[] { 3840, 2160, 2560, 1440, 1920, 1080, 1600, 900, 1366, 768 };
 
     private readonly int _defaultScreenSize = 4;
-    private readonly bool _defaultWindowMode = true;
+    private readonly int _defaultWindowMode = 0;
 
     public TMPro.TMP_Dropdown windowModeDropdown;
     public TMPro.TMP_Dropdown resolutionDropdown;
@@ -57,7 +57,7 @@ public class MainMenu : MonoBehaviour
 
     public void ResetSettings()
     {
-        windowModeDropdown.value = 0;
+        windowModeDropdown.value = _defaultWindowMode;
         resolutionDropdown.value = _defaultScreenSize;
         UpdateScreenSizeAndWindowMode();
     }
