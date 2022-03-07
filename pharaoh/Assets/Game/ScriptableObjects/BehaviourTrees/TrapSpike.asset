@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4177806761585027262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507a9e4a75ea743419768363852a9ec7, type: 3}
+  m_Name: CheckWaiting
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 525d75bd343e1d246bd1b19cc6b2a510
+  position: {x: -75, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+--- !u!114 &-2973997059861254435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfb9fb978ee6c14c93140708d9d6dc8, type: 3}
+  m_Name: CheckTargetInOverlap
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: c9bbb158eb71bd949bf704765d732c7b
+  position: {x: -110, y: 460}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  colliderLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  colliders3D: []
+  colliders2D: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ec8275fb4705c46b9a82a48e2a8bd4, type: 3}
+  m_Name: TrapSpike
+  m_EditorClassIdentifier: 
+  root: {fileID: 2054121860726835071}
+  treeState: 0
+  nodes:
+  - {fileID: 2054121860726835071}
+  - {fileID: 5959562998299471666}
+  - {fileID: 9220730513248718456}
+  - {fileID: -4177806761585027262}
+  - {fileID: 7158439463935566125}
+  - {fileID: -2973997059861254435}
+  - {fileID: 4920034404249943310}
+  blackboard:
+    debugData: []
+--- !u!114 &2054121860726835071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c175358d1845504089121d208a34ad1, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: f7597bc95e1b13348a391b94303300da
+  position: {x: 0, y: 183}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  child: {fileID: 5959562998299471666}
+--- !u!114 &3874224447833538104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706eb576675e58f40af9ad16d6d4693d, type: 3}
+  m_Name: TaskMeleeAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 23a8cc4b08a51c74a8122b4b127cdabd
+  position: {x: 75, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _healthComponent: {fileID: 0}
+  _attack: {fileID: 0}
+--- !u!114 &4920034404249943310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: feae1671d76f57543b83204c74a2c56d
+  position: {x: 75, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: 2dc71fa19625cf6489b2028d9cf6ed4c, type: 2}
+--- !u!114 &5959562998299471666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: e265372b1aa0fcb4d8fcf00eba76cadb
+  position: {x: 0, y: 310}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -2973997059861254435}
+  - {fileID: 9220730513248718456}
+--- !u!114 &7158439463935566125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff57ff5370a7104483f3e18bb527dc8, type: 3}
+  m_Name: TaskWait
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 5fba5f282dbb5e4409320769937a8b80
+  position: {x: 225, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  timeSince: 0
+--- !u!114 &9220730513248718456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4e9c6548fad7c4d887db71df10dc8e, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: ab5b1777f197eb0499d82ebdd67df52a
+  position: {x: 75.00008, y: 460.00003}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -4177806761585027262}
+  - {fileID: 7158439463935566125}
+  - {fileID: 4920034404249943310}

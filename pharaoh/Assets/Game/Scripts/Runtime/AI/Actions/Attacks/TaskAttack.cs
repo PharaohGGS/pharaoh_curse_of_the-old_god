@@ -6,11 +6,13 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class TaskAttack<T> : ActionNode where T : GearData
+    public class TaskAttack : ActionNode
     {
-        private HealthComponent _healthComponent;
+        [SerializeField] protected GearData gearData;
 
-        private AttackComponent _attack = null;
+        protected HealthComponent _healthComponent;
+
+        protected AttackComponent _attack = null;
         
         protected override void OnStart()
         {
@@ -24,11 +26,12 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Failure;
-            if (!_attack || !_attack.TryGetHolder<T>(out var holder) || 
+            if (!_attack || !gearData) return NodeState.Failure;
+
+            if (!gearData.canAttack || !_attack.TryGetHolder(gearData, out var holder) || 
                 !blackboard.TryGetData("target", out Transform t))
             {
-                return state;
+                return NodeState.Failure;
             }
 
             state = NodeState.Running;
@@ -46,16 +49,13 @@ namespace Pharaoh.AI.Actions
             }
             
             _attack.Attack(holder);
-
-            var data = holder.gear ? holder.gear.GetBaseData() : null;
-            if (!data) return state;
-
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", data.rate);
+            blackboard.SetData("waitTime", gearData.rate);
+
             return state;
         }
 
-        private void OnTargetDeath()
+        protected void OnTargetDeath()
         {
             blackboard.ClearData("target");
             _attack.target = null;

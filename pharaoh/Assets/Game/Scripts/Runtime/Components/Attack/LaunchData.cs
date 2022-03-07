@@ -19,6 +19,8 @@ namespace Pharaoh.Gameplay.Components
 
         public static LaunchData Calculate(float gravity, float height, Vector3 target, Vector3 position)
         {
+            gravity = gravity > 0 ? gravity : 0.5f;
+
             float g = gravity * -2;
 
             Vector3 offset = target - position;
@@ -33,6 +35,8 @@ namespace Pharaoh.Gameplay.Components
 
         public static LaunchData Calculate(float gravity, float height, Vector2 target, Vector2 position)
         {
+            gravity = gravity > 0 ? gravity : 0.5f;
+
             float g = gravity * -2;
 
             Vector2 offset = target - position;

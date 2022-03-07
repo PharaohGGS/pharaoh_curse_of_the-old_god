@@ -1,5 +1,26 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7023704341929279928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: adb9797648ce24843a222d83075545b3
+  position: {x: 81, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: d72e271f43e18f248a10a4d0cbda7770, type: 2}
 --- !u!114 &-4177806761585027262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +79,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51ec8275fb4705c46b9a82a48e2a8bd4, type: 3}
-  m_Name: Spike
+  m_Name: TrapArrow
   m_EditorClassIdentifier: 
   root: {fileID: 2054121860726835071}
   treeState: 0
@@ -67,11 +88,34 @@ MonoBehaviour:
   - {fileID: 5959562998299471666}
   - {fileID: 9220730513248718456}
   - {fileID: -4177806761585027262}
-  - {fileID: 3874224447833538104}
   - {fileID: 7158439463935566125}
   - {fileID: -2973997059861254435}
+  - {fileID: -7023704341929279928}
   blackboard:
     debugData: []
+--- !u!114 &1953488738548408615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d584aa8bfdd534cbd3dd6885f7305d, type: 3}
+  m_Name: TaskDistanceAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: f6555eeda86a8e048bc9fa80d9403f01
+  position: {x: 75, y: 625}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _healthComponent: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &2054121860726835071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,26 +137,6 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   child: {fileID: 5959562998299471666}
---- !u!114 &3874224447833538104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 706eb576675e58f40af9ad16d6d4693d, type: 3}
-  m_Name: TaskMeleeAttack
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 23a8cc4b08a51c74a8122b4b127cdabd
-  position: {x: 75, y: 625}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
 --- !u!114 &5959562998299471666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +175,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5fba5f282dbb5e4409320769937a8b80
-  position: {x: 225, y: 625}
+  position: {x: 231, y: 625}
   description: 
   blackboard:
     debugData: []
@@ -179,5 +203,5 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: -4177806761585027262}
-  - {fileID: 3874224447833538104}
   - {fileID: 7158439463935566125}
+  - {fileID: -7023704341929279928}

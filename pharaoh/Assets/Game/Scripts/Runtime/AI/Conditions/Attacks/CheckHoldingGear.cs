@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public class CheckTargetInAttackRange : ActionNode
+    public class CheckHoldingGear : ActionNode
     {
         [SerializeField] private GearData gearData;
 
@@ -23,21 +23,19 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder) || 
-                !blackboard.TryGetData("target", out Transform t))
-            {
-                return NodeState.Failure;
-            }
+            return !_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder) || !holder.gear.transform.parent
+                ? NodeState.Failure : NodeState.Success;
+        }
 
-            var distance = Vector3.Distance(agent.transform.position, t.position);
-            var data = holder.gear ? holder.gear.GetBaseData() : null;
-            if (!data || distance > data.range)
-            {
-                return state;
-            }
+        protected override void OnStop()
+        {
+            if (state != NodeState.Failure) return;
+            if (!_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder)) return;
 
-            blackboard.SetData("waitTime", data.rate);
-            return NodeState.Success; 
+            if (holder.gear.isThrown && holder.gear.isGrounded)
+            {
+                blackboard.SetData("target", holder.gear.transform);
+            }
         }
     }
 }

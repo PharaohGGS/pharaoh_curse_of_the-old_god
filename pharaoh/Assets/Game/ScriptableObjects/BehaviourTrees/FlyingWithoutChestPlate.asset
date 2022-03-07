@@ -62,6 +62,27 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   colliders: []
+--- !u!114 &-5828985312540373061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 33dd409f2fb59514aa7641a1693f8b86
+  position: {x: -446, y: 838.00006}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
 --- !u!114 &-5196779309447961558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +103,8 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &-2544149763600791116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +173,7 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   currentWaypointIndex: 0
+  ignoreHeight: 0
 --- !u!114 &-1643550015293667367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +196,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: -8096251022630008292}
-  - {fileID: 3350457442567734327}
+  - {fileID: -5828985312540373061}
 --- !u!114 &-251212995895321325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,9 +248,9 @@ MonoBehaviour:
   - {fileID: -1643550015293667367}
   - {fileID: 9182453372911218589}
   - {fileID: -8096251022630008292}
-  - {fileID: 3350457442567734327}
-  - {fileID: 7543306493078875024}
-  - {fileID: -5196779309447961558}
+  - {fileID: -5828985312540373061}
+  - {fileID: 5066544794399076587}
+  - {fileID: 1776899634528298314}
   blackboard:
     debugData: []
 --- !u!114 &1246385073974385994
@@ -276,6 +300,27 @@ MonoBehaviour:
   - {fileID: 7746393604834486671}
   - {fileID: -2544149763600791116}
   - {fileID: 1246385073974385994}
+--- !u!114 &1776899634528298314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bea807811754144bf6e2b8f7eb7215, type: 3}
+  m_Name: CheckTargetInAttackRange
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 9bf97addb618e39469faf7a713c1a533
+  position: {x: -810, y: 678}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
 --- !u!114 &2032379574769424279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +361,9 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _healthComponent: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &3968242717453709997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +384,27 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &5066544794399076587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23702d243fa431a4c8677834fe65412e, type: 3}
+  m_Name: CheckHoldingGear
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 82fe63cb29a02a143816ee9bf46dcff3
+  position: {x: -960, y: 678}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
 --- !u!114 &6391869510671860528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,8 +447,10 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
+  - {fileID: 5066544794399076587}
   - {fileID: 9182453372911218589}
   - {fileID: -1643550015293667367}
+  - {fileID: 1776899634528298314}
 --- !u!114 &7543306493078875024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,6 +471,7 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &7746393604834486671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,8 +493,6 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: 7543306493078875024}
-  - {fileID: -5196779309447961558}
   - {fileID: 7061892331425943572}
 --- !u!114 &9182453372911218589
 MonoBehaviour:

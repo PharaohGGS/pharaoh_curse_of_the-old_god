@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 
 namespace Pharaoh.Gameplay.Components
@@ -12,6 +13,8 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] private int maxPoolSize;
 
         [SerializeField] private Transform shootStart;
+
+        [HideInInspector] public UnityEvent<Damager> onGearShoot = new UnityEvent<Damager>();
 
         private IObjectPool<Damager> _pool;
         public IObjectPool<Damager> pool 
@@ -53,13 +56,12 @@ namespace Pharaoh.Gameplay.Components
             return damager;
         }
         
-        public void Shoot(Damager shootDamager)
+        public void Shoot(Gear shootingGear)
         {
-            //if (shootDamager != damager || !damager.data.throwable ||
-            //    !TryGetComponent(out Ballistic ballistic)) return;
+            if (shootingGear != this) return;
 
-            //transform.parent = null;
-            //onWeaponThrown?.Invoke();
+            var damager = pool.Get();
+
         }
     }
 }

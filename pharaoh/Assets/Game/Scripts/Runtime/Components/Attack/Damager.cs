@@ -13,7 +13,10 @@ namespace Pharaoh.Gameplay.Components
     {
         [SerializeField] private DamagerData data;
         public LayerMask damagingLayers;
-        public UnityEvent<Damager> onTriggerHit;
+        [HideInInspector] public UnityEvent<Damager> onTriggerHit;
+
+        public LayerMask collidingLayers;
+        [HideInInspector] public UnityEvent<Damager> onCollidingHit = new UnityEvent<Damager>();
 
         public Rigidbody2D rb2D { get; protected set; }
         public Collider2D coll2D { get; protected set; }
@@ -52,6 +55,13 @@ namespace Pharaoh.Gameplay.Components
         protected virtual void OnTriggerExit2D(Collider2D other)
         {
             lastTriggerEnter = null;
+        }
+
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!collision.gameObject.IsInLayerMask(collidingLayers)) return;
+            
+            onCollidingHit?.Invoke(this);
         }
     }
 }
