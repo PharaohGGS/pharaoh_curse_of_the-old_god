@@ -185,6 +185,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""NOCLIP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2f7e8f1-7ce5-4708-87ea-a7b182509a32"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NOCLIP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -234,8 +245,30 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f9819100-9fcb-4748-9ea6-243d3e154666"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6878981f-0bd3-4991-a24a-ff7db503a821"",
                     ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b22a37f-88b5-4b0e-a7b5-7f83c3d794b4"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -248,6 +281,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""id"": ""4dbe063f-81ce-4467-bd4c-88d25fc65e77"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9b8305c-bd1b-4415-a955-f13442e865a5"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HookBlock"",

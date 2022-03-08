@@ -25,6 +25,8 @@ namespace Pharaoh.Gameplay
         private PlayerInput _playerInput;
         private Rigidbody2D _rigidbody;
         private PlayerMovement _playerMovement;
+
+        private Vector3 _playerPositionOnHook;
         
         [Header("Events")] public UnityEvent onHook = new UnityEvent();
         public UnityEvent onUnHook = new UnityEvent();
@@ -44,7 +46,7 @@ namespace Pharaoh.Gameplay
         {
             _playerInput.Enable();
             _playerInput.CharacterActions.Hook.performed += OnHook;
-            _playerInput.CharacterControls.Move.performed += OnMove;
+            //_playerInput.CharacterControls.Move.performed += OnMove;
             _playerInput.CharacterControls.Jump.started += OnJump;
             _playerInput.CharacterControls.Dash.started += OnDash;
         }
@@ -52,7 +54,7 @@ namespace Pharaoh.Gameplay
         private void OnDisable()
         {
             _playerInput.CharacterActions.Hook.performed -= OnHook;
-            _playerInput.CharacterControls.Move.performed -= OnMove;
+            //_playerInput.CharacterControls.Move.performed -= OnMove;
             _playerInput.CharacterControls.Jump.started -= OnJump;
             _playerInput.CharacterControls.Dash.started -= OnDash;
             _playerInput.Disable();
@@ -150,6 +152,8 @@ namespace Pharaoh.Gameplay
 
             if (!_currentTarget || !_rigidbody) return;
 
+            _playerPositionOnHook = _currentTarget.transform.Find("PlayerPosition").transform.position;
+
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
@@ -177,17 +181,17 @@ namespace Pharaoh.Gameplay
             Vector2 startPosition = _rigidbody.position;
             float current = 0f;
 
-            while (Vector2.Distance(_currentTarget.transform.position, _rigidbody.position) > offsetHook)
+            while (Vector2.Distance(_playerPositionOnHook, _rigidbody.position) > offsetHook)
             {
                 _isOnHook = false;
-                Vector2 direction = (Vector2)_currentTarget.transform.position - _rigidbody.position;
-                float distance = Vector2.Distance(_currentTarget.transform.position, _rigidbody.position);
+                Vector2 direction = (Vector2)_playerPositionOnHook - _rigidbody.position;
+                float distance = Vector2.Distance(_playerPositionOnHook, _rigidbody.position);
                 var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
 
                 if (hit2Ds.Length > 0) UnHook();
 
                 current = Mathf.MoveTowards(current, 1f, moveSpeed * Time.fixedDeltaTime);
-                _rigidbody.MovePosition(Vector2.Lerp(startPosition, _currentTarget.transform.position, smoothCurve.Evaluate(current)));
+                _rigidbody.MovePosition(Vector2.Lerp(startPosition, _playerPositionOnHook, smoothCurve.Evaluate(current)));
                 yield return _waitForFixedUpdate;
             }
 
