@@ -9,7 +9,6 @@ namespace Pharaoh.Gameplay.Components
     public class Ballistic : MonoBehaviour
     {
         [SerializeField] private bool rotate;
-        [SerializeField] private bool usePhysics = true;
         public float gravity = 9.81f;
         public float height = 2f;
 
@@ -59,8 +58,14 @@ namespace Pharaoh.Gameplay.Components
                 _rb2D.AddForce(Vector2.up * (gravity * -2f));
                 if (rotate && _rb2D.velocity.normalized.magnitude >= Mathf.Epsilon)
                 {
-                    float velocityAngle = Mathf.Atan2(_rb2D.velocity.y, _rb2D.velocity.x) * Mathf.Rad2Deg;
-                    _rb2D.rotation = Mathf.MoveTowardsAngle(_rb2D.rotation, velocityAngle, gravity * 2f);
+                    var velocity = _rb2D.velocity.normalized;
+                    float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+                    var diffAngle = Mathf.Abs(velocityAngle - _rb2D.rotation);
+                    _rb2D.MoveRotation(_rb2D.rotation + diffAngle * Time.fixedDeltaTime);
+                    //_rb2D.rotation = Mathf.MoveTowardsAngle(_rb2D.rotation, velocityAngle - 90, gravity * 2f);
+                    //var rotatedVectorToTarget = Quaternion.Euler(0, 0, velocityAngle - 90);
+                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, rotatedVectorToTarget,
+                    //    (_rb2D.velocity.sqrMagnitude * gravity) * Time.fixedDeltaTime);
                 }
 
                 yield return _waitForFixedUpdate;

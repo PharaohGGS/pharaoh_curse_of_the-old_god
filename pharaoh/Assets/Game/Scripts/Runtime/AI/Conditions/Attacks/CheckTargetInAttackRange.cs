@@ -29,8 +29,14 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
 
+            var range = gearData.range;
+            if (gearData is MeleeGearData {throwable: true} meleeGearData)
+            {
+                range = meleeGearData.throwableRange;
+            }
+
             var distance = Vector2.Distance(holder.gear.transform.position, t.position);
-            return distance > gearData.range ? NodeState.Failure : NodeState.Success;
+            return distance > range ? NodeState.Failure : NodeState.Success;
         }
     }
 }

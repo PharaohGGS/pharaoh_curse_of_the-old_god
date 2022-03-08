@@ -36,6 +36,7 @@ namespace Pharaoh.Gameplay.Components
         {
             damager.gameObject.SetActive(false);
             damager.transform.localPosition = Vector3.zero;
+            damager.transform.localRotation = Quaternion.identity;
         }
 
         private void OnTakeFromPool(Damager damager)

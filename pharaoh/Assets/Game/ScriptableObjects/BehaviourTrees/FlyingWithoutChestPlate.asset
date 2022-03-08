@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: feb78949a1f693e4fa8d4163dad5f3fa
-  position: {x: -596.2821, y: 838.3999}
+  position: {x: -586.4, y: 671.19995}
   description: 
   blackboard:
     debugData: []
@@ -56,12 +56,14 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 4cf0c267dc94abf47b61f8608446ce58
-  position: {x: -193.6001, y: 492}
+  position: {x: -193.5999, y: 491.20007}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  colliders: []
+  is2D: 0
+  colliders3D: []
+  colliders2D: []
 --- !u!114 &-5828985312540373061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +79,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 33dd409f2fb59514aa7641a1693f8b86
-  position: {x: -446, y: 838.00006}
+  position: {x: -436.8, y: 671.19995}
   description: 
   blackboard:
     debugData: []
@@ -189,7 +191,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 1773fc4c5e985df408d81e0869ad382a
-  position: {x: -446.4, y: 678.40015}
+  position: {x: -436.8, y: 524}
   description: 
   blackboard:
     debugData: []
@@ -236,7 +238,6 @@ MonoBehaviour:
   - {fileID: 1374317325339367763}
   - {fileID: 1246385073974385994}
   - {fileID: -2544149763600791116}
-  - {fileID: 7746393604834486671}
   - {fileID: 6391869510671860528}
   - {fileID: -2224927277969790943}
   - {fileID: -2000076536378003351}
@@ -297,7 +298,7 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: 7746393604834486671}
+  - {fileID: 7061892331425943572}
   - {fileID: -2544149763600791116}
   - {fileID: 1246385073974385994}
 --- !u!114 &1776899634528298314
@@ -315,7 +316,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 9bf97addb618e39469faf7a713c1a533
-  position: {x: -810, y: 678}
+  position: {x: -804.38696, y: 523.2}
   description: 
   blackboard:
     debugData: []
@@ -399,7 +400,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 82fe63cb29a02a143816ee9bf46dcff3
-  position: {x: -960, y: 678}
+  position: {x: -954.7869, y: 524}
   description: 
   blackboard:
     debugData: []
@@ -441,16 +442,16 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5f847bccfb23ac848a08ecbc9727a9eb
-  position: {x: -446.68216, y: 524.7999}
+  position: {x: -436.8, y: 339.20004}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
   - {fileID: 5066544794399076587}
+  - {fileID: 1776899634528298314}
   - {fileID: 9182453372911218589}
   - {fileID: -1643550015293667367}
-  - {fileID: 1776899634528298314}
 --- !u!114 &7543306493078875024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,28 +473,6 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   _attack: {fileID: 0}
---- !u!114 &7746393604834486671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: fbf433b75f543414eb53b77729b19c87
-  position: {x: -446.68216, y: 338.39996}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  children:
-  - {fileID: 7061892331425943572}
 --- !u!114 &9182453372911218589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,7 +488,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 582e6c3d730321e4f9cfa5a712f191cf
-  position: {x: -596.2821, y: 678.4}
+  position: {x: -589.98694, y: 523.2}
   description: 
   blackboard:
     debugData: []

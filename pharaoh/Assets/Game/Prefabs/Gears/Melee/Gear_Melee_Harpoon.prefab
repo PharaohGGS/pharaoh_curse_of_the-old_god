@@ -236,6 +236,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7451239046983173651}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: SetAttackState
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7451239046983173651}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
         m_MethodName: Throw
         m_Mode: 0
         m_Arguments:
@@ -296,6 +308,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  maxOverlapedColliders: 3
 --- !u!114 &6013927071415405160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4f568b8ae49cdb4eb1cbf2c69c187a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePhysics: 1
+  rotate: 1
   gravity: 9.81
   height: 2
 --- !u!114 &7451239046983173651
