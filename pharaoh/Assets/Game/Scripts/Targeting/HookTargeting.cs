@@ -193,6 +193,8 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget || !_rigidbody) yield break;
 
+            hookIndicator.SetActive(false);
+
             Vector2 startPosition = _rigidbody.position;
             float current = 0f;
 
@@ -209,6 +211,8 @@ namespace Pharaoh.Gameplay
                 _rigidbody.MovePosition(Vector2.Lerp(startPosition, _playerPositionOnHook, smoothCurve.Evaluate(current)));
                 yield return _waitForFixedUpdate;
             }
+
+            hookIndicator.SetActive(true);
 
             _isOnHook = true;
             onEndHookMovement?.Invoke();
