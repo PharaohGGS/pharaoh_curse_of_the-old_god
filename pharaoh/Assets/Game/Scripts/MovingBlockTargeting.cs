@@ -17,6 +17,8 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     public float pullForce = 1f;
     public float pullDuration = 1f;
 
+    public GameObject hookIndicator;
+
     protected override void Awake()
     {
         base.Awake();
@@ -24,6 +26,8 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         _playerInput.CharacterActions.HookBlock.started += HookToBlock;
         _playerInput.CharacterActions.HookBlock.performed += Pull;
         _playerMovement = GetComponent<PlayerMovement>();
+
+        hookIndicator = Instantiate(hookIndicator, transform);
     }
 
     private void Update()
@@ -37,6 +41,17 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
                 UnHook();
             }
         }
+
+        if (_playerMovement.IsFacingRight && _bestTargetRight != null) //facing right with right target
+            hookIndicator.transform.position = _bestTargetRight.transform.position;
+        else if (_playerMovement.IsFacingRight && _bestTargetRight == null) //facing right without right target
+            hookIndicator.transform.position = _bestTargetLeft != null ? _bestTargetLeft.transform.position : new Vector3(-1000f, -1000f, 0f);
+        else if (!_playerMovement.IsFacingRight && _bestTargetLeft != null) //facing left with left target
+            hookIndicator.transform.position = _bestTargetLeft.transform.position;
+        else if (!_playerMovement.IsFacingRight && _bestTargetLeft == null) //facing left without left target
+            hookIndicator.transform.position = _bestTargetRight != null ? _bestTargetRight.transform.position : new Vector3(-1000f, -1000f, 0f);
+        else //none of the above
+            hookIndicator.transform.position = new Vector3(-1000f, -1000f, 0f);
     }
 
     private void HookToBlock(InputAction.CallbackContext ctx)
