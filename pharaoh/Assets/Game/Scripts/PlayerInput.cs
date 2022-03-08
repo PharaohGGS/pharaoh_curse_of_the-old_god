@@ -185,6 +185,118 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""NOCLIP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2f7e8f1-7ce5-4708-87ea-a7b182509a32"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NOCLIP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""CharacterActions"",
+            ""id"": ""74dc7952-b854-4390-8fb2-c53642c0cb1f"",
+            ""actions"": [
+                {
+                    ""name"": ""Hook"",
+                    ""type"": ""Button"",
+                    ""id"": ""afba71f3-c9d2-413c-9b27-8049c44df9db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""ddebdad3-dc6a-4c3d-9b5d-e7417e1a4674"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HookBlock"",
+                    ""type"": ""Button"",
+                    ""id"": ""8dc955b4-4410-4da3-99cb-57f1265aca8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""65dac8c7-57c6-4d01-b9a2-af2fef8fb8ef"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9819100-9fcb-4748-9ea6-243d3e154666"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6878981f-0bd3-4991-a24a-ff7db503a821"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b22a37f-88b5-4b0e-a7b5-7f83c3d794b4"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dbe063f-81ce-4467-bd4c-88d25fc65e77"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9b8305c-bd1b-4415-a955-f13442e865a5"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -197,6 +309,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
         m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
+        // CharacterActions
+        m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
+        m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
+        m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
+        m_CharacterActions_HookBlock = m_CharacterActions.FindAction("HookBlock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -309,11 +426,66 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public CharacterControlsActions @CharacterControls => new CharacterControlsActions(this);
+
+    // CharacterActions
+    private readonly InputActionMap m_CharacterActions;
+    private ICharacterActionsActions m_CharacterActionsActionsCallbackInterface;
+    private readonly InputAction m_CharacterActions_Hook;
+    private readonly InputAction m_CharacterActions_Grab;
+    private readonly InputAction m_CharacterActions_HookBlock;
+    public struct CharacterActionsActions
+    {
+        private @PlayerInput m_Wrapper;
+        public CharacterActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Hook => m_Wrapper.m_CharacterActions_Hook;
+        public InputAction @Grab => m_Wrapper.m_CharacterActions_Grab;
+        public InputAction @HookBlock => m_Wrapper.m_CharacterActions_HookBlock;
+        public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CharacterActionsActions set) { return set.Get(); }
+        public void SetCallbacks(ICharacterActionsActions instance)
+        {
+            if (m_Wrapper.m_CharacterActionsActionsCallbackInterface != null)
+            {
+                @Hook.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Hook.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Hook.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Grab.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @Grab.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @Grab.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnGrab;
+                @HookBlock.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+                @HookBlock.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+                @HookBlock.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+            }
+            m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Hook.started += instance.OnHook;
+                @Hook.performed += instance.OnHook;
+                @Hook.canceled += instance.OnHook;
+                @Grab.started += instance.OnGrab;
+                @Grab.performed += instance.OnGrab;
+                @Grab.canceled += instance.OnGrab;
+                @HookBlock.started += instance.OnHookBlock;
+                @HookBlock.performed += instance.OnHookBlock;
+                @HookBlock.canceled += instance.OnHookBlock;
+            }
+        }
+    }
+    public CharacterActionsActions @CharacterActions => new CharacterActionsActions(this);
     public interface ICharacterControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnNOCLIP(InputAction.CallbackContext context);
+    }
+    public interface ICharacterActionsActions
+    {
+        void OnHook(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
+        void OnHookBlock(InputAction.CallbackContext context);
     }
 }

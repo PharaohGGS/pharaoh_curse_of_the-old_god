@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace BehaviourTree.Tools
 {
@@ -16,7 +17,7 @@ namespace BehaviourTree.Tools
             public string value;
         }
 
-        private Dictionary<string, object> _datas = new Dictionary<string, object>();
+        private Dictionary<string, object> _data = new Dictionary<string, object>();
 
         #region Debug
 
@@ -24,20 +25,53 @@ namespace BehaviourTree.Tools
 
         #endregion
 
-        public object GetData(string key)
+        public bool ContainsData(string key)
         {
-            return _datas.TryGetValue(key, out var value) ? value : null;
+            return _data.ContainsKey(key);
+        }
+
+        public bool TryGetData(string key, out object value)
+        {
+            return _data.TryGetValue(key, out value);
+        }
+
+        public bool TryGetData<T>(string key, out T value)
+        {
+            bool found = ContainsData(key);
+            value = found ? (T) _data[key] : default;
+            return found;
+        }
+
+        public T GetData<T>(string key)
+        {
+            bool isGettingValue = _data.TryGetValue(key, out var value);
+            bool isGenericType = value is T;
+            return isGettingValue && isGenericType ? (T)value : default;
         }
 
         public void SetData(string key, object value)
         {
-            if (_datas.ContainsKey(key))
+            if (_data.ContainsKey(key))
             {
-                _datas[key] = value;
+                _data[key] = value;
             }
             else
             {
-                _datas.Add(key, value);
+                _data.Add(key, value);
+            }
+
+            SetupListDebug();
+        }
+
+        public void SetData<T>(string key, T value)
+        {
+            if (_data.ContainsKey(key))
+            {
+                _data[key] = value;
+            }
+            else
+            {
+                _data.Add(key, value);
             }
 
             SetupListDebug();
@@ -46,9 +80,9 @@ namespace BehaviourTree.Tools
         public bool ClearData(string key)
         {
             bool result = false;
-            if (_datas.ContainsKey(key))
+            if (_data.ContainsKey(key))
             {
-                _datas.Remove(key);
+                _data.Remove(key);
                 result = true;
             }
 
@@ -60,10 +94,10 @@ namespace BehaviourTree.Tools
         private void SetupListDebug()
         {
             debugData.Clear();
-            var keyData = _datas.Keys.ToList();
+            var keyData = _data.Keys.ToList();
             foreach (var key in keyData)
             {
-                var value = _datas[key];
+                var value = _data[key];
                 debugData.Add(new Data
                 {
                     key = key,
