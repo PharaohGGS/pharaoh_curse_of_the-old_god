@@ -184,6 +184,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnEndHookMovement()
     {
+        _initialFallHeight = _rigidbody.position.y;
+
         _isHooked = true; 
         animator.SetBool("Is Grounded", isGrounded);
     }
