@@ -13,6 +13,7 @@ namespace Pharaoh.Gameplay.Components
         [HideInInspector] public UnityEvent onWeaponThrown = new UnityEvent();
 
         private Animator _animator;
+        private Transform _currentTarget;
 
         protected override void Awake()
         {
@@ -44,10 +45,23 @@ namespace Pharaoh.Gameplay.Components
             coll2D.enabled = value > 0;
         }
 
+        public void SetupAttack(Gear attackingGear, Transform target)
+        {
+            if (attackingGear != this || !target) return;
+
+            _currentTarget = target;
+        }
+
         public void Throw(Gear gear)
         {
-            if (this != gear || !TryGetComponent(out Ballistic ballistic)) return;
-            if (GetData()?.throwable == false) return;
+            if (this != gear || GetData()?.throwable == false) return;
+
+            if (rb2D)
+            {
+                rb2D.bodyType = RigidbodyType2D.Dynamic;
+                var direction = (Vector2)_currentTarget.position - rb2D.position; 
+                rb2D.AddForce(direction.normalized * GetData().throwableInitialVelocity, ForceMode2D.Impulse);
+            }
 
             transform.parent = null;
             onWeaponThrown?.Invoke();

@@ -308,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4f568b8ae49cdb4eb1cbf2c69c187a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usePhysics: 1
   gravity: 9.81
   height: 2
 --- !u!114 &7451239046983173651
@@ -363,9 +364,9 @@ MonoBehaviour:
   <response>k__BackingField:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6013927071415405160}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
-        m_MethodName: AimForImpact
+      - m_Target: {fileID: 7451239046983173651}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: SetupAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

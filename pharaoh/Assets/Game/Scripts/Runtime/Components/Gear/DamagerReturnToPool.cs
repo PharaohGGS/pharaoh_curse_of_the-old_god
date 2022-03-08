@@ -18,13 +18,13 @@ namespace Pharaoh.Gameplay.Components
 
         private void OnEnable()
         {
-            _damager?.onTriggerHit?.AddListener(Release);
+            //_damager?.onTriggerHit?.AddListener(Release);
             _damager?.onCollidingHit?.AddListener(Release);
         }
 
         private void OnDisable()
         {
-            _damager?.onTriggerHit?.RemoveListener(Release);
+            //_damager?.onTriggerHit?.RemoveListener(Release);
             _damager?.onCollidingHit?.RemoveListener(Release);
         }
 
@@ -33,7 +33,6 @@ namespace Pharaoh.Gameplay.Components
             if (hitDamager != _damager) return;
 
             pool?.Release(hitDamager);
-            hitDamager.transform.localPosition = Vector3.zero;
         }
     }
 }

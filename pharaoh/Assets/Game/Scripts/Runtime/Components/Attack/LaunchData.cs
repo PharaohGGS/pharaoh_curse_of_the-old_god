@@ -19,8 +19,6 @@ namespace Pharaoh.Gameplay.Components
 
         public static LaunchData Calculate(float gravity, float height, Vector3 target, Vector3 position)
         {
-            gravity = gravity > 0 ? gravity : 0.5f;
-
             float g = gravity * -2;
 
             Vector3 offset = target - position;
@@ -35,14 +33,25 @@ namespace Pharaoh.Gameplay.Components
 
         public static LaunchData Calculate(float gravity, float height, Vector2 target, Vector2 position)
         {
-            gravity = gravity > 0 ? gravity : 0.5f;
-
             float g = gravity * -2;
 
             Vector2 offset = target - position;
             float time = Mathf.Sqrt(-2 * height / (g * 2)) +
                          Mathf.Sqrt(2 * (offset.y - height) / g);
+            
+            Vector2 vy = Vector2.up * Mathf.Sqrt(-2 * g * height);
+            Vector2 vx = new Vector2(offset.x, 0) / time;
 
+            return new LaunchData(vx + vy * -Mathf.Sign(g), time);
+        }
+
+        public static LaunchData Calculate(float speed, float gravity, float height, Vector2 target, Vector2 position)
+        {
+            float g = gravity * -2;
+
+            Vector2 offset = target - position;
+            float time = offset.magnitude / speed;
+            
             Vector2 vy = Vector2.up * Mathf.Sqrt(-2 * g * height);
             Vector2 vx = new Vector2(offset.x, 0) / time;
 

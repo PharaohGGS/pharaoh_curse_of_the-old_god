@@ -11,8 +11,8 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] private GearHolder[] holders;
         public Transform target { get; set; }
 
-        public UnityEvent<Gear> onDamagerAttack = new UnityEvent<Gear>();
-        public UnityEvent<Transform> onDamagerAimTarget = new UnityEvent<Transform>();
+        public UnityEvent<Gear> onGearAttack = new UnityEvent<Gear>();
+        public UnityEvent<Gear, Transform> onGearAimTarget = new UnityEvent<Gear, Transform>();
 
         private void Awake()
         {
@@ -26,8 +26,8 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!holder || !holder.gear) return;
             
-            onDamagerAimTarget?.Invoke(target);
-            onDamagerAttack?.Invoke(holder.gear);
+            onGearAimTarget?.Invoke(holder.gear, target);
+            onGearAttack?.Invoke(holder.gear);
         }
 
         public bool ContainsHolder(GearData data)

@@ -59,6 +59,7 @@ namespace Pharaoh.Gameplay.Components
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
+            Debug.Log($"{collision.gameObject.name}");
             if (!collision.gameObject.IsInLayerMask(collidingLayers)) return;
             
             onCollidingHit?.Invoke(this);

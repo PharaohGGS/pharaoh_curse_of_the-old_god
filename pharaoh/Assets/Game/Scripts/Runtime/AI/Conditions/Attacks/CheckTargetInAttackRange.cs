@@ -23,13 +23,13 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || !gearData || !_attack.ContainsHolder(gearData) || 
+            if (!_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder) || 
                 !blackboard.TryGetData("target", out Transform t))
             {
                 return NodeState.Failure;
             }
 
-            var distance = Vector2.Distance(agent.transform.position, t.position);
+            var distance = Vector2.Distance(holder.gear.transform.position, t.position);
             return distance > gearData.range ? NodeState.Failure : NodeState.Success;
         }
     }
