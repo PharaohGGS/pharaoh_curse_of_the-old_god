@@ -32,6 +32,8 @@ namespace Pharaoh.Gameplay
         public UnityEvent onUnHook = new UnityEvent();
         public UnityEvent onEndHookMovement = new UnityEvent();
 
+        public GameObject hookIndicator;
+
         #region Unity Methods
 
         protected override void Awake()
@@ -40,6 +42,8 @@ namespace Pharaoh.Gameplay
             _playerInput = new PlayerInput();
             _rigidbody = GetComponent<Rigidbody2D>();
             _playerMovement = GetComponent<PlayerMovement>();
+
+            hookIndicator = Instantiate(hookIndicator, transform);
         }
 
         private void OnEnable()
@@ -64,6 +68,17 @@ namespace Pharaoh.Gameplay
         {
             if (!_isOnHook && _currentTarget) return;
             SearchTargets();
+
+            if (_playerMovement.IsFacingRight && _bestTargetRight != null) //facing right with right target
+                hookIndicator.transform.position = _bestTargetRight.transform.position;
+            else if (_playerMovement.IsFacingRight && _bestTargetRight == null) //facing right without right target
+                hookIndicator.transform.position = _bestTargetLeft != null ? _bestTargetLeft.transform.position : new Vector3(-1000f, -1000f, 0f);
+            else if (!_playerMovement.IsFacingRight && _bestTargetLeft != null) //facing left with left target
+                hookIndicator.transform.position = _bestTargetLeft.transform.position;
+            else if (!_playerMovement.IsFacingRight && _bestTargetLeft == null) //facing left without left target
+                hookIndicator.transform.position = _bestTargetRight != null ? _bestTargetRight.transform.position : new Vector3(-1000f, -1000f, 0f);
+            else //none of the above
+                hookIndicator.transform.position = new Vector3(-1000f, -1000f, 0f);
         }
 
         #region Editor Debug
