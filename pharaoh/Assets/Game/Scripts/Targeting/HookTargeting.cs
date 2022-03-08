@@ -44,7 +44,7 @@ namespace Pharaoh.Gameplay
         {
             _playerInput.Enable();
             _playerInput.CharacterActions.Hook.performed += OnHook;
-            _playerInput.CharacterControls.Move.performed += OnMove;
+            //_playerInput.CharacterControls.Move.performed += OnMove;
             _playerInput.CharacterControls.Jump.started += OnJump;
             _playerInput.CharacterControls.Dash.started += OnDash;
         }
@@ -52,7 +52,7 @@ namespace Pharaoh.Gameplay
         private void OnDisable()
         {
             _playerInput.CharacterActions.Hook.performed -= OnHook;
-            _playerInput.CharacterControls.Move.performed -= OnMove;
+            //_playerInput.CharacterControls.Move.performed -= OnMove;
             _playerInput.CharacterControls.Jump.started -= OnJump;
             _playerInput.CharacterControls.Dash.started -= OnDash;
             _playerInput.Disable();
