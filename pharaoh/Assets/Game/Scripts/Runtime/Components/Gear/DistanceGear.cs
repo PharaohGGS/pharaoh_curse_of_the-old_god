@@ -1,5 +1,7 @@
 ﻿using System;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 
 namespace Pharaoh.Gameplay.Components
@@ -13,19 +15,16 @@ namespace Pharaoh.Gameplay.Components
 
         [SerializeField] private Transform shootStart;
 
-        private IObjectPool<Damager> _pool;
-        public IObjectPool<Damager> pool 
-        { 
-            get
-            {
-                if (_pool == null)
-                {
-                    _pool = new LinkedPool<Damager>(CreatePoolItem, OnTakeFromPool, OnReturnedToPool,
-                        OnDestroyPoolObject, collectionChecks, maxPoolSize);
-                }
+        [HideInInspector] public UnityEvent<Damager> onGearShoot = new UnityEvent<Damager>();
+        public IObjectPool<Damager> ammos { get; private set; }
 
-                return _pool;
-            }
+        private Transform _currentTarget = null;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            ammos = new LinkedPool<Damager>(CreatePoolItem, OnTakeFromPool, OnReturnedToPool,
+                OnDestroyPoolObject, collectionChecks, maxPoolSize);
         }
 
         private void OnDestroyPoolObject(Damager damager)
@@ -36,6 +35,8 @@ namespace Pharaoh.Gameplay.Components
         private void OnReturnedToPool(Damager damager)
         {
             damager.gameObject.SetActive(false);
+            damager.transform.localPosition = Vector3.zero;
+            damager.transform.localRotation = Quaternion.identity;
         }
 
         private void OnTakeFromPool(Damager damager)
@@ -48,18 +49,34 @@ namespace Pharaoh.Gameplay.Components
             var damager = GameObject.Instantiate(damagerPrefab, shootStart.position, Quaternion.identity, transform);
 
             var returnToPool = damager.gameObject.AddComponent<DamagerReturnToPool>();
-            returnToPool.pool = pool;
+            returnToPool.pool = ammos;
 
             return damager;
         }
-        
-        public void Shoot(Damager shootDamager)
-        {
-            //if (shootDamager != damager || !damager.data.throwable ||
-            //    !TryGetComponent(out Ballistic ballistic)) return;
 
-            //transform.parent = null;
-            //onWeaponThrown?.Invoke();
+        public void SetupShoot(Gear shootingGear, Transform target)
+        {
+            if (shootingGear != this || !target) return;
+
+            _currentTarget = target;
+        }
+        
+        public void Shoot(Gear shootingGear)
+        {
+            if (shootingGear != this) return;
+
+            var damager = ammos.Get();
+
+            if (damager.TryGetComponent(out Rigidbody2D rb2D))
+            {
+                rb2D.bodyType = RigidbodyType2D.Dynamic;
+                var direction = (Vector2)_currentTarget.position - rb2D.position;
+                rb2D.AddForce(direction.normalized * GetData().shootInitialVelocity, ForceMode2D.Impulse);
+            }
+
+            onGearShoot?.Invoke(damager);
+
+            LogHandler.SendMessage($"{shootingGear.name} shooting {damager.name}", MessageType.Warning);
         }
     }
 }

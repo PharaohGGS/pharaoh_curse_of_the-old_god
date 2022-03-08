@@ -11,6 +11,7 @@ public class MeleeGearDataEditor : GearDataEditor
     protected SerializedProperty _isThrowable;
     protected SerializedProperty _throwableRangeProp;
     protected SerializedProperty _throwablePickingTimeProp;
+    protected SerializedProperty _throwableInitialVelocityProp;
     
     protected override void OnEnable()
     {
@@ -18,6 +19,7 @@ public class MeleeGearDataEditor : GearDataEditor
         _isThrowable = serializedObject.FindProperty("throwable");
         _throwableRangeProp = serializedObject.FindProperty("throwableRange");
         _throwablePickingTimeProp = serializedObject.FindProperty("throwablePickingTime");
+        _throwableInitialVelocityProp = serializedObject.FindProperty("throwableInitialVelocity");
     }
 
     protected override void DrawSpecificProperties()
@@ -27,5 +29,6 @@ public class MeleeGearDataEditor : GearDataEditor
         if (_isThrowable?.boolValue != true) return;
         EditorGUILayout.PropertyField(_throwableRangeProp);
         EditorGUILayout.PropertyField(_throwablePickingTimeProp);
+        EditorGUILayout.PropertyField(_throwableInitialVelocityProp);
     }
 }

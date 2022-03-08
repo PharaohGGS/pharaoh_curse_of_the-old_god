@@ -8,5 +8,6 @@ namespace Pharaoh.Gameplay.Components
         public bool throwable;
         [HideInInspector] public float throwableRange;
         [HideInInspector] public float throwablePickingTime = 1f;
+        [HideInInspector] public float throwableInitialVelocity = 5f;
     }
 }

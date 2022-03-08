@@ -17,8 +17,9 @@ namespace Pharaoh.AI.Actions
         [Tooltip("layer of detection for the targets")]
         public LayerMask detectionLayer;
 
-        private bool _is2D = false;
         private bool _hasDetectionCollider = false;
+
+        [HideInInspector] public bool is2D;
         [HideInInspector] public Collider[] colliders3D;
         [HideInInspector] public Collider2D[] colliders2D;
 
@@ -44,7 +45,7 @@ namespace Pharaoh.AI.Actions
                 {
                     colliders2D = new Collider2D[8];
                     _hasDetectionCollider = true;
-                    _is2D = true;
+                    is2D = true;
                     return;
                 }
             }
@@ -54,13 +55,12 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Failure;
-            if (!_hasDetectionCollider) return state;
-
+            if (!_hasDetectionCollider) return NodeState.Failure;
+            
             int size;
             int index = 0;
 
-            if (_is2D)
+            if (is2D)
             {
                 size = _collider2D.OverlapNonAlloc(ref colliders2D, detectionLayer);
                 if (colliders2D[0] && colliders2D[0].transform == agent.transform) index++;
@@ -74,13 +74,11 @@ namespace Pharaoh.AI.Actions
             if (size <= index)
             {
                 blackboard.ClearData("target");
-                state = NodeState.Running;
-                return state;
+                return NodeState.Failure;
             }
 
-            blackboard.SetData("target", _is2D ? colliders2D[index].transform : colliders3D[index].transform);
-            state = NodeState.Success;
-            return state;
+            blackboard.SetData("target", is2D ? colliders2D[index].transform : colliders3D[index].transform);
+            return NodeState.Success;
         }
     }
 }

@@ -23,6 +23,7 @@ public class GearDataEditor : Editor
         serializedObject.Update();
 
         DrawSpecificProperties();
+
         
         serializedObject.ApplyModifiedProperties();
     }
