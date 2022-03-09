@@ -75,6 +75,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     private System.Collections.IEnumerator PullingBlock()
     {
         Rigidbody2D block = _movingBlock.transform.parent.GetComponent<Rigidbody2D>();
+        MovingBlock mb = _movingBlock.transform.parent.GetComponent<MovingBlock>();
 
         // Disables the block's gravity (avoiding friction) and assigning it a velocity to move
         block.gravityScale = 0f;
@@ -85,7 +86,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
         yield return new WaitForSeconds(pullDuration);
 
-        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null || !CanPullBlock())
+        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null || !CanPullBlock() || !mb.IsGrounded())
         {
             // Cancels pulling if not holding the button
             block.gravityScale = 1f;
