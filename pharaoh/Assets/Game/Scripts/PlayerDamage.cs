@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerDamage : MonoBehaviour
 {
 
+    private PlayerMovement _playerMovement;
     private Rigidbody2D _rigidBody;
     private FadeToBlack _fade;
     private bool _isRespawning = false;
@@ -19,6 +20,7 @@ public class PlayerDamage : MonoBehaviour
 
     private void Awake()
     {
+        _playerMovement = GetComponent<PlayerMovement>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _fade = FindObjectOfType<FadeToBlack>();
 
@@ -51,6 +53,8 @@ public class PlayerDamage : MonoBehaviour
         // Damage player
         Debug.Log("PlayerDamage : need to implement the health component to damage (1) the player");
 
+        _playerMovement.enabled = false;
+
         StartCoroutine(Respawn());
     }
 
@@ -63,6 +67,9 @@ public class PlayerDamage : MonoBehaviour
         // Fade the screen and respawn the player
         _fade.Fade();
         _rigidBody.position = DEBUGRespawnPoint.position;
+
+        _playerMovement.Respawn();
+        _playerMovement.enabled = true;
 
         _isRespawning = false;
     }

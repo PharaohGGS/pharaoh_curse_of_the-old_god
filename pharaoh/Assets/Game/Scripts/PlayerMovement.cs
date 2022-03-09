@@ -318,6 +318,24 @@ public class PlayerMovement : MonoBehaviour
         _isStunned = false;
     }
 
+    public void Respawn()
+    {
+         _isRunning = false;
+         _isDashing = false;
+         _hasDashedInAir = false;
+         _isDashAvailable = true;
+         _isJumping = false;
+         _isStunned = false;
+         _noclip = false; //DEBUG
+         _canMove = true;
+         _isHooked = false;
+         _isHookedToBlock = false;
+         _isPullingBlock = false;
+
+        _jumpClock = 0;
+        _initialFallHeight = _rigidbody.position.y;
+}
+
     private void OnEnable()
     {
         _playerInput.Enable();
