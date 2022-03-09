@@ -82,7 +82,12 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  colliders: []
+  is2D: 0
+  colliders3D: []
+  colliders2D: []
+  _detection: {fileID: 0}
+  _collider3D: {fileID: 0}
+  _collider2D: {fileID: 0}
 --- !u!114 &-5196779309447961558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,9 +131,9 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
+  - {fileID: 2540510149565648275}
 --- !u!114 &-2224927277969790943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +246,6 @@ MonoBehaviour:
   - {fileID: -2224927277969790943}
   - {fileID: -2000076536378003351}
   - {fileID: 3968242717453709997}
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
   - {fileID: 7061892331425943572}
@@ -251,6 +255,7 @@ MonoBehaviour:
   - {fileID: -7799077535872403113}
   - {fileID: 3972189698495168791}
   - {fileID: 3765123510119692838}
+  - {fileID: 2540510149565648275}
   blackboard:
     debugData: []
 --- !u!114 &1246385073974385994
@@ -316,6 +321,26 @@ MonoBehaviour:
   hasStart: 0
   guid: 05ff5636996f2e44fbcdd4427cdb80fb
   position: {x: 149.99995, y: 492.00006}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+--- !u!114 &2540510149565648275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfb9fb978ee6c14c93140708d9d6dc8, type: 3}
+  m_Name: CheckTargetInOverlap
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 33412121bc8415d45a60344067e9a285
+  position: {x: -176, y: 492.99997}
   description: 
   blackboard:
     debugData: []

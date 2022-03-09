@@ -82,7 +82,12 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  colliders: []
+  is2D: 0
+  colliders3D: []
+  colliders2D: []
+  _detection: {fileID: 0}
+  _collider3D: {fileID: 0}
+  _collider2D: {fileID: 0}
 --- !u!114 &-5327835642569279031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,9 +110,9 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: 1669173446052640614}
+  - {fileID: -2431711215828643167}
   - {fileID: 5445813931308916514}
   - {fileID: 5991241113527802466}
-  - {fileID: -2431711215828643167}
 --- !u!114 &-5196779309447961558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,9 +200,9 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
+  - {fileID: 3434139009347252815}
 --- !u!114 &-2431711215828643167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +356,6 @@ MonoBehaviour:
   - {fileID: -2224927277969790943}
   - {fileID: -2000076536378003351}
   - {fileID: 3968242717453709997}
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
   - {fileID: 7061892331425943572}
@@ -369,6 +373,7 @@ MonoBehaviour:
   - {fileID: -4189120919194649745}
   - {fileID: 1669173446052640614}
   - {fileID: -2431711215828643167}
+  - {fileID: 3434139009347252815}
   blackboard:
     debugData: []
 --- !u!114 &804445267073081255
@@ -567,6 +572,26 @@ MonoBehaviour:
   gearData: {fileID: 0}
   _healthComponent: {fileID: 0}
   _attack: {fileID: 0}
+--- !u!114 &3434139009347252815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfb9fb978ee6c14c93140708d9d6dc8, type: 3}
+  m_Name: CheckTargetInOverlap
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: dcb61153616df2c48bc820731cc98924
+  position: {x: -176, y: 510.00003}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
 --- !u!114 &3968242717453709997
 MonoBehaviour:
   m_ObjectHideFlags: 0

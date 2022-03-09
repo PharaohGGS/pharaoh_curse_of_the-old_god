@@ -11,73 +11,35 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInOverlap : ActionNode
     {
-        [Tooltip("layer of the overlaping collider to be found on agent child")]
-        public LayerMask colliderLayer;
-        
-        [Tooltip("layer of detection for the targets")]
-        public LayerMask detectionLayer;
+        private DetectionComponent _detection = null;
 
-        private bool _hasDetectionCollider = false;
-
-        [HideInInspector] public bool is2D;
-        [HideInInspector] public Collider[] colliders3D;
-        [HideInInspector] public Collider2D[] colliders2D;
-
-        private Collider _collider3D;
-        private Collider2D _collider2D;
-        
         protected override void OnStart()
         {
-            if (_collider3D || _collider2D) return;
+            if (_detection) return;
 
-            foreach (Transform child in agent.transform)
-            {
-                if (!child.gameObject.IsInLayerMask(colliderLayer)) continue;
+            if (agent.TryGetComponent(out _detection)) return;
 
-                if (child.TryGetComponent(out _collider3D))
-                {
-                    colliders3D = new Collider[8];
-                    _hasDetectionCollider = true;
-                    return;
-                }
-
-                if (child.TryGetComponent(out _collider2D))
-                {
-                    colliders2D = new Collider2D[8];
-                    _hasDetectionCollider = true;
-                    is2D = true;
-                    return;
-                }
-            }
-
-            LogHandler.SendMessage($"No detection collider on this agent.", MessageType.Warning);
+            LogHandler.SendMessage($"[{agent.name}] Can't detect enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            if (!_hasDetectionCollider) return NodeState.Failure;
+            if (!_detection || !_detection.hasDetectionCollider) return NodeState.Failure;
             
-            int size;
             int index = 0;
+            Transform potentialTarget = _detection.GetTransformAtIndex(0);
+            
+            // index up if agent is the first collider
+            if (potentialTarget != null && potentialTarget == agent.transform) index++;
 
-            if (is2D)
-            {
-                size = _collider2D.OverlapNonAlloc(ref colliders2D, detectionLayer);
-                if (colliders2D[0] && colliders2D[0].transform == agent.transform) index++;
-            }
-            else
-            {
-                size = _collider3D.OverlapNonAlloc(ref colliders3D, detectionLayer);
-                if (colliders3D[0] && colliders3D[0].transform == agent.transform) index++;
-            }
-
-            if (size <= index)
+            // if the count is equal to the index, it's possibly the agent, then clear
+            if (_detection.overlappedCount <= index)
             {
                 blackboard.ClearData("target");
                 return NodeState.Failure;
             }
-
-            blackboard.SetData("target", is2D ? colliders2D[index].transform : colliders3D[index].transform);
+            
+            blackboard.SetData("target", _detection.GetTransformAtIndex(index));
             return NodeState.Success;
         }
     }
