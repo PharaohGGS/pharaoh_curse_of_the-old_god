@@ -70,8 +70,8 @@ public class PlayerDamage : MonoBehaviour
         _fade.Fade();
         _rigidBody.position = DEBUGRespawnPoint.position;
 
-        _playerMovement.Respawn();
         _playerMovement.enabled = true;
+        _playerMovement.Respawn();
         _hookTargeting.Respawn();
 
         _isRespawning = false;
