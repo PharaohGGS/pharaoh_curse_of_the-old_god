@@ -6,5 +6,6 @@ namespace Pharaoh.Gameplay.Components
     public class DistanceGearData : GearData
     {
         [Tooltip("in m/s")] public float shootInitialVelocity;
+        public override GearType GetGearType() => GearType.Distance;
     }
 }

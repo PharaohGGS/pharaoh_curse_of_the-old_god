@@ -17,7 +17,7 @@ namespace Pharaoh.Gameplay.Components
 
         #region 2D Detection
 
-        [HideInInspector, SerializeField] private Collider2D collider2D;
+        [HideInInspector, SerializeField] private new Collider2D collider2D;
         [HideInInspector, SerializeField] private Collider2D[] colliders2D;
         [HideInInspector, SerializeField] private GenericDictionary<int, List<Collider2D>> layeredColliders2D;
 
@@ -62,8 +62,7 @@ namespace Pharaoh.Gameplay.Components
                     layeredColliders3D = new GenericDictionary<int, List<Collider>>();
                     for (var index = 0; index < hasLayers.Length; index++)
                     {
-                        var hasLayer = hasLayers[index];
-                        if (!hasLayer) continue;
+                        if (!hasLayers[index]) continue;
                         layeredColliders3D.TryAdd(index, new List<Collider>());
                     }
 
@@ -80,8 +79,7 @@ namespace Pharaoh.Gameplay.Components
                     layeredColliders2D = new GenericDictionary<int, List<Collider2D>>();
                     for (var index = 0; index < hasLayers.Length; index++)
                     {
-                        var hasLayer = hasLayers[index];
-                        if (!hasLayer) continue;
+                        if (!hasLayers[index]) continue;
                         layeredColliders2D.TryAdd(index, new List<Collider2D>());
                     }
 

@@ -9,5 +9,7 @@ namespace Pharaoh.Gameplay.Components
         [HideInInspector] public float throwableRange;
         [HideInInspector] public float throwablePickingTime = 1f;
         [HideInInspector] public float throwableInitialVelocity = 5f;
+
+        public override GearType GetGearType() => GearType.Melee;
     }
 }

@@ -26,11 +26,16 @@ namespace Pharaoh.AI.Actions
         {
             if (!_detection || !_detection.hasDetectionCollider) return NodeState.Failure;
             
-            int index = 0;
-            GameObject potentialTarget = _detection.GetGameObjectAtIndex(0);
-            
-            // index up if agent is the first collider
-            if (potentialTarget != null && potentialTarget == agent.gameObject) index++;
+            int index;
+            // index up if agent is the index collider
+            for (index = 0; index < _detection.overlappedCount; index++)
+            {
+                var potentialTarget = _detection.GetGameObjectAtIndex(index);
+                if (potentialTarget == null || potentialTarget != agent.gameObject)
+                {
+                    break;
+                }
+            }
 
             // if the count is equal to the index, it's possibly the agent, then clear
             if (_detection.overlappedCount <= index)
