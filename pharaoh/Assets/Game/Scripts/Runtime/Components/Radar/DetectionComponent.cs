@@ -12,8 +12,8 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] private bool _is2D;
         [SerializeField] private LayerMask detectionLayer = 0;
         [SerializeField] private int maxOverlappedColliders = 8;
-        public bool hasDetectionCollider { get; private set; }
-        public int overlappedCount { get; private set; }
+        public bool hasDetectionCollider { get; private set; } = false;
+        public int overlappedCount { get; private set; } = 0;
 
         #region 2D Detection
 
@@ -107,8 +107,10 @@ namespace Pharaoh.Gameplay.Components
 
                 // clear registered colliders
                 foreach (var kvp in layeredColliders2D) kvp.Value.Clear();
-                foreach (var coll in colliders2D)
+                for (var i = 0; i < colliders2D.Length; i++)
                 {
+                    var coll = colliders2D[i];
+                    if (coll == null || coll.gameObject == gameObject) continue;
                     var layerIndex = coll.gameObject.layer;
                     var list = layeredColliders2D[layerIndex];
                     if (list != null && !list.Contains(coll)) list.Add(coll);
@@ -121,8 +123,9 @@ namespace Pharaoh.Gameplay.Components
 
                 // clear registered colliders
                 foreach (var kvp in layeredColliders3D) kvp.Value.Clear();
-                foreach (var coll in colliders3D)
+                for (var i = 0; i < colliders3D.Length; i++)
                 {
+                    var coll = colliders3D[i];
                     var layerIndex = coll.gameObject.layer;
                     var list = layeredColliders3D[layerIndex];
                     if (list != null && !list.Contains(coll)) list.Add(coll);
@@ -130,7 +133,7 @@ namespace Pharaoh.Gameplay.Components
             }
         }
         
-        public Transform GetTransformAtIndex(int index) =>
-            overlappedCount <= 0 ? null : (_is2D ? colliders2D[index].transform : colliders3D[index].transform);
+        public GameObject GetGameObjectAtIndex(int index) =>
+            overlappedCount <= 0 ? null : (_is2D ? colliders2D[index].gameObject : colliders3D[index].gameObject);
     }
 }

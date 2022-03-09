@@ -27,10 +27,10 @@ namespace Pharaoh.AI.Actions
             if (!_detection || !_detection.hasDetectionCollider) return NodeState.Failure;
             
             int index = 0;
-            Transform potentialTarget = _detection.GetTransformAtIndex(0);
+            GameObject potentialTarget = _detection.GetGameObjectAtIndex(0);
             
             // index up if agent is the first collider
-            if (potentialTarget != null && potentialTarget == agent.transform) index++;
+            if (potentialTarget != null && potentialTarget == agent.gameObject) index++;
 
             // if the count is equal to the index, it's possibly the agent, then clear
             if (_detection.overlappedCount <= index)
@@ -39,7 +39,7 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
             
-            blackboard.SetData("target", _detection.GetTransformAtIndex(index));
+            blackboard.SetData("target", _detection.GetGameObjectAtIndex(index).transform);
             return NodeState.Success;
         }
     }
