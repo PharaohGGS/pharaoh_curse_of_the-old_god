@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private float _groundCheckLength = 0.05f;
     private float _previousGravityScale;
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
+    private float _dashClock = 0f; //used to measure for how long the dash occurs
     private float _smoothInput = 0.03f;
     private float _turnSpeed = 7f; //value defined with Clémence
     private float _backOrientationIdle = -135f; //value defined with Clémence
@@ -73,14 +74,14 @@ public class PlayerMovement : MonoBehaviour
     public float dashForce = 30f;
     [Tooltip("Dashing time, 0.1 works well")]
     public float dashTime = 0.1f;
+    [Tooltip("Dashing time, 0.1 works well")]
+    public float dashDuration = 0.1f;
     [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
     public float dashCooldown = 0.5f;
 
     [Header("Ground Detection")]
-    [Tooltip("Rightmost ground check")]
-    public Transform rightGroundCheck;
-    [Tooltip("Leftmost ground check")]
-    public Transform leftGroundCheck;
+    [Tooltip("Ground check")]
+    public Transform groundCheck;
     public LayerMask groundLayer;
 
     [Header("Animations")]
@@ -139,6 +140,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
         {
+            _rigidbody.velocity = Vector2.zero;
+
+            _previousGravityScale = _rigidbody.gravityScale;
+            _rigidbody.gravityScale = 0f;
+
+            _dashClock = Time.time;
+            _isDashing = true;
+            _isDashAvailable = false;
+            _isHooked = false;
+
+            animator.SetTrigger("Dashing");
+        }
+
+        return;
+        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
+        {
             // Resets the velocity and adds the dash force towards facing direction
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce((isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
@@ -168,12 +185,12 @@ public class PlayerMovement : MonoBehaviour
         if (_noclip)
         {
             _rigidbody.gravityScale = 0f;
-            GetComponent<BoxCollider2D>().enabled = false;
+            GetComponent<CapsuleCollider2D>().enabled = false;
         }
         else
         {
             _rigidbody.gravityScale = 3f;
-            GetComponent<BoxCollider2D>().enabled = true;
+            GetComponent<CapsuleCollider2D>().enabled = true;
         }
     }
 
@@ -199,6 +216,14 @@ public class PlayerMovement : MonoBehaviour
         // Stops the jump if held for too long
         if (_isJumping && _jumpClock + maxJumpHold < Time.time)
             _isJumping = false;
+
+        // Stops the dash when its duration is past
+        if (_isDashing && _dashClock + dashDuration < Time.time)
+        {
+            _rigidbody.gravityScale = _previousGravityScale;
+            _isDashing = false;
+            StartCoroutine(DashCooldown());
+        }
 
         // Turns the character model around when facing the other direction
         Quaternion from = modelTransform.localRotation;
@@ -232,6 +257,9 @@ public class PlayerMovement : MonoBehaviour
         // Moves the player upward while holding the jump button
         if (_isJumping && !_isStunned)
             _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
+
+        if (_isDashing && !_isStunned)
+            _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * dashForce;
     }
 
     private void LateUpdate()
@@ -259,8 +287,7 @@ public class PlayerMovement : MonoBehaviour
         bool wasGrounded = isGrounded;
 
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
-                      || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -359,8 +386,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Displays the ground checks radiuses
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(rightGroundCheck.position, rightGroundCheck.position + (Vector3.down * _groundCheckLength));
-        Gizmos.DrawLine(leftGroundCheck.position, leftGroundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(groundCheck.position, groundCheck.position + (Vector3.down * _groundCheckLength));
 
         // Displays the velocity
         Gizmos.color = Color.blue;
