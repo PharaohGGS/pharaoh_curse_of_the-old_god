@@ -12,6 +12,8 @@ public class SandSoldier : MonoBehaviour
     [Header("Prefabs")]
     [Tooltip("Prefab for the final sand soldier.")]
     public GameObject sandSoldier;
+    [Tooltip("Prefab for the soldier preview.")]
+    public GameObject soldierPreview;
     
     [Header("References")]
     [Tooltip("Place the player's model reference, used to get player facing direction.")]
@@ -24,20 +26,26 @@ public class SandSoldier : MonoBehaviour
     public float maxRange;
     [Tooltip("Pretty explicit, how much time the preview takes to go to the max range.")]
     public float timeToMaxRange;
+    [Tooltip("How much time does it take from button release to fully grown soldier. A low value can create conflicts with other colliders.")]
     public float timeToAppearFromGround;
+    [Tooltip("Soldier's life expectancy.")]
+    public float timeToExpire;
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
 
-    [Header("VFX")]
-    [Tooltip("Soldier position preview VFX")]
-    public VisualEffect previewVFX;
+    // [Header("VFX")]
+    // [Tooltip("Soldier position preview VFX")]
+    // public VisualEffect previewVFX;
 
     private PlayerInput _playerInput; // Input System
     private Coroutine _previewCoroutine; // Stores the preview coroutine
-    private Coroutine _colliderCoroutine;
+    private Coroutine _colliderCoroutine; // Useless to store this coroutine for now
+    private Coroutine _expiredCoroutine; // Coroutine to destroy the soldier when its time.
     private GameObject _soldier; // Stores the reference of the final sand soldier
-    private Vector3 _soldierPosition;
-    private bool _summoned;
+    private Vector3 _soldierPosition; // used to store the soldier position during the preview
+    private bool _summoned; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
+    private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
+    private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
 
     private void Awake()
     {
@@ -58,81 +66,103 @@ public class SandSoldier : MonoBehaviour
         _playerInput.CharacterActions.Soldier.canceled -= SummonSoldier;
     }
 
+    // Called on button press
+    // Cancel / Delete previous summons and start the preview
     private void InitiateSummon(InputAction.CallbackContext obj)
     {
+        // TODO
+        // Disable player movement
+        
         StopAllCoroutines();
         _summoned = false;
         if (_soldier != null) // If there's already a sand soldier, destroy it
             Destroy(_soldier);
+        if (_expiredCoroutine != null)
+            StopCoroutine(_expiredCoroutine);
+        
         // Calculate the start position of the preview from minRange and model rotation.
         Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
-        //_soldierPreviewInstance = Instantiate(previewIndicator, startPosition, Quaternion.identity);
+        _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
         _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
-        previewVFX.SetVector3("KillBoxSize", Vector3.zero);
+        // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
     }
 
-    private void SummonSoldier(InputAction.CallbackContext obj)
+    // Called on button release or on other specific conditions
+    // Instantiates the soldier and starts the growing collider coroutine
+    private void SummonSoldier(InputAction.CallbackContext obj = new())
     {
-        // TODO :
-        // - Create an empty game object with a collider
-        // - Create a particle from each preview particle.
-        // - Assign a position on the skinned mesh to each particle.
-        // - Increase the collider size along time.
-        // - Lerp particles position based on collider time to get max size.
+        // TODO
+        // Re-enable player movement
+        
         if (_summoned) return;
         _summoned = true;
 
-        //if (_colliderCoroutine != null) StopCoroutine(_colliderCoroutine);
         StopCoroutine(_previewCoroutine);
-        previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
-        previewVFX.Stop();
-        // float yOffset = sandSoldier.transform.localScale.y / 2f -
-        //                 previewIndicator.transform.localScale.y / 2f;
-        // Vector3 pos = _soldierPreviewInstance.transform.position + new Vector3(0f, yOffset, 0f);
-        // _soldier = Instantiate(sandSoldier, pos, Quaternion.identity);
-        RaycastHit2D groundHit = Physics2D.Raycast(_soldierPosition, Vector2.down, 10f, groundLayer);
-        if (groundHit)
-            _soldierPosition = groundHit.point + new Vector2(0, sandSoldier.GetComponent<BoxCollider2D>().size.y/2f * sandSoldier.transform.localScale.y);
-        _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
-        // Vector3 rotation = Vector3.zero;
-        // rotation.y = playerModel.rotation.eulerAngles.y > 150 ? -90 : 90;
-        // _soldier.transform.GetChild(0).rotation = Quaternion.Euler(rotation);
-        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
-        //Destroy(_soldierPreviewInstance);
         _previewCoroutine = null;
+        
+        // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
+        // previewVFX.Stop();
+        Destroy(_soldierPreviewInstance);
+        
+        if (!_groundHit) return;
+        _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
+        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
     }
 
+    // Lerp from minRange to maxRange to preview the soldier position at time t
+    // Check if ground is below and if a wall is in the way
     private IEnumerator PreviewSoldier(Vector3 startPosition)
     {
-        // Ideas :
-        // - Pick random points between min and max range to create a bezier curve for the particles to follow.
-        previewVFX.gameObject.transform.position = transform.position;
-        previewVFX.Play();
-        Vector3 endPosition = startPosition + new Vector3(maxRange - minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        // VFX
+        // previewVFX.gameObject.transform.position = transform.position;
+        // previewVFX.Play();
+
+        float endX = startPosition.x + (maxRange - minRange) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        
+        float playerSize = GetComponent<Collider2D>().bounds.size.y;
+        
         float elapsed = 0f;
-        InputAction.CallbackContext obj = new InputAction.CallbackContext();
         while (elapsed < timeToMaxRange)
         {
-            Vector3 nextPosition = Vector3.Lerp(startPosition, endPosition, elapsed / timeToMaxRange);
-            previewVFX.SetVector3("TargetPosition", nextPosition - previewVFX.gameObject.transform.position);
-            _soldierPosition = nextPosition;
-            RaycastHit2D wallHit = Physics2D.Raycast(nextPosition, endPosition - nextPosition,
-                sandSoldier.transform.localScale.x / 2f, groundLayer);
+            elapsed += Time.deltaTime;
+            
+            float newX = Mathf.Lerp(startPosition.x, endX, elapsed / timeToMaxRange);
+
+            Vector3 raycastPos = new Vector3(newX, startPosition.y + playerSize / 2f, startPosition.z);
+
+            _groundHit = Physics2D.Raycast(raycastPos, Vector2.down, 10f, groundLayer);
+            RaycastHit2D wallHit = Physics2D.Raycast(
+                raycastPos,
+                playerModel.rotation.eulerAngles.y > 150 ? Vector2.left : Vector2.right,
+                sandSoldier.transform.localScale.x / 2f,
+                groundLayer);
+
+            if (_groundHit)
+                _soldierPosition = _groundHit.point + new Vector2(0,
+                    sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f * sandSoldier.transform.localScale.y);
+            else
+                _soldierPosition = new Vector3(newX, _soldierPosition.y);
+            
             if (wallHit)
             {
-                SummonSoldier(obj);
+                SummonSoldier();
                 yield break;
             }
-            elapsed += Time.deltaTime;
+
+            // Vector3 vfxPos = _soldierPosition - previewVFX.gameObject.transform.position;
+            // previewVFX.SetVector3("TargetPosition", vfxPos);
+            _soldierPreviewInstance.transform.position = _soldierPosition;
+
             yield return null;
         }
-        previewVFX.SetVector3("TargetPosition", endPosition - transform.position);
-        _soldierPosition = endPosition;
-
-        SummonSoldier(obj);
+        // previewVFX.SetVector3("TargetPosition", endPosition - transform.position);
+        _soldierPosition = new Vector3(endX, _soldierPosition.y);
+        SummonSoldier();
         yield return null;
     }
 
+    // Lerp the soldier collider size and offset from 0 to full size
+    // Used to lift object
     private IEnumerator MoveSoldierCollider(BoxCollider2D col)
     {
         float elapsed = 0f;
@@ -152,9 +182,16 @@ public class SandSoldier : MonoBehaviour
         }
         col.offset = Vector2.zero;
         col.size = new Vector2(1, 1);
-        //_soldier.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         _soldier.GetComponent<MeshRenderer>().enabled = true;
+        _expiredCoroutine = StartCoroutine(ExpireSoldier());
         yield return null;
+    }
+
+    // Kills the soldier if timeToExpire has been reached.
+    private IEnumerator ExpireSoldier()
+    {
+        yield return new WaitForSeconds(timeToExpire);
+        Destroy(_soldier);
     }
 
     // Useless but I don't want to remove it ...
