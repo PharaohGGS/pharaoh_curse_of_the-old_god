@@ -229,6 +229,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SandSoldier"",
+                    ""type"": ""Button"",
+                    ""id"": ""28626c90-eaeb-4419-ac3b-583c059df9b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -297,6 +306,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""HookBlock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd9af54a-a94a-43e3-962e-b9574a313adf"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SandSoldier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77ee1f47-04fb-4eac-a2c3-e3a40c47e582"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SandSoldier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -314,6 +345,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
         m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
         m_CharacterActions_HookBlock = m_CharacterActions.FindAction("HookBlock", throwIfNotFound: true);
+        m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -433,6 +465,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterActions_Hook;
     private readonly InputAction m_CharacterActions_Grab;
     private readonly InputAction m_CharacterActions_HookBlock;
+    private readonly InputAction m_CharacterActions_SandSoldier;
     public struct CharacterActionsActions
     {
         private @PlayerInput m_Wrapper;
@@ -440,6 +473,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Hook => m_Wrapper.m_CharacterActions_Hook;
         public InputAction @Grab => m_Wrapper.m_CharacterActions_Grab;
         public InputAction @HookBlock => m_Wrapper.m_CharacterActions_HookBlock;
+        public InputAction @SandSoldier => m_Wrapper.m_CharacterActions_SandSoldier;
         public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -458,6 +492,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @HookBlock.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
                 @HookBlock.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
                 @HookBlock.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHookBlock;
+                @SandSoldier.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
+                @SandSoldier.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
+                @SandSoldier.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
             }
             m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -471,6 +508,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @HookBlock.started += instance.OnHookBlock;
                 @HookBlock.performed += instance.OnHookBlock;
                 @HookBlock.canceled += instance.OnHookBlock;
+                @SandSoldier.started += instance.OnSandSoldier;
+                @SandSoldier.performed += instance.OnSandSoldier;
+                @SandSoldier.canceled += instance.OnSandSoldier;
             }
         }
     }
@@ -487,5 +527,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnHook(InputAction.CallbackContext context);
         void OnGrab(InputAction.CallbackContext context);
         void OnHookBlock(InputAction.CallbackContext context);
+        void OnSandSoldier(InputAction.CallbackContext context);
     }
 }

@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 7790090175714034903}
   - component: {fileID: 4580342248505284630}
   - component: {fileID: 7843766750882926013}
+  - component: {fileID: 1694517701867188700}
   m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
@@ -275,6 +276,29 @@ MonoBehaviour:
   pullForce: 1
   pullDuration: 1
   hookIndicator: {fileID: 4959625916927975600, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+--- !u!114 &1694517701867188700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 201fc878f5619e647b42d1378c699010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sandSoldier: {fileID: 2857470292283219416, guid: d9b5a4c78c527e241a1606bfebf363b5, type: 3}
+  soldierPreview: {fileID: 5987998499529800469, guid: 5a1bef3bfd64bca499e5a6d674eb119d, type: 3}
+  playerModel: {fileID: 2281400649281040923}
+  minRange: 1
+  maxRange: 6
+  timeToMaxRange: 1
+  timeToAppearFromGround: 0.35
+  timeToExpire: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 525312
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0
