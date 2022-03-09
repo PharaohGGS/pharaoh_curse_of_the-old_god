@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _movementInput;
     private Vector2 _smoothMovement;
     private PlayerInput _playerInput;
+    private float _groundCheckLength = 0.05f;
     private float _previousGravityScale;
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
     private float _smoothInput = 0.03f;
@@ -80,8 +81,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform rightGroundCheck;
     [Tooltip("Leftmost ground check")]
     public Transform leftGroundCheck;
-    [Tooltip("0.05 to get a fine ground detection, keep it small and precise")]
-    public float groundCheckRadius = 0.05f;
     public LayerMask groundLayer;
 
     [Header("Animations")]
@@ -260,8 +259,8 @@ public class PlayerMovement : MonoBehaviour
         bool wasGrounded = isGrounded;
 
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.OverlapCircle(rightGroundCheck.position, groundCheckRadius, groundLayer)
-                      || Physics2D.OverlapCircle(leftGroundCheck.position, groundCheckRadius, groundLayer);
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+                      || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -360,8 +359,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Displays the ground checks radiuses
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(rightGroundCheck.position, groundCheckRadius);
-        Gizmos.DrawWireSphere(leftGroundCheck.position, groundCheckRadius);
+        Gizmos.DrawLine(rightGroundCheck.position, rightGroundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(leftGroundCheck.position, leftGroundCheck.position + (Vector3.down * _groundCheckLength));
 
         // Displays the velocity
         Gizmos.color = Color.blue;
