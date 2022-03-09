@@ -152,29 +152,6 @@ public class PlayerMovement : MonoBehaviour
 
             animator.SetTrigger("Dashing");
         }
-
-        return;
-        if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
-        {
-            // Resets the velocity and adds the dash force towards facing direction
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.AddForce((isFacingRight ? Vector2.right : Vector2.left) * dashForce, ForceMode2D.Impulse);
-
-            // Disables gravity while dashing to avoid falling
-            _previousGravityScale = _rigidbody.gravityScale;
-            _rigidbody.gravityScale = 0f;
-
-            // Updates states
-            _isDashing = true;
-            _isDashAvailable = false;
-            _hasDashedInAir = !isGrounded;
-
-            animator.SetTrigger("Dashing");
-
-            tr.startColor = Color.red; //DEBUG
-
-            StartCoroutine(Dashing());
-        }
     }
 
     // DEBUG
@@ -220,6 +197,7 @@ public class PlayerMovement : MonoBehaviour
         // Stops the dash when its duration is past
         if (_isDashing && _dashClock + dashDuration < Time.time)
         {
+            _rigidbody.velocity = Vector2.zero;
             _rigidbody.gravityScale = _previousGravityScale;
             _isDashing = false;
             StartCoroutine(DashCooldown());
