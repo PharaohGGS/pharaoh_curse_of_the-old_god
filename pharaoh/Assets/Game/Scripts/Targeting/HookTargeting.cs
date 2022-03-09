@@ -14,7 +14,7 @@ namespace Pharaoh.Gameplay
     public class HookTargeting : Targeting
     {
         [Header("Movement")] 
-        [SerializeField, Tooltip("Distance to hooked transform")] private float offsetHook = 0.5f;
+        [SerializeField, Tooltip("Distance to hooked transform")] private float offsetHook = 0.01f;
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private AnimationCurve smoothCurve;
         private bool _isOnHook = false;
