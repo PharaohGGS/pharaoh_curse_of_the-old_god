@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded { get; private set; } = false;
 
     public bool IsRunning { get => _isRunning; }
+    public bool IsStunned { get => _isStunned; }
     public bool IsDashing { get => _isDashing; }
     public bool IsJumping { get => _isJumping; }
     public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }

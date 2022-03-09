@@ -145,7 +145,7 @@ namespace Pharaoh.Gameplay
             // unhook the current hooked object if there is one
             if (_currentTarget) UnHook();
             // hook the nearest hookable objects if there is one
-            if (_bestTargetLeft || _bestTargetRight) Hook();
+            if ((_bestTargetLeft || _bestTargetRight) && !_playerMovement.IsStunned) Hook();
         }
 
         #endregion
