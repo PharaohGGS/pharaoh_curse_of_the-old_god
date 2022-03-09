@@ -14,7 +14,7 @@ namespace Pharaoh.Gameplay
     public class HookTargeting : Targeting
     {
         [Header("Movement")] 
-        [SerializeField, Tooltip("Distance to hooked transform")] private float offsetHook = 0.5f;
+        [SerializeField, Tooltip("Distance to hooked transform")] private float offsetHook = 0.01f;
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private AnimationCurve smoothCurve;
         private bool _isOnHook = false;
@@ -43,14 +43,14 @@ namespace Pharaoh.Gameplay
             _rigidbody = GetComponent<Rigidbody2D>();
             _playerMovement = GetComponent<PlayerMovement>();
 
-            hookIndicator = Instantiate(hookIndicator, transform);
+            hookIndicator = Instantiate(hookIndicator);
         }
 
         private void OnEnable()
         {
             _playerInput.Enable();
             _playerInput.CharacterActions.Hook.performed += OnHook;
-            //_playerInput.CharacterControls.Move.performed += OnMove;
+            _playerInput.CharacterControls.Move.performed += OnMove;
             _playerInput.CharacterControls.Jump.started += OnJump;
             _playerInput.CharacterControls.Dash.started += OnDash;
         }
@@ -58,7 +58,7 @@ namespace Pharaoh.Gameplay
         private void OnDisable()
         {
             _playerInput.CharacterActions.Hook.performed -= OnHook;
-            //_playerInput.CharacterControls.Move.performed -= OnMove;
+            _playerInput.CharacterControls.Move.performed -= OnMove;
             _playerInput.CharacterControls.Jump.started -= OnJump;
             _playerInput.CharacterControls.Dash.started -= OnDash;
             _playerInput.Disable();
@@ -123,7 +123,7 @@ namespace Pharaoh.Gameplay
         {
             var axis = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
 
-            if (axis.y >= 0f || !_currentTarget) return;
+            if (axis.y >= -0.8f || !_currentTarget) return;
 
             UnHook();
         }
@@ -145,10 +145,16 @@ namespace Pharaoh.Gameplay
             // unhook the current hooked object if there is one
             if (_currentTarget) UnHook();
             // hook the nearest hookable objects if there is one
-            if (_bestTargetLeft || _bestTargetRight) Hook();
+            if ((_bestTargetLeft || _bestTargetRight) && !_playerMovement.IsStunned) Hook();
         }
 
         #endregion
+
+        public void Respawn()
+        {
+            _isOnHook = false;
+            UnHook();
+        }
 
         private void Hook()
         {
@@ -193,6 +199,8 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget || !_rigidbody) yield break;
 
+            hookIndicator.SetActive(false);
+
             Vector2 startPosition = _rigidbody.position;
             float current = 0f;
 
@@ -209,6 +217,8 @@ namespace Pharaoh.Gameplay
                 _rigidbody.MovePosition(Vector2.Lerp(startPosition, _playerPositionOnHook, smoothCurve.Evaluate(current)));
                 yield return _waitForFixedUpdate;
             }
+
+            hookIndicator.SetActive(true);
 
             _isOnHook = true;
             onEndHookMovement?.Invoke();

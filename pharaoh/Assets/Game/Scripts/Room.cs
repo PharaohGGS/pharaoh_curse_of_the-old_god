@@ -26,7 +26,8 @@ public class Room : MonoBehaviour
         // if (_fading != null) StopCoroutine(_fading);
         // _fading = StartCoroutine(Fade(0f, .3f));
 
-        FindObjectOfType<PlayerDamage>().DEBUGRespawnPoint = _respawnPosition;
+        if (_respawnPosition != null)
+            FindObjectOfType<PlayerDamage>().DEBUGRespawnPoint = _respawnPosition;
     }
 
     private void OnTriggerExit2D(Collider2D other)

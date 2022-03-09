@@ -25,7 +25,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
         _playerInput.CharacterActions.HookBlock.performed += Pull;
         _playerMovement = GetComponent<PlayerMovement>();
 
-        hookIndicator = Instantiate(hookIndicator, transform);
+        hookIndicator = Instantiate(hookIndicator);
     }
 
     private void Update()
