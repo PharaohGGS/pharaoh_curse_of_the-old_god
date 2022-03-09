@@ -56,14 +56,14 @@ namespace Pharaoh.Gameplay.Components
         
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
-            if (!isThrown || !other.gameObject.IsInLayerMask(collidingLayers)) return;
+            if (!isThrown || !other.gameObject.HasLayer(collidingLayers)) return;
 
             coll2D.isTrigger = false;
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if (!collision.gameObject.IsInLayerMask(collidingLayers)) return;
+            if (!collision.gameObject.HasLayer(collidingLayers)) return;
 
             isGrounded = true;
             onGroundHit?.Invoke();

@@ -46,7 +46,7 @@ namespace Pharaoh.Gameplay.Components
         {
             if (other.gameObject == gameObject) return;
             
-            if (other.gameObject.IsInLayerMask(damagingLayers))
+            if (other.gameObject.HasLayer(damagingLayers))
             {
                 var parentColliders = GetComponentsInParent<Collider2D>();
 

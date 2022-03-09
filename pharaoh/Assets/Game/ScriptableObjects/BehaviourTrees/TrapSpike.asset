@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 90fc2877fccd98f488eeeca0ac0db553
-  position: {x: 75, y: 176}
+  position: {x: 74.999985, y: 316.3001}
   description: 
   blackboard:
     debugData: []
@@ -36,7 +36,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 525d75bd343e1d246bd1b19cc6b2a510
-  position: {x: -9, y: 623}
+  position: {x: -9.000069, y: 763.3002}
   description: 
   blackboard:
     debugData: []
@@ -56,20 +56,11 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: c9bbb158eb71bd949bf704765d732c7b
-  position: {x: -110, y: 460}
+  position: {x: -110.00003, y: 600.3001}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  colliderLayer:
-    serializedVersion: 2
-    m_Bits: 8192
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  is2D: 0
-  colliders3D: []
-  colliders2D: []
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +84,7 @@ MonoBehaviour:
   - {fileID: -2973997059861254435}
   - {fileID: 4920034404249943310}
   - {fileID: -5292512720878003781}
+  - {fileID: 6347065796246098037}
   blackboard:
     debugData: []
 --- !u!114 &2054121860726835071
@@ -110,12 +102,12 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: f7597bc95e1b13348a391b94303300da
-  position: {x: 75, y: 19}
+  position: {x: 74.999985, y: 56.950012}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  child: {fileID: -5292512720878003781}
+  child: {fileID: 6347065796246098037}
 --- !u!114 &3874224447833538104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,12 +146,12 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: feae1671d76f57543b83204c74a2c56d
-  position: {x: 141, y: 623}
+  position: {x: 140.99997, y: 763.3002}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  gearData: {fileID: 11400000, guid: 2dc71fa19625cf6489b2028d9cf6ed4c, type: 2}
+  gearType: 2
 --- !u!114 &5959562998299471666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +167,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: e265372b1aa0fcb4d8fcf00eba76cadb
-  position: {x: 75, y: 318}
+  position: {x: 74.999985, y: 458.30008}
   description: 
   blackboard:
     debugData: []
@@ -183,6 +175,28 @@ MonoBehaviour:
   children:
   - {fileID: -2973997059861254435}
   - {fileID: 9220730513248718456}
+--- !u!114 &6347065796246098037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 1d9173e4372eb1647b6f3371bf28e907
+  position: {x: 75.00006, y: 172.80005}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  children:
+  - {fileID: -5292512720878003781}
   - {fileID: 7158439463935566125}
 --- !u!114 &7158439463935566125
 MonoBehaviour:
@@ -199,7 +213,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5fba5f282dbb5e4409320769937a8b80
-  position: {x: 237, y: 460}
+  position: {x: 225.0001, y: 316}
   description: 
   blackboard:
     debugData: []
@@ -220,7 +234,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: ab5b1777f197eb0499d82ebdd67df52a
-  position: {x: 75.00008, y: 460.00003}
+  position: {x: 74.999985, y: 600.3001}
   description: 
   blackboard:
     debugData: []
