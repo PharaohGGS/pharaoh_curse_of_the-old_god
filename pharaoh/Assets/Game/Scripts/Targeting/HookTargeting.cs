@@ -190,7 +190,7 @@ namespace Pharaoh.Gameplay
 
         private void UnHook()
         {
-            LogHandler.SendMessage($"unhooking from {_currentTarget.name}", MessageType.Log);
+            //LogHandler.SendMessage($"unhooking from {_currentTarget.name}", MessageType.Log);
             if (_moveToHook != null) StopCoroutine(_moveToHook);
 
             _currentTarget = null;
