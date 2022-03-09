@@ -58,7 +58,7 @@ namespace BehaviourTree.Editor
 
         private NodeView FindNodeView(BNode node)
         {
-            return GetNodeByGuid(node.guid) as NodeView;
+            return GetNodeByGuid(node?.guid) as NodeView;
         }
 
         public void PopulateView(BTree tree)
@@ -88,6 +88,8 @@ namespace BehaviourTree.Editor
                 {
                     var parentView = FindNodeView(node);
                     var childView = FindNodeView(child);
+
+                    if (parentView == null || childView == null) return;
                     var edge = parentView.output.ConnectTo(childView.input);
                     AddElement(edge);
                 });

@@ -19,6 +19,38 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775569907406828, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7259607460147939371, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -83,9 +115,69 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
-  m_Size: {x: 1, y: 0.25}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0.5}
+  m_Size: {x: 0.25, y: 1}
+  m_Direction: 0
+--- !u!95 &4472086271358146517
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645641552996667476}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3d79303decc383c458152df73433bf20, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &306038661694954169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645641552996667476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5079749805808693452}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: SetAttackState
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 5079749805808693452}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
+        m_MethodName: Stab
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2021356391912413328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +210,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  collidingLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  onCollidingHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5079749805808693452
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,17 +12,23 @@ namespace Pharaoh.AI.Actions
 
         private void OnEnable()
         {
+            _is2DProp = serializedObject.FindProperty("is2D");
             _colliders3DProp = serializedObject.FindProperty("colliders3D");
             _colliders2DProp = serializedObject.FindProperty("colliders2D");
-            _is2DProp = serializedObject.FindProperty("_is2D");
         }
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-            base.OnInspectorGUI();
+            DrawDefaultInspector();
 
-            EditorGUILayout.PropertyField(_is2DProp?.boolValue == true ? _colliders2DProp : _colliders3DProp);
+            serializedObject.Update();
+
+            if (EditorApplication.isPlaying)
+            {
+                EditorGUILayout.PropertyField(_is2DProp?.boolValue == false 
+                    ? _colliders3DProp : _colliders2DProp);
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
     }
