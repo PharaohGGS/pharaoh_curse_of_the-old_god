@@ -43,7 +43,7 @@ namespace Pharaoh.Gameplay
             _rigidbody = GetComponent<Rigidbody2D>();
             _playerMovement = GetComponent<PlayerMovement>();
 
-            hookIndicator = Instantiate(hookIndicator, transform);
+            hookIndicator = Instantiate(hookIndicator);
         }
 
         private void OnEnable()
