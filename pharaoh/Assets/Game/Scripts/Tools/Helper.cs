@@ -27,7 +27,16 @@ namespace Pharaoh.Tools
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
 
-        public static bool IsInLayerMask(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
+        public static bool HasLayer(this LayerMask layerMask, int layer) => layerMask == (layerMask | 1 << layer);
+
+        public static bool[] HasLayers(this LayerMask layerMask)
+        {
+            var hasLayers = new bool[32];
+            for (int i = 0; i < 32; i++) hasLayers[i] = layerMask.HasLayer(i);
+            return hasLayers;
+        }
+
+        public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
 
         public static int OverlapNonAlloc(this Collider collider, ref Collider[] colliders, LayerMask layerMask)
         {

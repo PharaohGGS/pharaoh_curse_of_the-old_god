@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     private float _backOrientationIdle = -135f; //value defined with Clémence
     private float _backOrientationRunning = -90.1f; //value defined with Clémence
     private float _initialFallHeight;
+    private int _defaultLayer;
+    private int _swarmDashLayer;
     private bool _isRunning = false;
     private bool _isDashing = false;
     private bool _hasDashedInAir = false;
@@ -57,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
     public float inAirHorizontalSpeed = 5f;
     [Tooltip("NOCLIP mode speed (m/s)")]
     public float noclipSpeed = 10f;
+    [Tooltip("How long the player is stunned when getting damaged")]
+    public float respawnStunDuration = 1.5f;
 
     [Header("Jump")]
     [Tooltip("Defines the force added to the player when initiating the jump")]
@@ -98,6 +102,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _defaultLayer = LayerMask.NameToLayer("Player");
+        _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerInput = new PlayerInput();
 
@@ -155,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
             _isDashAvailable = false;
             _isHooked = false;
 
+            gameObject.layer = _swarmDashLayer;
+
             animator.SetTrigger("Dashing");
         }
     }
@@ -201,6 +209,9 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.gravityScale = _previousGravityScale;
             _isDashing = false;
+
+            gameObject.layer = _defaultLayer;
+
             StartCoroutine(DashCooldown());
         }
 
@@ -282,12 +293,7 @@ public class PlayerMovement : MonoBehaviour
             if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
             {
                 // Player fell from too high -> Stun
-                _rigidbody.velocity = Vector2.zero;
-                _isStunned = true;
-
-                StartCoroutine(Stunned());
-
-                animator.SetTrigger("Stunned");
+                Stun(fallStunDuration);
             }
         }
     }
@@ -316,10 +322,18 @@ public class PlayerMovement : MonoBehaviour
         _isDashAvailable = true;
     }
 
-    // Coroutine for the duration of the stun
-    System.Collections.IEnumerator Stunned()
+    public void Stun(float duration)
     {
-        yield return new WaitForSeconds(fallStunDuration);
+        _rigidbody.velocity = Vector2.zero;
+        _isStunned = true;
+        StartCoroutine(Stunned(duration));
+        animator.SetTrigger("Stunned");
+    }
+
+    // Coroutine for the duration of the stun
+    System.Collections.IEnumerator Stunned(float duration)
+    {
+        yield return new WaitForSeconds(duration);
 
         // Updates current state
         _isStunned = false;
@@ -332,7 +346,6 @@ public class PlayerMovement : MonoBehaviour
          _hasDashedInAir = false;
          _isDashAvailable = true;
          _isJumping = false;
-         _isStunned = false;
          _noclip = false; //DEBUG
          _canMove = true;
          _isHooked = false;
@@ -341,7 +354,9 @@ public class PlayerMovement : MonoBehaviour
 
         _jumpClock = 0;
         _initialFallHeight = _rigidbody.position.y;
-}
+
+        Stun(respawnStunDuration);
+    }
 
     private void OnEnable()
     {

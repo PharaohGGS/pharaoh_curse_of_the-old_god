@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        [SerializeField] protected GearData gearData;
+        [SerializeField] protected GearType gearType;
 
         protected HealthComponent _healthComponent;
 
@@ -26,17 +26,19 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || !gearData) return NodeState.Failure;
+            if (!_attack || gearType == GearType.Null) return NodeState.Failure;
+            
+            if (!_attack.TryGetHolder(gearType, out var holder))
+            {
+                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
+                return NodeState.Failure;
+            }
+
+            var gearData = holder.gear.GetBaseData();
 
             if (!gearData.canAttack)
             {
                 LogHandler.SendMessage($"{agent.name} can't attack with his weapon", MessageType.Warning);
-                return NodeState.Failure;
-            }
-
-            if (!_attack.TryGetHolder(gearData, out var holder))
-            {
-                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
                 return NodeState.Failure;
             }
 
