@@ -62,6 +62,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwarmDash"",
+                    ""type"": ""Button"",
+                    ""id"": ""dff95c39-9a2a-48b2-9b26-8e8c7966a8d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -185,6 +194,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""NOCLIP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb24bb71-6fa1-48a7-bc14-10582d5bf884"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwarmDash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -265,6 +285,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
         m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
+        m_CharacterControls_SwarmDash = m_CharacterControls.FindAction("SwarmDash", throwIfNotFound: true);
         // CharacterActions
         m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
         m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
@@ -333,6 +354,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Dash;
     private readonly InputAction m_CharacterControls_NOCLIP;
+    private readonly InputAction m_CharacterControls_SwarmDash;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -341,6 +363,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
         public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
+        public InputAction @SwarmDash => m_Wrapper.m_CharacterControls_SwarmDash;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -362,6 +385,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                 @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                 @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                @SwarmDash.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwarmDash;
+                @SwarmDash.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwarmDash;
+                @SwarmDash.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwarmDash;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -378,6 +404,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @NOCLIP.started += instance.OnNOCLIP;
                 @NOCLIP.performed += instance.OnNOCLIP;
                 @NOCLIP.canceled += instance.OnNOCLIP;
+                @SwarmDash.started += instance.OnSwarmDash;
+                @SwarmDash.performed += instance.OnSwarmDash;
+                @SwarmDash.canceled += instance.OnSwarmDash;
             }
         }
     }
@@ -437,6 +466,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnNOCLIP(InputAction.CallbackContext context);
+        void OnSwarmDash(InputAction.CallbackContext context);
     }
     public interface ICharacterActionsActions
     {

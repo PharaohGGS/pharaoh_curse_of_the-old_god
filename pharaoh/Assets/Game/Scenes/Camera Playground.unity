@@ -8188,18 +8188,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalSpeed: 5
   inAirHorizontalSpeed: 5
-  jumpForce: 16
-  smoothInput: 0.03
-  movementDeadRange: 0.5
+  noclipSpeed: 10
+  initialJumpForce: 12
+  heldJumpForce: 16
+  maxJumpHold: 0.3
+  stunFallDistance: 5.55
+  fallStunDuration: 1.5
+  dashForce: 35
+  dashTime: 0.1
+  dashCooldown: 0.5
   rightGroundCheck: {fileID: 3275309703270759646}
   leftGroundCheck: {fileID: 3275309703434464097}
   groundCheckRadius: 0.05
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  dashForce: 35
-  dashTime: 0.1
-  dashCooldown: 0.5
   animator: {fileID: 1418237655451366335}
   modelTransform: {fileID: 4199388080606774002}
   tr: {fileID: 3275309702079284252}
