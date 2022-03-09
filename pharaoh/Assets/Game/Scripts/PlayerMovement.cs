@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private float _backOrientationIdle = -135f; //value defined with Clémence
     private float _backOrientationRunning = -90.1f; //value defined with Clémence
     private float _initialFallHeight;
+    private int _defaultLayer;
+    private int _swarmDashLayer;
     private bool _isRunning = false;
     private bool _isDashing = false;
     private bool _hasDashedInAir = false;
@@ -97,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _defaultLayer = LayerMask.NameToLayer("Player");
+        _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerInput = new PlayerInput();
 
@@ -154,6 +158,8 @@ public class PlayerMovement : MonoBehaviour
             _isDashAvailable = false;
             _isHooked = false;
 
+            gameObject.layer = _swarmDashLayer;
+
             animator.SetTrigger("Dashing");
         }
     }
@@ -204,6 +210,9 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.gravityScale = _previousGravityScale;
             _isDashing = false;
+
+            gameObject.layer = _defaultLayer;
+
             StartCoroutine(DashCooldown());
         }
 
