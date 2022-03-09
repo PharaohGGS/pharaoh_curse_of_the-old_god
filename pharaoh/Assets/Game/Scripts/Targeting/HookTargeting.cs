@@ -150,6 +150,12 @@ namespace Pharaoh.Gameplay
 
         #endregion
 
+        public void Respawn()
+        {
+            _isOnHook = false;
+            UnHook();
+        }
+
         private void Hook()
         {
             _currentTarget = null;
