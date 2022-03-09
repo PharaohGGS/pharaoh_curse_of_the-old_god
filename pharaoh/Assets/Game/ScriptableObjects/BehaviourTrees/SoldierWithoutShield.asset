@@ -20,6 +20,27 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &-7799077535872403113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: d9786fe630dc3f84f8a19fa1e93aed39
+  position: {x: -445.99994, y: 838}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: ab7804cb95fabf84589101cd12e112c1, type: 2}
 --- !u!114 &-7740586410243994410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +103,8 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &-2544149763600791116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +144,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5843eef15eb3a2e4ab10e9b189772535
-  position: {x: 534, y: 524}
+  position: {x: 534.0001, y: 493}
   description: 
   blackboard:
     debugData: []
@@ -144,12 +167,13 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: a3013d31e7e22cc44a7926e566d6d886
-  position: {x: 533.99994, y: 671.00006}
+  position: {x: 534.0001, y: 640.00006}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   currentWaypointIndex: 0
+  ignoreHeight: 1
 --- !u!114 &-1643550015293667367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +196,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: -8096251022630008292}
-  - {fileID: 3350457442567734327}
+  - {fileID: -7799077535872403113}
 --- !u!114 &-251212995895321325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,9 +248,9 @@ MonoBehaviour:
   - {fileID: -1643550015293667367}
   - {fileID: 9182453372911218589}
   - {fileID: -8096251022630008292}
-  - {fileID: 3350457442567734327}
-  - {fileID: 7543306493078875024}
-  - {fileID: -5196779309447961558}
+  - {fileID: -7799077535872403113}
+  - {fileID: 3972189698495168791}
+  - {fileID: 3765123510119692838}
   blackboard:
     debugData: []
 --- !u!114 &1246385073974385994
@@ -244,7 +268,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: c9a12b46e92b5054484d8efd003db8a6
-  position: {x: 384, y: 369.76}
+  position: {x: 384, y: 339}
   description: 
   blackboard:
     debugData: []
@@ -316,6 +340,30 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  gearData: {fileID: 0}
+  _healthComponent: {fileID: 0}
+  _attack: {fileID: 0}
+--- !u!114 &3765123510119692838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bea807811754144bf6e2b8f7eb7215, type: 3}
+  m_Name: CheckTargetInAttackRange
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 06b51f3d7ca25c946bfb70d68b72a5b9
+  position: {x: -809.99994, y: 678}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: ab7804cb95fabf84589101cd12e112c1, type: 2}
 --- !u!114 &3968242717453709997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,11 +379,32 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 7359ab16b26312f449099c242eb9cd1c
-  position: {x: 384.00006, y: 671.00006}
+  position: {x: 384, y: 640.00006}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &3972189698495168791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23702d243fa431a4c8677834fe65412e, type: 3}
+  m_Name: CheckHoldingGear
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: a2a4710dce56be94aba1d1bfb668e545
+  position: {x: -960, y: 678}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearData: {fileID: 11400000, guid: ab7804cb95fabf84589101cd12e112c1, type: 2}
 --- !u!114 &6391869510671860528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +420,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 70d4373731cecdf4eb1af01f51940f71
-  position: {x: 383.99997, y: 524}
+  position: {x: 384, y: 493}
   description: 
   blackboard:
     debugData: []
@@ -378,6 +447,8 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
+  - {fileID: 3972189698495168791}
+  - {fileID: 3765123510119692838}
   - {fileID: 9182453372911218589}
   - {fileID: -1643550015293667367}
 --- !u!114 &7543306493078875024
@@ -400,6 +471,7 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+  _attack: {fileID: 0}
 --- !u!114 &7746393604834486671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,8 +493,6 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: 7543306493078875024}
-  - {fileID: -5196779309447961558}
   - {fileID: 7061892331425943572}
 --- !u!114 &9182453372911218589
 MonoBehaviour:
