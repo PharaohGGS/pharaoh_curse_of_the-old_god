@@ -81,8 +81,10 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown = 0.5f;
 
     [Header("Ground Detection")]
-    [Tooltip("Ground check")]
-    public Transform groundCheck;
+    [Tooltip("Rightmost ground check")]
+    public Transform rightGroundCheck;
+    [Tooltip("leftmost ground check")]
+    public Transform leftGroundCheck;
     public LayerMask groundLayer;
 
     [Header("Animations")]
@@ -163,15 +165,9 @@ public class PlayerMovement : MonoBehaviour
         _noclip = !_noclip;
 
         if (_noclip)
-        {
             _rigidbody.gravityScale = 0f;
-            GetComponent<CapsuleCollider2D>().enabled = false;
-        }
         else
-        {
             _rigidbody.gravityScale = 3f;
-            GetComponent<CapsuleCollider2D>().enabled = true;
-        }
     }
 
     public void LockMovement(bool value)
@@ -270,7 +266,8 @@ public class PlayerMovement : MonoBehaviour
         bool wasGrounded = isGrounded;
 
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -370,7 +367,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Displays the ground checks radiuses
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(groundCheck.position, groundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(rightGroundCheck.position, rightGroundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(leftGroundCheck.position, leftGroundCheck.position + (Vector3.down * _groundCheckLength));
 
         // Displays the velocity
         Gizmos.color = Color.blue;
