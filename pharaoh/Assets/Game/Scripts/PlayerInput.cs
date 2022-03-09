@@ -53,6 +53,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NOCLIP"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9fd0602-871e-43a3-83bf-44ea53b65059"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,6 +174,85 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f100b5b-bd23-4a2c-90bd-33a5fcf47d68"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NOCLIP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""CharacterActions"",
+            ""id"": ""74dc7952-b854-4390-8fb2-c53642c0cb1f"",
+            ""actions"": [
+                {
+                    ""name"": ""Hook"",
+                    ""type"": ""Button"",
+                    ""id"": ""afba71f3-c9d2-413c-9b27-8049c44df9db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Soldier"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dcd925d-e754-4545-8dc5-9f42c6e4405b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""c3e1f4cb-4e4e-44fa-9c72-17637b44b926"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""65dac8c7-57c6-4d01-b9a2-af2fef8fb8ef"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc925a9f-6e89-4c7a-8af1-8a0e1b5dbaf2"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Soldier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0442d37b-7f9b-4f14-b3d4-f016fcdc9e31"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -176,6 +264,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Move = m_CharacterControls.FindAction("Move", throwIfNotFound: true);
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
+        m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
+        // CharacterActions
+        m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
+        m_CharacterActions_Hook = m_CharacterActions.FindAction("Hook", throwIfNotFound: true);
+        m_CharacterActions_Soldier = m_CharacterActions.FindAction("Soldier", throwIfNotFound: true);
+        m_CharacterActions_MousePosition = m_CharacterActions.FindAction("MousePosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +332,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Move;
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Dash;
+    private readonly InputAction m_CharacterControls_NOCLIP;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -245,6 +340,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_CharacterControls_Move;
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
+        public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +359,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDash;
+                @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,14 +375,73 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @NOCLIP.started += instance.OnNOCLIP;
+                @NOCLIP.performed += instance.OnNOCLIP;
+                @NOCLIP.canceled += instance.OnNOCLIP;
             }
         }
     }
     public CharacterControlsActions @CharacterControls => new CharacterControlsActions(this);
+
+    // CharacterActions
+    private readonly InputActionMap m_CharacterActions;
+    private ICharacterActionsActions m_CharacterActionsActionsCallbackInterface;
+    private readonly InputAction m_CharacterActions_Hook;
+    private readonly InputAction m_CharacterActions_Soldier;
+    private readonly InputAction m_CharacterActions_MousePosition;
+    public struct CharacterActionsActions
+    {
+        private @PlayerInput m_Wrapper;
+        public CharacterActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Hook => m_Wrapper.m_CharacterActions_Hook;
+        public InputAction @Soldier => m_Wrapper.m_CharacterActions_Soldier;
+        public InputAction @MousePosition => m_Wrapper.m_CharacterActions_MousePosition;
+        public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CharacterActionsActions set) { return set.Get(); }
+        public void SetCallbacks(ICharacterActionsActions instance)
+        {
+            if (m_Wrapper.m_CharacterActionsActionsCallbackInterface != null)
+            {
+                @Hook.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Hook.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Hook.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnHook;
+                @Soldier.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSoldier;
+                @Soldier.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSoldier;
+                @Soldier.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSoldier;
+                @MousePosition.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnMousePosition;
+            }
+            m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Hook.started += instance.OnHook;
+                @Hook.performed += instance.OnHook;
+                @Hook.canceled += instance.OnHook;
+                @Soldier.started += instance.OnSoldier;
+                @Soldier.performed += instance.OnSoldier;
+                @Soldier.canceled += instance.OnSoldier;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
+            }
+        }
+    }
+    public CharacterActionsActions @CharacterActions => new CharacterActionsActions(this);
     public interface ICharacterControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnNOCLIP(InputAction.CallbackContext context);
+    }
+    public interface ICharacterActionsActions
+    {
+        void OnHook(InputAction.CallbackContext context);
+        void OnSoldier(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
 }
