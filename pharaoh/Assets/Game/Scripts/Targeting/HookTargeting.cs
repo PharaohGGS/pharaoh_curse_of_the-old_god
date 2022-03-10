@@ -2,7 +2,9 @@ using System;
 using Pharaoh.Gameplay;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
@@ -83,6 +85,7 @@ namespace Pharaoh.Gameplay
 
         #region Editor Debug
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (_rigidbody == null)
@@ -112,13 +115,14 @@ namespace Pharaoh.Gameplay
             Handles.color = new Color(1f, 0.7531517f, 0f, 1f);
             Handles.DrawWireDisc(_rigidbody.position, Vector3.forward, overlapingRadius);
         }
+#endif
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
         #region Input Events
-        
+
         private void OnMove(InputAction.CallbackContext obj)
         {
             var axis = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
