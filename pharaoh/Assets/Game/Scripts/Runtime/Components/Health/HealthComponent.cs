@@ -58,7 +58,6 @@ namespace Pharaoh.Gameplay.Components
 
         public void TakeHit(Damager damager, Collider2D other)
         {
-            LogHandler.SendMessage($"HealthComponent: {name}, Damager: {damager.name}, other: {other.name}", MessageType.Log);
             var colliders = GetComponents<Collider2D>();
             if (colliders.Length <= 0 || colliders.All(col => col != other)) return;
 

@@ -18,11 +18,16 @@ public class MovingBlock : MonoBehaviour
     public UnityEvent onLeavingGround;
     public UnityEvent onTriggerGround;
     public UnityEvent onTriggerSpike;
-    private bool _isGrounded = false;
     private Rigidbody2D _rigidbody2D;
+    private Collider2D _collider2D;
 
     private void Awake()
     {
+        if (!TryGetComponent(out _collider2D))
+        {
+            Debug.LogError($"No collider on movingblock, this is not normal.");
+        }
+
         if (!TryGetComponent(out _rigidbody2D))
         {
             Debug.LogError($"No rigidbody on movingblock, this is not normal.");
@@ -32,12 +37,7 @@ public class MovingBlock : MonoBehaviour
     public void FixedUpdate()
     {
         // if not equals change var and call event
-        var isGrounded = IsGrounded();
-        if (_isGrounded == isGrounded) return;
-
-        _isGrounded = isGrounded;
-            
-        if (!_isGrounded && _rigidbody2D?.velocity.y < -0.1f)
+        if (_rigidbody2D?.velocity.y < -0.1f && !IsGrounded())
         {
             onLeavingGround?.Invoke();
         }
@@ -47,8 +47,6 @@ public class MovingBlock : MonoBehaviour
     {
         if (whatIsSpike.HasLayer(other.gameObject.layer))
         {
-            //_rightHandle.enabled = false;
-            //_leftHandle.enabled = false;
             onTriggerSpike?.Invoke();
         }
 
@@ -56,8 +54,6 @@ public class MovingBlock : MonoBehaviour
         {
             onTriggerGround?.Invoke();
         }
-
-        //this.enabled = false;
     }
 
     // Returns whether or not the block is grounded
