@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckHoldingGear : ActionNode
     {
-        [SerializeField] private GearData gearData;
+        [SerializeField] private GearType gearType;
 
         private AttackComponent _attack;
 
@@ -23,14 +23,14 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            return !_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder) || !holder.gear.transform.parent
+            return !_attack || gearType == GearType.Null || !_attack.TryGetHolder(gearType, out var holder) || !holder.gear.transform.parent
                 ? NodeState.Failure : NodeState.Success;
         }
 
         protected override void OnStop()
         {
             if (state != NodeState.Failure) return;
-            if (!_attack || !gearData || !_attack.TryGetHolder(gearData, out var holder)) return;
+            if (!_attack || gearType == GearType.Null || !_attack.TryGetHolder(gearType, out var holder)) return;
 
             if (holder.gear.isThrown && holder.gear.isGrounded)
             {

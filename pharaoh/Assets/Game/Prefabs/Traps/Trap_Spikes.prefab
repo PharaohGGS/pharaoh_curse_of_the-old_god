@@ -73,3 +73,45 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+--- !u!1 &122903603835565847 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7198938675935875298, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+  m_PrefabInstance: {fileID: 7085112985307408373}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6927820565553408170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122903603835565847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _is2D: 1
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxOverlappedColliders: 3
+  collider2D: {fileID: 6554105240523486609}
+  colliders2D:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  layeredColliders2D:
+    list:
+    - Key: 11
+      Value: []
+    keyCollision: 0
+  collider3D: {fileID: 0}
+  colliders3D: []
+  layeredColliders3D:
+    list: []
+    keyCollision: 0
+--- !u!61 &6554105240523486609 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 4082437492315050596, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+  m_PrefabInstance: {fileID: 7085112985307408373}
+  m_PrefabAsset: {fileID: 0}
