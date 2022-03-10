@@ -6,9 +6,6 @@ using UnityEngine;
 [CustomEditor(typeof(Damager), true)]
 public class DamagerEditor : Editor
 {
-    protected SerializedProperty _damagingLayersProp;
-    protected SerializedProperty _onTriggerHitProp;
-
     protected SerializedProperty _collidingLayersProp;
     protected SerializedProperty _onCollisionHitProp;
 
@@ -17,9 +14,6 @@ public class DamagerEditor : Editor
     
     protected virtual void OnEnable()
     {
-        _damagingLayersProp = serializedObject.FindProperty("damagingLayers");
-        _onTriggerHitProp = serializedObject.FindProperty("onTriggerHit");
-
         _collidingLayersProp = serializedObject.FindProperty("collidingLayers");
         _onCollisionHitProp = serializedObject.FindProperty("onCollisionHit");
 
@@ -51,8 +45,6 @@ public class DamagerEditor : Editor
             if (_collidingLayersProp?.intValue > 0) EditorGUILayout.PropertyField(_onCollisionHitProp);
             return;
         }
-
-        if (_damagingLayersProp?.intValue > 0) EditorGUILayout.PropertyField(_onTriggerHitProp);
 
         if (_collidingLayersProp?.intValue > 0)
         {

@@ -16,7 +16,7 @@ namespace Pharaoh.Gameplay.Components
         private Collider2D _collider2D;
 
         public LayerMask damagingLayers;
-        [HideInInspector] public UnityEvent<Damager, Collider2D> onTriggerHit;
+        public UnityEvent<Damager, Collider2D> onTriggerHit;
 
         public LayerMask collidingLayers;
         [HideInInspector] public UnityEvent<Damager, Collision2D> onCollisionHit;
