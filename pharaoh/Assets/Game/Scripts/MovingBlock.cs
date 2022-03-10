@@ -19,13 +19,14 @@ public class MovingBlock : MonoBehaviour
     public UnityEvent onTriggerGround;
     public UnityEvent onTriggerSpike;
     private bool _isGrounded = false;
+    private Rigidbody2D _rigidbody2D;
 
     private void Awake()
     {
-        //_rightHandle = transform.Find("DEBUG - Moving Block Target Right").GetComponent<CircleCollider2D>();
-        //_leftHandle = transform.Find("DEBUG - Moving Block Target Left").GetComponent<CircleCollider2D>();
-        //_rightGroundCheck = transform.Find("Right Ground Check").transform;
-        //_leftGroundCheck = transform.Find("Left Ground Check").transform;
+        if (!TryGetComponent(out _rigidbody2D))
+        {
+            Debug.LogError($"No rigidbody on movingblock, this is not normal.");
+        }
     }
 
     public void FixedUpdate()
@@ -36,7 +37,7 @@ public class MovingBlock : MonoBehaviour
 
         _isGrounded = isGrounded;
             
-        if (!_isGrounded)
+        if (!_isGrounded && _rigidbody2D?.velocity.y < -0.1f)
         {
             onLeavingGround?.Invoke();
         }
