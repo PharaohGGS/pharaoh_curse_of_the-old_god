@@ -138,10 +138,10 @@ public class SandSoldier : MonoBehaviour
                 groundLayer);
 
             if (_groundHit)
-                _soldierPosition = _groundHit.point + new Vector2(0,
-                    sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f * sandSoldier.transform.localScale.y);
+                _soldierPosition = (Vector3)_groundHit.point + new Vector3(0,
+                    sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f * sandSoldier.transform.localScale.y, transform.position.z);
             else
-                _soldierPosition = new Vector3(newX, _soldierPosition.y);
+                _soldierPosition = new Vector3(newX, _soldierPosition.y, transform.position.z);
             
             if (wallHit)
             {
@@ -207,6 +207,7 @@ public class SandSoldier : MonoBehaviour
         return pos;
     }*/
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle greenStyle = new GUIStyle();
@@ -217,4 +218,5 @@ public class SandSoldier : MonoBehaviour
         Handles.Label(transform.position + Vector3.up * 4f, "Pressing : " + (_previewCoroutine != null ? "Yes" : "No"),
             _previewCoroutine != null ? greenStyle : redStyle);
     }
+#endif
 }
