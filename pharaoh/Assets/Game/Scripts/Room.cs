@@ -20,7 +20,7 @@ public class Room : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        if (col.gameObject.layer != LayerMask.NameToLayer("Player") && col.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
 
         virtualCamera.SetActive(true);
         // if (_fading != null) StopCoroutine(_fading);
@@ -32,7 +32,7 @@ public class Room : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player") && other.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
 
         virtualCamera.SetActive(false);
         // if (_fading != null) StopCoroutine(_fading);
