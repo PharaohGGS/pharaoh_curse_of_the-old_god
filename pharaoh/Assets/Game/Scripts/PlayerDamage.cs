@@ -1,9 +1,9 @@
+using Pharaoh.Tools;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamage : MonoBehaviour
 {
-
     private PlayerMovement _playerMovement;
     private Pharaoh.Gameplay.HookTargeting _hookTargeting;
     private Rigidbody2D _rigidBody;
@@ -38,13 +38,13 @@ public class PlayerDamage : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Block falling on the player
-        if (whatIsMovingBlock == (whatIsMovingBlock | (1 << collision.gameObject.layer)) && collision.gameObject.GetComponent<Rigidbody2D>().velocity.y < -0.1f)
+        if (whatIsMovingBlock.HasLayer(collision.gameObject.layer) && collision.gameObject.GetComponent<Rigidbody2D>().velocity.y < -0.1f)
             DamageAndRespawn();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
+        if (whatIsSpike.HasLayer(collision.gameObject.layer))
             DamageAndRespawn();
     }
 

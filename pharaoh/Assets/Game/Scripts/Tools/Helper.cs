@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace Pharaoh.Tools
@@ -37,6 +36,34 @@ namespace Pharaoh.Tools
         }
 
         public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
+        
+
+        public static bool IsCollidingHimself(this GameObject gameObject, Collider2D other, bool parentDepth = false, bool childrenDepth = false)
+        {
+            if (other.gameObject == gameObject) return true;
+            if (!parentDepth && !childrenDepth) return false;
+            
+            var listColliders = new System.Collections.Generic.List<Collider2D>();
+
+            if (parentDepth) listColliders.AddRange(gameObject.GetComponentsInParent<Collider2D>());
+            if (childrenDepth) listColliders.AddRange(gameObject.GetComponentsInParent<Collider2D>());
+            
+            return listColliders.Count > 0 && listColliders.Any(coll => coll.gameObject == other.gameObject);
+        }
+
+        public static bool IsCollidingHimself(this GameObject gameObject, Collider other, bool parentDepth = false, bool childrenDepth = false)
+        {
+            if (other.gameObject == gameObject) return true;
+            if (!parentDepth && !childrenDepth) return false;
+            
+            var listColliders = new System.Collections.Generic.List<Collider>();
+
+            if (parentDepth) listColliders.AddRange(gameObject.GetComponentsInParent<Collider>());
+            if (childrenDepth) listColliders.AddRange(gameObject.GetComponentsInParent<Collider>());
+
+            // to exclude all potential collider of the gameObject holding this damager
+            return listColliders.Count > 0 && listColliders.Any(coll => coll.gameObject == other.gameObject);
+        }
 
         public static int OverlapNonAlloc(this Collider collider, ref Collider[] colliders, LayerMask layerMask)
         {

@@ -1,3 +1,4 @@
+using Pharaoh.Tools;
 using UnityEngine;
 
 public class MovingBlock : MonoBehaviour
@@ -22,7 +23,7 @@ public class MovingBlock : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
+        if (whatIsSpike.HasLayer(collision.gameObject.layer))
         {
             _rightHandle.enabled = false;
             _leftHandle.enabled = false;
