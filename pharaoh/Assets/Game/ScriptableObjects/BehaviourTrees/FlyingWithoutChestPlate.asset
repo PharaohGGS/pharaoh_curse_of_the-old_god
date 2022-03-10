@@ -64,6 +64,29 @@ MonoBehaviour:
   is2D: 0
   colliders3D: []
   colliders2D: []
+  _detection: {fileID: 0}
+  _collider3D: {fileID: 0}
+  _collider2D: {fileID: 0}
+--- !u!114 &-6284746197893894487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfb9fb978ee6c14c93140708d9d6dc8, type: 3}
+  m_Name: CheckTargetInOverlap
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: ebbe68f5b2b5da040a4b944602f5b790
+  position: {x: -176, y: 491.99994}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
 --- !u!114 &-5828985312540373061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +107,7 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
+  gearType: 2
 --- !u!114 &-5196779309447961558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,9 +151,9 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   children:
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
+  - {fileID: -6284746197893894487}
 --- !u!114 &-2224927277969790943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +265,6 @@ MonoBehaviour:
   - {fileID: -2224927277969790943}
   - {fileID: -2000076536378003351}
   - {fileID: 3968242717453709997}
-  - {fileID: -6841170305744374862}
   - {fileID: -251212995895321325}
   - {fileID: 2032379574769424279}
   - {fileID: 7061892331425943572}
@@ -252,6 +274,7 @@ MonoBehaviour:
   - {fileID: -5828985312540373061}
   - {fileID: 5066544794399076587}
   - {fileID: 1776899634528298314}
+  - {fileID: -6284746197893894487}
   blackboard:
     debugData: []
 --- !u!114 &1246385073974385994
@@ -321,7 +344,7 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
+  gearType: 2
 --- !u!114 &2032379574769424279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +428,7 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
+  gearType: 2
 --- !u!114 &6391869510671860528
 MonoBehaviour:
   m_ObjectHideFlags: 0

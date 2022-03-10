@@ -1,30 +1,31 @@
+using Pharaoh.GameEvents;
+using Pharaoh.Tools;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamage : MonoBehaviour
 {
-
-    private PlayerMovement _playerMovement;
-    private Pharaoh.Gameplay.HookTargeting _hookTargeting;
     private Rigidbody2D _rigidBody;
-    private FadeToBlack _fade;
     private bool _isRespawning = false;
 
     [Tooltip("What layer is the Moving Block ?")]
     public LayerMask whatIsMovingBlock;
     [Tooltip("What layer is the Spike ?")]
     public LayerMask whatIsSpike;
+
+    [Header("RespawnCoroutine")]
+
     [Tooltip("Transform at which the player will respawn")]
     public Transform DEBUGRespawnPoint;
     [Tooltip("Delay before which the player respawns")]
     public float delayBeforeRespawn = 0.1f;
+    [Tooltip("Event invoke when the player respawns")]
+    public UnityEvent onRespawn;
 
     private void Awake()
     {
-        _playerMovement = GetComponent<PlayerMovement>();
-        _hookTargeting = GetComponent<Pharaoh.Gameplay.HookTargeting>();
         _rigidBody = GetComponent<Rigidbody2D>();
-        _fade = FindObjectOfType<FadeToBlack>();
 
         if (DEBUGRespawnPoint == null)
         {
@@ -35,45 +36,25 @@ public class PlayerDamage : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void MoveToSpawnPoint()
     {
-        // Block falling on the player
-        if (whatIsMovingBlock == (whatIsMovingBlock | (1 << collision.gameObject.layer)) && collision.gameObject.GetComponent<Rigidbody2D>().velocity.y < -0.1f)
-            DamageAndRespawn();
+        _rigidBody.position = DEBUGRespawnPoint.position;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
-            DamageAndRespawn();
-    }
-
-    private void DamageAndRespawn()
+    public void Respawn()
     {
         if (_isRespawning) return; //the player is already respawning due to damage
-
-        // Damage player
-        Debug.Log("PlayerDamage : need to implement the health component to damage (1) the player");
-
-        _playerMovement.enabled = false;
-
-        StartCoroutine(Respawn());
+        StartCoroutine(RespawnCoroutine());
     }
 
-    private System.Collections.IEnumerator Respawn()
+    private System.Collections.IEnumerator RespawnCoroutine()
     {
         _isRespawning = true;
 
         yield return new WaitForSeconds(delayBeforeRespawn);
-
+        
         // Fade the screen and respawn the player
-        _fade.Fade();
-        _rigidBody.position = DEBUGRespawnPoint.position;
-
-        _playerMovement.enabled = true;
-        _playerMovement.Respawn();
-        _hookTargeting.Respawn();
-
+        onRespawn?.Invoke();
         _isRespawning = false;
     }
 

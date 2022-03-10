@@ -1,22 +1,24 @@
 using Pharaoh.Gameplay.Components;
 using UnityEditor;
+using UnityEngine;
 
 [CanEditMultipleObjects]
 [CustomEditor(typeof(Damager), true)]
 public class DamagerEditor : Editor
 {
-    protected SerializedProperty _damagingLayersProp;
-    protected SerializedProperty _onTriggerHitProp;
-
     protected SerializedProperty _collidingLayersProp;
-    protected SerializedProperty _onGroundHitProp;
+    protected SerializedProperty _onCollisionHitProp;
+
+    protected SerializedProperty _maxOverlappedCollidersProp;
+    protected SerializedProperty _onOverlapHitProp;
     
     protected virtual void OnEnable()
     {
-        _damagingLayersProp = serializedObject.FindProperty("damagingLayers");
-        _onTriggerHitProp = serializedObject.FindProperty("onTriggerHit");
         _collidingLayersProp = serializedObject.FindProperty("collidingLayers");
-        _onGroundHitProp = serializedObject.FindProperty("onCollidingHit");
+        _onCollisionHitProp = serializedObject.FindProperty("onCollisionHit");
+
+        _maxOverlappedCollidersProp = serializedObject.FindProperty("maxOverlappedColliders");
+        _onOverlapHitProp = serializedObject.FindProperty("onOverlapHit");
     }
 
     public override void OnInspectorGUI()
@@ -32,14 +34,22 @@ public class DamagerEditor : Editor
 
     protected virtual void DrawSpecificProperties()
     {
-        if (_damagingLayersProp?.intValue > 0)
+        if (serializedObject.targetObject is not Damager damager || !damager.TryGetComponent(out Collider2D collider2D))
         {
-            EditorGUILayout.PropertyField(_onTriggerHitProp);
+            Debug.LogError($"Collider2D property is null");
+            return;
+        }
+
+        if (!collider2D.isTrigger)
+        {
+            if (_collidingLayersProp?.intValue > 0) EditorGUILayout.PropertyField(_onCollisionHitProp);
+            return;
         }
 
         if (_collidingLayersProp?.intValue > 0)
         {
-            EditorGUILayout.PropertyField(_onGroundHitProp);
+            EditorGUILayout.PropertyField(_maxOverlappedCollidersProp);
+            EditorGUILayout.PropertyField(_onOverlapHitProp);
         }
     }
 }

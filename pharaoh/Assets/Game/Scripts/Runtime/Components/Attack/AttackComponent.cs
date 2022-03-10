@@ -59,5 +59,21 @@ namespace Pharaoh.Gameplay.Components
 
             return false;
         }
+
+        public bool TryGetHolder(GearType type, out GearHolder holder)
+        {
+            holder = null;
+            if (holders.Length <= 0) return false;
+            foreach (var h in holders)
+            {
+                var hData = h.gear != null ? h.gear.GetBaseData() : null;
+                if (hData == null || hData.GetGearType() != type) continue;
+
+                holder = h;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

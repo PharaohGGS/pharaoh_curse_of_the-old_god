@@ -6,6 +6,30 @@ using UnityEngine.Events;
 namespace Pharaoh.GameEvents
 {
     [Serializable]
+    public abstract class AbstractGameEventListener<E, UER> : MonoBehaviour, IGameEventListener 
+        where E : AbstractGameEvent 
+        where UER : UnityEvent
+    {
+        [field: SerializeField] public E gameEvent { get; private set; } 
+        [field: SerializeField] public UER response { get; private set; } 
+
+        public void OnEnable() 
+        {
+            gameEvent?.RegisterListener(this);
+        }
+
+        public void OnDisable() 
+        {
+            gameEvent?.UnregisterListener(this);
+        }
+
+        public void OnEventRaised() 
+        {
+            response?.Invoke();
+        }
+    }
+
+    [Serializable]
     public abstract class AbstractGameEventListener<T, E, UER> : MonoBehaviour, IGameEventListener<T> 
         where E : AbstractGameEvent<T> 
         where UER : UnityEvent<T>

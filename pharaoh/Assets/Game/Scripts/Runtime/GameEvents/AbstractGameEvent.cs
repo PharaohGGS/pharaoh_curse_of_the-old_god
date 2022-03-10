@@ -3,6 +3,35 @@ using UnityEngine;
 
 namespace Pharaoh.GameEvents
 {
+    public abstract class AbstractGameEvent : ScriptableObject
+    {
+        private readonly List<IGameEventListener> _listeners = new List<IGameEventListener>();
+        
+        public void Raise() 
+        {
+            for (int i = _listeners.Count - 1; i >= 0; i--) 
+            {
+                _listeners[i]?.OnEventRaised(); 
+            }
+        }
+
+        public void RegisterListener(IGameEventListener listener) 
+        {
+            if (!_listeners.Contains(listener))
+            {
+                _listeners?.Add(listener);
+            }
+        }
+
+        public void UnregisterListener(IGameEventListener listener) 
+        {
+            if (_listeners.Contains(listener))
+            {
+                _listeners?.Remove(listener);
+            }
+        }
+    }
+
     public abstract class AbstractGameEvent<T> : ScriptableObject 
     {
         private readonly List<IGameEventListener<T>> _listeners = new List<IGameEventListener<T>>();

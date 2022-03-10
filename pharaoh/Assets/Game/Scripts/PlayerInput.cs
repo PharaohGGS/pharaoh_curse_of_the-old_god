@@ -330,45 +330,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Game"",
-            ""id"": ""3e574198-9923-4318-87b2-ff826ec950f3"",
-            ""actions"": [
-                {
-                    ""name"": ""MainMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""d65968b9-34e6-4d3c-912e-5b785e3492ec"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""b7be2df0-c006-4195-b897-f9fc3ab394d5"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MainMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d600b21c-02f2-4535-8f2d-93a0de2c5ad7"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MainMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
@@ -385,9 +346,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
         m_CharacterActions_HookBlock = m_CharacterActions.FindAction("HookBlock", throwIfNotFound: true);
         m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
-        // Game
-        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_MainMenu = m_Game.FindAction("MainMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -557,39 +515,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public CharacterActionsActions @CharacterActions => new CharacterActionsActions(this);
-
-    // Game
-    private readonly InputActionMap m_Game;
-    private IGameActions m_GameActionsCallbackInterface;
-    private readonly InputAction m_Game_MainMenu;
-    public struct GameActions
-    {
-        private @PlayerInput m_Wrapper;
-        public GameActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MainMenu => m_Wrapper.m_Game_MainMenu;
-        public InputActionMap Get() { return m_Wrapper.m_Game; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
-        public void SetCallbacks(IGameActions instance)
-        {
-            if (m_Wrapper.m_GameActionsCallbackInterface != null)
-            {
-                @MainMenu.started -= m_Wrapper.m_GameActionsCallbackInterface.OnMainMenu;
-                @MainMenu.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnMainMenu;
-                @MainMenu.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnMainMenu;
-            }
-            m_Wrapper.m_GameActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @MainMenu.started += instance.OnMainMenu;
-                @MainMenu.performed += instance.OnMainMenu;
-                @MainMenu.canceled += instance.OnMainMenu;
-            }
-        }
-    }
-    public GameActions @Game => new GameActions(this);
     public interface ICharacterControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -603,9 +528,5 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnGrab(InputAction.CallbackContext context);
         void OnHookBlock(InputAction.CallbackContext context);
         void OnSandSoldier(InputAction.CallbackContext context);
-    }
-    public interface IGameActions
-    {
-        void OnMainMenu(InputAction.CallbackContext context);
     }
 }

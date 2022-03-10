@@ -6,5 +6,6 @@ namespace Pharaoh.Gameplay.Components
     public class DefenseGearData : GearData
     {
         public float deal;
+        public override GearType GetGearType() => GearType.Defense;
     }
 }
