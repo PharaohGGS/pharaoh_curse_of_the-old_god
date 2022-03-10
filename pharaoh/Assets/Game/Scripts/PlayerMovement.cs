@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine.InputSystem.Interactions;
+#endif
 
 [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
@@ -84,8 +85,10 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown = 0.5f;
 
     [Header("Ground Detection")]
-    [Tooltip("Ground check")]
-    public Transform groundCheck;
+    [Tooltip("Rightmost ground check")]
+    public Transform rightGroundCheck;
+    [Tooltip("leftmost ground check")]
+    public Transform leftGroundCheck;
     public LayerMask groundLayer;
 
     [Header("Animations")]
@@ -170,15 +173,9 @@ public class PlayerMovement : MonoBehaviour
         _noclip = !_noclip;
 
         if (_noclip)
-        {
             _rigidbody.gravityScale = 0f;
-            GetComponent<CapsuleCollider2D>().enabled = false;
-        }
         else
-        {
             _rigidbody.gravityScale = 3f;
-            GetComponent<CapsuleCollider2D>().enabled = true;
-        }
     }
 
     public void LockMovement(bool value)
@@ -193,6 +190,8 @@ public class PlayerMovement : MonoBehaviour
         _isHooked = true;
         _hasDashedInAir = false;
         animator.SetBool("Is Grounded", isGrounded);
+
+        _initialFallHeight = _rigidbody.position.y;
     }
 
     private void Update()
@@ -278,7 +277,8 @@ public class PlayerMovement : MonoBehaviour
         bool wasGrounded = isGrounded;
 
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -368,6 +368,7 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.Disable();
     }
 
+#if UNITY_EDITOR
     // Displays a bunch of stats while the game is playing
     private void OnDrawGizmosSelected()
     {
@@ -381,7 +382,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Displays the ground checks radiuses
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(groundCheck.position, groundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(rightGroundCheck.position, rightGroundCheck.position + (Vector3.down * _groundCheckLength));
+        Gizmos.DrawLine(leftGroundCheck.position, leftGroundCheck.position + (Vector3.down * _groundCheckLength));
 
         // Displays the velocity
         Gizmos.color = Color.blue;
@@ -403,5 +405,6 @@ public class PlayerMovement : MonoBehaviour
         Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
     }
+#endif
 
 }
