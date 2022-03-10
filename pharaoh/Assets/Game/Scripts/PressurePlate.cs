@@ -1,8 +1,7 @@
+using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 public class PressurePlate : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (whatCanTrigger == (whatCanTrigger | (1 << collision.gameObject.layer)))
+        if (whatCanTrigger.HasLayer(collision.gameObject.layer))
         {
             if (_pressCount == 0) OnPress.Invoke(); //invoke the event while the first body triggers the plate
             _pressCount++;
@@ -24,7 +23,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (whatCanTrigger == (whatCanTrigger | (1 << collision.gameObject.layer)))
+        if (whatCanTrigger.HasLayer(collision.gameObject.layer))
         {
             if (_pressCount == 1) OnRelease.Invoke(); //invoke the event while the last body leaves the plate
             _pressCount--;
@@ -37,12 +36,13 @@ public class PressurePlate : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle(GUI.skin.label);
         style.normal.textColor = _pressCount > 0 ? new Color(0f, 0.5f, 0f) : Color.red;
         Handles.Label(transform.position - (Vector3.up / 2f), (_pressCount > 0 ? "Triggered" : "Released") + "\nPress Count : " + _pressCount, style);
     }
+    
 #endif
-
 }
