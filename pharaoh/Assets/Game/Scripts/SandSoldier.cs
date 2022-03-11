@@ -46,10 +46,12 @@ public class SandSoldier : MonoBehaviour
     private bool _summoned; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
     private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
     private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
+    private PlayerMovement _playerMovement;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
+        _playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnEnable()
@@ -81,7 +83,7 @@ public class SandSoldier : MonoBehaviour
             StopCoroutine(_expiredCoroutine);
         
         // Calculate the start position of the preview from minRange and model rotation.
-        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
         _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
         _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
         // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
@@ -97,7 +99,8 @@ public class SandSoldier : MonoBehaviour
         if (_summoned) return;
         _summoned = true;
 
-        StopCoroutine(_previewCoroutine);
+        if (_previewCoroutine != null)
+            StopCoroutine(_previewCoroutine);
         _previewCoroutine = null;
         
         // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
@@ -105,6 +108,7 @@ public class SandSoldier : MonoBehaviour
         Destroy(_soldierPreviewInstance);
         
         if (!_groundHit) return;
+        _soldierPosition.z = transform.position.z;
         _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
         _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
     }
@@ -116,10 +120,32 @@ public class SandSoldier : MonoBehaviour
         // VFX
         // previewVFX.gameObject.transform.position = transform.position;
         // previewVFX.Play();
+        float playerSize = 2f;
 
-        float endX = startPosition.x + (maxRange - minRange) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        RaycastHit2D wallHit;
+        wallHit = Physics2D.Raycast(
+            new Vector2(transform.position.x, startPosition.y + playerSize / 2f),
+            _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
+            minRange,
+            groundLayer);
+        if (wallHit)
+        {
+            Debug.Log(wallHit.point);
+            _soldierPosition.x = wallHit.point.x -
+                                 sandSoldier.GetComponent<BoxCollider2D>().size.x / 2f *
+                                 sandSoldier.transform.localScale.x *
+                                 (_playerMovement.isFacingRight ? 1 : -1);
+            _groundHit = Physics2D.Raycast(new Vector2(_soldierPosition.x, wallHit.point.y), Vector2.down, 10f, groundLayer);
+            _soldierPosition.y = _groundHit.point.y +
+                                 sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f *
+                                 sandSoldier.transform.localScale.y;
+            SummonSoldier();
+            yield break;
+        }
+
+        _soldierPosition = startPosition;
+        float endX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
         
-        float playerSize = GetComponent<Collider2D>().bounds.size.y;
         
         float elapsed = 0f;
         while (elapsed < timeToMaxRange)
@@ -128,12 +154,12 @@ public class SandSoldier : MonoBehaviour
             
             float newX = Mathf.Lerp(startPosition.x, endX, elapsed / timeToMaxRange);
 
-            Vector3 raycastPos = new Vector3(newX, startPosition.y + playerSize / 2f, startPosition.z);
+            Vector3 raycastPos = new Vector3(newX, _soldierPosition.y + playerSize / 2f, startPosition.z);
 
             _groundHit = Physics2D.Raycast(raycastPos, Vector2.down, 10f, groundLayer);
-            RaycastHit2D wallHit = Physics2D.Raycast(
+            wallHit = Physics2D.Raycast(
                 raycastPos,
-                playerModel.rotation.eulerAngles.y > 150 ? Vector2.left : Vector2.right,
+                _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
                 sandSoldier.transform.localScale.x / 2f,
                 groundLayer);
 
