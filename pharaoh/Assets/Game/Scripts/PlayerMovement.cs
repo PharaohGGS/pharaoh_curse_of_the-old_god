@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             foreach (var coll in _colliders)
             {
                 if (coll is not CircleCollider2D) continue;
-                coll.enabled = false;
+                coll.isTrigger = true;
                 break;
             }
 
@@ -266,7 +266,7 @@ public class PlayerMovement : MonoBehaviour
         foreach (var coll in _colliders)
         {
             if (coll is not CircleCollider2D || isGrounded) continue;
-            coll.enabled = false;
+            coll.isTrigger = true;
             break;
         }
     }
@@ -317,7 +317,7 @@ public class PlayerMovement : MonoBehaviour
             foreach (var coll in _colliders)
             {
                 if (coll is not CircleCollider2D || !isGrounded) continue;
-                coll.enabled = true;
+                coll.isTrigger = false;
                 break;
             }
             
