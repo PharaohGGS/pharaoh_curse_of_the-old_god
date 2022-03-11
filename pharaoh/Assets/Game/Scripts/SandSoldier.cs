@@ -143,6 +143,7 @@ public class SandSoldier : MonoBehaviour
             yield break;
         }
 
+        _soldierPosition = startPosition;
         float endX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
         
         
@@ -153,7 +154,7 @@ public class SandSoldier : MonoBehaviour
             
             float newX = Mathf.Lerp(startPosition.x, endX, elapsed / timeToMaxRange);
 
-            Vector3 raycastPos = new Vector3(newX, startPosition.y + playerSize / 2f, startPosition.z);
+            Vector3 raycastPos = new Vector3(newX, _soldierPosition.y + playerSize / 2f, startPosition.z);
 
             _groundHit = Physics2D.Raycast(raycastPos, Vector2.down, 10f, groundLayer);
             wallHit = Physics2D.Raycast(
