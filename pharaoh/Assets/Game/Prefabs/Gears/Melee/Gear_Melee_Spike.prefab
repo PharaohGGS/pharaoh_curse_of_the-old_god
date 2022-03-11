@@ -4538,7 +4538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
+  <data>k__BackingField: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 2048
@@ -4561,7 +4561,11 @@ MonoBehaviour:
   collidingLayers:
     serializedVersion: 2
     m_Bits: 0
-  onCollidingHit:
+  onCollisionHit:
+    m_PersistentCalls:
+      m_Calls: []
+  maxOverlappedColliders: 3
+  onOverlapHit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &2673636097581239478

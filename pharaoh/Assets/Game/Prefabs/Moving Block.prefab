@@ -119,6 +119,7 @@ Transform:
   - {fileID: 6853428933036697582}
   - {fileID: 151295516777530313}
   - {fileID: 3821111395992133727}
+  - {fileID: 5439289013540807167}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -187,6 +188,168 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 66560
+  _rightHandle: {fileID: 9090750011862839180}
+  _leftHandle: {fileID: 9090750011941499085}
+  _rightGroundCheck: {fileID: 151295516777530313}
+  _leftGroundCheck: {fileID: 3821111395992133727}
+  onLeavingGround:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1943953040895569565}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onTriggerGround:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1943953040895569565}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTriggerSpike:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9090750011941499085}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9090750011862839180}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &1315401329065130245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5439289013540807167}
+  - component: {fileID: 1943953040895569565}
+  - component: {fileID: 3831113585070161935}
+  m_Layer: 16
+  m_Name: Damager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5439289013540807167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315401329065130245}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 299816305494152472}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1943953040895569565
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315401329065130245}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.8, y: 0.1}
+  m_EdgeRadius: 0
+--- !u!114 &3831113585070161935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315401329065130245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <data>k__BackingField: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
+  damagingLayers:
+    serializedVersion: 2
+    m_Bits: 131072
+  onTriggerHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Damager,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  collidingLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  onCollisionHit:
+    m_PersistentCalls:
+      m_Calls: []
+  maxOverlappedColliders: 3
+  onOverlapHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2128136557891325146
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,9 +469,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
+--- !u!1 &6853428932823857326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6572278093389575056, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
+  m_PrefabInstance: {fileID: 299816305644047166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &5567387410766052304
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6853428932823857326}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!4 &6853428932823857327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6572278093389575057, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
+  m_PrefabInstance: {fileID: 299816305644047166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &9090750011941499085 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8791586879832996851, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
   m_PrefabInstance: {fileID: 299816305644047166}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &299816305825436799
@@ -371,5 +565,36 @@ PrefabInstance:
 --- !u!4 &6853428933036697582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6572278093389575057, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
+  m_PrefabInstance: {fileID: 299816305825436799}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6853428933036697583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6572278093389575056, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
+  m_PrefabInstance: {fileID: 299816305825436799}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &8362149203892496859
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6853428933036697583}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &9090750011862839180 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8791586879832996851, guid: c07098f4981f88e4eb5175372d076ced, type: 3}
   m_PrefabInstance: {fileID: 299816305825436799}
   m_PrefabAsset: {fileID: 0}

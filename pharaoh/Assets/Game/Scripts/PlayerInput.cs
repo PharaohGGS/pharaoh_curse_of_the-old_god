@@ -227,7 +227,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""id"": ""8dc955b4-4410-4da3-99cb-57f1265aca8e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.15)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -289,7 +289,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4dbe063f-81ce-4467-bd4c-88d25fc65e77"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HookBlock"",

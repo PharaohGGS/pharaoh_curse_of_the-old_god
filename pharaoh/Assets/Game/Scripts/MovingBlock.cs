@@ -1,34 +1,59 @@
+using System;
+using Pharaoh.Tools;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MovingBlock : MonoBehaviour
 {
-
-    private CircleCollider2D _rightHandle;
-    private CircleCollider2D _leftHandle;
-    private Transform _rightGroundCheck;
-    private Transform _leftGroundCheck;
-    private float _groundCheckDistance = 0.05f;
-
     public LayerMask whatIsSpike;
     public LayerMask whatIsGround;
 
+    [SerializeField] private CircleCollider2D _rightHandle;
+    [SerializeField] private CircleCollider2D _leftHandle;
+    [SerializeField] private Transform _rightGroundCheck;
+    [SerializeField] private Transform _leftGroundCheck;
+    private float _groundCheckDistance = 0.05f;
+
+
+    public UnityEvent onLeavingGround;
+    public UnityEvent onTriggerGround;
+    public UnityEvent onTriggerSpike;
+    private Rigidbody2D _rigidbody2D;
+    private Collider2D _collider2D;
+
     private void Awake()
     {
-        _rightHandle = transform.Find("DEBUG - Moving Block Target Right").GetComponent<CircleCollider2D>();
-        _leftHandle = transform.Find("DEBUG - Moving Block Target Left").GetComponent<CircleCollider2D>();
-        _rightGroundCheck = transform.Find("Right Ground Check").transform;
-        _leftGroundCheck = transform.Find("Left Ground Check").transform;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (whatIsSpike == (whatIsSpike | (1 << collision.gameObject.layer)))
+        if (!TryGetComponent(out _collider2D))
         {
-            _rightHandle.enabled = false;
-            _leftHandle.enabled = false;
+            Debug.LogError($"No collider on movingblock, this is not normal.");
         }
 
-        this.enabled = false;
+        if (!TryGetComponent(out _rigidbody2D))
+        {
+            Debug.LogError($"No rigidbody on movingblock, this is not normal.");
+        }
+    }
+
+    public void FixedUpdate()
+    {
+        // if not equals change var and call event
+        if (_rigidbody2D?.velocity.y < -0.1f && !IsGrounded())
+        {
+            onLeavingGround?.Invoke();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (whatIsSpike.HasLayer(other.gameObject.layer))
+        {
+            onTriggerSpike?.Invoke();
+        }
+
+        if (whatIsGround.HasLayer(other.gameObject.layer))
+        {
+            onTriggerGround?.Invoke();
+        }
     }
 
     // Returns whether or not the block is grounded

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
@@ -8,65 +9,58 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class Damager : MonoBehaviour
     {
-        [SerializeField] private DamagerData data;
+        [field: SerializeField] public DamagerData data { get; private set; }
+        private Collider2D _collider2D;
+
         public LayerMask damagingLayers;
-        [HideInInspector] public UnityEvent<Damager> onTriggerHit;
+        public UnityEvent<Damager, Collider2D> onTriggerHit;
 
         public LayerMask collidingLayers;
-        [HideInInspector] public UnityEvent<Damager> onCollidingHit = new UnityEvent<Damager>();
+        [HideInInspector] public UnityEvent<Damager, Collision2D> onCollisionHit;
 
-        public Rigidbody2D rb2D { get; protected set; }
-        public Collider2D coll2D { get; protected set; }
-        public Collider2D lastTriggerEnter { get; protected set; }
-
-        public DamagerData GetData() => data;
-
-        [SerializeField] private int maxOverlapedColliders = 3;
-        private Collider2D[] _overlapedColliders;
-
+        [HideInInspector, SerializeField] private int maxOverlappedColliders = 3;
+        [HideInInspector] public UnityEvent<Damager, Collider2D[]> onOverlapHit;
+        private Collider2D[] _overlappedColliders;
+        
         protected virtual void Awake()
         {
-            _overlapedColliders = new Collider2D[maxOverlapedColliders];
-            rb2D = GetComponent<Rigidbody2D>();
-            if (TryGetComponent(out Collider2D collider2D)) coll2D = collider2D;
-            rb2D.bodyType = RigidbodyType2D.Kinematic;
+            _overlappedColliders = new Collider2D[maxOverlappedColliders];
+            if (!_collider2D) _collider2D = GetComponent<Collider2D>();
         }
 
         protected virtual void FixedUpdate()
         {
+            if (collidingLayers.value <= 0 || !_collider2D) return;
             // equivalent to OnCollisionEnter2D with trigger
-            var size = coll2D.OverlapNonAlloc(ref _overlapedColliders, collidingLayers);
-            if (size > 0) onCollidingHit?.Invoke(this);
+            var size = _collider2D.OverlapNonAlloc(ref _overlappedColliders, collidingLayers);
+            if (size > 0) onOverlapHit?.Invoke(this, _overlappedColliders);
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject == gameObject) return;
             
-            if (other.gameObject.HasLayer(damagingLayers))
+            if (other.gameObject.HasLayer(damagingLayers) && !gameObject.IsCollidingHimself(other, true))
             {
-                var parentColliders = GetComponentsInParent<Collider2D>();
-
-                // to exclude all potential collider of the gameObject holding this damager
-                if (parentColliders.Length > 0)
-                {
-                    foreach (var collider in parentColliders)
-                    {
-                        if (collider.gameObject == other.gameObject) return;
-                    }
-                }
-
-                lastTriggerEnter = other;
-                onTriggerHit?.Invoke(this);
+                onTriggerHit?.Invoke(this, other);
             }
         }
 
-        protected virtual void OnTriggerExit2D(Collider2D other)
+        /// <summary>
+        /// Not working when trigger engaged
+        /// </summary>
+        /// <param name="col"></param>
+        protected void OnCollisionEnter2D(Collision2D col)
         {
-            lastTriggerEnter = null;
+            if (col.gameObject == gameObject) return;
+
+            if (col.gameObject.HasLayer(collidingLayers))
+            {
+                onCollisionHit?.Invoke(this, col);
+            }
         }
     }
 }
