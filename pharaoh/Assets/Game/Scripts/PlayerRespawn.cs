@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerDamage : MonoBehaviour
+public class PlayerRespawn : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
     private bool _isRespawning = false;

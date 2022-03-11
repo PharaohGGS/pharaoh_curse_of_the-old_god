@@ -5,7 +5,7 @@ using UnityEditor;
 [RequireComponent(typeof(PlayerMovement))]
 public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 {
-
+    private Rigidbody2D _rigidbody;
     private PlayerInput _playerInput;
     private PlayerMovement _playerMovement;
     private GameObject _movingBlock = null;
@@ -21,6 +21,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     protected override void Awake()
     {
         base.Awake();
+        TryGetComponent(out _rigidbody);
         _waitPullDuration = new WaitForSeconds(pullDuration);
         _playerInput = new PlayerInput();
         _playerInput.CharacterActions.HookBlock.started += HookToBlock;
@@ -90,6 +91,10 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
             _playerMovement.IsPullingBlock = true;
 
             yield return _waitPullDuration;
+
+            // test if something is between the block & rigidbody
+            Vector2 direction = _rigidbody.position - block.position;
+            if (Physics2D.RaycastAll(_rigidbody.position, direction.normalized, direction.magnitude, whatIsObstacle).Length > 0) break;
             if (!_movingBlock || !CanPullBlock() || !mb.IsGrounded()) break;
         }
 
