@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,7 +8,6 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
 {
-
     private Rigidbody2D _rigidbody;
     private Vector2 _movementInput;
     private Vector2 _smoothMovement;
@@ -100,11 +100,14 @@ public class PlayerMovement : MonoBehaviour
     [Header("DEBUG")]
     public TrailRenderer tr; //DEBUG
 
+    private Collider2D[] _colliders;
+
     private void Awake()
     {
         _defaultLayer = LayerMask.NameToLayer("Player");
         _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
         _rigidbody = GetComponent<Rigidbody2D>();
+        _colliders = GetComponents<Collider2D>();
         _playerInput = new PlayerInput();
 
         // Movement's events binding
@@ -136,6 +139,14 @@ public class PlayerMovement : MonoBehaviour
             _jumpClock = Time.time;
             _isJumping = true;
             _isHooked = false;
+
+            // force the collider to not detect physics body during jumping
+            foreach (var coll in _colliders)
+            {
+                if (coll is not CircleCollider2D) continue;
+                coll.enabled = false;
+                break;
+            }
 
             animator.SetTrigger("Jumping");
         }
@@ -250,6 +261,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isDashing && !_isStunned)
             _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * dashForce;
+
+        // disable head collision until it reach the ground (double check)
+        foreach (var coll in _colliders)
+        {
+            if (coll is not CircleCollider2D || isGrounded) continue;
+            coll.enabled = false;
+            break;
+        }
     }
 
     private void LateUpdate()
@@ -279,6 +298,9 @@ public class PlayerMovement : MonoBehaviour
         // Updates the grounded state - check if one or both "feet" are on a ground
         isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
             || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+
+        // only when reach the ground and not falling
+        isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -290,6 +312,15 @@ public class PlayerMovement : MonoBehaviour
         else if (wasGrounded != isGrounded && !wasGrounded)
         {
             // Player reached the ground
+
+            // now the colliders are true when you reach the ground not before
+            foreach (var coll in _colliders)
+            {
+                if (coll is not CircleCollider2D || !isGrounded) continue;
+                coll.enabled = true;
+                break;
+            }
+            
             if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
             {
                 // Player fell from too high -> Stun
