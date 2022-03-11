@@ -14,12 +14,14 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
     public float pullForce = 1f;
     public float pullDuration = 1f;
+    private WaitForSeconds _waitPullDuration;
 
     public GameObject hookIndicator;
 
     protected override void Awake()
     {
         base.Awake();
+        _waitPullDuration = new WaitForSeconds(pullDuration);
         _playerInput = new PlayerInput();
         _playerInput.CharacterActions.HookBlock.started += HookToBlock;
         _playerInput.CharacterActions.HookBlock.performed += Pull;
@@ -74,32 +76,28 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
     private System.Collections.IEnumerator PullingBlock()
     {
-        Rigidbody2D block = _movingBlock.transform.parent.GetComponent<Rigidbody2D>();
-        MovingBlock mb = _movingBlock.transform.parent.GetComponent<MovingBlock>();
-
-        // Disables the block's gravity (avoiding friction) and assigning it a velocity to move
-        block.gravityScale = 0f;
-        block.velocity = (_playerMovement.IsFacingRight ? Vector2.left : Vector2.right) * pullForce;
-        block.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-        _playerMovement.IsPullingBlock = true;
-
-        yield return new WaitForSeconds(pullDuration);
-
-        if (!_playerInput.CharacterActions.HookBlock.IsPressed() || _movingBlock == null || !CanPullBlock() || !mb.IsGrounded())
+        if (!_movingBlock.transform.parent.TryGetComponent(out Rigidbody2D block) || 
+            !_movingBlock.transform.parent.TryGetComponent(out MovingBlock mb))
         {
-            // Cancels pulling if not holding the button
-            block.gravityScale = 1f;
-            block.velocity = Vector2.zero;
-            block.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+            yield break;
+        }
 
-            _playerMovement.IsPullingBlock = false;
-        }
-        else
+        while (_playerInput.CharacterActions.HookBlock.IsPressed())
         {
-            // Continues pulling if holding the button
-            StartCoroutine(PullingBlock());
+            block.gravityScale = 0f;
+            block.velocity = (_playerMovement.IsFacingRight ? Vector2.left : Vector2.right) * pullForce;
+            block.constraints = RigidbodyConstraints2D.FreezeRotation;
+            _playerMovement.IsPullingBlock = true;
+
+            yield return _waitPullDuration;
+            if (!_movingBlock || !CanPullBlock() || !mb.IsGrounded()) break;
         }
+
+        // Cancels pulling if not holding the button
+        block.gravityScale = 1f;
+        block.velocity = Vector2.zero;
+        block.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+        _playerMovement.IsPullingBlock = false;
     }
 
     private void UnHook()
