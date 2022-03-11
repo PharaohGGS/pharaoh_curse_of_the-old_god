@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,7 +8,6 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
 {
-
     private Rigidbody2D _rigidbody;
     private Vector2 _movementInput;
     private Vector2 _smoothMovement;
@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
     private float _dashClock = 0f; //used to measure for how long the dash occurs
     private float _smoothInput = 0.03f;
-    private float _turnSpeed = 7f; //value defined with Clémence
-    private float _backOrientationIdle = -135f; //value defined with Clémence
-    private float _backOrientationRunning = -90.1f; //value defined with Clémence
+    private float _turnSpeed = 7f; //value defined with Cl?mence
+    private float _backOrientationIdle = -135f; //value defined with Cl?mence
+    private float _backOrientationRunning = -90.1f; //value defined with Cl?mence
     private float _initialFallHeight;
     private int _defaultLayer;
     private int _swarmDashLayer;
@@ -279,6 +279,9 @@ public class PlayerMovement : MonoBehaviour
         // Updates the grounded state - check if one or both "feet" are on a ground
         isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
             || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+
+        // only when reach the ground and not falling
+        isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
@@ -290,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
         else if (wasGrounded != isGrounded && !wasGrounded)
         {
             // Player reached the ground
+            
             if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
             {
                 // Player fell from too high -> Stun
