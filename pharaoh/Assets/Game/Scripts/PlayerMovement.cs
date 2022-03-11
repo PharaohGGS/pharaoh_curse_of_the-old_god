@@ -356,8 +356,13 @@ public class PlayerMovement : MonoBehaviour
          _isHookedToBlock = false;
          _isPullingBlock = false;
 
-        _jumpClock = 0;
+        _jumpClock = 0f;
+        _dashClock = 0f;
         _initialFallHeight = _rigidbody.position.y;
+
+        _rigidbody.gravityScale = 3f;
+
+        gameObject.layer = _defaultLayer;
 
         Stun(respawnStunDuration);
     }
