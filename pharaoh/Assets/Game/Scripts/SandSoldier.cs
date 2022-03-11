@@ -46,10 +46,12 @@ public class SandSoldier : MonoBehaviour
     private bool _summoned; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
     private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
     private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
+    private PlayerMovement _playerMovement;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
+        _playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnEnable()
@@ -81,7 +83,7 @@ public class SandSoldier : MonoBehaviour
             StopCoroutine(_expiredCoroutine);
         
         // Calculate the start position of the preview from minRange and model rotation.
-        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
         _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
         _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
         // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
@@ -97,7 +99,8 @@ public class SandSoldier : MonoBehaviour
         if (_summoned) return;
         _summoned = true;
 
-        StopCoroutine(_previewCoroutine);
+        if (_previewCoroutine != null)
+            StopCoroutine(_previewCoroutine);
         _previewCoroutine = null;
         
         // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
@@ -117,9 +120,9 @@ public class SandSoldier : MonoBehaviour
         // previewVFX.gameObject.transform.position = transform.position;
         // previewVFX.Play();
 
-        float endX = startPosition.x + (maxRange - minRange) * (playerModel.rotation.eulerAngles.y > 150 ? -1 : 1);
+        float endX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
         
-        float playerSize = GetComponent<Collider2D>().bounds.size.y;
+        float playerSize = 2f;
         
         float elapsed = 0f;
         while (elapsed < timeToMaxRange)
@@ -133,7 +136,7 @@ public class SandSoldier : MonoBehaviour
             _groundHit = Physics2D.Raycast(raycastPos, Vector2.down, 10f, groundLayer);
             RaycastHit2D wallHit = Physics2D.Raycast(
                 raycastPos,
-                playerModel.rotation.eulerAngles.y > 150 ? Vector2.left : Vector2.right,
+                _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
                 sandSoldier.transform.localScale.x / 2f,
                 groundLayer);
 
@@ -145,8 +148,14 @@ public class SandSoldier : MonoBehaviour
             
             if (wallHit)
             {
-                SummonSoldier();
-                yield break;
+                Bounds bounds = wallHit.collider.bounds;
+                _soldierPosition.x = bounds.center.x +
+                                     (bounds.extents.x + sandSoldier.GetComponent<BoxCollider2D>().size.x / 2f * sandSoldier.transform.localScale.x)
+                                     * Mathf.Sign(transform.position.x - bounds.center.x);
+                _groundHit = Physics2D.Raycast(_soldierPosition, Vector2.down, 10f, groundLayer);
+                _soldierPosition.y = _groundHit.point.y + sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f *
+                    sandSoldier.transform.localScale.y;
+                break;
             }
 
             // Vector3 vfxPos = _soldierPosition - previewVFX.gameObject.transform.position;
@@ -156,7 +165,7 @@ public class SandSoldier : MonoBehaviour
             yield return null;
         }
         // previewVFX.SetVector3("TargetPosition", endPosition - transform.position);
-        _soldierPosition = new Vector3(endX, _soldierPosition.y);
+        //_soldierPosition = new Vector3(endX, _soldierPosition.y);
         SummonSoldier();
         yield return null;
     }
