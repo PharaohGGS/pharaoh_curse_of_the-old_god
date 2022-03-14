@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpClock = 0f; //used to measure for how long the jump input is held
     private float _dashClock = 0f; //used to measure for how long the dash occurs
     private float _smoothInput = 0.03f;
-    private float _turnSpeed = 7f; //value defined with Clémence
-    private float _backOrientationIdle = -135f; //value defined with Clémence
-    private float _backOrientationRunning = -90.1f; //value defined with Clémence
+    private float _turnSpeed = 7f; //value defined with Cl?mence
+    private float _backOrientationIdle = -135f; //value defined with Cl?mence
+    private float _backOrientationRunning = -90.1f; //value defined with Cl?mence
     private float _initialFallHeight;
     private int _defaultLayer;
     private int _swarmDashLayer;
@@ -100,14 +100,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("DEBUG")]
     public TrailRenderer tr; //DEBUG
 
-    private Collider2D[] _colliders;
-
     private void Awake()
     {
         _defaultLayer = LayerMask.NameToLayer("Player");
         _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
         _rigidbody = GetComponent<Rigidbody2D>();
-        _colliders = GetComponents<Collider2D>();
         _playerInput = new PlayerInput();
 
         // Movement's events binding
@@ -139,14 +136,6 @@ public class PlayerMovement : MonoBehaviour
             _jumpClock = Time.time;
             _isJumping = true;
             _isHooked = false;
-
-            // force the collider to not detect physics body during jumping
-            foreach (var coll in _colliders)
-            {
-                if (coll is not CircleCollider2D) continue;
-                coll.isTrigger = true;
-                break;
-            }
 
             animator.SetTrigger("Jumping");
         }
@@ -261,14 +250,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isDashing && !_isStunned)
             _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * dashForce;
-
-        // disable head collision until it reach the ground (double check)
-        foreach (var coll in _colliders)
-        {
-            if (coll is not CircleCollider2D || isGrounded) continue;
-            coll.isTrigger = true;
-            break;
-        }
     }
 
     private void LateUpdate()
@@ -312,14 +293,6 @@ public class PlayerMovement : MonoBehaviour
         else if (wasGrounded != isGrounded && !wasGrounded)
         {
             // Player reached the ground
-
-            // now the colliders are true when you reach the ground not before
-            foreach (var coll in _colliders)
-            {
-                if (coll is not CircleCollider2D || !isGrounded) continue;
-                coll.isTrigger = false;
-                break;
-            }
             
             if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
             {
@@ -383,8 +356,13 @@ public class PlayerMovement : MonoBehaviour
          _isHookedToBlock = false;
          _isPullingBlock = false;
 
-        _jumpClock = 0;
+        _jumpClock = 0f;
+        _dashClock = 0f;
         _initialFallHeight = _rigidbody.position.y;
+
+        _rigidbody.gravityScale = 3f;
+
+        gameObject.layer = _defaultLayer;
 
         Stun(respawnStunDuration);
     }
