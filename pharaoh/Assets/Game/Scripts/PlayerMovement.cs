@@ -120,8 +120,12 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        // Recover the player's input
-        _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
+        // Recover the player's input, clamping it to avoid diagonals directions
+        _movementInput = Vector2.zero;
+        if (_playerInput.CharacterControls.Move.ReadValue<Vector2>().x >= 0.2f)
+            _movementInput = Vector2.right;
+        else if (_playerInput.CharacterControls.Move.ReadValue<Vector2>().x <= -0.2f)
+            _movementInput = Vector2.left;
 
         if (_movementInput.y < -0.8f) _isHooked = false;
     }
@@ -404,6 +408,8 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
+        Handles.Label(_rigidbody.position + Vector2.up * 5f, "Smoothed Input : " + _smoothMovement, greenStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 4.8f, "Movement Input : " + _movementInput, greenStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.6f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
