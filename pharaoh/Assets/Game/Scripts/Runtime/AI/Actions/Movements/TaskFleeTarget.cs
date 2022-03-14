@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public class TaskGoToTarget : ActionNode
+    public class TaskFleeTarget : ActionNode
     {
         private MovementComponent _movement = null;
 
@@ -22,10 +22,11 @@ namespace Pharaoh.AI.Actions
             if (_movement && blackboard.TryGetData("target", out Transform t))
             {
                 var tr = agent.transform;
-                if (Vector3.Distance(tr.position, t.position) > _movement.closeDistance)
+                var fleePosition = tr.position - (t.position - tr.position);
+                if (Vector3.Distance(tr.position, t.position) <= _movement.fleeDistance)
                 {
                     tr.position = Vector3.MoveTowards(
-                        tr.position, t.position,
+                        tr.position, fleePosition,
                         _movement.moveSpeed * Time.deltaTime);
                 }
             }
