@@ -408,8 +408,6 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
-        Handles.Label(_rigidbody.position + Vector2.up * 5f, "Smoothed Input : " + _smoothMovement, greenStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 4.8f, "Movement Input : " + _movementInput, greenStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.6f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
