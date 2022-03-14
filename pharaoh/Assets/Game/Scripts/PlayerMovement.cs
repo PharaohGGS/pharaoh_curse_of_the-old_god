@@ -282,6 +282,11 @@ public class PlayerMovement : MonoBehaviour
 
         // only when reach the ground and not falling
         isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
+
+        // Updates the grounded state - check if one or both "feet" are on a ground
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary
