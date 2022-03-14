@@ -6,8 +6,11 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class CheckTargetInAttackRange<T> : ActionNode where T : DamagerData
+    public class CheckTargetInAttackRange : ActionNode
     {
+        [SerializeField] private GearType gearType;
+        [SerializeField] private float distance;
+
         private AttackComponent _attack;
 
         protected override void OnStart()
@@ -21,22 +24,23 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Failure;
-            if (!_attack || !_attack.TryGetHolder<T>(out var holder) || 
+            if (!_attack || gearType == GearType.Null || !_attack.TryGetHolder(gearType, out var holder) || 
                 !blackboard.TryGetData("target", out Transform t))
             {
-                return state;
+                return NodeState.Failure;
             }
 
-            var distance = Vector3.Distance(agent.transform.position, t.position);
-            if (distance > holder.data.range)
+            var gearData = holder.gear.GetBaseData();
+            if (gearData == null) return NodeState.Failure;
+
+            var range = gearData.range;
+            if (gearData is MeleeGearData {throwable: true} meleeGearData)
             {
-                return state;
+                range = meleeGearData.throwableRange;
             }
 
-            blackboard.SetData("waitTime", holder.data.rate);
-            state = NodeState.Success;
-            return state;
+            distance = Vector2.Distance(holder.gear.transform.position, t.position);
+            return distance > range ? NodeState.Failure : NodeState.Success;
         }
     }
 }

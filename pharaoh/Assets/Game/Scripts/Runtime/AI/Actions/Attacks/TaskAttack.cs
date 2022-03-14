@@ -6,11 +6,13 @@ using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
-    public abstract class TaskAttack<T> : ActionNode where T : DamagerData
+    public class TaskAttack : ActionNode
     {
-        private HealthComponent _healthComponent;
+        [SerializeField] protected GearType gearType;
 
-        private AttackComponent _attack = null;
+        protected HealthComponent _healthComponent;
+
+        protected AttackComponent _attack = null;
         
         protected override void OnStart()
         {
@@ -24,11 +26,26 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Failure;
-            if (!_attack || !_attack.TryGetHolder<T>(out var holder) || 
-                !blackboard.TryGetData("target", out Transform t))
+            if (!_attack || gearType == GearType.Null) return NodeState.Failure;
+            
+            if (!_attack.TryGetHolder(gearType, out var holder))
             {
-                return state;
+                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
+                return NodeState.Failure;
+            }
+
+            var gearData = holder.gear.GetBaseData();
+
+            if (!gearData.canAttack)
+            {
+                LogHandler.SendMessage($"{agent.name} can't attack with his weapon", MessageType.Warning);
+                return NodeState.Failure;
+            }
+
+            if (!blackboard.TryGetData("target", out Transform t))
+            {
+                LogHandler.SendMessage($"{agent.name} doesn't have a target to attack.", MessageType.Error);
+                return NodeState.Failure;
             }
 
             state = NodeState.Running;
@@ -47,11 +64,12 @@ namespace Pharaoh.AI.Actions
             
             _attack.Attack(holder);
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", holder.data.rate);
+            blackboard.SetData("waitTime", gearData.rate);
+
             return state;
         }
 
-        private void OnTargetDeath()
+        protected void OnTargetDeath()
         {
             blackboard.ClearData("target");
             _attack.target = null;

@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -52,6 +54,16 @@ namespace Pharaoh.Gameplay.Components
         {
             OnHealthChange.RemoveAllListeners();
             OnDeath.RemoveAllListeners();
+        }
+
+        public void TakeHit(Damager damager, Collider2D other)
+        {
+            var colliders = GetComponents<Collider2D>();
+            if (colliders.Length <= 0 || colliders.All(col => col != other)) return;
+
+            var damage = damager.data.damage;
+            LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
+            Decrease(damage);
         }
     }
 }

@@ -9,8 +9,6 @@ namespace Pharaoh.AI.Actions
     public class TaskGrabWeapon : ActionNode
     {
         private AttackComponent _attack = null;
-
-        public float grabbingDistance = .5f;
         
         protected override void OnStart()
         {
@@ -24,22 +22,24 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Failure;
+            state = NodeState.Running;
             
             if (!_attack || !blackboard.TryGetData("target", out Transform t)) return state;
-            if (!t.TryGetComponent(out Damager damager) || damager is not Weapon weapon) return state;
-            if (!weapon.isThrown || !weapon.isOnGround) return state;
-            if (!_attack.TryGetHolder(weapon.data, out DamagerHolder holder)) return state;
-            
-            state = NodeState.Running;
-            if (Vector3.Distance(weapon.transform.position, agent.transform.position) > grabbingDistance) return state;
+            if (!t.TryGetComponent(out Gear gear)) return state;
+            if (!gear.isThrown || !gear.isGrounded) return state;
+            if (!_attack.TryGetHolder(gear.GetBaseData(), out GearHolder holder)) return state;
 
-            weapon.transform.parent = holder.transform;
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            gear.transform.parent = holder.transform;
+            gear.transform.localPosition = Vector3.zero;
+            gear.transform.localRotation = Quaternion.Euler(0, 0, 0);
             blackboard.ClearData("target");
-            blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", weapon.data.throwablePickingTime);
+
+            //if (gear.TryGetData(out MeleeGearData meleeGearData))
+            //{
+            //    blackboard.SetData("isWaiting", true);
+            //    blackboard.SetData("waitTime", meleeGearData.throwablePickingTime);
+            //}
+
             state = NodeState.Success;
             return state;
         }
