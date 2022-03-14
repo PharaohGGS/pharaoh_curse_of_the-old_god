@@ -11,12 +11,6 @@ public class Room : MonoBehaviour
 
     private float _timer;
     private Coroutine _fading;
-    private Transform _respawnPosition;
-
-    private void Awake()
-    {
-        _respawnPosition = transform.Find("Respawn Point");
-    }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -25,9 +19,6 @@ public class Room : MonoBehaviour
         virtualCamera.SetActive(true);
         // if (_fading != null) StopCoroutine(_fading);
         // _fading = StartCoroutine(Fade(0f, .3f));
-
-        if (_respawnPosition != null)
-            FindObjectOfType<PlayerRespawn>().DEBUGRespawnPoint = _respawnPosition;
     }
 
     private void OnTriggerExit2D(Collider2D other)
