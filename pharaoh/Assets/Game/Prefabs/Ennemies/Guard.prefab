@@ -308,13 +308,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <max>k__BackingField: 200
-  OnHealthChange:
+  <max>k__BackingField: 100
+  onHealthChange:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: c65dca8d6f16faf40a2eca8806721427, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.AbstractGameEvent`1[[System.Single,
-          mscorlib
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
         m_MethodName: Raise
         m_Mode: 0
         m_Arguments:
@@ -325,26 +325,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnDeath:
+  onDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 3d5c15cff52b0a94e91c9354544de77e, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.VoidGameEvent,
+      - m_Target: {fileID: 11400000, guid: ee0a0b5b769bdb14f82805ad92d457c9, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.HealthComponent,
           Pharaoh
         m_MethodName: Raise
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7079046523897001347}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -366,6 +354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <moveSpeed>k__BackingField: 5
+  <closeDistance>k__BackingField: 0.01
+  <fleeDistance>k__BackingField: 2
   <timeBetweenWaypoints>k__BackingField: 2
   <waypoints>k__BackingField:
   - {fileID: 0}
@@ -393,7 +383,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   layeredColliders2D:
-    list: []
+    list:
+    - Key: 11
+      Value: []
     keyCollision: 0
   collider3D: {fileID: 0}
   colliders3D: []

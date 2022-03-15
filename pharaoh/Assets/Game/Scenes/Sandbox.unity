@@ -1075,14 +1075,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1755125447}
     m_Modifications:
+    - target: {fileID: 783116808251465272, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.666
+      objectReference: {fileID: 0}
+    - target: {fileID: 783116808251465272, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.282
+      objectReference: {fileID: 0}
     - target: {fileID: 783116808251465275, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
       propertyPath: gearPrefab
       value: 
       objectReference: {fileID: 714299209980879289, guid: e811b7671f10ec64495a0a6b137c03fc, type: 3}
+    - target: {fileID: 3299592772608864834, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7558135117305056918, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
       propertyPath: tree
       value: 
-      objectReference: {fileID: 11400000, guid: b51c68e90fbdc764a9785e0811dc88c8, type: 2}
+      objectReference: {fileID: 11400000, guid: 726f285517dcc794ab36f278d1910eee, type: 2}
     - target: {fileID: 7558135117305056921, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1449,12 +1461,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <max>k__BackingField: 100
-  OnHealthChange:
+  onHealthChange:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: c65dca8d6f16faf40a2eca8806721427, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.AbstractGameEvent`1[[System.Single,
-          mscorlib
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
         m_MethodName: Raise
         m_Mode: 0
         m_Arguments:
@@ -1465,14 +1477,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnDeath:
+  onDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 3d5c15cff52b0a94e91c9354544de77e, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Events.VoidGameEvent,
+      - m_Target: {fileID: 11400000, guid: ee0a0b5b769bdb14f82805ad92d457c9, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.HealthComponent,
           Pharaoh
         m_MethodName: Raise
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1484,18 +1496,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2006490029}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2006490041}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1627,7 +1627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7558135117305056926, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7558135117305057004, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
       propertyPath: <waypoints>k__BackingField.Array.data[0]

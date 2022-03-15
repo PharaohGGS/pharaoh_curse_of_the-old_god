@@ -17,8 +17,8 @@ namespace Pharaoh.Gameplay.Components
     {
         [field: SerializeField] public float max { get; private set; } = 100;
 
-        public UnityEvent<float> OnHealthChange;
-        public UnityEvent OnDeath;
+        public UnityEvent<HealthComponent, float> onHealthChange;
+        public UnityEvent<HealthComponent> onDeath;
 
         public float current { get; private set; }
         public float percent => current / max;
@@ -33,11 +33,11 @@ namespace Pharaoh.Gameplay.Components
                 _ => throw new ArgumentOutOfRangeException(nameof(operation), operation, null)
             };
 
-            OnHealthChange?.Invoke(current);
+            onHealthChange?.Invoke(this, current);
 
             if (current <= 0.0f)
             {
-                OnDeath?.Invoke();
+                onDeath?.Invoke(this);
             } 
         }
         
@@ -52,8 +52,8 @@ namespace Pharaoh.Gameplay.Components
 
         private void OnDisable()
         {
-            OnHealthChange.RemoveAllListeners();
-            OnDeath.RemoveAllListeners();
+            onHealthChange.RemoveAllListeners();
+            onDeath.RemoveAllListeners();
         }
 
         public void TakeHit(Damager damager, Collider2D other)

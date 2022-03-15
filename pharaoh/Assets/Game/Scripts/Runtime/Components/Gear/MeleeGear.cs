@@ -37,6 +37,7 @@ namespace Pharaoh.Gameplay.Components
 
         /// <summary>
         /// set enabled to all necessary component for killing
+        /// to be used by the AnimationEvent
         /// </summary>
         /// <param name="value">int instead of bool 0 = false > 0 = true</param>
         public void SetAttackState(int value = 0)

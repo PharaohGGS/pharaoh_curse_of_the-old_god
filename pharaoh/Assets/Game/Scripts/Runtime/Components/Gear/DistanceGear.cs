@@ -57,7 +57,7 @@ namespace Pharaoh.Gameplay.Components
         public void SetupShoot(Gear shootingGear, Transform target)
         {
             if (shootingGear != this || !target) return;
-
+            
             _currentTarget = target;
         }
         
