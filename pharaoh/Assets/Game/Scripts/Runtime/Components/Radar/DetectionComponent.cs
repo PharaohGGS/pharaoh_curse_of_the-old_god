@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Pharaoh.Gameplay.Components
 
         [HideInInspector, SerializeField] private new Collider2D collider2D;
         [HideInInspector, SerializeField] private Collider2D[] colliders2D;
-        [HideInInspector, SerializeField] private GenericDictionary<int, List<Collider2D>> layeredColliders2D;
+        [SerializeField] private GenericDictionary<int, List<Collider2D>> layeredColliders2D;
 
         #endregion
 
@@ -101,36 +102,104 @@ namespace Pharaoh.Gameplay.Components
             if (_is2D)
             {
                 overlappedCount = collider2D.OverlapNonAlloc(ref colliders2D, detectionLayer);
-                if (overlappedCount <= 0) return;
-
-                // clear registered colliders
-                foreach (var kvp in layeredColliders2D) kvp.Value.Clear();
-                for (var i = 0; i < colliders2D.Length; i++)
+                if (overlappedCount <= 0)
                 {
-                    var coll = colliders2D[i];
+                    // clear registered colliders
+                    foreach (var kvp in layeredColliders2D) kvp.Value.Clear();
+                    return;
+                }
+                
+                foreach (var kvp in layeredColliders2D)
+                {
+                    kvp.Value?.RemoveAll(coll => !colliders2D.Contains(coll));
+                }
+
+                foreach (var coll in colliders2D)
+                {
+                    // skip detection component object
                     if (coll == null || coll.gameObject == gameObject) continue;
-                    var layerIndex = coll.gameObject.layer;
-                    var list = layeredColliders2D[layerIndex];
-                    if (list != null && !list.Contains(coll)) list.Add(coll);
+                    // add object in the proper list layered
+                    var list = layeredColliders2D[coll.gameObject.layer];
+                    if (list == null || list.Contains(coll)) continue;
+                    // add collider to the list if it doesn't contains it already
+                    list.Add(coll);
                 }
             }
             else
             {
                 overlappedCount = collider3D.OverlapNonAlloc(ref colliders3D, detectionLayer);
-                if (overlappedCount <= 0) return;
-
-                // clear registered colliders
-                foreach (var kvp in layeredColliders3D) kvp.Value.Clear();
-                for (var i = 0; i < colliders3D.Length; i++)
+                if (overlappedCount <= 0)
                 {
-                    var coll = colliders3D[i];
-                    var layerIndex = coll.gameObject.layer;
-                    var list = layeredColliders3D[layerIndex];
-                    if (list != null && !list.Contains(coll)) list.Add(coll);
+                    // clear registered colliders
+                    foreach (var kvp in layeredColliders3D) kvp.Value.Clear();
+                    return;
+                }
+
+                foreach (var kvp in layeredColliders3D)
+                {
+                    kvp.Value?.RemoveAll(coll => !colliders3D.Contains(coll));
+                }
+
+                foreach (var coll in colliders3D)
+                {
+                    // skip detection component object
+                    if (coll == null || coll.gameObject == gameObject) continue;
+                    // add object in the proper list layered
+                    var list = layeredColliders3D[coll.gameObject.layer];
+                    if (list == null || list.Contains(coll)) continue;
+                    // add collider to the list if it doesn't contains it already
+                    list.Add(coll);
                 }
             }
         }
-        
+
+        public GameObject GetGameObjectWithLayer(LayerMask mask)
+        {
+            if (overlappedCount <= 0) return null;
+
+            // check if the mask as colliders
+            foreach (int layerIndex in mask.HasLayerIndexes())
+            {
+                if (_is2D)
+                {
+                    if (!layeredColliders2D.ContainsKey(layerIndex)) return null;
+                
+                    // return the corresponding collider in index
+                    foreach (var coll in layeredColliders2D[layerIndex])
+                    {
+                        // only get the active object different from detector
+                        var gameObjectWithLayer = coll.gameObject;
+                        if (!gameObjectWithLayer.activeInHierarchy || gameObjectWithLayer == gameObject) continue;
+                        foreach (var coll2D in colliders2D)
+                        {
+                            if (coll2D.gameObject != gameObjectWithLayer) continue;
+                            return gameObjectWithLayer;
+                        }
+                    }
+                }
+                else
+                {
+                    // check if the mask as colliders
+                    if (!layeredColliders3D.ContainsKey(layerIndex)) return null;
+                
+                    // return the corresponding collider in index
+                    foreach (var coll in layeredColliders3D[layerIndex])
+                    {
+                        // only get the active object different from detector
+                        var gameObjectWithLayer = coll.gameObject;
+                        if (!gameObjectWithLayer.activeInHierarchy || gameObjectWithLayer == gameObject) continue;
+                        foreach (var coll3D in colliders3D)
+                        {
+                            if (coll3D.gameObject != gameObjectWithLayer) continue;
+                            return gameObjectWithLayer;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public GameObject GetGameObjectAtIndex(int index) =>
             overlappedCount <= 0 ? null : (_is2D ? colliders2D[index].gameObject : colliders3D[index].gameObject);
     }

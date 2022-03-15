@@ -22,7 +22,7 @@ namespace Pharaoh.AI.Actions
             if (_movement && blackboard.TryGetData("target", out Transform t))
             {
                 var tr = agent.transform;
-                if (Vector3.Distance(tr.position, t.position) > _movement.closeDistance)
+                //if (Vector3.Distance(tr.position, t.position) > _movement.closeDistance)
                 {
                     tr.position = Vector3.MoveTowards(
                         tr.position, t.position,

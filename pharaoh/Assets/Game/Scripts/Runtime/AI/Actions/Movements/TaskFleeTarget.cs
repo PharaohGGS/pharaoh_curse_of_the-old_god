@@ -23,7 +23,7 @@ namespace Pharaoh.AI.Actions
             {
                 var tr = agent.transform;
                 var fleePosition = tr.position - (t.position - tr.position);
-                if (Vector3.Distance(tr.position, t.position) <= _movement.fleeDistance)
+                //if (Vector3.Distance(tr.position, t.position) <= _movement.fleeDistance)
                 {
                     tr.position = Vector3.MoveTowards(
                         tr.position, fleePosition,
