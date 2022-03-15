@@ -238,6 +238,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchStance"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1235f19-f012-44d1-88a9-0616577d3cd7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -328,6 +337,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""SandSoldier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ea2cbcc-876a-459d-a01b-446d9d75528e"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchStance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -346,6 +366,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterActions_Grab = m_CharacterActions.FindAction("Grab", throwIfNotFound: true);
         m_CharacterActions_HookBlock = m_CharacterActions.FindAction("HookBlock", throwIfNotFound: true);
         m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
+        m_CharacterActions_SwitchStance = m_CharacterActions.FindAction("SwitchStance", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -466,6 +487,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterActions_Grab;
     private readonly InputAction m_CharacterActions_HookBlock;
     private readonly InputAction m_CharacterActions_SandSoldier;
+    private readonly InputAction m_CharacterActions_SwitchStance;
     public struct CharacterActionsActions
     {
         private @PlayerInput m_Wrapper;
@@ -474,6 +496,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Grab => m_Wrapper.m_CharacterActions_Grab;
         public InputAction @HookBlock => m_Wrapper.m_CharacterActions_HookBlock;
         public InputAction @SandSoldier => m_Wrapper.m_CharacterActions_SandSoldier;
+        public InputAction @SwitchStance => m_Wrapper.m_CharacterActions_SwitchStance;
         public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -495,6 +518,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SandSoldier.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                 @SandSoldier.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                 @SandSoldier.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
+                @SwitchStance.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSwitchStance;
+                @SwitchStance.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSwitchStance;
+                @SwitchStance.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSwitchStance;
             }
             m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -511,6 +537,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SandSoldier.started += instance.OnSandSoldier;
                 @SandSoldier.performed += instance.OnSandSoldier;
                 @SandSoldier.canceled += instance.OnSandSoldier;
+                @SwitchStance.started += instance.OnSwitchStance;
+                @SwitchStance.performed += instance.OnSwitchStance;
+                @SwitchStance.canceled += instance.OnSwitchStance;
             }
         }
     }
@@ -528,5 +557,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnGrab(InputAction.CallbackContext context);
         void OnHookBlock(InputAction.CallbackContext context);
         void OnSandSoldier(InputAction.CallbackContext context);
+        void OnSwitchStance(InputAction.CallbackContext context);
     }
 }
