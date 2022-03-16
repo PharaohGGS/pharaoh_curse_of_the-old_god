@@ -33,8 +33,10 @@ namespace Pharaoh.Gameplay
         [Header("Events")] public UnityEvent onHook = new UnityEvent();
         public UnityEvent onUnHook = new UnityEvent();
         public UnityEvent onEndHookMovement = new UnityEvent();
+        public UnityEvent<Transform> onBestTargetSelected;
 
         public GameObject hookIndicator;
+        public Vector2 defaultHookPosition = new Vector2(-1000, -1000);
 
         #region Unity Methods
 
@@ -68,19 +70,28 @@ namespace Pharaoh.Gameplay
 
         private void Update()
         {
-            if (!_isOnHook && _currentTarget) return;
+            //if (!_isOnHook && _currentTarget) return;
             SearchTargets();
 
-            if (_playerMovement.IsFacingRight && _bestTargetRight != null) //facing right with right target
-                hookIndicator.transform.position = _bestTargetRight.transform.position;
-            else if (_playerMovement.IsFacingRight && _bestTargetRight == null) //facing right without right target
-                hookIndicator.transform.position = _bestTargetLeft != null ? _bestTargetLeft.transform.position : new Vector3(-1000f, -1000f, 0f);
-            else if (!_playerMovement.IsFacingRight && _bestTargetLeft != null) //facing left with left target
-                hookIndicator.transform.position = _bestTargetLeft.transform.position;
-            else if (!_playerMovement.IsFacingRight && _bestTargetLeft == null) //facing left without left target
-                hookIndicator.transform.position = _bestTargetRight != null ? _bestTargetRight.transform.position : new Vector3(-1000f, -1000f, 0f);
-            else //none of the above
-                hookIndicator.transform.position = new Vector3(-1000f, -1000f, 0f);
+            if (_currentTarget) return;
+
+            Transform bestTargetSelected = _playerMovement.IsFacingRight switch
+            {
+                //facing right with right target
+                true when _bestTargetRight != null => _bestTargetRight.transform,
+                //facing left with left target
+                false when _bestTargetLeft != null => _bestTargetLeft.transform,
+                //facing right without right target
+                true when _bestTargetRight == null => _bestTargetLeft != null
+                    ? _bestTargetLeft.transform : null,
+                //facing left without left target
+                false when _bestTargetLeft == null => _bestTargetRight != null
+                    ? _bestTargetRight.transform : null,
+                // else
+                _ => null
+            };
+
+            onBestTargetSelected?.Invoke(bestTargetSelected);
         }
 
         #region Editor Debug
@@ -184,7 +195,7 @@ namespace Pharaoh.Gameplay
 
             LogHandler.SendMessage($"hooking to {_currentTarget.name}", MessageType.Log);
 
-            _moveToHook = StartCoroutine(MoveToHook());
+            //_moveToHook = StartCoroutine(MoveToHook());
             onHook?.Invoke();
         }
 
@@ -199,34 +210,34 @@ namespace Pharaoh.Gameplay
             onUnHook?.Invoke();
         }
 
-        private System.Collections.IEnumerator MoveToHook()
-        {
-            if (!_currentTarget || !_rigidbody) yield break;
+        //private System.Collections.IEnumerator MoveToHook()
+        //{
+        //    if (!_currentTarget || !_rigidbody) yield break;
 
-            hookIndicator.SetActive(false);
+        //    hookIndicator.SetActive(false);
 
-            Vector2 startPosition = _rigidbody.position;
-            float current = 0f;
+        //    Vector2 startPosition = _rigidbody.position;
+        //    float current = 0f;
 
-            while (Vector2.Distance(_playerPositionOnHook, _rigidbody.position) > offsetHook)
-            {
-                _isOnHook = false;
-                Vector2 direction = (Vector2)_playerPositionOnHook - _rigidbody.position;
-                float distance = Vector2.Distance(_playerPositionOnHook, _rigidbody.position);
-                var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
+        //    while (Vector2.Distance(_playerPositionOnHook, _rigidbody.position) > offsetHook)
+        //    {
+        //        _isOnHook = false;
+        //        Vector2 direction = (Vector2)_playerPositionOnHook - _rigidbody.position;
+        //        float distance = Vector2.Distance(_playerPositionOnHook, _rigidbody.position);
+        //        var hit2Ds = Physics2D.RaycastAll(_rigidbody.position, direction, distance, whatIsObstacle);
 
-                if (hit2Ds.Length > 0) UnHook();
+        //        if (hit2Ds.Length > 0) UnHook();
 
-                current = Mathf.MoveTowards(current, 1f, moveSpeed * Time.fixedDeltaTime);
-                _rigidbody.MovePosition(Vector2.Lerp(startPosition, _playerPositionOnHook, smoothCurve.Evaluate(current)));
-                yield return _waitForFixedUpdate;
-            }
+        //        current = Mathf.MoveTowards(current, 1f, moveSpeed * Time.fixedDeltaTime);
+        //        _rigidbody.MovePosition(Vector2.Lerp(startPosition, _playerPositionOnHook, smoothCurve.Evaluate(current)));
+        //        yield return _waitForFixedUpdate;
+        //    }
 
-            hookIndicator.SetActive(true);
+        //    hookIndicator.SetActive(true);
 
-            _isOnHook = true;
-            onEndHookMovement?.Invoke();
-        }
+        //    _isOnHook = true;
+        //    onEndHookMovement?.Invoke();
+        //}
 
     }
 }
