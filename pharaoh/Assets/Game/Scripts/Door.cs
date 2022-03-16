@@ -6,7 +6,7 @@ public class Door : MonoBehaviour
 
     private BoxCollider2D _boxCollider;
     private MeshRenderer _meshRenderer;
-    private bool _isOpened = false;
+    private int _activePlates = 0;
 
     private void Awake()
     {
@@ -14,33 +14,41 @@ public class Door : MonoBehaviour
         _meshRenderer = transform.Find("Skin").GetComponent<MeshRenderer>();
     }
 
+    // Called when a pressure plate is pressed
     public void Open()
     {
-        if (!_isOpened)
-        {
-            _boxCollider.enabled = false;
-            _meshRenderer.enabled = false;
+        _activePlates++;
 
-            _isOpened = true;
-        }
+        RefreshState();
     }
 
+    // Called when a pressure plate is released
     public void Close()
     {
-        if (_isOpened)
-        {
-            _boxCollider.enabled = true;
-            _meshRenderer.enabled = true;
+        _activePlates--;
 
-            _isOpened = false;
-        }
+        RefreshState();
+    }
+
+    // Refreshes the state of the door, whether it is open or not
+    private void RefreshState()
+    {
+        _boxCollider.enabled = !IsOpen();
+        _meshRenderer.enabled = !IsOpen();
+    }
+
+    // Returns whether the door is open or not
+    // The door is opened when 1 pressure plate or more are pressed
+    public bool IsOpen()
+    {
+        return _activePlates > 0;
     }
 
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
-        style.normal.textColor = _isOpened ? Color.green : Color.red;
-        Handles.Label(transform.position, _isOpened ? "Opened" : "Closed", style);
+        style.normal.textColor = IsOpen() ? Color.green : Color.red;
+        Handles.Label(transform.position, IsOpen() ? "Opened" : "Closed", style);
     }
 
 }
