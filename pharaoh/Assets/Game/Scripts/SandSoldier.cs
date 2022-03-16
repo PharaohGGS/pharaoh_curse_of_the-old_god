@@ -33,6 +33,8 @@ public class SandSoldier : MonoBehaviour
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
 
+    [Header("DEBUG")] public Vector3[] raycastHits;
+
     // [Header("VFX")]
     // [Tooltip("Soldier position preview VFX")]
     // public VisualEffect previewVFX;
@@ -47,6 +49,7 @@ public class SandSoldier : MonoBehaviour
     private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
     private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
     private PlayerMovement _playerMovement;
+    private Vector3 _debugPosition = Vector3.zero;
 
     private void Awake()
     {
@@ -58,35 +61,101 @@ public class SandSoldier : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.CharacterActions.SandSoldier.started += InitiateSummon; // Pressed
-        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Released
+        //_playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Released
     }
 
     private void OnDisable()
     {
         _playerInput.Disable();
         _playerInput.CharacterActions.SandSoldier.started -= InitiateSummon;
-        _playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
+        //_playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
+    }
+    
+    private void InitiateSummon(InputAction.CallbackContext obj)
+    {
+        if (_playerMovement.IsHookedToBlock) return;
+
+        // Vector3 pos = transform.position;
+        // pos += Vector3.right * (_playerMovement.IsFacingRight ? 1 : -1);
+        // RaycastPlatforms(pos);
+        StopAllCoroutines();
+        StartCoroutine(Preview());
+    }
+
+    private IEnumerator Preview()
+    {
+        float finalX = transform.position.x + maxRange * (_playerMovement.isFacingRight ? 1 : -1);
+        Vector2 previewPosition = transform.position;
+        float elapsed = 0f;
+        
+        while (elapsed < timeToMaxRange)
+        {
+            elapsed += Time.deltaTime;
+            previewPosition.x = Mathf.Lerp(transform.position.x, finalX, elapsed / timeToMaxRange);
+
+            // Snap to ground
+            RaycastHit2D groundHit = Physics2D.Raycast(previewPosition, Vector2.down, 50.0f, groundLayer);
+            previewPosition.y = groundHit.point.y;
+            
+            // Find platforms
+            RaycastHit2D[] results = RaycastPlatforms(previewPosition);
+            
+            // Detect if stuck in wall
+            Collider2D col = Physics2D.OverlapCircle(previewPosition + new Vector2(0, 0.1f), 0f, groundLayer);
+            if (col != null)
+            {
+                Debug.Log("stuck");
+                previewPosition.y = results[1].point.y;
+            }
+
+            _debugPosition = previewPosition;
+            
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    private RaycastHit2D[] RaycastPlatforms(Vector2 source)
+    {
+        RaycastHit2D[] buffer = new RaycastHit2D[2];
+        int hits = Physics2D.RaycastNonAlloc(source + new Vector2(0f, 0.1f), Vector2.up, buffer, 100.0f, groundLayer);
+
+        RaycastHit2D[] results = new RaycastHit2D[hits];
+        for (int i = 0; i < hits; i++)
+        {
+            Vector3 pos = buffer[i].point + Vector2.down;
+            RaycastHit2D groundHit = Physics2D.Raycast(pos, Vector2.down, 100.0f, groundLayer);
+            results[i] = groundHit;
+        }
+        
+        raycastHits = new Vector3[hits];
+        for (int i = 0; i < hits; i++)
+        {
+            raycastHits[i] = results[i].point;
+        }
+        return results;
     }
 
     // Called on button press
     // Cancel / Delete previous summons and start the preview
-    private void InitiateSummon(InputAction.CallbackContext obj)
-    {
-        if (_playerMovement.IsHookedToBlock) return;
-        
-        StopAllCoroutines();
-        _summoned = false;
-        if (_soldier != null) // If there's already a sand soldier, destroy it
-            Destroy(_soldier);
-        if (_expiredCoroutine != null)
-            StopCoroutine(_expiredCoroutine);
-        
-        // Calculate the start position of the preview from minRange and model rotation.
-        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
-        _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
-        _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
-        // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
-    }
+    // private void InitiateSummon(InputAction.CallbackContext obj)
+    // {
+    //     if (_playerMovement.IsHookedToBlock) return;
+    //     
+    //     StopAllCoroutines();
+    //     _summoned = false;
+    //     if (_soldier != null) // If there's already a sand soldier, destroy it
+    //         Destroy(_soldier);
+    //     if (_expiredCoroutine != null)
+    //         StopCoroutine(_expiredCoroutine);
+    //     
+    //     // Calculate the start position of the preview from minRange and model rotation.
+    //     Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
+    //     _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
+    //     _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
+    //     // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
+    // }
 
     // Called on button release or on other specific conditions
     // Instantiates the soldier and starts the growing collider coroutine
@@ -231,9 +300,9 @@ public class SandSoldier : MonoBehaviour
         return pos;
     }*/
 
-#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
         GUIStyle greenStyle = new GUIStyle();
         GUIStyle redStyle = new GUIStyle();
         redStyle.normal.textColor = Color.red;
@@ -241,6 +310,13 @@ public class SandSoldier : MonoBehaviour
 
         Handles.Label(transform.position + Vector3.up * 4f, "Pressing : " + (_previewCoroutine != null ? "Yes" : "No"),
             _previewCoroutine != null ? greenStyle : redStyle);
-    }
 #endif
+        Gizmos.color = Color.blue;
+        foreach (var hit in raycastHits)
+        {
+            Gizmos.DrawSphere(hit, 0.2f);
+        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_debugPosition, 0.2f);
+    }
 }
