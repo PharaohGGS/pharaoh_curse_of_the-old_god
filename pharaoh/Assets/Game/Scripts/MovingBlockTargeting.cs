@@ -15,6 +15,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     public float pullForce = 1f;
     public float pullDuration = 1f;
     private WaitForSeconds _waitPullDuration;
+    private Coroutine _pullingCoroutine;
 
     public GameObject hookIndicator;
 
@@ -72,7 +73,7 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
     private void Pull(InputAction.CallbackContext ctx)
     {
         if (_playerMovement.IsHookedToBlock && !_playerMovement.IsPullingBlock && CanPullBlock())
-            StartCoroutine(PullingBlock());
+            _pullingCoroutine = StartCoroutine(PullingBlock());
     }
 
     private System.Collections.IEnumerator PullingBlock()
@@ -94,7 +95,14 @@ public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
 
             // test if something is between the block & rigidbody
             Vector2 direction = _rigidbody.position - block.position;
-            if (Physics2D.RaycastAll(_rigidbody.position, direction.normalized, direction.magnitude, whatIsObstacle).Length > 0) break;
+            if ((direction.x >= 0.0f && !_playerMovement.IsFacingRight) || 
+                (direction.x <= 0.0f && _playerMovement.IsFacingRight))
+            {
+                direction.x *= -1f;
+            }
+                        
+            var hits = Physics2D.RaycastAll(_rigidbody.position, direction.normalized, direction.magnitude, whatIsObstacle);
+            if (hits.Length > 0 && hits[0].collider.gameObject != block.gameObject) break;
             if (!_movingBlock || !CanPullBlock() || !mb.IsGrounded()) break;
         }
 
