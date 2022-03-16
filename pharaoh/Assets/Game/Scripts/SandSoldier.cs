@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -24,6 +25,10 @@ public class SandSoldier : MonoBehaviour
     public float minRange = 1f;
     [Tooltip("Sand soldier maximum range from player.")]
     public float maxRange = 6f;
+
+    public int maxSoldiers = 3;
+    public float minCooldown = 3.0f;
+    
     [Tooltip("Pretty explicit, how much time the preview takes to go to the max range.")]
     public float timeToMaxRange = 1f;
     [Tooltip("How much time does it take from button release to fully grown soldier. A low value can create conflicts with other colliders.")]
@@ -33,7 +38,11 @@ public class SandSoldier : MonoBehaviour
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
 
-    [Header("DEBUG")] public Vector3[] raycastHits;
+    public int SoldiersCount { get; set; }
+    public Vector3 StartPosition { get; set; }
+    public Vector3 FinalX { get; set; }
+
+    private Dictionary<GameObject, float> _lifeExpectancies;
 
     // [Header("VFX")]
     // [Tooltip("Soldier position preview VFX")]
@@ -51,133 +60,86 @@ public class SandSoldier : MonoBehaviour
     private PlayerMovement _playerMovement;
     private Vector3 _debugPosition = Vector3.zero;
 
+    
+
     private void Awake()
     {
         _playerInput = new PlayerInput();
         _playerMovement = GetComponent<PlayerMovement>();
+        _lifeExpectancies = new Dictionary<GameObject, float>();
     }
 
     private void OnEnable()
     {
         _playerInput.Enable();
         _playerInput.CharacterActions.SandSoldier.started += InitiateSummon; // Pressed
-        //_playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Released
+        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Released
     }
 
     private void OnDisable()
     {
         _playerInput.Disable();
         _playerInput.CharacterActions.SandSoldier.started -= InitiateSummon;
-        //_playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
-    }
-    
-    private void InitiateSummon(InputAction.CallbackContext obj)
-    {
-        if (_playerMovement.IsHookedToBlock) return;
-
-        // Vector3 pos = transform.position;
-        // pos += Vector3.right * (_playerMovement.IsFacingRight ? 1 : -1);
-        // RaycastPlatforms(pos);
-        StopAllCoroutines();
-        StartCoroutine(Preview());
-    }
-
-    private IEnumerator Preview()
-    {
-        float finalX = transform.position.x + maxRange * (_playerMovement.isFacingRight ? 1 : -1);
-        Vector2 previewPosition = transform.position;
-        float elapsed = 0f;
-        
-        while (elapsed < timeToMaxRange)
-        {
-            elapsed += Time.deltaTime;
-            previewPosition.x = Mathf.Lerp(transform.position.x, finalX, elapsed / timeToMaxRange);
-
-            // Snap to ground
-            RaycastHit2D groundHit = Physics2D.Raycast(previewPosition, Vector2.down, 50.0f, groundLayer);
-            previewPosition.y = groundHit.point.y;
-            
-            // Find platforms
-            RaycastHit2D[] results = RaycastPlatforms(previewPosition);
-            
-            // Detect if stuck in wall
-            Collider2D col = Physics2D.OverlapCircle(previewPosition + new Vector2(0, 0.1f), 0f, groundLayer);
-            if (col != null)
-            {
-                Debug.Log("stuck");
-                previewPosition.y = results[1].point.y;
-            }
-
-            _debugPosition = previewPosition;
-            
-            yield return null;
-        }
-
-        yield return null;
-    }
-
-    private RaycastHit2D[] RaycastPlatforms(Vector2 source)
-    {
-        RaycastHit2D[] buffer = new RaycastHit2D[2];
-        int hits = Physics2D.RaycastNonAlloc(source + new Vector2(0f, 0.1f), Vector2.up, buffer, 100.0f, groundLayer);
-
-        RaycastHit2D[] results = new RaycastHit2D[hits];
-        for (int i = 0; i < hits; i++)
-        {
-            Vector3 pos = buffer[i].point + Vector2.down;
-            RaycastHit2D groundHit = Physics2D.Raycast(pos, Vector2.down, 100.0f, groundLayer);
-            results[i] = groundHit;
-        }
-        
-        raycastHits = new Vector3[hits];
-        for (int i = 0; i < hits; i++)
-        {
-            raycastHits[i] = results[i].point;
-        }
-        return results;
+        _playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
     }
 
     // Called on button press
     // Cancel / Delete previous summons and start the preview
-    // private void InitiateSummon(InputAction.CallbackContext obj)
-    // {
-    //     if (_playerMovement.IsHookedToBlock) return;
-    //     
-    //     StopAllCoroutines();
-    //     _summoned = false;
-    //     if (_soldier != null) // If there's already a sand soldier, destroy it
-    //         Destroy(_soldier);
-    //     if (_expiredCoroutine != null)
-    //         StopCoroutine(_expiredCoroutine);
-    //     
-    //     // Calculate the start position of the preview from minRange and model rotation.
-    //     Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
-    //     _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
-    //     _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
-    //     // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
-    // }
+    private void InitiateSummon(InputAction.CallbackContext obj)
+    {
+        if (_playerMovement.IsHookedToBlock) return;
+        
+        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
+        GameObject go = Instantiate(sandSoldier, startPosition, Quaternion.identity);
+
+        if (!go.TryGetComponent(out SandSoldierBehaviour behaviour)) return;
+
+        behaviour.StartPosition = startPosition;
+        behaviour.TimeUntilDeath = timeToExpire;
+        behaviour.TimeToMaxRange = timeToMaxRange;
+        behaviour.TimeToAppearFromGround = timeToAppearFromGround;
+        behaviour.BlockingLayer = groundLayer;
+        behaviour.FinalX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
+
+        behaviour.Preview();
+    }
 
     // Called on button release or on other specific conditions
     // Instantiates the soldier and starts the growing collider coroutine
     private void SummonSoldier(InputAction.CallbackContext obj = new())
     {
-        if (_playerMovement.IsHookedToBlock) return;
-        
-        if (_summoned) return;
-        _summoned = true;
-
-        if (_previewCoroutine != null)
-            StopCoroutine(_previewCoroutine);
-        _previewCoroutine = null;
-        
-        // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
-        // previewVFX.Stop();
-        Destroy(_soldierPreviewInstance);
-        
-        if (!_groundHit) return;
-        _soldierPosition.z = transform.position.z;
-        _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
-        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
+        Behaviour.Summon();
+        // if (_playerMovement.IsHookedToBlock) return;
+        //
+        // if (_summoned) return;
+        // _summoned = true;
+        //
+        // if (_previewCoroutine != null)
+        //     StopCoroutine(_previewCoroutine);
+        // _previewCoroutine = null;
+        //
+        // // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
+        // // previewVFX.Stop();
+        // Destroy(_soldierPreviewInstance);
+        //
+        // if (!_groundHit) return;
+        // _soldierPosition.z = transform.position.z;
+        // GameObject soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
+        // _lifeExpectancies.Add(soldier, timeToExpire);
+        //
+        // foreach (var key in _lifeExpectancies.Keys.ToList())
+        // {
+        //     if (_lifeExpectancies[key] > minCooldown)
+        //         _lifeExpectancies[key] = minCooldown;
+        // }
+        //
+        // if (_lifeExpectancies.Count > maxSoldiers)
+        // {
+        //     Destroy(_lifeExpectancies.First().Key);
+        //     _lifeExpectancies.Remove(_lifeExpectancies.First().Key);
+        // }
+        //
+        // _colliderCoroutine = StartCoroutine(MoveSoldierCollider(soldier));
     }
 
     // Lerp from minRange to maxRange to preview the soldier position at time t
@@ -256,12 +218,13 @@ public class SandSoldier : MonoBehaviour
 
     // Lerp the soldier collider size and offset from 0 to full size
     // Used to lift object
-    private IEnumerator MoveSoldierCollider(BoxCollider2D col)
+    private IEnumerator MoveSoldierCollider(GameObject soldier)
     {
         float elapsed = 0f;
+        BoxCollider2D col = soldier.GetComponent<BoxCollider2D>();
         col.offset = new Vector2(0, -0.5f);
         col.size = new Vector2(1, 0);
-        _soldier.GetComponent<MeshRenderer>().enabled = false;
+        soldier.GetComponent<MeshRenderer>().enabled = false;
         while (elapsed < timeToAppearFromGround)
         {
             Vector2 offset = col.offset;
@@ -275,16 +238,28 @@ public class SandSoldier : MonoBehaviour
         }
         col.offset = Vector2.zero;
         col.size = new Vector2(1, 1);
-        _soldier.GetComponent<MeshRenderer>().enabled = true;
-        _expiredCoroutine = StartCoroutine(ExpireSoldier());
+        soldier.GetComponent<MeshRenderer>().enabled = true;
+        //_expiredCoroutine = StartCoroutine(ExpireSoldier());
         yield return null;
     }
 
-    // Kills the soldier if timeToExpire has been reached.
-    private IEnumerator ExpireSoldier()
+    private void Update()
     {
-        yield return new WaitForSeconds(timeToExpire);
-        Destroy(_soldier);
+        List<GameObject> goToRemove = new List<GameObject>();
+        foreach (var key in _lifeExpectancies.Keys.ToList())
+        {
+            _lifeExpectancies[key] -= Time.deltaTime;
+            
+            if (!(_lifeExpectancies[key] < 0.0f)) continue;
+            
+            goToRemove.Add(key);
+        }
+
+        foreach (var go in goToRemove)
+        {
+            _lifeExpectancies.Remove(go);
+            Destroy(go);
+        }
     }
 
     // Useless but I don't want to remove it ...
@@ -311,12 +286,5 @@ public class SandSoldier : MonoBehaviour
         Handles.Label(transform.position + Vector3.up * 4f, "Pressing : " + (_previewCoroutine != null ? "Yes" : "No"),
             _previewCoroutine != null ? greenStyle : redStyle);
 #endif
-        Gizmos.color = Color.blue;
-        foreach (var hit in raycastHits)
-        {
-            Gizmos.DrawSphere(hit, 0.2f);
-        }
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_debugPosition, 0.2f);
     }
 }
