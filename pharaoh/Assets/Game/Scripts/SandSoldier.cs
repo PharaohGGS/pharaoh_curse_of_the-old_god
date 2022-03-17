@@ -60,7 +60,7 @@ public class SandSoldier : MonoBehaviour
     private PlayerMovement _playerMovement;
     private Vector3 _debugPosition = Vector3.zero;
 
-    
+    private SandSoldierBehaviour _currentSandSoldier;
 
     private void Awake()
     {
@@ -94,21 +94,22 @@ public class SandSoldier : MonoBehaviour
 
         if (!go.TryGetComponent(out SandSoldierBehaviour behaviour)) return;
 
-        behaviour.StartPosition = startPosition;
-        behaviour.TimeUntilDeath = timeToExpire;
-        behaviour.TimeToMaxRange = timeToMaxRange;
-        behaviour.TimeToAppearFromGround = timeToAppearFromGround;
-        behaviour.BlockingLayer = groundLayer;
-        behaviour.FinalX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
+        _currentSandSoldier = behaviour;
+        _currentSandSoldier.StartPosition = startPosition;
+        _currentSandSoldier.TimeUntilDeath = timeToExpire;
+        _currentSandSoldier.TimeToMaxRange = timeToMaxRange;
+        _currentSandSoldier.TimeToAppearFromGround = timeToAppearFromGround;
+        _currentSandSoldier.BlockingLayer = groundLayer;
+        _currentSandSoldier.FinalX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
 
-        behaviour.Preview();
+        _currentSandSoldier.Preview();
     }
 
     // Called on button release or on other specific conditions
     // Instantiates the soldier and starts the growing collider coroutine
     private void SummonSoldier(InputAction.CallbackContext obj = new())
     {
-        Behaviour.Summon();
+        _currentSandSoldier.Summon();
         // if (_playerMovement.IsHookedToBlock) return;
         //
         // if (_summoned) return;
