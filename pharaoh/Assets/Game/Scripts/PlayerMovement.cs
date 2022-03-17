@@ -120,8 +120,12 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        // Recover the player's input
-        _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
+        // Recover the player's input, clamping it to avoid diagonals directions
+        _movementInput = Vector2.zero;
+        if (_playerInput.CharacterControls.Move.ReadValue<Vector2>().x >= 0.2f)
+            _movementInput = Vector2.right;
+        else if (_playerInput.CharacterControls.Move.ReadValue<Vector2>().x <= -0.2f)
+            _movementInput = Vector2.left;
 
         if (_movementInput.y < -0.8f) _isHooked = false;
     }
@@ -282,6 +286,11 @@ public class PlayerMovement : MonoBehaviour
 
         // only when reach the ground and not falling
         isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
+
+        // Updates the grounded state - check if one or both "feet" are on a ground
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        
         animator.SetBool("Is Grounded", isGrounded);
 
         // Updates the in-air distance traveled and stuns if necessary

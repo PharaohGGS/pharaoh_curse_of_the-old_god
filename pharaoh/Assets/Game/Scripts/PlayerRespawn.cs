@@ -17,7 +17,7 @@ public class PlayerRespawn : MonoBehaviour
     [Header("RespawnCoroutine")]
 
     [Tooltip("Transform at which the player will respawn")]
-    public Transform DEBUGRespawnPoint;
+    public Transform respawnPoint;
     [Tooltip("Delay before which the player respawns")]
     public float delayBeforeRespawn = 0.1f;
     [Tooltip("Event invoke when the player respawns")]
@@ -26,19 +26,11 @@ public class PlayerRespawn : MonoBehaviour
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-
-        if (DEBUGRespawnPoint == null)
-        {
-            GameObject go = new GameObject();
-            go.name = "DefaultRespawnPoint";
-            go.transform.position = transform.position;
-            DEBUGRespawnPoint = go.transform;
-        }
     }
 
     public void MoveToSpawnPoint()
     {
-        _rigidBody.position = DEBUGRespawnPoint.position;
+        _rigidBody.position = respawnPoint.position;
     }
 
     public void Respawn()
