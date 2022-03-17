@@ -36,7 +36,7 @@ namespace Pharaoh.Gameplay
             if (grabber.TryGetComponent(out Rigidbody2D rb))
             {
                 rb.velocity = Vector2.zero;
-                rb.bodyType = RigidbodyType2D.Kinematic;
+                //rb.bodyType = RigidbodyType2D.Kinematic;
             }
 
             _moveToCoroutine = StartCoroutine(MoveTo(grabber));
