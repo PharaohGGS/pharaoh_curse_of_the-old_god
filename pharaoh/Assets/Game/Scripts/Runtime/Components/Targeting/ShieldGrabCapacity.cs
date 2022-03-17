@@ -1,11 +1,13 @@
 ﻿using System;
 using Pharaoh.Gameplay.Components;
+using Pharaoh.Gameplay.Components.Movement;
 using Pharaoh.Tools.Debug;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
+using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 namespace Pharaoh.Gameplay
 {
@@ -131,7 +133,7 @@ namespace Pharaoh.Gameplay
                     _bestTargetRight = null;
                 }
             }
-            
+
             if (!_playerMovement.isFacingRight)
             {
                 _currentTarget = _bestTargetRight && !_bestTargetLeft

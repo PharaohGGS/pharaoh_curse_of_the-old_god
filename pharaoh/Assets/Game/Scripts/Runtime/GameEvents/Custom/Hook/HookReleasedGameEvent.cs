@@ -4,7 +4,7 @@ namespace Pharaoh.GameEvents
 {
     [CreateAssetMenu(fileName = "New Hook Release GameEvent", menuName = "GameEvents/Custom/Hook/Release",
         order = 52)]
-    public class HookReleaseGameEvent : AbstractGameEvent<Transform, Transform>
+    public class HookReleasedGameEvent : AbstractGameEvent<Pharaoh.Gameplay.HookTargeting, GameObject>
     {
     }
 }

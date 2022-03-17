@@ -1,6 +1,8 @@
+using Pharaoh.Gameplay.Components.Movement;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEditor;
+using UnityEngine.InputSystem;
+using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 [RequireComponent(typeof(PlayerMovement))]
 public class MovingBlockTargeting : Pharaoh.Gameplay.Targeting
