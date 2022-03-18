@@ -8,12 +8,17 @@ public class Door : MonoBehaviour
     private MeshRenderer _meshRenderer;
     private int _activePlates = 0;
 
+    [Tooltip("An inverted door means an active pressure plate will close it.")]
+    public bool inverted = false;
+
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
         _meshRenderer = transform.Find("Skin").GetComponent<MeshRenderer>();
-    }
 
+        RefreshState();
+    }
+    
     // Called when a pressure plate is pressed
     public void Open()
     {
@@ -39,9 +44,13 @@ public class Door : MonoBehaviour
 
     // Returns whether the door is open or not
     // The door is opened when 1 pressure plate or more are pressed
+    // If inverted, the door is openede when 0 pressure plate are pressed
     public bool IsOpen()
     {
-        return _activePlates > 0;
+        if (!inverted)
+            return _activePlates > 0;
+        else
+            return _activePlates < 1;
     }
 
     private void OnDrawGizmos()
