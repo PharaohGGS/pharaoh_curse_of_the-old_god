@@ -186,9 +186,9 @@ namespace Pharaoh.Gameplay.Components.Movement
             _canMove = !value;
         }
 
-        public void OnEndHookMovement(HookTargeting grabber, GameObject target)
+        public void OnGrappleEnd(GrappleHookCapacity capacity, GrappleHookBehaviour behaviour)
         {
-            if (grabber.gameObject != gameObject) return;
+            if (capacity.gameObject != gameObject) return;
 
             _initialFallHeight = _rigidbody.position.y;
 
@@ -420,7 +420,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             Handles.Label(_rigidbody.position + Vector2.up * 3f, "IsDashAvailable : " + _isDashAvailable, _isDashAvailable ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsFacingRight : " + isFacingRight, isFacingRight ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "IsGrounded : " + isGrounded, isGrounded ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "isFalling : " + isGrounded, isGrounded ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
         }

@@ -80,8 +80,6 @@ GameObject:
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
   - component: {fileID: 1873792441378832283}
-  - component: {fileID: 246190059487474265}
-  - component: {fileID: 7671487130887252875}
   m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
@@ -281,8 +279,8 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 4580342248505284630}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookTargeting, Assembly-CSharp
-        m_MethodName: Respawn
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookMoveCapacity, Pharaoh
+        m_MethodName: HookReleased
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -301,69 +299,98 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99b4158b3a8dea4b8ed323b1c73d0e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d416a6deabb7184788808ce8d7865cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overlapCount: 5
   overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
-    m_Bits: 49216
+    m_Bits: 16384
   whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 66624
-  onHookFixed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 7d1fff11074f5eb47a93c19688312486, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.HookTargeting,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: LockMovement
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onHookReleased:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.HookTargeting,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onHookBestTargetSelected:
+    m_Bits: 66560
+  onFoundBestTarget:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.HookTargeting,
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.TargetFinder,
           Pharaoh
         m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  discardBehindOverlap: 0
+  onHookRelease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.HookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  grappleSpeed: 3
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  onGrappleStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: d4337297d9d84ab46abbce336085d08d, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.GrappleHookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onGrappleEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: OnGrappleEnd
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -382,20 +409,94 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed13486aa816f8c4f8cd20c718e6abc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 45a6d0d5a98f1c24c8c9198c7d474793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overlapCount: 5
   overlapingRadius: 6
   whatIsTarget:
     serializedVersion: 2
-    m_Bits: 32832
+    m_Bits: 32768
   whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 66624
-  pullForce: 2
-  pullDuration: 0.5
-  hookIndicator: {fileID: 4959625916927975600, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+    m_Bits: 66560
+  onFoundBestTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.TargetFinder,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  discardBehindOverlap: 1
+  onHookRelease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.HookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  pullForce: 1
+  pullMaxMovement: 1
+  pullDuration: 1
+  pullOffset: 1
+  smoothCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  onPullStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 8815fa6ee4e5c2849b369e3dfd35d048, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.PullHookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1694517701867188700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,76 +585,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
         m_MethodName: TakeHit
         m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &246190059487474265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f928d6abd31189247aeb38fcc9690ca1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: fecc01719d425e5438d0199d620a0f9c, type: 2}
-  <response>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: OnEndHookMovement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7671487130887252875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a193f1d0d4a88840ab8439de0109494, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
-  <response>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4580342248505284630}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookTargeting, Pharaoh
-        m_MethodName: ResetTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: LockMovement
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -753,29 +784,77 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: -0.7920595
+      objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: -0.011435062
+      objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0.00026869774
+      objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.3329665
+      objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.08170421
+      objectReference: {fileID: 0}
+    - target: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.0597953
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: -0.9204856
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.0065368563
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.928393
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.1673379
+      objectReference: {fileID: 0}
+    - target: {fileID: -4214422111436529996, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.6362707
+      objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Center.x
-      value: -0.87233484
+      value: -0.86274314
       objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Center.y
-      value: -0.012256812
+      value: -0.009301007
       objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Center.z
-      value: -0.003738597
+      value: -0.0020311028
       objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Extent.x
-      value: 0.26356864
+      value: 0.257652
       objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Extent.y
-      value: 0.117057264
+      value: 0.09092734
       objectReference: {fileID: 0}
     - target: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_AABB.m_Extent.z
-      value: 0.17896302
+      value: 0.23650676
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_Name
