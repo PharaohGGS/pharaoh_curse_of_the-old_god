@@ -6,17 +6,29 @@ using UnityEditor;
 public class PressurePlate : MonoBehaviour
 {
 
+    private Transform _mesh;
     private int _pressCount; //counts the amount of bodies pressing the trigger
 
     public LayerMask whatCanTrigger;
     public UnityEvent OnPress = new UnityEvent();
     public UnityEvent OnRelease = new UnityEvent();
 
+    private void Awake()
+    {
+        _mesh = transform.Find("Skin");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (whatCanTrigger.HasLayer(collision.gameObject.layer))
         {
-            if (_pressCount == 0) OnPress.Invoke(); //invoke the event while the first body triggers the plate
+            if (_pressCount == 0)
+            {
+                // Invoke the event while the first body triggers the plate
+                OnPress.Invoke();
+
+                _mesh.localScale = new Vector3(0.66f, 0.125f, 0.66f); //squish the plate to make it easier to see
+            }
             _pressCount++;
         }
     }
@@ -25,7 +37,14 @@ public class PressurePlate : MonoBehaviour
     {
         if (whatCanTrigger.HasLayer(collision.gameObject.layer))
         {
-            if (_pressCount == 1) OnRelease.Invoke(); //invoke the event while the last body leaves the plate
+            if (_pressCount == 1)
+            {
+                // Invoke the event while the last body leaves the plate
+                OnRelease.Invoke();
+
+                _mesh.localScale = new Vector3(0.66f, 0.25f, 0.66f); //unsquish the plate
+            }
+
             _pressCount--;
         }
     }
