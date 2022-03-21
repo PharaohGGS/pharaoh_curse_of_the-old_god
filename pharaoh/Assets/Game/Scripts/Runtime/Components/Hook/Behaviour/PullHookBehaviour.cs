@@ -93,17 +93,14 @@ namespace Pharaoh.Gameplay
 
             if (!_hasBeenReleased)
             {
-                if (!canBePulled || isBlocked || !movingBlock.isGrounded)
+                if (!movingBlock.isGrounded || !canBePulled || isBlocked)
                 {
                     _hasBeenReleased = true;
                 }
-
-                return;
             }
             
             // only when has been released
             if (_isMoving) return;
-
             Release();
         }
         
@@ -193,7 +190,7 @@ namespace Pharaoh.Gameplay
                 mbRigidbody.MovePosition(Vector2.Lerp(startPosition, endPosition, curve.Evaluate(currentTime / duration)));
                 currentTime = Mathf.MoveTowards(currentTime, duration, Time.fixedDeltaTime * force);
                 
-                if (currentTime >= duration && _input.CharacterActions.Hook.IsPressed())
+                if (!_hasBeenReleased && currentTime >= duration && _input.CharacterActions.Hook.IsPressed())
                 {
                     currentTime = 0f;
                     startPosition = mbRigidbody.position;
@@ -209,6 +206,15 @@ namespace Pharaoh.Gameplay
             mbRigidbody.velocity = velocityY;
             //mbRigidbody.gravityScale = 1f;
             _movement?.OnPullEnd();
+        }
+
+        private float _currentTime;
+        private Vector2 _startPosition;
+        private Vector2 _endPosition;
+
+        private void SetupMovement()
+        {
+            _startPosition = mbRigidbody.position;
         }
     }
 }
