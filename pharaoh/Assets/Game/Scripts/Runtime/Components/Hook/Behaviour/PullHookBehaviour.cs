@@ -18,7 +18,7 @@ namespace Pharaoh.Gameplay
         
         private PlayerMovement _movement;
 
-        private bool _isMoving;
+        //private bool _isMoving;
         private bool _hasBeenReleased;
         private RaycastHit2D[] _hits;
 
@@ -30,10 +30,10 @@ namespace Pharaoh.Gameplay
             get
             {
                 if (!_hook) return false;
+                float offset = _hook.pullData.offset;
                 Vector2 position = transform.position;
                 Vector2 hookPosition = _hook.transform.position;
-                float pullOffset = _hook.pullData.offset;
-                return position.x > (hookPosition.x + pullOffset) || position.x < (hookPosition.x - pullOffset);
+                return position.x > (hookPosition.x + offset) || position.x < (hookPosition.x - offset);
             }
         }
 
@@ -91,17 +91,8 @@ namespace Pharaoh.Gameplay
         {
             if (!_isCurrentTarget || !_hook) return;
 
-            if (!_hasBeenReleased)
-            {
-                if (!movingBlock.isGrounded || !canBePulled || isBlocked)
-                {
-                    _hasBeenReleased = true;
-                }
-            }
-            
-            // only when has been released
-            if (_isMoving) return;
-            Release();
+            _hasBeenReleased = !movingBlock.isGrounded || !canBePulled || isBlocked;
+            if (_hasBeenReleased) Release();
         }
         
         private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
@@ -135,7 +126,7 @@ namespace Pharaoh.Gameplay
             mbRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
             if (_movement) _movement.IsPullingBlock = _movement.IsHookedToBlock = false;
             _hasBeenReleased = false;
-            _isMoving = false;
+            //_isMoving = false;
         }
 
         public override void Interact(HookCapacity hook, GameObject target)
@@ -171,8 +162,7 @@ namespace Pharaoh.Gameplay
             float duration = _hook.pullData.duration;
             float force = _hook.pullData.force;
             AnimationCurve curve = _hook.pullData.curve;
-
-            //mbRigidbody.gravityScale = 0f;
+            
             Vector2 startPosition = mbRigidbody.position;
 
             Vector2 direction = _hook.transform.position - transform.position;
@@ -180,11 +170,9 @@ namespace Pharaoh.Gameplay
             Vector2 velocityY = Vector2.up * mbRigidbody.velocity.y;
 
             Vector2 endPosition = startPosition + velocityX + velocityY;
-
-            //mbRigidbody.velocity = velocityX + velocityY;
             mbRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            _isMoving = true;
+            //_isMoving = true;
             while (currentTime < duration)
             {
                 mbRigidbody.MovePosition(Vector2.Lerp(startPosition, endPosition, curve.Evaluate(currentTime / duration)));
@@ -200,21 +188,11 @@ namespace Pharaoh.Gameplay
                 yield return _waitForFixedUpdate;
             }
 
-            _isMoving = false;
+            //_isMoving = false;
             // Cancels pulling if not holding the button
             mbRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
             mbRigidbody.velocity = velocityY;
-            //mbRigidbody.gravityScale = 1f;
             _movement?.OnPullEnd();
-        }
-
-        private float _currentTime;
-        private Vector2 _startPosition;
-        private Vector2 _endPosition;
-
-        private void SetupMovement()
-        {
-            _startPosition = mbRigidbody.position;
         }
     }
 }
