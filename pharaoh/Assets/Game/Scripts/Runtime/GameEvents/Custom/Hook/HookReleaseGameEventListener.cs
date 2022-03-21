@@ -4,5 +4,5 @@ using UnityEngine.Events;
 
 namespace Pharaoh.GameEvents
 {
-    public class HookReleaseGameEventListener : AbstractGameEventListener<HookCapacity, HookReleaseGameEvent, UnityEvent<HookCapacity>> { }
+    public class HookReleaseGameEventListener : AbstractGameEventListener<HookReleaseGameEvent, UnityEvent> { }
 }

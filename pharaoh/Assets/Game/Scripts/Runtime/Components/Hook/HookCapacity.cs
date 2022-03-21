@@ -12,15 +12,23 @@ namespace Pharaoh.Gameplay
     /// In charge of hooking & cancelling hook
     /// </summary>
     [RequireComponent(typeof(PlayerMovement))]
-    public abstract class HookCapacity : TargetFinder
+    public class HookCapacity : TargetFinder
     {
-        [SerializeField] protected bool discardBehindOverlap;
+        [SerializeField, Tooltip("Event when hooking to gameobject")]
+        private UnityEvent<HookCapacity, GameObject> onHook = new UnityEvent<HookCapacity, GameObject>();
 
-        protected PlayerInput _input;
-        protected PlayerMovement _movement;
-        protected GameObject _potentialTarget;
+        [SerializeField] private bool discardBehindOverlap;
 
-        public UnityEvent<HookCapacity> onHookRelease = new UnityEvent<HookCapacity>();
+        [field: SerializeField, Tooltip("Data for the pull action")] 
+        public PullHookData pullData { get; private set; }
+        //[field: SerializeField, Tooltip("Data for the grab action")] 
+        //public GrabHookData grabData { get; private set; }
+        [field: SerializeField, Tooltip("Data for the grapple action")] 
+        public GrappleHookData grappleData { get; private set; }
+
+        private PlayerInput _input;
+        private PlayerMovement _movement;
+        private GameObject _potentialTarget;
 
         protected override void Awake()
         {
@@ -29,22 +37,24 @@ namespace Pharaoh.Gameplay
             _movement = GetComponent<PlayerMovement>();
         }
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
             _input.Enable();
+            _input.CharacterActions.Hook.performed += OnHook;
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
+            _input.CharacterActions.Hook.performed -= OnHook;
             _input.Disable();
         }
 
-        protected virtual void OnDestroy()
+        private void OnDestroy()
         {
             _input.Dispose();
         }
         
-        protected virtual void Update()
+        private void Update()
         {
             SearchTargets();
 
@@ -65,13 +75,59 @@ namespace Pharaoh.Gameplay
             onFoundBestTarget?.Invoke(this, _potentialTarget);
         }
 
-        protected virtual void OnRelease()
+        public void OnRelease()
         {
-            onHookRelease?.Invoke(this);
             if (!_currentTarget) return;
 
-            Debug.Log($"unhooking from {_currentTarget.name}");
+            Debug.Log($"release from {_currentTarget.name}");
             _currentTarget = null;
         }
+        
+        private void OnHook(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            // unhook the current hooked object if there is one
+            if (_currentTarget) OnRelease();
+            // hook the nearest hookable objects if there is one
+            if (!_potentialTarget || _movement.IsStunned) return;
+            
+            _currentTarget = _potentialTarget;
+            
+            // select the target based on the direction the player's facing
+            Debug.Log($"hooking to {_currentTarget.name}");
+            onHook?.Invoke(this, _currentTarget);
+        }
+
+        
+        #region Editor Debug
+
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (!_movement) return;
+
+            // Draws the best target to the right(red if not the faced direction)
+            Gizmos.color = _movement.isFacingRight
+                ? new Color(1f, 0.7531517f, 0f, 1f)
+                : new Color(1f, 0.7531517f, 0f, 0.1f);
+            if (_bestTargetRight != null)
+                Gizmos.DrawLine(transform.position, _bestTargetRight.transform.position);
+
+            // Draws the best target to the left (red if not the faced direction)
+            Gizmos.color = !_movement.isFacingRight
+                ? new Color(1f, 0.7531517f, 0f, 1f)
+                : new Color(1f, 0.7531517f, 0f, 0.1f);
+            if (_bestTargetLeft != null)
+                Gizmos.DrawLine(transform.position, _bestTargetLeft.transform.position);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            // Draws a disc around the player displaying the targeting range
+            UnityEditor.Handles.color = new Color(1f, 0.7531517f, 0f, 1f);
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, overlapingRadius);
+        }
+#endif
+
+        #endregion
     }
 }

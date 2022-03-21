@@ -2,16 +2,8 @@
 
 namespace Pharaoh.Gameplay
 {
-    public class GrabHookBehaviour : HookBehaviour<GrabHookCapacity>
+    public class GrabHookBehaviour : HookBehaviour
     {
-        public override void Release(HookCapacity capacity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Begin(GrabHookCapacity capacity, HookBehaviour<GrabHookCapacity> behaviour)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

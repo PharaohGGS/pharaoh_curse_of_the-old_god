@@ -75,11 +75,11 @@ GameObject:
   - component: {fileID: 3998399763893557710}
   - component: {fileID: 5732736215046696851}
   - component: {fileID: 7790090175714034903}
-  - component: {fileID: 4580342248505284630}
-  - component: {fileID: 7843766750882926013}
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
   - component: {fileID: 1873792441378832283}
+  - component: {fileID: 2089584490314425185}
+  - component: {fileID: 2982375273082900414}
   m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
@@ -278,7 +278,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 4580342248505284630}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookMoveCapacity, Pharaoh
         m_MethodName: HookReleased
         m_Mode: 1
@@ -289,213 +289,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
---- !u!114 &4580342248505284630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d416a6deabb7184788808ce8d7865cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overlapCount: 5
-  overlapingRadius: 6
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 16384
-  whatIsObstacle:
-    serializedVersion: 2
-    m_Bits: 66560
-  onFoundBestTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.TargetFinder,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  discardBehindOverlap: 0
-  onHookRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.HookCapacity,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  grappleSpeed: 3
-  smoothCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  onGrappleStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: d4337297d9d84ab46abbce336085d08d, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.GrappleHookCapacity,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onGrappleEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: OnGrappleEnd
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7843766750882926013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a6d0d5a98f1c24c8c9198c7d474793, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overlapCount: 5
-  overlapingRadius: 6
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 32768
-  whatIsObstacle:
-    serializedVersion: 2
-    m_Bits: 66560
-  onFoundBestTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.TargetFinder,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  discardBehindOverlap: 1
-  onHookRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.HookCapacity,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  pullForce: 1
-  pullMaxMovement: 1
-  pullDuration: 1
-  pullOffset: 1
-  smoothCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  onPullStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 8815fa6ee4e5c2849b369e3dfd35d048, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.PullHookCapacity,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1694517701867188700
 MonoBehaviour:
@@ -585,6 +378,115 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
         m_MethodName: TakeHit
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2089584490314425185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1d5819087c09a47a1f278b95368c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overlapCount: 5
+  overlapingRadius: 6
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 49152
+  <whatIsObstacle>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 66560
+  onFoundBestTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.TargetFinder,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHook:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.HookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  discardBehindOverlap: 1
+  <pullData>k__BackingField: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
+  <grappleData>k__BackingField: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
+--- !u!114 &2982375273082900414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a193f1d0d4a88840ab8439de0109494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2089584490314425185}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookCapacity, Pharaoh
+        m_MethodName: OnRelease
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

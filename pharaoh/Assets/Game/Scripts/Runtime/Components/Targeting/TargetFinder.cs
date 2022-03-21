@@ -12,8 +12,8 @@ namespace Pharaoh.Gameplay
 
         [SerializeField, Tooltip("Target layers")]
         protected LayerMask whatIsTarget;
-        [SerializeField, Tooltip("Obstacle layers")]
-        protected LayerMask whatIsObstacle;
+        [field: SerializeField, Tooltip("Obstacle layers")]
+        public LayerMask whatIsObstacle { get; protected set; }
 
         protected Collider2D[] _overlaps;
 
@@ -21,7 +21,8 @@ namespace Pharaoh.Gameplay
         protected GameObject _bestTargetLeft;
         protected GameObject _currentTarget;
 
-        public UnityEvent<TargetFinder, GameObject> onFoundBestTarget = new UnityEvent<TargetFinder, GameObject>();
+        [SerializeField, Tooltip("Event when found the best target")]
+        protected UnityEvent<TargetFinder, GameObject> onFoundBestTarget = new UnityEvent<TargetFinder, GameObject>();
         
         protected virtual void Awake()
         {

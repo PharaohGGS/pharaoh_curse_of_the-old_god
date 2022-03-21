@@ -1,26 +1,61 @@
 ﻿using Pharaoh.GameEvents;
+using Pharaoh.Tools.Inputs;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
-    [RequireComponent(typeof(HookReleaseGameEventListener))]
-    public abstract class HookBehaviour<T0> : MonoBehaviour
-        where T0 : HookCapacity
+    public abstract class HookBehaviour : MonoBehaviour
     {
         [SerializeField, Tooltip("FX hookIndicator for the best target selected")] 
         protected GameObject hookIndicator;
 
-        public virtual void FoundBestTarget(TargetFinder finder, GameObject go)
-        {
-            hookIndicator?.SetActive(go == gameObject);
-        }
+        [SerializeField, Tooltip("Event when the behaviour want the player to release it")] 
+        protected UnityEvent onRelease = new UnityEvent();
 
+        protected PlayerInput _input;
+        protected HookCapacity _hook;
+
+        protected bool _isCurrentTarget;
+        
         protected virtual void Awake()
         {
+            _hook = null;
+            _input = new PlayerInput();
             hookIndicator?.SetActive(false);
         }
 
-        public abstract void Release(HookCapacity capacity);
-        public abstract void Begin(T0 capacity, HookBehaviour<T0> behaviour);
+        protected virtual void OnEnable()
+        {
+            _input.Enable();
+        }
+
+        protected virtual void OnDisable()
+        {
+            _input.Disable();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            _input.Dispose();
+        }
+
+        public virtual void FoundBestTarget(TargetFinder finder, GameObject target)
+        {
+            hookIndicator?.SetActive(target == gameObject);
+        }
+
+        public virtual void Interact(HookCapacity hook, GameObject target)
+        {
+            _isCurrentTarget = target == gameObject;
+            if (!_isCurrentTarget) return;
+            _hook = hook;
+        }
+
+        public virtual void Release()
+        {
+            _isCurrentTarget = false;
+            onRelease?.Invoke();
+        }
     }
 }

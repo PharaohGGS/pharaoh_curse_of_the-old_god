@@ -186,10 +186,14 @@ namespace Pharaoh.Gameplay.Components.Movement
             _canMove = !value;
         }
 
-        public void OnGrappleEnd(GrappleHookCapacity capacity, GrappleHookBehaviour behaviour)
+        public void OnPullEnd()
         {
-            if (capacity.gameObject != gameObject) return;
+            IsPullingBlock = false;
+            IsHookedToBlock = false;
+        }
 
+        public void OnGrappleEnd()
+        {
             _initialFallHeight = _rigidbody.position.y;
 
             _isHooked = true;
