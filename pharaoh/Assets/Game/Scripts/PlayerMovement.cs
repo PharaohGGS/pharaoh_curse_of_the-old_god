@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private bool _isDashing = false;
     private bool _hasDashedInAir = false;
     private bool _isJumping = false;
-    private bool _isStunned = false;
     private bool _noclip; //DEBUG
     private bool _canMove = true;
     private bool _isHooked = false;
@@ -36,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded { get; private set; } = false;
 
     public bool IsRunning { get => _isRunning; }
-    public bool IsStunned { get => _isStunned; }
     public bool IsDashing { get => _isDashing; }
     public bool IsJumping { get => _isJumping; }
     public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
@@ -52,40 +50,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Input Reader")]
     public InputReader inputReader;
 
-    [Header("Horizontal Movement")]
-    [Tooltip("Grounded horizontal speed (m/s)")]
-    public float horizontalSpeed = 5f;
-    [Tooltip("In-air horizontal speed (m/s)")]
-    public float inAirHorizontalSpeed = 5f;
-    [Tooltip("NOCLIP mode speed (m/s)")]
-    public float noclipSpeed = 10f;
-    [Tooltip("How long the player is stunned when getting damaged")]
-    public float respawnStunDuration = 1.5f;
-
-    [Header("Jump")]
-    [Tooltip("Defines the force added to the player when initiating the jump")]
-    public float initialJumpForce = 12f;
-    [Tooltip("Defines the force added to the player while holding the jump button")]
-    public float heldJumpForce = 16f;
-    [Tooltip("How long the player can hold down the jump button after jumping")]
-    public float maxJumpHold = 0.3f;
-
-    [Header("Dash")]
-    [Tooltip("Dashing force, 50 works well")]
-    public float dashForce = 30f;
-    [Tooltip("Dashing time, 0.1 works well")]
-    public float dashTime = 0.1f;
-    [Tooltip("Dashing time, 0.1 works well")]
-    public float dashDuration = 0.1f;
-    [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
-    public float dashCooldown = 0.5f;
+    [Header("Player Movement Data")]
+    public PlayerMovementData metrics;
 
     [Header("Ground Detection")]
     [Tooltip("Rightmost ground check")]
     public Transform rightGroundCheck;
     [Tooltip("leftmost ground check")]
     public Transform leftGroundCheck;
-    public LayerMask groundLayer;
+    [Tooltip("Define the walkable layers")]
+    public LayerMask whatIsGround;
 
     [Header("Animations")]
     [Tooltip("Animator controlling the player")]
@@ -120,10 +94,10 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player jumps
     private void OnJumpStarted()
     {
-        if ((isGrounded || _isHooked) && !_isDashing && !_isStunned && !_isPullingBlock)
+        if ((isGrounded || _isHooked) && !_isDashing && !_isPullingBlock)
         {
             // The player jumps using an impulse force
-            _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
+            _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
             _jumpClock = Time.time;
             _isJumping = true;
             _isHooked = false;
@@ -142,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
     // Triggers when the player dashes
     private void OnDashStarted()
     {
-        if (!_isDashing && /*_isDashAvailable &&*/ !_hasDashedInAir && !_isStunned && !_isPullingBlock)
+        if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
         {
             _rigidbody.velocity = Vector2.zero;
 
@@ -184,11 +158,11 @@ public class PlayerMovement : MonoBehaviour
         _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, _smoothInput);
 
         // Stops the jump if held for too long
-        if (_isJumping && _jumpClock + maxJumpHold < Time.time)
+        if (_isJumping && _jumpClock + metrics.maxJumpHold < Time.time)
             _isJumping = false;
 
         // Stops the dash when its duration is past
-        if (_isDashing && _dashClock + dashDuration < Time.time)
+        if (_isDashing && _dashClock + metrics.dashDuration < Time.time)
         {
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.gravityScale = _previousGravityScale;
@@ -205,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
         // Lerps between a given orientation when idle facing left and when running facing left
         // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned || _isPullingBlock ?
+        Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isPullingBlock ?
             Quaternion.Lerp(toIdle, toRunning, 0f)
             : Quaternion.Lerp(toRunning, toIdle, 0f);
         modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
@@ -216,24 +190,24 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Moves the player horizontally with according speeds while not dashing
-        if (!_isDashing && _canMove && !_isStunned && !_isPullingBlock)
+        if (!_isDashing && _canMove && !_isPullingBlock)
         {
             if (isGrounded || _isHooked)
-                _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
+                _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.horizontalSpeed, _rigidbody.velocity.y);
             else
-                _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
+                _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.inAirHorizontalSpeed, _rigidbody.velocity.y);
         }
 
         // DEBUG
         if (_noclip)
-            _rigidbody.velocity = _movementInput * noclipSpeed;
+            _rigidbody.velocity = _movementInput * metrics.noclipSpeed;
 
         // Moves the player upward while holding the jump button
-        if (_isJumping && !_isStunned)
-            _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
+        if (_isJumping)
+            _rigidbody.AddForce(Vector2.up * metrics.heldJumpForce, ForceMode2D.Force);
 
-        if (_isDashing && !_isStunned)
-            _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * dashForce;
+        if (_isDashing)
+            _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * metrics.dashForce;
     }
 
     private void LateUpdate()
@@ -249,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
             _hasDashedInAir = false;
 
         // Updates the direction the player is facing
-        if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock && !_isPullingBlock)
+        if (_smoothMovement.x != 0f && !_isHookedToBlock && !_isPullingBlock)
         {
             isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
         }
@@ -259,15 +233,15 @@ public class PlayerMovement : MonoBehaviour
         else _isRunning = false;
         
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
-            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, whatIsGround)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, whatIsGround);
 
         // only when reach the ground and not falling
         isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
 
         // Updates the grounded state - check if one or both "feet" are on a ground
-        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
-            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+        isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, whatIsGround)
+            || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, whatIsGround);
         
         animator.SetBool("Is Grounded", isGrounded);
     }
@@ -275,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
     // Coroutine re-enabling the dash after it's cooldown
     System.Collections.IEnumerator DashCooldown()
     {
-        yield return new WaitForSeconds(dashCooldown);
+        yield return new WaitForSeconds(metrics.dashCooldown);
 
         inputReader.EnableDash();
     }
@@ -283,7 +257,11 @@ public class PlayerMovement : MonoBehaviour
     public void Stun(float duration)
     {
         _rigidbody.velocity = Vector2.zero;
-        _isStunned = true;
+
+        inputReader.DisableMove();
+        inputReader.DisableJump();
+        inputReader.DisableDash();
+
         StartCoroutine(Stunned(duration));
         animator.SetTrigger("Stunned");
     }
@@ -293,8 +271,9 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
 
-        // Updates current state
-        _isStunned = false;
+        inputReader.EnableMove();
+        inputReader.EnableJump();
+        inputReader.EnableDash();
     }
 
     public void Respawn()
@@ -316,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
 
         gameObject.layer = _defaultLayer;
 
-        Stun(respawnStunDuration);
+        Stun(metrics.respawnStunDuration);
     }
 
     private void OnEnable()
@@ -370,7 +349,6 @@ public class PlayerMovement : MonoBehaviour
         Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 4.0f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
