@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34bb46ec4ee98b44a3095dfbf46624b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   horizontalSpeed: 5
   inAirHorizontalSpeed: 5
   noclipSpeed: 10
@@ -180,8 +181,6 @@ MonoBehaviour:
   initialJumpForce: 11
   heldJumpForce: 18.5
   maxJumpHold: 0.4
-  stunFallDistance: 5.55
-  fallStunDuration: 1.5
   dashForce: 35
   dashTime: 0.1
   dashDuration: 0.1
@@ -212,7 +211,7 @@ MonoBehaviour:
   whatIsSpike:
     serializedVersion: 2
     m_Bits: 262144
-  DEBUGRespawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 0}
   delayBeforeRespawn: 0.1
   onRespawn:
     m_PersistentCalls:
