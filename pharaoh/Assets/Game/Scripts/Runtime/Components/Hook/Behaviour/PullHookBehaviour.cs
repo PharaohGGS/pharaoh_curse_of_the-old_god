@@ -83,8 +83,12 @@ namespace Pharaoh.Gameplay
         private void FixedUpdate()
         {
             if (!isCurrentTarget || !_hook || !_movingBlock) return;
-            
-            _hasBeenReleased = !canBePulled || isBlocked || !_movingBlock.isGrounded;
+
+            if (!canBePulled || isBlocked || !_movingBlock.isGrounded)
+            {
+                _hasBeenReleased = true;
+            }
+
             if (_hasBeenReleased) Release();
         }
         

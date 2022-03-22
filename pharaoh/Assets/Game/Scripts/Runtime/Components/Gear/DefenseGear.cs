@@ -63,7 +63,6 @@ namespace Pharaoh.Gameplay.Components
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
             
-            transform.parent = null;
             rb2D.velocity = Vector2.zero;
             rb2D.bodyType = RigidbodyType2D.Kinematic;
         }
@@ -72,7 +71,8 @@ namespace Pharaoh.Gameplay.Components
         { 
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
-
+            
+            transform.parent = null;
             rb2D.MovePosition(behaviour.nextPosition);
         }
 
