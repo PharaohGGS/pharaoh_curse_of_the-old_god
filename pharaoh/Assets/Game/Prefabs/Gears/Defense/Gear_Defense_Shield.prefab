@@ -141,6 +141,34 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   data: {fileID: 11400000, guid: 6a9d2da7ba5b160459cf1654a6313680, type: 2}
+--- !u!114 &3207401951973418318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961891405360250932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 714299209980879289}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.DefenseGear, Pharaoh
+        m_MethodName: Repel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5137102897440439963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +211,7 @@ MonoBehaviour:
   onOverlapHit:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3207401951973418318
+--- !u!114 &6025110177877744345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,16 +220,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3961891405360250932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
+  m_Script: {fileID: 11500000, guid: d799dc9e9e7f7d74f9a6854e7fa27c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
   <response>k__BackingField:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 714299209980879289}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.DefenseGear, Pharaoh
-        m_MethodName: Repel
+      - m_Target: {fileID: 1519241427554425742}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.SnatchHookBehaviour, Pharaoh
+        m_MethodName: Interact
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -211,3 +239,44 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8445904435577782602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961891405360250932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d40a9b0ce53bc46b15ac6872aecaf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1519241427554425742}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookBehaviour, Pharaoh
+        m_MethodName: FoundBestTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1519241427554425742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961891405360250932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06098526128af8439f0f1baaa3de875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hookIndicator: {fileID: 0}

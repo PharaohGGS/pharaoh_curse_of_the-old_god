@@ -226,8 +226,6 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             switch (behaviour)
             {
-                case GrabHookBehaviour grab:
-                    break;
                 case GrappleHookBehaviour grapple:
                     //animator?.SetTrigger(Animator.StringToHash("grapple_start"));
                     break;
@@ -235,6 +233,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                     _rigidbody.velocity = Vector2.zero;
                     IsPullingBlock = true;
                     IsHookedToBlock = true;
+                    break;
+                case SnatchHookBehaviour snatch:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
@@ -247,12 +247,12 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             switch (behaviour)
             {
-                case GrabHookBehaviour grab:
-                    break;
                 case GrappleHookBehaviour grapple:
                     _rigidbody.MovePosition(grapple.nextPosition);
                     break;
                 case PullHookBehaviour pull:
+                    break;
+                case SnatchHookBehaviour snatch:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
@@ -265,8 +265,6 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             switch (behaviour)
             {
-                case GrabHookBehaviour grab:
-                    break;
                 case GrappleHookBehaviour grapple:
                     //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
                     _initialFallHeight = _rigidbody.position.y;
@@ -281,6 +279,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                     IsPullingBlock = false;
                     IsHookedToBlock = false;
                     break;
+                case SnatchHookBehaviour snatch:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
             }
@@ -294,14 +294,14 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             switch (behaviour)
             {
-                case GrabHookBehaviour grab:
-                    break;
                 case GrappleHookBehaviour grapple:
                     _rigidbody.bodyType = RigidbodyType2D.Dynamic;
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
                     IsHookedToBlock = false;
+                    break;
+                case SnatchHookBehaviour snatch:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(behaviour));

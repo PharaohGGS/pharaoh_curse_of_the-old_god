@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Pharaoh.Gameplay.Components;
 using Pharaoh.Gameplay.Components.Movement;
 using Pharaoh.Tools.Debug;
 using Pharaoh.Tools.Inputs;
@@ -8,13 +9,13 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
-    public class PullHookBehaviour : HookBehaviour
+
+    public class SnatchHookBehaviour : HookBehaviour
     {
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
-        private Coroutine _pullCoroutine;
+        private Coroutine _snatchCoroutine;
 
-        private MovingBlock _movingBlock;
-        
+        private DefenseGear _defenseGear;
         private bool _hasBeenReleased;
         
         /// <summary>
@@ -25,7 +26,7 @@ namespace Pharaoh.Gameplay
             get
             {
                 if (!_hook) return false;
-                float offset = _hook.pullData.offset;
+                float offset = _hook.snatchData.offset;
                 Vector2 position = transform.position;
                 Vector2 hookPosition = _hook.transform.position;
                 return position.x > (hookPosition.x + offset) || position.x < (hookPosition.x - offset);
@@ -60,8 +61,7 @@ namespace Pharaoh.Gameplay
         protected override void Awake()
         {
             base.Awake();
-            _movingBlock = TryGetComponent(out MovingBlock mb) 
-                ? mb : GetComponentInParent<MovingBlock>();
+            if (!TryGetComponent(out _defenseGear)) {}
         }
 
         protected override void OnEnable()
@@ -82,15 +82,15 @@ namespace Pharaoh.Gameplay
 
         private void FixedUpdate()
         {
-            if (!isCurrentTarget || !_hook || !_movingBlock) return;
+            if (!isCurrentTarget || !_hook || !transform.parent) return;
             
-            _hasBeenReleased = !canBePulled || isBlocked || !_movingBlock.isGrounded;
+            _hasBeenReleased = !canBePulled || isBlocked;
             if (_hasBeenReleased) Release();
         }
         
         private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
+            if (!isCurrentTarget) return;
 
             var axis = _input.CharacterControls.Move.ReadValue<Vector2>();
             if (Mathf.Abs(axis.x - Mathf.Epsilon) <= Mathf.Epsilon) return;
@@ -99,20 +99,20 @@ namespace Pharaoh.Gameplay
 
         private void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
+            if (!isCurrentTarget) return;
             _hasBeenReleased = true;
         }
 
         private void OnDash(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
+            if (!isCurrentTarget) return;
             _hasBeenReleased = true;
         }
 
         protected override void Release()
         {
             base.Release();
-            if (_pullCoroutine != null) StopCoroutine(_pullCoroutine);
+            if (_snatchCoroutine != null) StopCoroutine(_snatchCoroutine);
             _hasBeenReleased = false;
         }
 
@@ -122,51 +122,39 @@ namespace Pharaoh.Gameplay
             if (!isCurrentTarget) return;
             
             // can't be pull when player is in air
-            if (!canBePulled || !_movingBlock || !_movingBlock.isGrounded || _movingBlock.isPulled ||
+            if (!canBePulled || !transform.parent || 
                 !_hook.TryGetComponent(out PlayerMovement movement) || !movement.isGrounded)
             {
                 Release();
                 return;
             }
 
-            _pullCoroutine = StartCoroutine(Pull());
+            _snatchCoroutine = StartCoroutine(Snatch());
             if (hookIndicator) hookIndicator.SetActive(false);
         }
 
-        private System.Collections.IEnumerator Pull()
+        private System.Collections.IEnumerator Snatch()
         {
-            if (!_movingBlock) yield break;
-            
+            if (!_hook) yield break;
+
+            float force = _hook.snatchData.force;
+            float offset = _hook.snatchData.offset;
+            AnimationCurve curve = _hook.snatchData.curve;
+            Vector2 startPosition = transform.position;
+
+            float maxDistance = Vector2.Distance(startPosition, _hook.transform.position);
+            float timeToTravel = maxDistance / force;
             float currentTime = 0f;
-            float maxMovement = _hook.pullData.maxMovement;
-            float duration = _hook.pullData.duration;
-            float force = _hook.pullData.force;
-            AnimationCurve curve = _hook.pullData.curve;
-            
-            Vector2 startPosition = _movingBlock.transform.position;
 
-            Vector2 direction = _hook.transform.position - transform.position;
-            Vector2 velocityX = (direction.x < 0.0f ? Vector2.left : Vector2.right) * maxMovement;
-
-            Vector2 endPosition = startPosition + velocityX;
-            
-            while (currentTime < duration)
+            while (currentTime < timeToTravel)
             {
-                nextPosition = Vector2.Lerp(startPosition, endPosition, curve.Evaluate(currentTime / duration));
-                currentTime = Mathf.MoveTowards(currentTime, duration, Time.fixedDeltaTime * force);
+                nextPosition = Vector2.Lerp(startPosition, _hook.transform.position, curve.Evaluate(currentTime / timeToTravel));
+                currentTime = Mathf.MoveTowards(currentTime, timeToTravel, Time.fixedDeltaTime * force);
                 Perform();
-                
-                if (!_hasBeenReleased && currentTime >= duration && _input.CharacterActions.Hook.IsPressed())
-                {
-                    currentTime = 0f;
-                    startPosition = _movingBlock.transform.position;
-                    endPosition = startPosition + velocityX;
-                }
 
                 yield return _waitForFixedUpdate;
             }
-            
-            // Cancels pulling if not holding the button
+
             End();
         }
     }

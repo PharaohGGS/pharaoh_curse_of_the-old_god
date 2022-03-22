@@ -13,7 +13,29 @@ namespace Pharaoh.Gameplay.Components
         {
             base.Awake();
             damager = TryGetComponent(out Damager d) ? d : null;
-            coll2D.enabled = false;
+            //coll2D.enabled = false;
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            // Hook bindings
+            HookBehaviour.started += OnHookStarted;
+            HookBehaviour.performed += OnHookPerformed;
+            HookBehaviour.ended += OnHookEnded;
+            HookBehaviour.released += OnHookReleased;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            
+            // Hook bindings
+            HookBehaviour.started -= OnHookStarted;
+            HookBehaviour.performed -= OnHookPerformed;
+            HookBehaviour.ended -= OnHookEnded;
+            HookBehaviour.released -= OnHookReleased;
         }
 
         /// <summary>
@@ -24,7 +46,8 @@ namespace Pharaoh.Gameplay.Components
         public void SetAttackState(int value = 0)
         {
             if (!coll2D) return;
-            coll2D.enabled = value > 0;
+            //coll2D.enabled = value > 0;
+            coll2D.isTrigger = value > 0;
         }
 
         public void Repel(Gear gear)
@@ -32,6 +55,41 @@ namespace Pharaoh.Gameplay.Components
             if (gear != this) return;
 
             Debug.Log($"Repel with {name}");
+        }
+
+        
+        private void OnHookStarted(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
+            if (behaviour is not SnatchHookBehaviour snatch) return;
+            
+            transform.parent = null;
+            rb2D.velocity = Vector2.zero;
+            rb2D.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        private void OnHookPerformed(HookBehaviour behaviour)
+        { 
+            if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
+            if (behaviour is not SnatchHookBehaviour snatch) return;
+
+            rb2D.MovePosition(behaviour.nextPosition);
+        }
+
+        private void OnHookEnded(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
+            if (behaviour is not SnatchHookBehaviour snatch) return;
+            
+            rb2D.bodyType = RigidbodyType2D.Dynamic;
+        }
+    
+        private void OnHookReleased(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
+            if (behaviour is not SnatchHookBehaviour snatch) return;
+            
+            rb2D.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 }

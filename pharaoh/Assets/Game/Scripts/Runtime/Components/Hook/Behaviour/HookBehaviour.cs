@@ -1,12 +1,9 @@
 ﻿using System;
-using Pharaoh.GameEvents;
 using Pharaoh.Tools.Inputs;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
-
     public abstract class HookBehaviour : MonoBehaviour
     {
         [SerializeField, Tooltip("FX hookIndicator for the best target selected")] 
@@ -23,6 +20,7 @@ namespace Pharaoh.Gameplay
 
         protected PlayerInput _input;
         protected HookCapacity _hook;
+        protected RaycastHit2D[] _hits;
 
         public bool isCurrentTarget { get; protected set; }
         public Vector2 nextPosition { get; protected set; }
@@ -31,7 +29,8 @@ namespace Pharaoh.Gameplay
         {
             _hook = null;
             _input = new PlayerInput();
-            hookIndicator?.SetActive(false);
+            _hits = new RaycastHit2D[2];
+            if (hookIndicator) hookIndicator.SetActive(false);
         }
 
         protected virtual void OnEnable()
@@ -51,7 +50,7 @@ namespace Pharaoh.Gameplay
 
         public virtual void FoundBestTarget(TargetFinder finder, GameObject target)
         {
-            hookIndicator?.SetActive(target == gameObject);
+            if (hookIndicator) hookIndicator.SetActive(target == gameObject);
         }
 
         public virtual void Interact(HookCapacity hook, GameObject target)
@@ -60,18 +59,12 @@ namespace Pharaoh.Gameplay
             _hook = isCurrentTarget ? hook : null;
             started?.Invoke(this);
         }
+        
+        protected virtual void Perform() => performed?.Invoke(this);
 
-        public virtual void Perform()
-        {
-            performed?.Invoke(this);
-        }
+        protected virtual void End() => ended?.Invoke(this);
 
-        public virtual void End()
-        {
-            ended?.Invoke(this);
-        }
-
-        public virtual void Release()
+        protected virtual void Release()
         {
             released?.Invoke(this);
             isCurrentTarget = false;

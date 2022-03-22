@@ -21,8 +21,8 @@ namespace Pharaoh.Gameplay
 
         [field: SerializeField, Tooltip("Data for the pull action")] 
         public PullHookData pullData { get; private set; }
-        //[field: SerializeField, Tooltip("Data for the grab action")] 
-        //public GrabHookData grabData { get; private set; }
+        [field: SerializeField, Tooltip("Data for the grab action")] 
+        public SnatchHookData snatchData { get; private set; }
         [field: SerializeField, Tooltip("Data for the grapple action")] 
         public GrappleHookData grappleData { get; private set; }
         

@@ -64,7 +64,7 @@ public class MovingBlock : MonoBehaviour
     private void OnHookStarted(HookBehaviour behaviour)
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
-        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+        if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
 
         _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         isHooked = true;
@@ -73,16 +73,16 @@ public class MovingBlock : MonoBehaviour
     private void OnHookPerformed(HookBehaviour behaviour)
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
-        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
-        
+        if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
+
         isPulled = true;
-        _rigidbody2D.MovePosition(pull.nextPosition);
+        _rigidbody2D.MovePosition(behaviour.nextPosition);
     }
 
     private void OnHookEnded(HookBehaviour behaviour)
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
-        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+        if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
 
         _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         _rigidbody2D.velocity = Vector2.up * _rigidbody2D.velocity.y;
@@ -93,7 +93,7 @@ public class MovingBlock : MonoBehaviour
     private void OnHookReleased(HookBehaviour behaviour)
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
-        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+        if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
 
         _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         isPulled = false;

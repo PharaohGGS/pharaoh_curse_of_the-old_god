@@ -13,14 +13,6 @@ namespace Pharaoh.Gameplay
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         private Coroutine _moveToCoroutine;
         
-        private RaycastHit2D[] _hits;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            _hits = new RaycastHit2D[2];
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -74,7 +66,7 @@ namespace Pharaoh.Gameplay
             Release();
         }
 
-        public override void Release()
+        protected override void Release()
         {
             base.Release();
             if (_moveToCoroutine != null) StopCoroutine(_moveToCoroutine);
@@ -85,7 +77,7 @@ namespace Pharaoh.Gameplay
             base.Interact(hook, target);
             if (!isCurrentTarget) return;
 
-            hookIndicator?.SetActive(false);
+            if (hookIndicator) hookIndicator.SetActive(false);
             _moveToCoroutine = StartCoroutine(Grapple());
         }
 
