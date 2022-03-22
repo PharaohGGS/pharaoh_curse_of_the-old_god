@@ -25,7 +25,7 @@ namespace Pharaoh.Gameplay
         //public GrabHookData grabData { get; private set; }
         [field: SerializeField, Tooltip("Data for the grapple action")] 
         public GrappleHookData grappleData { get; private set; }
-
+        
         private PlayerInput _input;
         private PlayerMovement _movement;
         private GameObject _potentialTarget;
@@ -39,12 +39,20 @@ namespace Pharaoh.Gameplay
 
         private void OnEnable()
         {
+            // Hook bindings
+            HookBehaviour.released += OnHookReleased;
+
+            // Movement's events binding
             _input.Enable();
             _input.CharacterActions.Hook.performed += OnHook;
         }
 
         private void OnDisable()
         {
+            // Hook bindings
+            HookBehaviour.released -= OnHookReleased;
+
+            // Movement's events binding
             _input.CharacterActions.Hook.performed -= OnHook;
             _input.Disable();
         }
@@ -75,7 +83,7 @@ namespace Pharaoh.Gameplay
             onFoundBestTarget?.Invoke(this, _potentialTarget);
         }
 
-        public void OnRelease()
+        private void Release()
         {
             if (!_currentTarget) return;
 
@@ -86,7 +94,7 @@ namespace Pharaoh.Gameplay
         private void OnHook(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
             // unhook the current hooked object if there is one
-            if (_currentTarget) OnRelease();
+            if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
             if (!_potentialTarget || _movement.IsStunned) return;
             
@@ -96,8 +104,14 @@ namespace Pharaoh.Gameplay
             Debug.Log($"hooking to {_currentTarget.name}");
             onHook?.Invoke(this, _currentTarget);
         }
-
         
+        private void OnHookReleased(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+
+            Release();
+        }
+
         #region Editor Debug
 
 #if UNITY_EDITOR

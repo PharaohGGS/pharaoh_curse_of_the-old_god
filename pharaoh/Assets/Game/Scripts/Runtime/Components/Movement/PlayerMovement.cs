@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
@@ -109,8 +110,19 @@ namespace Pharaoh.Gameplay.Components.Movement
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
             _playerInput = new PlayerInput();
+        }
+
+        private void OnEnable()
+        {
+            // Hook bindings
+            HookBehaviour.started += OnHookStarted;
+            HookBehaviour.performed += OnHookPerformed;
+            HookBehaviour.ended += OnHookEnded;
+            HookBehaviour.released += OnHookReleased;
 
             // Movement's events binding
+            _playerInput.Enable();
+
             _playerInput.CharacterControls.Move.performed += OnMove; //player starts moving
             _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
             _playerInput.CharacterControls.Jump.started += OnJump; //player starts jumping
@@ -118,6 +130,26 @@ namespace Pharaoh.Gameplay.Components.Movement
             _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
 
             _playerInput.CharacterControls.NOCLIP.performed += OnNoclip; //enter NOCLIP mode
+        }
+
+        private void OnDisable()
+        {
+            // Hook bindings
+            HookBehaviour.started -= OnHookStarted;
+            HookBehaviour.performed -= OnHookPerformed;
+            HookBehaviour.ended -= OnHookEnded;
+            HookBehaviour.released -= OnHookReleased;
+
+            // Movement's events binding
+            _playerInput.CharacterControls.Move.performed -= OnMove; //player starts moving
+            _playerInput.CharacterControls.Move.canceled -= OnMove; //player ends moving
+            _playerInput.CharacterControls.Jump.started -= OnJump; //player starts jumping
+            _playerInput.CharacterControls.Jump.canceled -= OnJump; //player ends jumping
+            _playerInput.CharacterControls.Dash.started -= OnDash; //player dashes
+
+            _playerInput.CharacterControls.NOCLIP.performed -= OnNoclip; //enter NOCLIP mode
+
+            _playerInput.Disable();
         }
 
         // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
@@ -186,21 +218,94 @@ namespace Pharaoh.Gameplay.Components.Movement
             _canMove = !value;
         }
 
-        public void OnPullEnd()
+        private void OnHookStarted(HookBehaviour behaviour)
         {
-            IsPullingBlock = false;
-            IsHookedToBlock = false;
+            if (!behaviour.isCurrentTarget) return;
+
+            LockMovement(true);
+
+            switch (behaviour)
+            {
+                case GrabHookBehaviour grab:
+                    break;
+                case GrappleHookBehaviour grapple:
+                    //animator?.SetTrigger(Animator.StringToHash("grapple_start"));
+                    break;
+                case PullHookBehaviour pull:
+                    _rigidbody.velocity = Vector2.zero;
+                    IsPullingBlock = true;
+                    IsHookedToBlock = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
         }
 
-        public void OnGrappleEnd()
+        private void OnHookPerformed(HookBehaviour behaviour)
         {
-            _initialFallHeight = _rigidbody.position.y;
+            if (!behaviour.isCurrentTarget) return;
 
-            _isHooked = true;
-            _hasDashedInAir = false;
-            animator.SetBool("Is Grounded", isGrounded);
+            switch (behaviour)
+            {
+                case GrabHookBehaviour grab:
+                    break;
+                case GrappleHookBehaviour grapple:
+                    _rigidbody.MovePosition(grapple.nextPosition);
+                    break;
+                case PullHookBehaviour pull:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
+        }
 
-            _initialFallHeight = _rigidbody.position.y;
+        private void OnHookEnded(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+
+            switch (behaviour)
+            {
+                case GrabHookBehaviour grab:
+                    break;
+                case GrappleHookBehaviour grapple:
+                    //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
+                    _initialFallHeight = _rigidbody.position.y;
+                    _isHooked = true;
+                    _hasDashedInAir = false;
+                    animator.SetBool("Is Grounded", isGrounded);
+                    _initialFallHeight = _rigidbody.position.y;
+                    _rigidbody.velocity = Vector2.zero;
+                    _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+                    break;
+                case PullHookBehaviour pull:
+                    IsPullingBlock = false;
+                    IsHookedToBlock = false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
+        }
+
+        private void OnHookReleased(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+
+            LockMovement(false);
+
+            switch (behaviour)
+            {
+                case GrabHookBehaviour grab:
+                    break;
+                case GrappleHookBehaviour grapple:
+                    _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+                    break;
+                case PullHookBehaviour pull:
+                    IsPullingBlock = false;
+                    IsHookedToBlock = false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
         }
 
         private void Update()
@@ -381,16 +486,6 @@ namespace Pharaoh.Gameplay.Components.Movement
             Stun(respawnStunDuration);
         }
 
-        private void OnEnable()
-        {
-            _playerInput.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _playerInput.Disable();
-        }
-
     #if UNITY_EDITOR
         // Displays a bunch of stats while the game is playing
         private void OnDrawGizmosSelected()
@@ -429,7 +524,6 @@ namespace Pharaoh.Gameplay.Components.Movement
             Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
         }
     #endif
-
     }
     
 }

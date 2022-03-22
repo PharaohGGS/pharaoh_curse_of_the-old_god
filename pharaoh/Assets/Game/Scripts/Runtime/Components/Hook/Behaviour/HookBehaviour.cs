@@ -1,22 +1,31 @@
-﻿using Pharaoh.GameEvents;
+﻿using System;
+using Pharaoh.GameEvents;
 using Pharaoh.Tools.Inputs;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
+
     public abstract class HookBehaviour : MonoBehaviour
     {
         [SerializeField, Tooltip("FX hookIndicator for the best target selected")] 
         protected GameObject hookIndicator;
 
-        [SerializeField, Tooltip("Event when the behaviour want the player to release it")] 
-        protected UnityEvent onRelease = new UnityEvent();
+        [Tooltip("Event when the behaviour start")]
+        public static event Action<HookBehaviour> started;
+        [Tooltip("Event when the behaviour is performing an action")]
+        public static event Action<HookBehaviour> performed;
+        [Tooltip("Event when the behaviour ended")]
+        public static event Action<HookBehaviour> ended;
+        [Tooltip("Event when the behaviour is released")] 
+        public static event Action<HookBehaviour> released;
 
         protected PlayerInput _input;
         protected HookCapacity _hook;
 
-        protected bool _isCurrentTarget;
+        public bool isCurrentTarget { get; protected set; }
+        public Vector2 nextPosition { get; protected set; }
         
         protected virtual void Awake()
         {
@@ -47,15 +56,25 @@ namespace Pharaoh.Gameplay
 
         public virtual void Interact(HookCapacity hook, GameObject target)
         {
-            _isCurrentTarget = target == gameObject;
-            if (!_isCurrentTarget) return;
-            _hook = hook;
+            isCurrentTarget = target == gameObject;
+            _hook = isCurrentTarget ? hook : null;
+            started?.Invoke(this);
+        }
+
+        public virtual void Perform()
+        {
+            performed?.Invoke(this);
+        }
+
+        public virtual void End()
+        {
+            ended?.Invoke(this);
         }
 
         public virtual void Release()
         {
-            _isCurrentTarget = false;
-            onRelease?.Invoke();
+            released?.Invoke(this);
+            isCurrentTarget = false;
         }
     }
 }

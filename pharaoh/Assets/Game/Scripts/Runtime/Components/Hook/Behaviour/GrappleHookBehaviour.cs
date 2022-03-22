@@ -12,9 +12,7 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         private Coroutine _moveToCoroutine;
-
-        private Rigidbody2D _hookRigidbody;
-        private PlayerMovement _movement;
+        
         private RaycastHit2D[] _hits;
 
         protected override void Awake()
@@ -41,7 +39,7 @@ namespace Pharaoh.Gameplay
 
         private void FixedUpdate()
         {
-            if (!_isCurrentTarget || !_hook) return;
+            if (!isCurrentTarget || !_hook) return;
 
             // Cancel grapple when encounter an obstacle 
             Vector2 hookPosition = _hook.transform.position;
@@ -56,7 +54,7 @@ namespace Pharaoh.Gameplay
 
         private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!_isCurrentTarget) return;
+            if (!isCurrentTarget) return;
 
             var axis = _input.CharacterControls.Move.ReadValue<Vector2>();
             if (axis.y >= -0.8f) return;
@@ -66,13 +64,13 @@ namespace Pharaoh.Gameplay
 
         private void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!_isCurrentTarget) return;
+            if (!isCurrentTarget) return;
             Release();
         }
 
         private void OnDash(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            if (!_isCurrentTarget) return;
+            if (!isCurrentTarget) return;
             Release();
         }
 
@@ -80,25 +78,13 @@ namespace Pharaoh.Gameplay
         {
             base.Release();
             if (_moveToCoroutine != null) StopCoroutine(_moveToCoroutine);
-            if (!_hookRigidbody) return;
-            _hookRigidbody.bodyType = RigidbodyType2D.Dynamic;
         }
 
         public override void Interact(HookCapacity hook, GameObject target)
         {
             base.Interact(hook, target);
-            if (!_isCurrentTarget) return;
+            if (!isCurrentTarget) return;
 
-            if (!_hook.TryGetComponent(out _movement))
-            {
-                LogHandler.SendMessage("No movement on player", MessageType.Warning);
-            }
-
-            if (!_hook.TryGetComponent(out _hookRigidbody))
-            {
-                LogHandler.SendMessage("No rigidbody on player", MessageType.Warning);
-            }
-            
             hookIndicator?.SetActive(false);
             _moveToCoroutine = StartCoroutine(Grapple());
         }
@@ -117,15 +103,14 @@ namespace Pharaoh.Gameplay
             
             while (currentTime < timeToTravel)
             {
-                _hook.transform.position =  Vector2.Lerp(startPosition, finalMoveTarget.position, curve.Evaluate(currentTime / timeToTravel));
+                nextPosition =  Vector2.Lerp(startPosition, finalMoveTarget.position, curve.Evaluate(currentTime / timeToTravel));
                 currentTime = Mathf.MoveTowards(currentTime, timeToTravel, Time.fixedDeltaTime * speed);
+                Perform();
+
                 yield return _waitForFixedUpdate;
             }
             
-            _movement?.OnGrappleEnd();
-            if (!_hookRigidbody) yield break;
-            _hookRigidbody.velocity = Vector2.zero;
-            _hookRigidbody.bodyType = RigidbodyType2D.Kinematic;
+            End();
         }
     }
 }

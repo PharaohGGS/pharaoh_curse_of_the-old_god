@@ -79,7 +79,6 @@ GameObject:
   - component: {fileID: 6215234791223536456}
   - component: {fileID: 1873792441378832283}
   - component: {fileID: 2089584490314425185}
-  - component: {fileID: 2982375273082900414}
   m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
@@ -438,63 +437,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: LockMovement
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   discardBehindOverlap: 1
   <pullData>k__BackingField: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
   <grappleData>k__BackingField: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
---- !u!114 &2982375273082900414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a193f1d0d4a88840ab8439de0109494, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
-  <response>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2089584490314425185}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookCapacity, Pharaoh
-        m_MethodName: OnRelease
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5732736215046696851}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
-          Pharaoh
-        m_MethodName: LockMovement
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Pharaoh.Gameplay;
 using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,9 +24,9 @@ public class MovingBlock : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private Collider2D _collider2D;
 
-    private bool _isGrounded;
-    // Returns whether or not the block is grounded
-    public bool isGrounded => _isGrounded;
+    public bool isPulled { get; private set; }
+    public bool isHooked { get; private set; }
+    public bool isGrounded { get; private set; }
 
     public bool isFalling => _rigidbody2D?.velocity.y < -0.1f && !isGrounded;
 
@@ -42,20 +43,75 @@ public class MovingBlock : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // Hook bindings
+        HookBehaviour.started += OnHookStarted;
+        HookBehaviour.performed += OnHookPerformed;
+        HookBehaviour.ended += OnHookEnded;
+        HookBehaviour.released += OnHookReleased;
+    }
+
+    private void OnDisable()
+    {
+        // Hook bindings
+        HookBehaviour.started -= OnHookStarted;
+        HookBehaviour.performed -= OnHookPerformed;
+        HookBehaviour.ended -= OnHookEnded;
+        HookBehaviour.released -= OnHookReleased;
+    }
+    
+    private void OnHookStarted(HookBehaviour behaviour)
+    {
+        if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
+        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+
+        _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        isHooked = true;
+    }
+
+    private void OnHookPerformed(HookBehaviour behaviour)
+    {
+        if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
+        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+        
+        isPulled = true;
+        _rigidbody2D.MovePosition(pull.nextPosition);
+    }
+
+    private void OnHookEnded(HookBehaviour behaviour)
+    {
+        if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
+        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+
+        _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+        _rigidbody2D.velocity = Vector2.up * _rigidbody2D.velocity.y;
+        isPulled = false;
+        isHooked = false;
+    }
+    
+    private void OnHookReleased(HookBehaviour behaviour)
+    {
+        if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
+        if (pull.gameObject != _rightHandle.gameObject && pull.gameObject != _leftHandle.gameObject) return;
+
+        _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+        isPulled = false;
+        isHooked = false;
+    }
+
     public void FixedUpdate()
     {
         var leftHits = Physics2D.CircleCastAll(_leftGroundCheck.position, circleCastRadius, Vector2.down, _groundCheckDistance, whatIsGround);
         var rightHits = Physics2D.CircleCastAll(_rightGroundCheck.position, circleCastRadius, Vector2.down, _groundCheckDistance, whatIsGround);
         
-        _isGrounded = leftHits.Length > leftHits.Count(leftHit => leftHit.transform == transform) || 
+        isGrounded = leftHits.Length > leftHits.Count(leftHit => leftHit.transform == transform) || 
                       rightHits.Length > rightHits.Count(rightHit => rightHit.transform == transform);
 
         // if not equals change var and call event
-        if (isFalling)
-        {
-            onLeavingGround?.Invoke();
-            _rigidbody2D.velocity = Vector2.up * _rigidbody2D.velocity.y;
-        }
+        if (!isFalling) return;
+        onLeavingGround?.Invoke();
+        _rigidbody2D.velocity = Vector2.up * _rigidbody2D.velocity.y;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
