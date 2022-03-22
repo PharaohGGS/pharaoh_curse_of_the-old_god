@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,6 +7,7 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
 public class PlayerMovement : MonoBehaviour
 {
+
     private Rigidbody2D _rigidbody;
     private Vector2 _movementInput;
     private Vector2 _smoothMovement;
@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     private float _turnSpeed = 7f; //value defined with Cl?mence
     private float _backOrientationIdle = -135f; //value defined with Cl?mence
     private float _backOrientationRunning = -90.1f; //value defined with Cl?mence
-    private float _initialFallHeight;
     private int _defaultLayer;
     private int _swarmDashLayer;
     private bool _isRunning = false;
@@ -69,10 +68,6 @@ public class PlayerMovement : MonoBehaviour
     public float heldJumpForce = 16f;
     [Tooltip("How long the player can hold down the jump button after jumping")]
     public float maxJumpHold = 0.3f;
-    [Tooltip("How high the fall has to be to stun the player")]
-    public float stunFallDistance = 1.85f * 3f;
-    [Tooltip("How long the player is stunned when falling from too high")]
-    public float fallStunDuration = 1.5f;
 
     [Header("Dash")]
     [Tooltip("Dashing force, 50 works well")]
@@ -189,13 +184,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnEndHookMovement()
     {
-        _initialFallHeight = _rigidbody.position.y;
-
         _isHooked = true;
         _hasDashedInAir = false;
         animator.SetBool("Is Grounded", isGrounded);
-
-        _initialFallHeight = _rigidbody.position.y;
     }
 
     private void Update()
@@ -292,23 +283,6 @@ public class PlayerMovement : MonoBehaviour
             || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
         
         animator.SetBool("Is Grounded", isGrounded);
-
-        // Updates the in-air distance traveled and stuns if necessary
-        if (wasGrounded != isGrounded && wasGrounded)
-        {
-            // The player leaves the ground
-            _initialFallHeight = _rigidbody.position.y;
-        }
-        else if (wasGrounded != isGrounded && !wasGrounded)
-        {
-            // Player reached the ground
-            
-            if (_initialFallHeight - _rigidbody.position.y > stunFallDistance)
-            {
-                // Player fell from too high -> Stun
-                Stun(fallStunDuration);
-            }
-        }
     }
 
     // Coroutine for the duration of the dash
@@ -367,7 +341,6 @@ public class PlayerMovement : MonoBehaviour
 
         _jumpClock = 0f;
         _dashClock = 0f;
-        _initialFallHeight = _rigidbody.position.y;
 
         _rigidbody.gravityScale = 3f;
 
@@ -408,10 +381,9 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
         // Displays stats on top of the player
-        Handles.Label(_rigidbody.position + Vector2.up * 4.6f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
-        Handles.Label(_rigidbody.position + Vector2.up * 4f, "FallDistance : " + (_initialFallHeight - _rigidbody.position.y), (_initialFallHeight - _rigidbody.position.y) > stunFallDistance ? redStyle : greenStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
+        Handles.Label(_rigidbody.position + Vector2.up * 4.0f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
         Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
