@@ -103,6 +103,7 @@ Transform:
   - {fileID: 8898427098348061736}
   - {fileID: 5732736215052742478}
   - {fileID: 2281400649281040923}
+  - {fileID: 3576804656692802388}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -180,8 +181,6 @@ MonoBehaviour:
   initialJumpForce: 11
   heldJumpForce: 18.5
   maxJumpHold: 0.4
-  stunFallDistance: 5.55
-  fallStunDuration: 1.5
   dashForce: 35
   dashTime: 0.1
   dashDuration: 0.1
@@ -212,7 +211,7 @@ MonoBehaviour:
   whatIsSpike:
     serializedVersion: 2
     m_Bits: 262144
-  DEBUGRespawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 0}
   delayBeforeRespawn: 0.1
   onRespawn:
     m_PersistentCalls:
@@ -664,6 +663,37 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!1 &9071571554302007626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3576804656692802388}
+  m_Layer: 17
+  m_Name: VcamFollowOffset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3576804656692802388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9071571554302007626}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5732736215046696848}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1739392970509030896
 PrefabInstance:
   m_ObjectHideFlags: 0

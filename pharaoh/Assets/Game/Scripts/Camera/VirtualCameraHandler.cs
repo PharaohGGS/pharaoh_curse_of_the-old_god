@@ -8,12 +8,19 @@ public class VirtualCameraHandler : MonoBehaviour
 {
     private CinemachineVirtualCamera _virtualCamera;
 
+    private Vector3 _cameraOffset;
+
     private void Start()
     {
-        if (!TryGetComponent(out CinemachineVirtualCamera virtualCamera))
+        if (!TryGetComponent(out _virtualCamera))
             Debug.Log("No CinemachineVirtualCamera component found.");
-        else
-            _virtualCamera = virtualCamera;
-        _virtualCamera.Follow = CameraManager.Instance.playerTransform;
+        
+        _virtualCamera.Follow = CameraManager.Instance.vcamFollowOffset.transform;
+    }
+
+    private void Update()
+    {
+        bool isFacingRight = CameraManager.Instance.player.GetComponent<PlayerMovement>().isFacingRight;
+        CameraManager.Instance.vcamFollowOffset.transform.position = CameraManager.Instance.player.transform.position + CameraManager.Instance.cameraOffset * (isFacingRight ? 1 : -1);
     }
 }

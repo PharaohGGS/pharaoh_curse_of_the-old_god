@@ -5,5 +5,7 @@ using UnityEngine;
 
 public class CameraManager : PersistantMonoSingleton<CameraManager>
 {
-    public Transform playerTransform;
+    public GameObject player;
+    public GameObject vcamFollowOffset;
+    public Vector3 cameraOffset;
 }
