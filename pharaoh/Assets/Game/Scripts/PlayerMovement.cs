@@ -180,8 +180,7 @@ public class PlayerMovement : MonoBehaviour
         // Lerps between a given orientation when idle facing left and when running facing left
         // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
         Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isPullingBlock ?
-            Quaternion.Lerp(toIdle, toRunning, 0f)
-            : Quaternion.Lerp(toRunning, toIdle, 0f);
+            Quaternion.Lerp(toIdle, toRunning, 0f) : Quaternion.Lerp(toRunning, toIdle, 0f);
         modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
 
         UpdateStates();
