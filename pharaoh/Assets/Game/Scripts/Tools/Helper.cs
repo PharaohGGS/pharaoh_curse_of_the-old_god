@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -33,6 +34,13 @@ namespace Pharaoh.Tools
             var hasLayers = new bool[32];
             for (int i = 0; i < 32; i++) hasLayers[i] = layerMask.HasLayer(i);
             return hasLayers;
+        }
+
+        public static int[] HasLayerIndexes(this LayerMask layerMask)
+        {
+            var hasLayers = new List<int>();
+            for (int i = 0; i < 32; i++) if (layerMask.HasLayer(i)) hasLayers.Add(i);
+            return hasLayers.ToArray();
         }
 
         public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;

@@ -56,9 +56,9 @@ namespace Pharaoh.AI.Actions
 
                 if (_healthComponent != healthComponent)
                 {
-                    _healthComponent?.OnDeath?.RemoveListener(OnTargetDeath);
+                    _healthComponent?.onDeath?.RemoveListener(OnTargetDeath);
                     _healthComponent = healthComponent;
-                    _healthComponent?.OnDeath?.AddListener(OnTargetDeath);
+                    _healthComponent?.onDeath?.AddListener(OnTargetDeath);
                 }
             }
             
@@ -69,7 +69,7 @@ namespace Pharaoh.AI.Actions
             return state;
         }
 
-        protected void OnTargetDeath()
+        protected void OnTargetDeath(HealthComponent healthComponent)
         {
             blackboard.ClearData("target");
             _attack.target = null;

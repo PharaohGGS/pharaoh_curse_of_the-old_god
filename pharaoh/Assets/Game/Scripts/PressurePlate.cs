@@ -60,7 +60,7 @@ public class PressurePlate : MonoBehaviour
     {
         GUIStyle style = new GUIStyle(GUI.skin.label);
         style.normal.textColor = _pressCount > 0 ? new Color(0f, 0.5f, 0f) : Color.red;
-        Handles.Label(transform.position - (Vector3.up / 2f), (_pressCount > 0 ? "Triggered" : "Released") + "\nPress Count : " + _pressCount, style);
+        Handles.Label(transform.position - (Vector3.up / 2f), (_pressCount > 0 ? "Triggered" : "Release") + "\nPress Count : " + _pressCount, style);
     }
     
 #endif

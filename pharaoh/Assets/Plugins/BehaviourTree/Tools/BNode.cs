@@ -27,6 +27,8 @@ namespace BehaviourTree.Tools
 
         public NodeState Evaluate()
         {
+            blackboard.SetData("EvaluatedNode", name);
+
             if (!hasStart)
             {
                 OnStart();

@@ -1,6 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5292512720878003781
+--- !u!114 &-7023704341929279928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
+  m_Name: TaskAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: adb9797648ce24843a222d83075545b3
+  position: {x: 0, y: 904}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  gearType: 2
+--- !u!114 &-4286555524523840344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14,8 +35,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   hasStart: 0
-  guid: 90fc2877fccd98f488eeeca0ac0db553
-  position: {x: 74.999985, y: 316.3001}
+  guid: a2e0eabbfffd6a84f8a25ade44b5d97c
+  position: {x: 0, y: 463}
   description: 
   blackboard:
     debugData: []
@@ -36,7 +57,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 525d75bd343e1d246bd1b19cc6b2a510
-  position: {x: -9.000069, y: 763.3002}
+  position: {x: -150, y: 904}
   description: 
   blackboard:
     debugData: []
@@ -56,7 +77,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: c9bbb158eb71bd949bf704765d732c7b
-  position: {x: -110.00003, y: 600.3001}
+  position: {x: -228, y: 739}
   description: 
   blackboard:
     debugData: []
@@ -82,11 +103,23 @@ MonoBehaviour:
   - {fileID: -4177806761585027262}
   - {fileID: 7158439463935566125}
   - {fileID: -2973997059861254435}
-  - {fileID: 4920034404249943310}
-  - {fileID: -5292512720878003781}
-  - {fileID: 6347065796246098037}
+  - {fileID: -7023704341929279928}
+  - {fileID: -4286555524523840344}
+  - {fileID: 3435242174128326388}
   blackboard:
     debugData: []
+--- !u!114 &1953488738548408615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TaskDistanceAttack
+  m_EditorClassIdentifier: 
 --- !u!114 &2054121860726835071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,13 +135,13 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: f7597bc95e1b13348a391b94303300da
-  position: {x: 74.999985, y: 56.950012}
+  position: {x: 0, y: 183}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  child: {fileID: 6347065796246098037}
---- !u!114 &3874224447833538104
+  child: {fileID: 3435242174128326388}
+--- !u!114 &3435242174128326388
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,41 +150,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 706eb576675e58f40af9ad16d6d4693d, type: 3}
-  m_Name: TaskMeleeAttack
+  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
+  m_Name: SequencerNode
   m_EditorClassIdentifier: 
   state: 0
   hasStart: 0
-  guid: 23a8cc4b08a51c74a8122b4b127cdabd
-  position: {x: 75, y: 625}
+  guid: 02bd8fceec330f4468c434ea15b3b805
+  position: {x: 0, y: 309}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
-  gearData: {fileID: 0}
-  _healthComponent: {fileID: 0}
-  _attack: {fileID: 0}
---- !u!114 &4920034404249943310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d3d4f9630e4b8e459c611ea3971f8ab, type: 3}
-  m_Name: TaskAttack
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: feae1671d76f57543b83204c74a2c56d
-  position: {x: 140.99997, y: 763.3002}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  gearType: 2
+  children:
+  - {fileID: -4286555524523840344}
+  - {fileID: 7158439463935566125}
 --- !u!114 &5959562998299471666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +179,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: e265372b1aa0fcb4d8fcf00eba76cadb
-  position: {x: 74.999985, y: 458.30008}
+  position: {x: 0, y: 589}
   description: 
   blackboard:
     debugData: []
@@ -175,29 +187,6 @@ MonoBehaviour:
   children:
   - {fileID: -2973997059861254435}
   - {fileID: 9220730513248718456}
---- !u!114 &6347065796246098037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e731ca0ec5bca4fbc391038bc992e7, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 0
-  hasStart: 0
-  guid: 1d9173e4372eb1647b6f3371bf28e907
-  position: {x: 75.00006, y: 172.80005}
-  description: 
-  blackboard:
-    debugData: []
-  agent: {fileID: 0}
-  children:
-  - {fileID: -5292512720878003781}
-  - {fileID: 7158439463935566125}
 --- !u!114 &7158439463935566125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +202,7 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: 5fba5f282dbb5e4409320769937a8b80
-  position: {x: 225.0001, y: 316}
+  position: {x: 150, y: 463}
   description: 
   blackboard:
     debugData: []
@@ -234,11 +223,11 @@ MonoBehaviour:
   state: 0
   hasStart: 0
   guid: ab5b1777f197eb0499d82ebdd67df52a
-  position: {x: 74.999985, y: 600.3001}
+  position: {x: 0, y: 739}
   description: 
   blackboard:
     debugData: []
   agent: {fileID: 0}
   children:
   - {fileID: -4177806761585027262}
-  - {fileID: 4920034404249943310}
+  - {fileID: -7023704341929279928}
