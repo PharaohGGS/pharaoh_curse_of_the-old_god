@@ -22,26 +22,17 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            state = NodeState.Running;
-            
-            if (!_attack || !blackboard.TryGetData("target", out Transform t)) return state;
-            if (!t.TryGetComponent(out Gear gear)) return state;
-            if (!gear.isThrown || !gear.isGrounded) return state;
-            if (!_attack.TryGetHolder(gear.GetBaseData(), out GearHolder holder)) return state;
+            if (!_attack || !blackboard.TryGetData("target", out Transform t)) return NodeState.Running;
+            if (!t.TryGetComponent(out Gear gear) || !gear.isThrown || !gear.isGrounded) return NodeState.Running;
+            if (gear.isGrounded) return NodeState.Failure;
+
+            if (!_attack.TryGetHolder(gear.GetBaseData(), out GearHolder holder)) return NodeState.Running;
 
             gear.transform.parent = holder.transform;
             gear.transform.localPosition = Vector3.zero;
             gear.transform.localRotation = Quaternion.Euler(0, 0, 0);
             blackboard.ClearData("target");
-
-            //if (gear.TryGetData(out MeleeGearData meleeGearData))
-            //{
-            //    blackboard.SetData("isWaiting", true);
-            //    blackboard.SetData("waitTime", meleeGearData.throwablePickingTime);
-            //}
-
-            state = NodeState.Success;
-            return state;
+            return NodeState.Success;
         }
     }
 }

@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Pharaoh.Gameplay.Components.Movement;
 using UnityEditor;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.VFX;
+using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 public class SandSoldier : MonoBehaviour
 {
@@ -58,7 +57,7 @@ public class SandSoldier : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.CharacterActions.SandSoldier.started += InitiateSummon; // Pressed
-        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Released
+        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Release
     }
 
     private void OnDisable()

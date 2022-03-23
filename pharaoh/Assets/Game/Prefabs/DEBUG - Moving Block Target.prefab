@@ -10,6 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6572278093389575057}
   - component: {fileID: 8791586879832996851}
+  - component: {fileID: 8362149203892496859}
+  - component: {fileID: 865052834902181412}
+  - component: {fileID: 7201577358169254978}
+  - component: {fileID: 8055307919386612460}
   m_Layer: 15
   m_Name: DEBUG - Moving Block Target
   m_TagString: Untagged
@@ -30,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6572278093407198438}
+  - {fileID: 4069471889896768694}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,6 +54,112 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!50 &8362149203892496859
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572278093389575056}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &865052834902181412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572278093389575056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883d22e176285a84dbe29285c8da5a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hookIndicator: {fileID: 7886917679716130980}
+  onRelease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: e7211e0c0c190d84b97a3127a2d0e04f, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent, Pharaoh
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7201577358169254978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572278093389575056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d40a9b0ce53bc46b15ac6872aecaf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 865052834902181412}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookBehaviour`1[[Pharaoh.Gameplay.PullHookCapacity,
+          Pharaoh
+        m_MethodName: FoundBestTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8055307919386612460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572278093389575056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d799dc9e9e7f7d74f9a6854e7fa27c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <gameEvent>k__BackingField: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
+  <response>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 865052834902181412}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.PullHookBehaviour, Pharaoh
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6572278093407198437
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,3 +243,70 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &3001601500413313044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6572278093389575057}
+    m_Modifications:
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959625916927975600, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+      propertyPath: m_Name
+      value: HookIndicator - MovingBlocks
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+--- !u!4 &4069471889896768694 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1287606963703006370, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+  m_PrefabInstance: {fileID: 3001601500413313044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7886917679716130980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4959625916927975600, guid: b35e5de1aa991cb4491720cdff7b81cd, type: 3}
+  m_PrefabInstance: {fileID: 3001601500413313044}
+  m_PrefabAsset: {fileID: 0}
