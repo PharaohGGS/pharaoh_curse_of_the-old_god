@@ -13,20 +13,18 @@ namespace Pharaoh.Gameplay
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         private Coroutine _moveToCoroutine;
         
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-            _input.CharacterControls.Move.performed += OnMove;
-            _input.CharacterControls.Jump.started += OnJump;
-            _input.CharacterControls.Dash.started += OnDash;
+            inputs.movePerformedEvent += OnMove;
+            inputs.jumpStartedEvent += OnJump;
+            inputs.dashStartedEvent += OnDash;
         }
 
-        protected override void OnDisable()
+        protected void OnDisable()
         {
-            _input.CharacterControls.Move.performed -= OnMove;
-            _input.CharacterControls.Jump.started -= OnJump;
-            _input.CharacterControls.Dash.started -= OnDash;
-            base.OnDisable();
+            inputs.movePerformedEvent -= OnMove;
+            inputs.jumpStartedEvent -= OnJump;
+            inputs.dashStartedEvent -= OnDash;
         }
 
         private void FixedUpdate()
@@ -44,23 +42,20 @@ namespace Pharaoh.Gameplay
             }
         }
 
-        private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnMove(Vector2 axis)
         {
             if (!isCurrentTarget) return;
-
-            var axis = _input.CharacterControls.Move.ReadValue<Vector2>();
             if (axis.y >= -0.8f) return;
-
             Release();
         }
 
-        private void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnJump()
         {
             if (!isCurrentTarget) return;
             Release();
         }
 
-        private void OnDash(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnDash()
         {
             if (!isCurrentTarget) return;
             Release();

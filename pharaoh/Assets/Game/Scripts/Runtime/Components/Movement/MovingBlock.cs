@@ -7,17 +7,20 @@ using UnityEngine.Events;
 
 public class MovingBlock : MonoBehaviour
 {
+
     public LayerMask whatIsSpike;
     public LayerMask whatIsGround;
 
-    [SerializeField] private float circleCastRadius = 0.3f;
+    [SerializeField, Header("Hook Events")] 
+    private HookBehaviourEvents hookEvents;
 
+    [Header("Hook Handles")]
     [SerializeField] private CircleCollider2D _rightHandle;
     [SerializeField] private CircleCollider2D _leftHandle;
-    [SerializeField] private Transform _rightGroundCheck;
-    [SerializeField] private Transform _leftGroundCheck;
-    private float _groundCheckDistance = 0.05f;
+    [SerializeField] private float boxCastUpSize = 0.3f;
+    [SerializeField] private float groundCheckDistance = 0.05f;
     
+    [Header("Events")]
     public UnityEvent onLeavingGround;
     public UnityEvent onTriggerGround;
     public UnityEvent onTriggerSpike;
@@ -41,24 +44,31 @@ public class MovingBlock : MonoBehaviour
         {
             Debug.LogError($"No rigidbody on movingblock, this is not normal.");
         }
+
+        if (!hookEvents)
+        {
+            Debug.LogWarning($"No hookEvents scriptableobject attach to this movingBlock, events will never be called.");
+        }
     }
 
     private void OnEnable()
     {
         // Hook bindings
-        HookBehaviour.started += OnHookStarted;
-        HookBehaviour.performed += OnHookPerformed;
-        HookBehaviour.ended += OnHookEnded;
-        HookBehaviour.released += OnHookReleased;
+        if (!hookEvents) return;
+        hookEvents.started += OnHookStarted;
+        hookEvents.performed += OnHookPerformed;
+        hookEvents.ended += OnHookEnded;
+        hookEvents.released += OnHookReleased;
     }
 
     private void OnDisable()
     {
         // Hook bindings
-        HookBehaviour.started -= OnHookStarted;
-        HookBehaviour.performed -= OnHookPerformed;
-        HookBehaviour.ended -= OnHookEnded;
-        HookBehaviour.released -= OnHookReleased;
+        if (!hookEvents) return;
+        hookEvents.started -= OnHookStarted;
+        hookEvents.performed -= OnHookPerformed;
+        hookEvents.ended -= OnHookEnded;
+        hookEvents.released -= OnHookReleased;
     }
     
     private void OnHookStarted(HookBehaviour behaviour)
@@ -102,11 +112,12 @@ public class MovingBlock : MonoBehaviour
 
     public void FixedUpdate()
     {
-        var leftHits = Physics2D.CircleCastAll(_leftGroundCheck.position, circleCastRadius, Vector2.down, _groundCheckDistance, whatIsGround);
-        var rightHits = Physics2D.CircleCastAll(_rightGroundCheck.position, circleCastRadius, Vector2.down, _groundCheckDistance, whatIsGround);
-        
-        isGrounded = leftHits.Length > leftHits.Count(leftHit => leftHit.transform == transform) || 
-                      rightHits.Length > rightHits.Count(rightHit => rightHit.transform == transform);
+        var bounds = _collider2D.bounds;
+        var center = (Vector2)transform.position - Vector2.up * bounds.extents.y;
+        var sizeX = bounds.size.x * (1f + groundCheckDistance);
+        var boxHits = Physics2D.BoxCastAll(center, new Vector2(sizeX, boxCastUpSize), 
+            0, Vector2.down, groundCheckDistance, whatIsGround);
+        isGrounded = boxHits.Length > boxHits.Count(boxHit => boxHit.transform == transform);
 
         // if not equals change var and call event
         if (!isFalling) return;
@@ -129,16 +140,12 @@ public class MovingBlock : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_rightGroundCheck)
+        if (TryGetComponent(out Collider2D coll))
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_rightGroundCheck.position, circleCastRadius);
-        }
-
-        if (_leftGroundCheck)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_leftGroundCheck.position, circleCastRadius);
+            Gizmos.color = Color.red;
+            var bounds = coll.bounds;
+            Gizmos.DrawWireCube(transform.position - Vector3.up * bounds.extents.y, 
+                new Vector3(bounds.size.x * (1f + groundCheckDistance), boxCastUpSize, 0.0f));
         }
     }
 

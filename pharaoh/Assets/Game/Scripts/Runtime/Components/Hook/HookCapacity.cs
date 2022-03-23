@@ -18,6 +18,8 @@ namespace Pharaoh.Gameplay
         private UnityEvent<HookCapacity, GameObject> onHook = new UnityEvent<HookCapacity, GameObject>();
 
         [SerializeField] private bool discardBehindOverlap;
+        [SerializeField] private InputReader inputs;
+        [SerializeField] private HookBehaviourEvents events;
 
         [field: SerializeField, Tooltip("Data for the pull action")] 
         public PullHookData pullData { get; private set; }
@@ -26,40 +28,31 @@ namespace Pharaoh.Gameplay
         [field: SerializeField, Tooltip("Data for the grapple action")] 
         public GrappleHookData grappleData { get; private set; }
         
-        private PlayerInput _input;
         private PlayerMovement _movement;
         private GameObject _potentialTarget;
 
         protected override void Awake()
         {
             base.Awake();
-            _input = new PlayerInput();
             _movement = GetComponent<PlayerMovement>();
         }
 
         private void OnEnable()
         {
             // Hook bindings
-            HookBehaviour.released += OnHookReleased;
+            if (events) events.released += OnHookReleased;
 
             // Movement's events binding
-            _input.Enable();
-            _input.CharacterActions.Hook.performed += OnHook;
+            if (inputs) inputs.hookPerformedEvent += OnHook;
         }
 
         private void OnDisable()
         {
             // Hook bindings
-            HookBehaviour.released -= OnHookReleased;
+            if (events) events.released -= OnHookReleased;
 
             // Movement's events binding
-            _input.CharacterActions.Hook.performed -= OnHook;
-            _input.Disable();
-        }
-
-        private void OnDestroy()
-        {
-            _input.Dispose();
+            if (inputs) inputs.hookPerformedEvent -= OnHook;
         }
         
         private void Update()
@@ -91,12 +84,12 @@ namespace Pharaoh.Gameplay
             _currentTarget = null;
         }
         
-        private void OnHook(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnHook()
         {
             // unhook the current hooked object if there is one
             if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
-            if (!_potentialTarget || _movement.IsStunned) return;
+            if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
             

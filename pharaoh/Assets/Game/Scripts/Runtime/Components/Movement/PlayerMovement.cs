@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,7 +13,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         private Rigidbody2D _rigidbody;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
-        private PlayerInput _playerInput;
         private float _groundCheckLength = 0.05f;
         private float _previousGravityScale;
         private float _jumpClock = 0f; //used to measure for how long the jump input is held
@@ -29,9 +26,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private bool _isRunning = false;
         private bool _isDashing = false;
         private bool _hasDashedInAir = false;
-        private bool _isDashAvailable = true;
         private bool _isJumping = false;
-        private bool _isStunned = false;
         private bool _noclip; //DEBUG
         private bool _canMove = true;
         private bool _isHooked = false;
@@ -42,7 +37,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool isGrounded { get; private set; } = false;
 
         public bool IsRunning { get => _isRunning; }
-        public bool IsStunned { get => _isStunned; }
         public bool IsDashing { get => _isDashing; }
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
@@ -55,33 +49,14 @@ namespace Pharaoh.Gameplay.Components.Movement
         }
         public bool IsPullingBlock { get => _isPullingBlock; set => _isPullingBlock = value; }
 
-        [Header("Horizontal Movement")]
-        [Tooltip("Grounded horizontal speed (m/s)")]
-        public float horizontalSpeed = 5f;
-        [Tooltip("In-air horizontal speed (m/s)")]
-        public float inAirHorizontalSpeed = 5f;
-        [Tooltip("NOCLIP mode speed (m/s)")]
-        public float noclipSpeed = 10f;
-        [Tooltip("How long the player is stunned when getting damaged")]
-        public float respawnStunDuration = 1.5f;
+        [Header("Input Reader")]
+        public InputReader inputReader;
 
-        [Header("Jump")]
-        [Tooltip("Defines the force added to the player when initiating the jump")]
-        public float initialJumpForce = 12f;
-        [Tooltip("Defines the force added to the player while holding the jump button")]
-        public float heldJumpForce = 16f;
-        [Tooltip("How long the player can hold down the jump button after jumping")]
-        public float maxJumpHold = 0.3f;
+        [Header("Player Movement Data")]
+        public PlayerMovementData metrics;
 
-        [Header("Dash")]
-        [Tooltip("Dashing force, 50 works well")]
-        public float dashForce = 30f;
-        [Tooltip("Dashing time, 0.1 works well")]
-        public float dashTime = 0.1f;
-        [Tooltip("Dashing time, 0.1 works well")]
-        public float dashDuration = 0.1f;
-        [Tooltip("Cooldown between each dash, starts at the end of the previous one")]
-        public float dashCooldown = 0.5f;
+        [SerializeField, Header("Hook Events")]
+        private HookBehaviourEvents hookEvents;
 
         [Header("Ground Detection")]
         [Tooltip("Rightmost ground check")]
@@ -96,90 +71,86 @@ namespace Pharaoh.Gameplay.Components.Movement
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
 
-        [Header("DEBUG")]
-        public TrailRenderer tr; //DEBUG
-
         private void Awake()
         {
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
-            _playerInput = new PlayerInput();
         }
 
         private void OnEnable()
         {
-            // Hook bindings
-            HookBehaviour.started += OnHookStarted;
-            HookBehaviour.performed += OnHookPerformed;
-            HookBehaviour.ended += OnHookEnded;
-            HookBehaviour.released += OnHookReleased;
+            HookAddListener();
 
-            // Movement's events binding
-            _playerInput.Enable();
+            inputReader.movePerformedEvent += OnMove;
+            inputReader.moveCanceledEvent += OnMove;
 
-            _playerInput.CharacterControls.Move.performed += OnMove; //player starts moving
-            _playerInput.CharacterControls.Move.canceled += OnMove; //player ends moving
-            _playerInput.CharacterControls.Jump.started += OnJump; //player starts jumping
-            _playerInput.CharacterControls.Jump.canceled += OnJump; //player ends jumping
-            _playerInput.CharacterControls.Dash.started += OnDash; //player dashes
+            inputReader.jumpStartedEvent += OnJumpStarted;
+            inputReader.jumpCanceledEvent += OnJumpCanceled;
 
-            _playerInput.CharacterControls.NOCLIP.performed += OnNoclip; //enter NOCLIP mode
+            inputReader.dashStartedEvent += OnDashStarted;
+
+            inputReader.noclipPerformedEvent += OnNoclipPerformed;
         }
 
         private void OnDisable()
         {
-            // Hook bindings
-            HookBehaviour.started -= OnHookStarted;
-            HookBehaviour.performed -= OnHookPerformed;
-            HookBehaviour.ended -= OnHookEnded;
-            HookBehaviour.released -= OnHookReleased;
+            HookRemoveListener();
 
-            // Movement's events binding
-            _playerInput.CharacterControls.Move.performed -= OnMove; //player starts moving
-            _playerInput.CharacterControls.Move.canceled -= OnMove; //player ends moving
-            _playerInput.CharacterControls.Jump.started -= OnJump; //player starts jumping
-            _playerInput.CharacterControls.Jump.canceled -= OnJump; //player ends jumping
-            _playerInput.CharacterControls.Dash.started -= OnDash; //player dashes
+            inputReader.movePerformedEvent -= OnMove;
+            inputReader.moveCanceledEvent -= OnMove;
 
-            _playerInput.CharacterControls.NOCLIP.performed -= OnNoclip; //enter NOCLIP mode
+            inputReader.jumpStartedEvent -= OnJumpStarted;
+            inputReader.jumpCanceledEvent -= OnJumpCanceled;
 
-            _playerInput.Disable();
+            inputReader.dashStartedEvent -= OnDashStarted;
+
+            inputReader.noclipPerformedEvent -= OnNoclipPerformed;
         }
 
-        // Triggers when the Move input is triggered or released, modifies the movement input vector according to player controls
-        private void OnMove(InputAction.CallbackContext ctx)
+        public void OnMove(Vector2 mvt)
         {
-            // Recover the player's input
-            _movementInput = _playerInput.CharacterControls.Move.ReadValue<Vector2>();
+            // Recover the player's input, clamping it to avoid diagonals directions
+            _movementInput = Vector2.zero;
+            if (!_noclip)
+            {
+                if (mvt.x >= 0.2f)
+                    _movementInput = Vector2.right;
+                else if (mvt.x <= -0.2f)
+                    _movementInput = Vector2.left;
+            }
+            else
+                _movementInput = mvt;
 
             if (_movementInput.y < -0.8f) _isHooked = false;
         }
 
         // Triggers when the player jumps
-        private void OnJump(InputAction.CallbackContext ctx)
+        private void OnJumpStarted()
         {
-            if (ctx.started && (isGrounded || _isHooked) && !_isDashing && !_isStunned && !_isPullingBlock)
+            if ((isGrounded || _isHooked) && !_isDashing && !_isPullingBlock)
             {
                 // The player jumps using an impulse force
-                _rigidbody.AddForce(Vector2.up * initialJumpForce, ForceMode2D.Impulse);
+                _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
                 _jumpClock = Time.time;
                 _isJumping = true;
                 _isHooked = false;
 
                 animator.SetTrigger("Jumping");
             }
-            else if (ctx.canceled)
-            {
-                // The player released the jump button
-                _isJumping = false;
-            }
+        }
+
+        // Triggers when the player stops jumping
+        private void OnJumpCanceled()
+        {
+            // The player released the jump button
+            _isJumping = false;
         }
 
         // Triggers when the player dashes
-        private void OnDash(InputAction.CallbackContext ctx)
+        private void OnDashStarted()
         {
-            if (!_isDashing && _isDashAvailable && !_hasDashedInAir && !_isStunned && !_isPullingBlock)
+            if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
 
@@ -188,7 +159,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 _dashClock = Time.time;
                 _isDashing = true;
-                _isDashAvailable = false;
+                inputReader.DisableDash();
                 _isHooked = false;
 
                 gameObject.layer = _swarmDashLayer;
@@ -198,19 +169,34 @@ namespace Pharaoh.Gameplay.Components.Movement
         }
 
         // DEBUG
-        private void OnNoclip(InputAction.CallbackContext ctx)
+        private void OnNoclipPerformed()
         {
-            _noclip = !_noclip;
-
-            if (_noclip)
-                _rigidbody.gravityScale = 0f;
-            else
-                _rigidbody.gravityScale = 3f;
+            _rigidbody.gravityScale = (_noclip = !_noclip) ? 0f : 3f;
         }
 
         public void LockMovement(bool value)
         {
             _canMove = !value;
+        }
+
+        #region Hook
+
+        private void HookAddListener()
+        {
+            if (!hookEvents) return;
+            hookEvents.started += OnHookStarted;
+            hookEvents.performed += OnHookPerformed;
+            hookEvents.ended += OnHookEnded;
+            hookEvents.released += OnHookReleased;
+        }
+
+        private void HookRemoveListener()
+        {
+            if (!hookEvents) return;
+            hookEvents.started -= OnHookStarted;
+            hookEvents.performed -= OnHookPerformed;
+            hookEvents.ended -= OnHookEnded;
+            hookEvents.released -= OnHookReleased;
         }
 
         private void OnHookStarted(HookBehaviour behaviour)
@@ -258,6 +244,8 @@ namespace Pharaoh.Gameplay.Components.Movement
         {
             if (!behaviour.isCurrentTarget) return;
 
+            LockMovement(false);
+
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
@@ -300,6 +288,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
             }
         }
+        
+        #endregion
 
         private void Update()
         {
@@ -307,11 +297,11 @@ namespace Pharaoh.Gameplay.Components.Movement
             _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _movementInput, ref vel, _smoothInput);
 
             // Stops the jump if held for too long
-            if (_isJumping && _jumpClock + maxJumpHold < Time.time)
+            if (_isJumping && _jumpClock + metrics.maxJumpHold < Time.time)
                 _isJumping = false;
 
             // Stops the dash when its duration is past
-            if (_isDashing && _dashClock + dashDuration < Time.time)
+            if (_isDashing && _dashClock + metrics.dashDuration < Time.time)
             {
                 _rigidbody.velocity = Vector2.zero;
                 _rigidbody.gravityScale = _previousGravityScale;
@@ -328,7 +318,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
             // Lerps between a given orientation when idle facing left and when running facing left
             // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-            Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isStunned || _isPullingBlock ?
+            Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isPullingBlock ?
                 Quaternion.Lerp(toIdle, toRunning, 0f)
                 : Quaternion.Lerp(toRunning, toIdle, 0f);
             modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
@@ -339,24 +329,24 @@ namespace Pharaoh.Gameplay.Components.Movement
         private void FixedUpdate()
         {
             // Moves the player horizontally with according speeds while not dashing
-            if (!_isDashing && _canMove && !_isStunned && !_isPullingBlock)
+            if (!_isDashing && _canMove && !_isPullingBlock)
             {
                 if (isGrounded || _isHooked)
-                    _rigidbody.velocity = new Vector2(_smoothMovement.x * horizontalSpeed, _rigidbody.velocity.y);
+                    _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.horizontalSpeed, _rigidbody.velocity.y);
                 else
-                    _rigidbody.velocity = new Vector2(_smoothMovement.x * inAirHorizontalSpeed, _rigidbody.velocity.y);
+                    _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.inAirHorizontalSpeed, _rigidbody.velocity.y);
             }
 
             // DEBUG
             if (_noclip)
-                _rigidbody.velocity = _movementInput * noclipSpeed;
+                _rigidbody.velocity = _movementInput * metrics.noclipSpeed;
 
             // Moves the player upward while holding the jump button
-            if (_isJumping && !_isStunned)
-                _rigidbody.AddForce(Vector2.up * heldJumpForce, ForceMode2D.Force);
+            if (_isJumping)
+                _rigidbody.AddForce(Vector2.up * metrics.heldJumpForce, ForceMode2D.Force);
 
-            if (_isDashing && !_isStunned)
-                _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * dashForce;
+            if (_isDashing)
+                _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * metrics.dashForce;
         }
 
         private void LateUpdate()
@@ -372,7 +362,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _hasDashedInAir = false;
 
             // Updates the direction the player is facing
-            if (_smoothMovement.x != 0f && !_isStunned && !_isHookedToBlock && !_isPullingBlock)
+            if (_smoothMovement.x != 0f && !_isHookedToBlock && !_isPullingBlock)
             {
                 isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
             }
@@ -397,34 +387,24 @@ namespace Pharaoh.Gameplay.Components.Movement
             animator.SetBool("Is Grounded", isGrounded);
         }
 
-        // Coroutine for the duration of the dash
-        System.Collections.IEnumerator Dashing()
-        {
-            yield return new WaitForSeconds(dashTime);
-
-            // Re-enables gravity on the player
-            _rigidbody.gravityScale = _previousGravityScale;
-
-            // Updates current state
-            _isDashing = false;
-
-            tr.startColor = Color.blue; //DEBUG
-
-            StartCoroutine(DashCooldown());
-        }
-
         // Coroutine re-enabling the dash after it's cooldown
         System.Collections.IEnumerator DashCooldown()
         {
-            yield return new WaitForSeconds(dashCooldown);
+            yield return new WaitForSeconds(metrics.dashCooldown);
 
-            _isDashAvailable = true;
+            inputReader.EnableDash();
         }
 
         public void Stun(float duration)
         {
             _rigidbody.velocity = Vector2.zero;
-            _isStunned = true;
+
+            inputReader.DisableMove();
+            inputReader.DisableJump();
+            inputReader.DisableDash();
+            inputReader.DisableHook();
+            inputReader.DisableSandSoldier();
+
             StartCoroutine(Stunned(duration));
             animator.SetTrigger("Stunned");
         }
@@ -434,8 +414,11 @@ namespace Pharaoh.Gameplay.Components.Movement
         {
             yield return new WaitForSeconds(duration);
 
-            // Updates current state
-            _isStunned = false;
+            inputReader.EnableMove();
+            inputReader.EnableJump();
+            inputReader.EnableDash();
+            inputReader.EnableHook();
+            inputReader.EnableSandSoldier();
         }
 
         public void Respawn()
@@ -443,13 +426,12 @@ namespace Pharaoh.Gameplay.Components.Movement
              _isRunning = false;
              _isDashing = false;
              _hasDashedInAir = false;
-             _isDashAvailable = true;
              _isJumping = false;
              _noclip = false; //DEBUG
-             _canMove = true;
              _isHooked = false;
              _isHookedToBlock = false;
              _isPullingBlock = false;
+             LockMovement(false);
 
             _jumpClock = 0f;
             _dashClock = 0f;
@@ -458,7 +440,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             gameObject.layer = _defaultLayer;
 
-            Stun(respawnStunDuration);
+            Stun(metrics.respawnStunDuration);
         }
 
     #if UNITY_EDITOR
@@ -483,21 +465,20 @@ namespace Pharaoh.Gameplay.Components.Movement
             Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
             // Displays stats on top of the player
-            Handles.Label(_rigidbody.position + Vector2.up * 4.4f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 4.0f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsStunned : " + _isStunned, _isStunned ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 4.0f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 3f, "IsDashAvailable : " + _isDashAvailable, _isDashAvailable ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsFacingRight : " + isFacingRight, isFacingRight ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "isFalling : " + isGrounded, isGrounded ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 1.8f, "" + inputReader);
         }
-    #endif
+#endif
     }
     
 }
