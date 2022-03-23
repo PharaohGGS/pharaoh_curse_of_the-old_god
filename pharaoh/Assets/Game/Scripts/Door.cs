@@ -10,9 +10,17 @@ public class Door : MonoBehaviour
     private int _activePlates = 0;
     private int _blockers = 0;
     private Animator _animator;
+    private int _closedDoorLayer;
+    private int _openedDoorLayer;
+
+    [Header("Behavior")]
 
     [Tooltip("An inverted door means an active pressure plate will close it.")]
     public bool inverted = false;
+    [Tooltip("Layers able to block the door from closing")]
+    public LayerMask whatCanBlockDoor;
+
+    [Header("Models")]
 
     [Tooltip("Clipping Material")]
     public Material _material;
@@ -20,14 +28,14 @@ public class Door : MonoBehaviour
     public GameObject firstScarab;
     public GameObject secondScarab;
 
-    [Tooltip("Layers able to block the door from closing")]
-    public LayerMask whatCanBlockDoor;
-
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
         _meshRenderer = transform.Find("Skin").GetComponent<MeshRenderer>();
         _animator = GetComponent<Animator>();
+
+        _closedDoorLayer = LayerMask.NameToLayer("Ground");
+        _openedDoorLayer = LayerMask.NameToLayer("Ignore Raycast");
 
         _material.SetFloat("_Clip", transform.position.y - 1.5f);
 
@@ -58,6 +66,7 @@ public class Door : MonoBehaviour
     private void RefreshState()
     {
         // The door closes if unblocked
+        gameObject.layer = (IsOpen() || IsBlocked()) ? _openedDoorLayer : _closedDoorLayer;
         _animator.SetBool("IsOpen", IsOpen() || IsBlocked());
     }
 
