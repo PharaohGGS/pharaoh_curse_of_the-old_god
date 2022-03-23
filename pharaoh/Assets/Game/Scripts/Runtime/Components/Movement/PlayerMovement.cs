@@ -55,6 +55,9 @@ namespace Pharaoh.Gameplay.Components.Movement
         [Header("Player Movement Data")]
         public PlayerMovementData metrics;
 
+        [SerializeField, Header("Hook Events")]
+        private HookBehaviourEvents hookEvents;
+
         [Header("Ground Detection")]
         [Tooltip("Rightmost ground check")]
         public Transform rightGroundCheck;
@@ -180,18 +183,20 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         private void HookAddListener()
         {
-            HookBehaviour.started += OnHookStarted;
-            HookBehaviour.performed += OnHookPerformed;
-            HookBehaviour.ended += OnHookEnded;
-            HookBehaviour.released += OnHookReleased;
+            if (!hookEvents) return;
+            hookEvents.started += OnHookStarted;
+            hookEvents.performed += OnHookPerformed;
+            hookEvents.ended += OnHookEnded;
+            hookEvents.released += OnHookReleased;
         }
 
         private void HookRemoveListener()
         {
-            HookBehaviour.started -= OnHookStarted;
-            HookBehaviour.performed -= OnHookPerformed;
-            HookBehaviour.ended -= OnHookEnded;
-            HookBehaviour.released -= OnHookReleased;
+            if (!hookEvents) return;
+            hookEvents.started -= OnHookStarted;
+            hookEvents.performed -= OnHookPerformed;
+            hookEvents.ended -= OnHookEnded;
+            hookEvents.released -= OnHookReleased;
         }
 
         private void OnHookStarted(HookBehaviour behaviour)
@@ -238,6 +243,8 @@ namespace Pharaoh.Gameplay.Components.Movement
         private void OnHookEnded(HookBehaviour behaviour)
         {
             if (!behaviour.isCurrentTarget) return;
+
+            LockMovement(false);
 
             switch (behaviour)
             {
@@ -421,10 +428,10 @@ namespace Pharaoh.Gameplay.Components.Movement
              _hasDashedInAir = false;
              _isJumping = false;
              _noclip = false; //DEBUG
-             _canMove = true;
              _isHooked = false;
              _isHookedToBlock = false;
              _isPullingBlock = false;
+             LockMovement(false);
 
             _jumpClock = 0f;
             _dashClock = 0f;
