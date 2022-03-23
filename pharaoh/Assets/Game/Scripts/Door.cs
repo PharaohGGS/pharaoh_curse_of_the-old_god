@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using Pharaoh.Tools;
 
 public class Door : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class Door : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private MeshRenderer _meshRenderer;
     private int _activePlates = 0;
+    private int _blockers = 0;
     private Animator _animator;
 
     [Tooltip("An inverted door means an active pressure plate will close it.")]
@@ -17,6 +19,9 @@ public class Door : MonoBehaviour
     public GameObject door;
     public GameObject firstScarab;
     public GameObject secondScarab;
+
+    [Tooltip("Layers able to block the door from closing")]
+    public LayerMask whatCanBlockDoor;
 
     private void Awake()
     {
@@ -52,12 +57,8 @@ public class Door : MonoBehaviour
     // Refreshes the state of the door, whether it is open or not
     private void RefreshState()
     {
-        bool isOpen = IsOpen();
-
-        _boxCollider.enabled = !isOpen;
-        _meshRenderer.enabled = !isOpen;
-
-        _animator.SetBool("IsOpen", isOpen);
+        // The door closes if unblocked
+        _animator.SetBool("IsOpen", IsOpen() || IsBlocked());
     }
 
     // Returns whether the door is open or not
@@ -71,11 +72,36 @@ public class Door : MonoBehaviour
             return _activePlates < 1;
     }
 
+    // Returns whether the door is blocked or not
+    public bool IsBlocked()
+    {
+        return _blockers > 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (whatCanBlockDoor.HasLayer(collision.gameObject.layer))
+        {
+            _blockers++;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (whatCanBlockDoor.HasLayer(collision.gameObject.layer))
+        {
+            _blockers--;
+            RefreshState();
+        }
+    }
+
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
         style.normal.textColor = IsOpen() ? Color.green : Color.red;
         Handles.Label(transform.position, IsOpen() ? "Opened" : "Closed", style);
+        style.normal.textColor = IsBlocked() ? Color.red : Color.green;
+        Handles.Label(transform.position + Vector3.up, IsBlocked() ? "Blocked" : "Unblocked", style);
     }
 
 }
