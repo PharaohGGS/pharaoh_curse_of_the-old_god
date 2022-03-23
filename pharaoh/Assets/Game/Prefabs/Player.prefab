@@ -173,19 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34bb46ec4ee98b44a3095dfbf46624b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 5
-  inAirHorizontalSpeed: 5
-  noclipSpeed: 10
-  respawnStunDuration: 1.5
-  initialJumpForce: 11
-  heldJumpForce: 18.5
-  maxJumpHold: 0.4
-  stunFallDistance: 5.55
-  fallStunDuration: 1.5
-  dashForce: 35
-  dashTime: 0.1
-  dashDuration: 0.1
-  dashCooldown: 0.5
+  inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
+  metrics: {fileID: 11400000, guid: 83a72e685650a134a99ef168758f61e2, type: 2}
   rightGroundCheck: {fileID: 5732736214096156555}
   leftGroundCheck: {fileID: 8898427098348061736}
   groundLayer:
@@ -193,7 +182,7 @@ MonoBehaviour:
     m_Bits: 66560
   animator: {fileID: 5280757643533625441}
   modelTransform: {fileID: 2281400649281040923}
-  tr: {fileID: 5732736215052742473}
+  tr: {fileID: 0}
 --- !u!114 &7790090175714034903
 MonoBehaviour:
   m_ObjectHideFlags: 0

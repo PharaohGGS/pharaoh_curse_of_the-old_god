@@ -96,7 +96,7 @@ namespace Pharaoh.Gameplay
             // unhook the current hooked object if there is one
             if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
-            if (!_potentialTarget || _movement.IsStunned) return;
+            if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
             
