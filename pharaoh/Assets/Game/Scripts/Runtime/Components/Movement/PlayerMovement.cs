@@ -77,11 +77,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         private void OnEnable()
         {
-            // Hook bindings
-            HookBehaviour.started += OnHookStarted;
-            HookBehaviour.performed += OnHookPerformed;
-            HookBehaviour.ended += OnHookEnded;
-            HookBehaviour.released += OnHookReleased;
+            HookAddListener();
 
             inputReader.movePerformedEvent += OnMove;
             inputReader.moveCanceledEvent += OnMove;
@@ -96,11 +92,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         private void OnDisable()
         {
-            // Hook bindings
-            HookBehaviour.started -= OnHookStarted;
-            HookBehaviour.performed -= OnHookPerformed;
-            HookBehaviour.ended -= OnHookEnded;
-            HookBehaviour.released -= OnHookReleased;
+            HookRemoveListener();
 
             inputReader.movePerformedEvent -= OnMove;
             inputReader.moveCanceledEvent -= OnMove;
@@ -182,6 +174,24 @@ namespace Pharaoh.Gameplay.Components.Movement
         public void LockMovement(bool value)
         {
             _canMove = !value;
+        }
+
+        #region Hook
+
+        private void HookAddListener()
+        {
+            HookBehaviour.started += OnHookStarted;
+            HookBehaviour.performed += OnHookPerformed;
+            HookBehaviour.ended += OnHookEnded;
+            HookBehaviour.released += OnHookReleased;
+        }
+
+        private void HookRemoveListener()
+        {
+            HookBehaviour.started -= OnHookStarted;
+            HookBehaviour.performed -= OnHookPerformed;
+            HookBehaviour.ended -= OnHookEnded;
+            HookBehaviour.released -= OnHookReleased;
         }
 
         private void OnHookStarted(HookBehaviour behaviour)
@@ -271,6 +281,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
             }
         }
+        
+        #endregion
 
         private void Update()
         {
@@ -383,6 +395,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             inputReader.DisableMove();
             inputReader.DisableJump();
             inputReader.DisableDash();
+            inputReader.DisableHook();
+            inputReader.DisableSandSoldier();
 
             StartCoroutine(Stunned(duration));
             animator.SetTrigger("Stunned");
@@ -396,6 +410,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             inputReader.EnableMove();
             inputReader.EnableJump();
             inputReader.EnableDash();
+            inputReader.EnableHook();
+            inputReader.EnableSandSoldier();
         }
 
         public void Respawn()

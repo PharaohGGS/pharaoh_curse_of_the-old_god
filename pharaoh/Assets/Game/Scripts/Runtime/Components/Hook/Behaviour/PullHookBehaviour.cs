@@ -64,20 +64,18 @@ namespace Pharaoh.Gameplay
                 ? mb : GetComponentInParent<MovingBlock>();
         }
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-            _input.CharacterControls.Move.performed += OnMove;
-            _input.CharacterControls.Jump.started += OnJump;
-            _input.CharacterControls.Dash.started += OnDash;
+            _input.movePerformedEvent += OnMove;
+            _input.jumpStartedEvent += OnJump;
+            _input.dashStartedEvent += OnDash;
         }
 
-        protected override void OnDisable()
+        protected void OnDisable()
         {
-            _input.CharacterControls.Move.performed -= OnMove;
-            _input.CharacterControls.Jump.started -= OnJump;
-            _input.CharacterControls.Dash.started -= OnDash;
-            base.OnDisable();
+            _input.movePerformedEvent -= OnMove;
+            _input.jumpStartedEvent -= OnJump;
+            _input.dashStartedEvent -= OnDash;
         }
 
         private void FixedUpdate()
@@ -92,22 +90,20 @@ namespace Pharaoh.Gameplay
             if (_hasBeenReleased) Release();
         }
         
-        private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnMove(Vector2 axis)
         {
             if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
-
-            var axis = _input.CharacterControls.Move.ReadValue<Vector2>();
             if (Mathf.Abs(axis.x - Mathf.Epsilon) <= Mathf.Epsilon) return;
             _hasBeenReleased = true;
         }
 
-        private void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnJump()
         {
             if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
             _hasBeenReleased = true;
         }
 
-        private void OnDash(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        private void OnDash()
         {
             if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
             _hasBeenReleased = true;
@@ -160,7 +156,7 @@ namespace Pharaoh.Gameplay
                 currentTime = Mathf.MoveTowards(currentTime, duration, Time.fixedDeltaTime * force);
                 Perform();
                 
-                if (!_hasBeenReleased && currentTime >= duration && _input.CharacterActions.Hook.IsPressed())
+                if (!_hasBeenReleased && currentTime >= duration && _input.isHookPressed)
                 {
                     currentTime = 0f;
                     startPosition = _movingBlock.transform.position;
