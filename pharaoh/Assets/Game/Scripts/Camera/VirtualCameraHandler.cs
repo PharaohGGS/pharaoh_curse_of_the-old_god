@@ -12,6 +12,13 @@ public class VirtualCameraHandler : MonoBehaviour
 
     private Vector3 _cameraOffset;
 
+    private PlayerMovement _playerMovement;
+
+    private void Awake()
+    {
+        _playerMovement = CameraManager.Instance.player.GetComponent<PlayerMovement>();
+    }
+
     private void Start()
     {
         if (!TryGetComponent(out _virtualCamera))
@@ -22,7 +29,6 @@ public class VirtualCameraHandler : MonoBehaviour
 
     private void Update()
     {
-        bool isFacingRight = CameraManager.Instance.player.GetComponent<PlayerMovement>().isFacingRight;
-        CameraManager.Instance.vcamFollowOffset.transform.position = CameraManager.Instance.player.transform.position + CameraManager.Instance.cameraOffset * (isFacingRight ? 1 : -1);
+        CameraManager.Instance.vcamFollowOffset.transform.position = CameraManager.Instance.player.transform.position + CameraManager.Instance.cameraOffset * (_playerMovement.IsFacingRight ? 1 : -1);
     }
 }
