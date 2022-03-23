@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
@@ -9,6 +10,8 @@ namespace Pharaoh.Gameplay
         protected int overlapCount = 5;
         [SerializeField, Tooltip("TargetFinder radius"), Range(2f, 20f)] 
         protected float overlapingRadius = 5f;
+        [SerializeField, Tooltip("TargetFinder FOV"), Range(1f, 360f)] 
+        protected float overlapingFov = 270f;
 
         [SerializeField, Tooltip("Target layers")]
         protected LayerMask whatIsTarget;
@@ -48,21 +51,22 @@ namespace Pharaoh.Gameplay
                 if (_currentTarget == overlap.gameObject) continue;
 
                 Vector2 direction = overlap.transform.position - transform.position;
-                float distance = Vector2.Distance(overlap.transform.position, transform.position);
+                float distance = direction.magnitude;
                 bool isOnRight = overlap.transform.position.x > transform.position.x;
+                
+                if (Vector2.Angle(transform.right, direction.normalized) >= overlapingFov / 2) continue;
+                if (Physics2D.Raycast(transform.position, direction.normalized, distance, whatIsObstacle)) continue;
 
-                var raycastHits = Physics2D.RaycastAll(transform.position, direction, distance, whatIsObstacle);
-                if (raycastHits.Length >= 1) continue;
-
-                if (isOnRight && distance < closestDistanceRight)
+                switch (isOnRight)
                 {
-                    bestOverlapRight = overlapIndex;
-                    closestDistanceRight = distance;
-                }
-                else if (!isOnRight && distance < closestDistanceLeft)
-                {
-                    bestOverlapLeft = overlapIndex;
-                    closestDistanceLeft = distance;
+                    case true when distance < closestDistanceRight:
+                        bestOverlapRight = overlapIndex;
+                        closestDistanceRight = distance;
+                        break;
+                    case false when distance < closestDistanceLeft:
+                        bestOverlapLeft = overlapIndex;
+                        closestDistanceLeft = distance;
+                        break;
                 }
             }
 
@@ -71,4 +75,5 @@ namespace Pharaoh.Gameplay
             _bestTargetLeft = bestOverlapLeft == -1 ? null : _overlaps[bestOverlapLeft].gameObject;
         }
     }
+
 }

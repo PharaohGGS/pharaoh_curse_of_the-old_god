@@ -14,10 +14,11 @@ namespace Pharaoh.Gameplay
     [RequireComponent(typeof(PlayerMovement))]
     public class HookCapacity : TargetFinder
     {
-        [SerializeField, Tooltip("Event when hooking to gameobject")]
-        private UnityEvent<HookCapacity, GameObject> onHook = new UnityEvent<HookCapacity, GameObject>();
-
-        [SerializeField] private bool discardBehindOverlap;
+        [SerializeField, Tooltip("Event when hooking for interaction to gameobject")]
+        private UnityEvent<HookCapacity, GameObject> onHookInteract = new UnityEvent<HookCapacity, GameObject>();
+        [SerializeField, Tooltip("Event when hooking for grappling to gameobject")]
+        private UnityEvent<HookCapacity, GameObject> onHookGrapple = new UnityEvent<HookCapacity, GameObject>();
+        
         [SerializeField] private InputReader inputs;
         [SerializeField] private HookBehaviourEvents events;
 
@@ -43,7 +44,11 @@ namespace Pharaoh.Gameplay
             if (events) events.released += OnHookReleased;
 
             // Movement's events binding
-            if (inputs) inputs.hookPerformedEvent += OnHook;
+            if (inputs)
+            {
+                inputs.hookGrapplePerformedEvent += OnHookGrapple;
+                inputs.hookInteractPerformedEvent += OnHookInteract;
+            }
         }
 
         private void OnDisable()
@@ -52,7 +57,11 @@ namespace Pharaoh.Gameplay
             if (events) events.released -= OnHookReleased;
 
             // Movement's events binding
-            if (inputs) inputs.hookPerformedEvent -= OnHook;
+            if (inputs)
+            {
+                inputs.hookGrapplePerformedEvent -= OnHookGrapple;
+                inputs.hookInteractPerformedEvent -= OnHookInteract;
+            }
         }
         
         private void Update()
@@ -64,11 +73,11 @@ namespace Pharaoh.Gameplay
                 //facing right with right target
                 true when _bestTargetRight != null => _bestTargetRight,
                 //facing right without right target
-                true when _bestTargetRight == null && _bestTargetLeft != null && !discardBehindOverlap => _bestTargetLeft,
+                true when _bestTargetRight == null && _bestTargetLeft != null => _bestTargetLeft,
                 //facing left with left target
                 false when _bestTargetLeft != null => _bestTargetLeft,
                 //facing left without left target
-                false when _bestTargetLeft == null && _bestTargetRight != null && !discardBehindOverlap => _bestTargetRight,
+                false when _bestTargetLeft == null && _bestTargetRight != null => _bestTargetRight,
                 // else
                 _ => null
             };
@@ -84,7 +93,7 @@ namespace Pharaoh.Gameplay
             _currentTarget = null;
         }
         
-        private void OnHook()
+        private void OnHookInteract()
         {
             // unhook the current hooked object if there is one
             if (_currentTarget) Release();
@@ -95,7 +104,20 @@ namespace Pharaoh.Gameplay
             
             // select the target based on the direction the player's facing
             Debug.Log($"hooking to {_currentTarget.name}");
-            onHook?.Invoke(this, _currentTarget);
+            onHookInteract?.Invoke(this, _currentTarget);
+        }
+        private void OnHookGrapple()
+        {
+            // unhook the current hooked object if there is one
+            if (_currentTarget) Release();
+            // hook the nearest hookable objects if there is one
+            if (!_potentialTarget) return;
+            
+            _currentTarget = _potentialTarget;
+            
+            // select the target based on the direction the player's facing
+            Debug.Log($"hooking to {_currentTarget.name}");
+            onHookGrapple?.Invoke(this, _currentTarget);
         }
         
         private void OnHookReleased(HookBehaviour behaviour)
@@ -108,7 +130,7 @@ namespace Pharaoh.Gameplay
         #region Editor Debug
 
 #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        protected void OnDrawGizmos()
         {
             if (!_movement) return;
 
@@ -129,9 +151,35 @@ namespace Pharaoh.Gameplay
 
         private void OnDrawGizmosSelected()
         {
+            Vector2 DirectionFromAngle(float eulerY, float degreeAngle)
+            {
+                degreeAngle += eulerY;
+                return new Vector2(Mathf.Sin(degreeAngle * Mathf.Deg2Rad), Mathf.Cos(degreeAngle * Mathf.Deg2Rad));
+            }
+
             // Draws a disc around the player displaying the targeting range
             UnityEditor.Handles.color = new Color(1f, 0.7531517f, 0f, 1f);
             UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, overlapingRadius);
+
+            if (!inputs) return;
+            
+            float eulerY = -transform.eulerAngles.z + 90f * (inputs.isFacingRight ? 1f : -1f);
+            Vector3 angle0 = DirectionFromAngle(eulerY, -overlapingFov / 2);
+            Vector3 angle1 = DirectionFromAngle(eulerY, overlapingFov / 2);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, transform.position + angle0 * overlapingRadius);
+            Gizmos.DrawLine(transform.position, transform.position + angle1 * overlapingRadius);
+
+            if (_overlaps.Length <= 0) return;
+
+            Gizmos.color = Color.green;
+
+            foreach (var overlap in _overlaps)
+            {
+                if (overlap == null) continue;
+                Gizmos.DrawLine(transform.position, overlap.transform.position);
+            }
         }
 #endif
 

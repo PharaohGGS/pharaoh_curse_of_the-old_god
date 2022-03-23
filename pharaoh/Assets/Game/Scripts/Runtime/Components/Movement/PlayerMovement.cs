@@ -243,9 +243,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private void OnHookEnded(HookBehaviour behaviour)
         {
             if (!behaviour.isCurrentTarget) return;
-
-            LockMovement(false);
-
+            
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
@@ -257,10 +255,12 @@ namespace Pharaoh.Gameplay.Components.Movement
                     _rigidbody.bodyType = RigidbodyType2D.Kinematic;
                     break;
                 case PullHookBehaviour pull:
+                    LockMovement(false);
                     IsPullingBlock = false;
                     IsHookedToBlock = false;
                     break;
                 case SnatchHookBehaviour snatch:
+                    LockMovement(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(behaviour));
@@ -402,7 +402,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             inputReader.DisableMove();
             inputReader.DisableJump();
             inputReader.DisableDash();
-            inputReader.DisableHook();
+            inputReader.DisableHookInteract();
+            inputReader.DisableHookGrapple();
             inputReader.DisableSandSoldier();
 
             StartCoroutine(Stunned(duration));
@@ -417,7 +418,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             inputReader.EnableMove();
             inputReader.EnableJump();
             inputReader.EnableDash();
-            inputReader.EnableHook();
+            inputReader.EnableHookInteract();
+            inputReader.EnableHookGrapple();
             inputReader.EnableSandSoldier();
         }
 

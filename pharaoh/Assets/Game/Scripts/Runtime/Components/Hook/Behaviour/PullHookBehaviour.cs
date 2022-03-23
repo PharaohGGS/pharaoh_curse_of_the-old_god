@@ -120,7 +120,7 @@ namespace Pharaoh.Gameplay
         {
             base.Interact(hook, target);
             if (!isCurrentTarget) return;
-            
+
             // can't be pull when player is in air
             if (!canBePulled || !_movingBlock || !_movingBlock.isGrounded || _movingBlock.isPulled ||
                 !_hook.TryGetComponent(out PlayerMovement movement) || !movement.isGrounded)
@@ -156,7 +156,7 @@ namespace Pharaoh.Gameplay
                 currentTime = Mathf.MoveTowards(currentTime, duration, Time.fixedDeltaTime * force);
                 Perform();
                 
-                if (!_hasBeenReleased && currentTime >= duration && inputs.isHookPressed)
+                if (!_hasBeenReleased && currentTime >= duration && inputs.hookInteract.IsPressed())
                 {
                     currentTime = 0f;
                     startPosition = _movingBlock.transform.position;

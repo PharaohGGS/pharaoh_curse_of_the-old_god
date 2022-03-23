@@ -21,8 +21,11 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public UnityAction noclipPerformedEvent;
     
-    public UnityAction hookPerformedEvent;
-    public bool isHookPressed { get; private set; }
+    public UnityAction hookGrapplePerformedEvent;
+    public UnityAction hookInteractPerformedEvent;
+    public InputAction hookGrapple { get; private set; }
+    public InputAction hookInteract { get; private set; }
+    public bool isFacingRight { get; private set; } = true;
     
     private void OnEnable()
     {
@@ -34,6 +37,9 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         }
         _playerInput.CharacterControls.Enable();
         _playerInput.CharacterActions.Enable();
+
+        hookGrapple = _playerInput.CharacterActions.HookGrapple;
+        hookInteract = _playerInput.CharacterActions.HookInteract;
     }
 
     private void OnDisable()
@@ -42,10 +48,14 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         _playerInput.CharacterActions.Disable();
     }
 
-    public void OnHook(InputAction.CallbackContext context)
+    public void OnHookGrapple(InputAction.CallbackContext context)
     {
-        isHookPressed = _playerInput.CharacterActions.Hook.IsPressed();
-        if (context.phase == InputActionPhase.Performed) hookPerformedEvent?.Invoke();
+        if (context.phase == InputActionPhase.Performed) hookGrapplePerformedEvent?.Invoke();
+    }
+
+    public void OnHookInteract(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed) hookInteractPerformedEvent?.Invoke();
     }
 
     public void OnSandSoldier(InputAction.CallbackContext context)
@@ -55,11 +65,18 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && movePerformedEvent != null)
-            movePerformedEvent.Invoke(context.ReadValue<Vector2>());
+        var axis = context.ReadValue<Vector2>();
 
-        if (context.phase == InputActionPhase.Canceled && moveCanceledEvent != null)
-            moveCanceledEvent.Invoke(context.ReadValue<Vector2>());
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                isFacingRight = axis.x >= 0;
+                movePerformedEvent?.Invoke(axis);
+                break;
+            case InputActionPhase.Canceled:
+                moveCanceledEvent?.Invoke(axis);
+                break;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -113,14 +130,24 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         _playerInput.CharacterControls.Dash.Enable();
     }
 
-    public void DisableHook()
+    public void DisableHookGrapple()
     {
-        _playerInput.CharacterActions.Hook.Disable();
+        _playerInput.CharacterActions.HookGrapple.Disable();
     }
 
-    public void EnableHook()
+    public void DisableHookInteract()
     {
-        _playerInput.CharacterActions.Hook.Enable();
+        _playerInput.CharacterActions.HookInteract.Disable();
+    }
+
+    public void EnableHookGrapple()
+    {
+        _playerInput.CharacterActions.HookGrapple.Enable();
+    }
+
+    public void EnableHookInteract()
+    {
+        _playerInput.CharacterActions.HookInteract.Enable();
     }
 
     public void DisableSandSoldier()

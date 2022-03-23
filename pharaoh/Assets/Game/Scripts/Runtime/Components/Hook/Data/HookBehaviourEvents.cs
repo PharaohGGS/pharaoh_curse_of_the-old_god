@@ -14,7 +14,7 @@ namespace Pharaoh.Gameplay
         public event UnityAction<HookBehaviour> ended;
         [Tooltip("Event when the behaviour is released")]
         public event UnityAction<HookBehaviour> released;
-
+        
         public void Started(HookBehaviour behaviour) => started?.Invoke(behaviour);
         public void Performed(HookBehaviour behaviour) => performed?.Invoke(behaviour);
         public void Ended(HookBehaviour behaviour) => ended?.Invoke(behaviour);

@@ -182,9 +182,18 @@
             "id": "74dc7952-b854-4390-8fb2-c53642c0cb1f",
             "actions": [
                 {
-                    "name": "Hook",
+                    "name": "HookGrapple",
                     "type": "Button",
                     "id": "afba71f3-c9d2-413c-9b27-8049c44df9db",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HookInteract",
+                    "type": "Button",
+                    "id": "5218d48e-7b1e-4f98-b056-8bf6d0915258",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -204,11 +213,11 @@
                 {
                     "name": "",
                     "id": "65dac8c7-57c6-4d01-b9a2-af2fef8fb8ef",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Hook",
+                    "action": "HookGrapple",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -219,7 +228,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Hook",
+                    "action": "HookGrapple",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -242,6 +251,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03ef170a-fe2a-4457-a684-09ead8b0bcf2",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HookInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "40942f6f-10e4-4edc-9eaa-575b53a09778",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HookInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

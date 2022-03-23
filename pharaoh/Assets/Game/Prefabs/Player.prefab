@@ -389,6 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlapCount: 5
   overlapingRadius: 6
+  overlapingFov: 270
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 53248
@@ -411,7 +412,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onHook:
+  onHookInteract:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
@@ -427,7 +428,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  discardBehindOverlap: 1
+  onHookGrapple:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: df857b938aa687c4ca07c0ee734aaf09, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.HookCapacity,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
   <pullData>k__BackingField: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
