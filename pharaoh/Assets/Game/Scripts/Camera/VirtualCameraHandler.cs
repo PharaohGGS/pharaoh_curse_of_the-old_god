@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Pharaoh.Gameplay.Components.Movement;
+using Pharaoh.Managers;
 using UnityEngine;
 
 public class VirtualCameraHandler : MonoBehaviour

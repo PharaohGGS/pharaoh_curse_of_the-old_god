@@ -180,6 +180,8 @@ MonoBehaviour:
   initialJumpForce: 11
   heldJumpForce: 18.5
   maxJumpHold: 0.4
+  stunFallDistance: 5.55
+  fallStunDuration: 1.5
   dashForce: 35
   dashTime: 0.1
   dashDuration: 0.1
@@ -356,6 +358,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7790090175714034903}
+        m_TargetAssemblyTypeName: PlayerRespawn, Assembly-CSharp
+        m_MethodName: Respawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1873792441378832283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,6 +452,7 @@ MonoBehaviour:
         m_CallState: 2
   discardBehindOverlap: 1
   <pullData>k__BackingField: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
+  <snatchData>k__BackingField: {fileID: 11400000, guid: 0ff790330caafd847b4303fdb2250f1f, type: 2}
   <grappleData>k__BackingField: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
 --- !u!1 &5732736215052742479
 GameObject:
