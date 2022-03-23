@@ -6,6 +6,9 @@ namespace Pharaoh.Gameplay
 {
     public abstract class HookBehaviour : MonoBehaviour
     {
+        [SerializeField]
+        protected InputReader _input;
+
         [SerializeField, Tooltip("FX hookIndicator for the best target selected")] 
         protected GameObject hookIndicator;
 
@@ -18,7 +21,6 @@ namespace Pharaoh.Gameplay
         [Tooltip("Event when the behaviour is released")] 
         public static event Action<HookBehaviour> released;
 
-        protected PlayerInput _input;
         protected HookCapacity _hook;
         protected RaycastHit2D[] _hits;
 
@@ -28,24 +30,8 @@ namespace Pharaoh.Gameplay
         protected virtual void Awake()
         {
             _hook = null;
-            _input = new PlayerInput();
             _hits = new RaycastHit2D[2];
             if (hookIndicator) hookIndicator.SetActive(false);
-        }
-
-        protected virtual void OnEnable()
-        {
-            _input.Enable();
-        }
-
-        protected virtual void OnDisable()
-        {
-            _input.Disable();
-        }
-
-        protected virtual void OnDestroy()
-        {
-            _input.Dispose();
         }
 
         public virtual void FoundBestTarget(TargetFinder finder, GameObject target)
