@@ -7,6 +7,9 @@ namespace Pharaoh.Gameplay.Components
     [RequireComponent(typeof(Damager))]
     public class DefenseGear : Gear<DefenseGearData>
     {
+        [SerializeField, Header("HookEvents")]
+        private HookBehaviourEvents hookEvents;
+
         public Damager damager { get; private set; }
 
         protected override void Awake()
@@ -19,12 +22,13 @@ namespace Pharaoh.Gameplay.Components
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             // Hook bindings
-            HookBehaviour.started += OnHookStarted;
-            HookBehaviour.performed += OnHookPerformed;
-            HookBehaviour.ended += OnHookEnded;
-            HookBehaviour.released += OnHookReleased;
+            if (!hookEvents) return;
+            hookEvents.started += OnHookStarted;
+            hookEvents.performed += OnHookPerformed;
+            hookEvents.ended += OnHookEnded;
+            hookEvents.released += OnHookReleased;
         }
 
         protected override void OnDisable()
@@ -32,10 +36,11 @@ namespace Pharaoh.Gameplay.Components
             base.OnDisable();
             
             // Hook bindings
-            HookBehaviour.started -= OnHookStarted;
-            HookBehaviour.performed -= OnHookPerformed;
-            HookBehaviour.ended -= OnHookEnded;
-            HookBehaviour.released -= OnHookReleased;
+            if (!hookEvents) return;
+            hookEvents.started -= OnHookStarted;
+            hookEvents.performed -= OnHookPerformed;
+            hookEvents.ended -= OnHookEnded;
+            hookEvents.released -= OnHookReleased;
         }
 
         /// <summary>
