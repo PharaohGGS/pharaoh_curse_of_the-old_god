@@ -66,16 +66,16 @@ namespace Pharaoh.Gameplay
 
         protected void OnEnable()
         {
-            _input.movePerformedEvent += OnMove;
-            _input.jumpStartedEvent += OnJump;
-            _input.dashStartedEvent += OnDash;
+            inputs.movePerformedEvent += OnMove;
+            inputs.jumpStartedEvent += OnJump;
+            inputs.dashStartedEvent += OnDash;
         }
 
         protected void OnDisable()
         {
-            _input.movePerformedEvent -= OnMove;
-            _input.jumpStartedEvent -= OnJump;
-            _input.dashStartedEvent -= OnDash;
+            inputs.movePerformedEvent -= OnMove;
+            inputs.jumpStartedEvent -= OnJump;
+            inputs.dashStartedEvent -= OnDash;
         }
 
         private void FixedUpdate()
@@ -156,7 +156,7 @@ namespace Pharaoh.Gameplay
                 currentTime = Mathf.MoveTowards(currentTime, duration, Time.fixedDeltaTime * force);
                 Perform();
                 
-                if (!_hasBeenReleased && currentTime >= duration && _input.isHookPressed)
+                if (!_hasBeenReleased && currentTime >= duration && inputs.isHookPressed)
                 {
                     currentTime = 0f;
                     startPosition = _movingBlock.transform.position;

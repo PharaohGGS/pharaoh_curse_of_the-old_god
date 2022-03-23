@@ -18,7 +18,8 @@ namespace Pharaoh.Gameplay
         private UnityEvent<HookCapacity, GameObject> onHook = new UnityEvent<HookCapacity, GameObject>();
 
         [SerializeField] private bool discardBehindOverlap;
-        [SerializeField] private InputReader _inputReader;
+        [SerializeField] private InputReader inputs;
+        [SerializeField] private HookBehaviourEvents events;
 
         [field: SerializeField, Tooltip("Data for the pull action")] 
         public PullHookData pullData { get; private set; }
@@ -39,19 +40,19 @@ namespace Pharaoh.Gameplay
         private void OnEnable()
         {
             // Hook bindings
-            HookBehaviour.released += OnHookReleased;
+            if (events) events.released += OnHookReleased;
 
             // Movement's events binding
-            _inputReader.hookPerformedEvent += OnHook;
+            if (inputs) inputs.hookPerformedEvent += OnHook;
         }
 
         private void OnDisable()
         {
             // Hook bindings
-            HookBehaviour.released -= OnHookReleased;
+            if (events) events.released -= OnHookReleased;
 
             // Movement's events binding
-            _inputReader.hookPerformedEvent -= OnHook;
+            if (inputs) inputs.hookPerformedEvent -= OnHook;
         }
         
         private void Update()
@@ -85,8 +86,6 @@ namespace Pharaoh.Gameplay
         
         private void OnHook()
         {
-            Debug.Log($"HOOK");
-
             // unhook the current hooked object if there is one
             if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
