@@ -15,16 +15,16 @@ namespace Pharaoh.Gameplay
         
         protected void OnEnable()
         {
-            _input.movePerformedEvent += OnMove;
-            _input.jumpStartedEvent += OnJump;
-            _input.dashStartedEvent += OnDash;
+            inputs.movePerformedEvent += OnMove;
+            inputs.jumpStartedEvent += OnJump;
+            inputs.dashStartedEvent += OnDash;
         }
 
         protected void OnDisable()
         {
-            _input.movePerformedEvent -= OnMove;
-            _input.jumpStartedEvent -= OnJump;
-            _input.dashStartedEvent -= OnDash;
+            inputs.movePerformedEvent -= OnMove;
+            inputs.jumpStartedEvent -= OnJump;
+            inputs.dashStartedEvent -= OnDash;
         }
 
         private void FixedUpdate()
