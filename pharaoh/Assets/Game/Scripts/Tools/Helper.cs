@@ -27,6 +27,8 @@ namespace Pharaoh.Tools
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
 
+        public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
+
         public static bool HasLayer(this LayerMask layerMask, int layer) => layerMask == (layerMask | 1 << layer);
 
         public static bool[] HasLayers(this LayerMask layerMask)
@@ -36,15 +38,19 @@ namespace Pharaoh.Tools
             return hasLayers;
         }
 
-        public static int[] HasLayerIndexes(this LayerMask layerMask)
+        public static int[] GetLayerIndexes(this LayerMask layerMask)
         {
             var hasLayers = new List<int>();
             for (int i = 0; i < 32; i++) if (layerMask.HasLayer(i)) hasLayers.Add(i);
             return hasLayers.ToArray();
         }
 
-        public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
-        
+        public static int GetLayerIndex(this LayerMask layerMask)
+        {
+            for (int i = 0; i < 32; i++) if (layerMask.HasLayer(i)) return i;
+            return -1;
+        }
+
 
         public static bool IsCollidingHimself(this GameObject gameObject, Collider2D other, bool parentDepth = false, bool childrenDepth = false)
         {

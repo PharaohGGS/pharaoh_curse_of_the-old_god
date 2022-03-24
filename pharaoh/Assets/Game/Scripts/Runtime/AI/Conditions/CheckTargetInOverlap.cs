@@ -12,7 +12,7 @@ namespace Pharaoh.AI.Actions
     public class CheckTargetInOverlap : ActionNode
     {
         private DetectionComponent _detection = null;
-        [SerializeField] private LayerMask mask;
+        [SerializeField] private DetectionData mask;
 
         protected override void OnStart()
         {
@@ -25,7 +25,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_detection || !_detection.hasDetectionCollider) return NodeState.Failure;
+            if (!_detection || !mask || !_detection.hasDetectionCollider) return NodeState.Failure;
             
             var target = _detection.GetGameObjectWithLayer(mask);
             if (target == null)

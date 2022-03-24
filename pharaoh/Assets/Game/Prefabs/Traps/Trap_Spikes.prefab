@@ -90,26 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _is2D: 1
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 2048
+  datas: []
+  collider: {fileID: 6554105240523486609}
   maxOverlappedColliders: 3
-  collider2D: {fileID: 6554105240523486609}
-  colliders2D:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  layeredColliders2D:
-    list:
-    - Key: 11
-      Value: []
-    keyCollision: 0
-  collider3D: {fileID: 0}
-  colliders3D: []
-  layeredColliders3D:
-    list: []
-    keyCollision: 0
+  colliders: []
 --- !u!61 &6554105240523486609 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 4082437492315050596, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
