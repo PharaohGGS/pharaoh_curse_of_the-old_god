@@ -1928,7 +1928,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2999
+  m_VersionIndex: 3011
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2036,7 +2036,9 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -26, y: 14}
-      - {x: -26, y: 13}
+      - {x: -26, y: 13.75}
+      - {x: -25, y: 13.75}
+      - {x: -25, y: 13}
       - {x: -4, y: 13}
       - {x: -4, y: 0}
       - {x: -3, y: 0}
@@ -10269,7 +10271,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6605
+  m_VersionIndex: 6617
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -10383,7 +10385,9 @@ PolygonCollider2D:
       - {x: 7, y: 17}
       - {x: 7, y: 14}
       - {x: -8, y: 14}
-      - {x: -8, y: 13}
+      - {x: -8, y: 13.7}
+      - {x: -7, y: 13.7}
+      - {x: -7, y: 13}
       - {x: 9, y: 13}
       - {x: 9, y: 3}
       - {x: 7, y: 3}
@@ -10396,37 +10400,6 @@ PolygonCollider2D:
       - {x: -8, y: 0}
       - {x: 10, y: 0}
       - {x: 10, y: 22}
---- !u!1 &429366302
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 429366303}
-  m_Layer: 10
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &429366303
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 429366302}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1487699719}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &431416967
 GameObject:
   m_ObjectHideFlags: 0
@@ -13893,7 +13866,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5608
+  m_VersionIndex: 5620
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -14005,9 +13978,13 @@ PolygonCollider2D:
       - {x: 0, y: 13}
       - {x: 0, y: 4}
       - {x: -2, y: 4}
-      - {x: -2, y: 1}
+      - {x: -2, y: 3.6}
+      - {x: -1.3, y: 3.6}
+      - {x: -1.3, y: 1}
       - {x: -4, y: 1}
-      - {x: -4, y: 0}
+      - {x: -4, y: 0.75}
+      - {x: -3, y: 0.75}
+      - {x: -3, y: 0}
       - {x: 1, y: 0}
       - {x: 1, y: 14}
 --- !u!1 &602765599
@@ -14258,7 +14235,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 670
+  m_VersionIndex: 682
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17494,7 +17471,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2167
+  m_VersionIndex: 2179
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17606,13 +17583,15 @@ PolygonCollider2D:
       - {x: 0, y: 4}
       - {x: 0, y: -7}
       - {x: 1, y: -7}
-      - {x: 1, y: -1}
-      - {x: 7, y: -1}
-      - {x: 7, y: -5}
-      - {x: 11, y: -5}
+      - {x: 1, y: -5}
+      - {x: 10, y: -5}
+      - {x: 10, y: -4.25}
+      - {x: 11, y: -4.25}
       - {x: 11, y: -4}
       - {x: 8, y: -4}
-      - {x: 8, y: 0}
+      - {x: 8, y: -1}
+      - {x: 8.2, y: -1}
+      - {x: 8.35, y: 0}
 --- !u!1 &930955814
 GameObject:
   m_ObjectHideFlags: 0
@@ -17646,7 +17625,6 @@ Transform:
   - {fileID: 980893508}
   - {fileID: 1487699719}
   - {fileID: 1155782332}
-  - {fileID: 1980752409}
   m_Father: {fileID: 6310570579949777488}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17928,7 +17906,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3171
+  m_VersionIndex: 3183
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -18037,7 +18015,7 @@ GameObject:
   - component: {fileID: 1019756017}
   - component: {fileID: 1019756016}
   - component: {fileID: 1019756015}
-  - component: {fileID: 1019756014}
+  - component: {fileID: 5017647955159662363}
   m_Layer: 10
   m_Name: Cube (23)
   m_TagString: Untagged
@@ -18752,7 +18730,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1305
+  m_VersionIndex: 1317
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -18834,8 +18812,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1019756012}
   m_Mesh: {fileID: 0}
---- !u!61 &1019756014
-BoxCollider2D:
+--- !u!60 &5017647955159662363
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -18847,7 +18825,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.5, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -18857,9 +18835,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 5, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -4.5, y: 1}
+      - {x: -4.5, y: 0.75}
+      - {x: -3.5, y: 0.75}
+      - {x: -3.5, y: 0}
+      - {x: 0.5, y: 0}
+      - {x: 0.5, y: 0.75}
+      - {x: 1.5, y: 0.75}
+      - {x: 1.5, y: 1}
 --- !u!1 &1155782331
 GameObject:
   m_ObjectHideFlags: 0
@@ -19468,7 +19453,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1616
+  m_VersionIndex: 1628
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -19609,7 +19594,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 429366303}
+  - {fileID: 1980752409}
   m_Father: {fileID: 930955815}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28793,7 +28778,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 8560
+  m_VersionIndex: 8572
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -28904,14 +28889,19 @@ PolygonCollider2D:
       - {x: 0, y: 0}
       - {x: 24, y: 0}
       - {x: 24, y: 1}
-      - {x: 22, y: 1}
+      - {x: 21.3, y: 1}
+      - {x: 21.3, y: 3.6}
+      - {x: 22, y: 3.6}
       - {x: 22, y: 4}
       - {x: 22, y: 4}
       - {x: 20, y: 4}
       - {x: 20, y: 7}
       - {x: 18, y: 7}
-      - {x: 18, y: 4}
-      - {x: 18, y: 1}
+      - {x: 18, y: 6.7}
+      - {x: 19, y: 6.7}
+      - {x: 19, y: 5.95}
+      - {x: 19.25, y: 5.95}
+      - {x: 19.25, y: 1}
       - {x: 15, y: 1}
       - {x: 8, y: 1}
       - {x: 7, y: 1}
@@ -28921,9 +28911,12 @@ PolygonCollider2D:
       - {x: 6, y: 1}
       - {x: 2, y: 1}
       - {x: 2, y: 4}
-      - {x: 6.02343, y: 4.0511703}
-      - {x: 5.9722595, y: 6.230278}
-      - {x: 6.014427, y: 9.079407}
+      - {x: 6, y: 4}
+      - {x: 6, y: 8}
+      - {x: 7, y: 8}
+      - {x: 7, y: 8.75}
+      - {x: 8, y: 8.75}
+      - {x: 8, y: 9}
       - {x: 3, y: 9}
       - {x: 1, y: 9}
       - {x: 1, y: 17}
@@ -35537,7 +35530,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4441
+  m_VersionIndex: 4453
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -35653,10 +35646,12 @@ PolygonCollider2D:
       - {x: 10, y: 6}
       - {x: 11, y: 6}
       - {x: 11, y: 5}
-      - {x: 13, y: 5}
+      - {x: 12, y: 5}
+      - {x: 12, y: 5.75}
+      - {x: 13, y: 5.75}
       - {x: 13, y: 6}
-      - {x: 12, y: 6}
-      - {x: 12, y: 7}
+      - {x: 12.2, y: 6}
+      - {x: 12.4, y: 7}
       - {x: 11, y: 7}
       - {x: 11, y: 8}
       - {x: -1, y: 8}
@@ -35913,7 +35908,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1053
+  m_VersionIndex: 1065
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -36097,7 +36092,7 @@ GameObject:
   - component: {fileID: 1902007427}
   - component: {fileID: 1902007426}
   - component: {fileID: 1902007425}
-  - component: {fileID: 1902007424}
+  - component: {fileID: 1860568198436562905}
   m_Layer: 10
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -36332,7 +36327,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 862
+  m_VersionIndex: 874
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -36414,8 +36409,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902007422}
   m_Mesh: {fileID: 0}
---- !u!61 &1902007424
-BoxCollider2D:
+--- !u!60 &1860568198436562905
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -36427,7 +36422,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 4.5, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -36437,9 +36432,14 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 9, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: 0, y: 0}
+      - {x: 8, y: 0}
+      - {x: 8, y: 0.75}
+      - {x: 9, y: 0.75}
+      - {x: 9, y: 1}
 --- !u!1 &1980752408
 GameObject:
   m_ObjectHideFlags: 0
@@ -36453,7 +36453,6 @@ GameObject:
   - component: {fileID: 1980752413}
   - component: {fileID: 1980752412}
   - component: {fileID: 1980752411}
-  - component: {fileID: 1980752410}
   m_Layer: 10
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -36469,12 +36468,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980752408}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -17, y: 26, z: 6}
+  m_LocalPosition: {x: 6, y: 9, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 930955815}
-  m_RootOrder: 4
+  m_Father: {fileID: 1487699719}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1980752414
 MonoBehaviour:
@@ -37048,7 +37047,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1704
+  m_VersionIndex: 1716
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -37130,32 +37129,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980752408}
   m_Mesh: {fileID: 0}
---- !u!61 &1980752410
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980752408}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1, y: 0.5}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &6310570579949777491
 GameObject:
   m_ObjectHideFlags: 0
