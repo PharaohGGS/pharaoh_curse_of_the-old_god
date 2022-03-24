@@ -28,7 +28,7 @@ namespace Pharaoh.Gameplay
             if (hookIndicator) hookIndicator.SetActive(false);
         }
 
-        public virtual void FoundBestTarget(TargetFinder finder, GameObject target)
+        public virtual void FoundBestTarget(HookCapacity hook, GameObject target)
         {
             if (hookIndicator) hookIndicator.SetActive(target == gameObject);
         }
