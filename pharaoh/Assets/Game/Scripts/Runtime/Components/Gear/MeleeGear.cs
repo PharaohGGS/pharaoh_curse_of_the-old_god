@@ -18,13 +18,14 @@ namespace Pharaoh.Gameplay.Components
         protected override void Awake()
         {
             base.Awake();
-            damager = TryGetComponent(out Damager d) ? d : null;
             if (!TryGetComponent(out _animator))
             {
                 LogHandler.SendMessage($"{name} can't play animation", MessageType.Warning);
             }
 
-            SetAttackState();
+            if (!TryGetComponent(out Damager d)) return;
+            damager = d;
+            damager.enabled = false;
         }
 
         public void Stab(Gear gear)
@@ -42,8 +43,10 @@ namespace Pharaoh.Gameplay.Components
         /// <param name="value">int instead of bool 0 = false > 0 = true</param>
         public void SetAttackState(int value = 0)
         {
-            if (!coll2D) return;
-            coll2D.enabled = value > 0;
+            // if (!coll2D) return;
+            // coll2D.enabled = value > 0;
+            if (!damager) return;
+            damager.enabled = value > 0;
         }
 
         public void SetupAttack(Gear attackingGear, Transform target)
