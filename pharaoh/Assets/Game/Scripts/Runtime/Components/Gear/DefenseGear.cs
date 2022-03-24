@@ -15,8 +15,10 @@ namespace Pharaoh.Gameplay.Components
         protected override void Awake()
         {
             base.Awake();
-            damager = TryGetComponent(out Damager d) ? d : null;
-            //coll2D.enabled = false;
+
+            if (!TryGetComponent(out Damager d)) return;
+            damager = d;
+            damager.enabled = false;
         }
 
         protected override void OnEnable()
@@ -50,9 +52,10 @@ namespace Pharaoh.Gameplay.Components
         /// <param name="value">int instead of bool 0 = false > 0 = true</param>
         public void SetAttackState(int value = 0)
         {
-            if (!coll2D) return;
-            //coll2D.enabled = value > 0;
-            coll2D.isTrigger = value > 0;
+            // if (!coll2D) return;
+            // coll2D.enabled = value > 0;
+            if (!damager) return;
+            damager.enabled = value > 0;
         }
 
         public void Repel(Gear gear)

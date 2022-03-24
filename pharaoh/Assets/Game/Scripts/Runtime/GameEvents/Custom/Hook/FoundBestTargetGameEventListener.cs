@@ -4,5 +4,5 @@ using UnityEngine.Events;
 
 namespace Pharaoh.GameEvents
 {
-    public class FoundBestTargetGameEventListener : AbstractGameEventListener<TargetFinder, GameObject, FoundBestTargetGameEvent, UnityEvent<TargetFinder, GameObject>> { }
+    public class FoundBestTargetGameEventListener : AbstractGameEventListener<HookCapacity, GameObject, FoundBestTargetGameEvent, UnityEvent<HookCapacity, GameObject>> { }
 }
