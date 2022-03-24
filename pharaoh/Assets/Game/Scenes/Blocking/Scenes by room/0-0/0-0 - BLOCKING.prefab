@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1679379251271428382}
   - component: {fileID: 7279269938591982155}
   - component: {fileID: 4939295297369972337}
-  - component: {fileID: 359294759113110592}
+  - component: {fileID: 1361274827}
   m_Layer: 10
   m_Name: Cube (5)
   m_TagString: Untagged
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1424
+  m_VersionIndex: 1427
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -690,8 +690,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150373311626991364}
   m_Mesh: {fileID: 0}
---- !u!61 &359294759113110592
-BoxCollider2D:
+--- !u!60 &1361274827
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -703,7 +703,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.5, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -713,9 +713,17 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -5.5, y: 1}
+      - {x: -5.5, y: 0.75}
+      - {x: -4.5, y: 0.75}
+      - {x: -4.5, y: 0}
+      - {x: -0.5, y: 0}
+      - {x: -0.5, y: 0.75}
+      - {x: 0.5, y: 0.75}
+      - {x: 0.5, y: 0.75}
+      - {x: 0.5, y: 1}
 --- !u!1 &1005140370048272690
 GameObject:
   m_ObjectHideFlags: 0
@@ -3756,7 +3764,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1567
+  m_VersionIndex: 1570
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3863,18 +3871,27 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 10, y: 3}
+    - - {x: 9.5, y: 3}
       - {x: 8, y: 3}
+      - {x: 8, y: 4.5}
+      - {x: 8.5, y: 4.5}
+      - {x: 8.5, y: 5}
       - {x: 8, y: 5}
-      - {x: 5, y: 5}
+      - {x: 4.5, y: 5}
+      - {x: 4.5, y: 4.5}
+      - {x: 5, y: 4.5}
       - {x: 5, y: 3}
-      - {x: 3, y: 3}
-      - {x: 3, y: 1}
-      - {x: 0, y: 1}
-      - {x: 0, y: 0}
-      - {x: 13, y: 0}
-      - {x: 13, y: 1}
-      - {x: 10, y: 1}
+      - {x: 3.5, y: 3}
+      - {x: 3.5, y: 1}
+      - {x: -0.5, y: 1}
+      - {x: -0.5, y: 0.75}
+      - {x: 0.5, y: 0.75}
+      - {x: 0.5, y: 0}
+      - {x: 12.5, y: 0}
+      - {x: 12.5, y: 0.75}
+      - {x: 13.5, y: 0.75}
+      - {x: 13.5, y: 1}
+      - {x: 9.5, y: 1}
 --- !u!1 &2964953018100996561
 GameObject:
   m_ObjectHideFlags: 0
@@ -6103,7 +6120,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2005
+  m_VersionIndex: 2008
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6212,7 +6229,9 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0, y: 11}
       - {x: 0, y: 5}
-      - {x: -2, y: 5}
+      - {x: -3, y: 5}
+      - {x: -3, y: 4.75}
+      - {x: -2, y: 4.75}
       - {x: -2, y: 4}
       - {x: 0, y: 4}
       - {x: 0, y: 1}
@@ -6221,7 +6240,7 @@ PolygonCollider2D:
       - {x: 0, y: 0}
       - {x: 0, y: -2}
       - {x: 3, y: -2}
-      - {x: 3, y: 4.9998336}
+      - {x: 3, y: 5}
       - {x: 3, y: 11}
 --- !u!1 &4047100556547693828
 GameObject:
@@ -6335,7 +6354,7 @@ GameObject:
   - component: {fileID: 3528079820266695309}
   - component: {fileID: 7681521425463047456}
   - component: {fileID: 4124561507435940734}
-  - component: {fileID: 3143807342831862718}
+  - component: {fileID: 1600554747}
   m_Layer: 10
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -6930,7 +6949,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1526
+  m_VersionIndex: 1529
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7012,8 +7031,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8370123083720204965}
   m_Mesh: {fileID: 0}
---- !u!61 &3143807342831862718
-BoxCollider2D:
+--- !u!60 &1600554747
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -7025,7 +7044,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.5, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -7035,9 +7054,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -5.5, y: 1}
+      - {x: -5.5, y: 0.75}
+      - {x: -4.5, y: 0.75}
+      - {x: -4.5, y: 0}
+      - {x: -0.5, y: 0}
+      - {x: -0.5, y: 0.75}
+      - {x: 0.5, y: 0.75}
+      - {x: 0.5, y: 1}
 --- !u!1 &8447625088266188896
 GameObject:
   m_ObjectHideFlags: 0
@@ -9266,7 +9292,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1920
+  m_VersionIndex: 1923
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9375,7 +9401,9 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0, y: 11}
       - {x: 0, y: 5}
-      - {x: -2, y: 5}
+      - {x: -3, y: 5}
+      - {x: -3, y: 4.75}
+      - {x: -2, y: 4.75}
       - {x: -2, y: 4}
       - {x: 0, y: 4}
       - {x: 0, y: 1}
@@ -18393,7 +18421,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4354
+  m_VersionIndex: 4357
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -18500,10 +18528,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -3, y: 14}
-      - {x: -3, y: 13}
-      - {x: -1, y: 13}
-      - {x: -1, y: 11}
+    - - {x: -3.3720336, y: 14}
+      - {x: -3.2023501, y: 13}
+      - {x: 0, y: 13}
+      - {x: 0, y: 11}
       - {x: 4, y: 11}
       - {x: 4, y: 5}
       - {x: 2, y: 5}
@@ -18516,10 +18544,10 @@ PolygonCollider2D:
       - {x: -15, y: 5}
       - {x: -17, y: 5}
       - {x: -17, y: 11}
-      - {x: -12, y: 11}
-      - {x: -12, y: 13}
-      - {x: -10, y: 13}
-      - {x: -10, y: 14}
+      - {x: -13, y: 11}
+      - {x: -13, y: 13}
+      - {x: -9.784328, y: 13}
+      - {x: -9.633358, y: 14}
       - {x: -18, y: 14}
       - {x: -18, y: 0}
       - {x: 5, y: 0}
