@@ -135,14 +135,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 341162198979587494, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 341162198979587494, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 341162198979587494, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7
       objectReference: {fileID: 0}
@@ -186,61 +178,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trap_Arrows
       objectReference: {fileID: 0}
-    - target: {fileID: 4295877545981189389, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6980150675688611723, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-      propertyPath: m_Size.x
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
 --- !u!4 &177532841 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 341162198979587494, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-  m_PrefabInstance: {fileID: 177532840}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &177532842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4295877545981189389, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
-  m_PrefabInstance: {fileID: 177532840}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &177532844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177532842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _is2D: 1
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  maxOverlappedColliders: 3
-  collider2D: {fileID: 264036516}
-  colliders2D:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  layeredColliders2D:
-    list:
-    - Key: 11
-      Value: []
-    keyCollision: 0
-  collider3D: {fileID: 0}
-  colliders3D: []
-  layeredColliders3D:
-    list: []
-    keyCollision: 0
---- !u!61 &264036516 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 6980150675688611723, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
   m_PrefabInstance: {fileID: 177532840}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &307934639
@@ -1155,6 +1097,18 @@ PrefabInstance:
       propertyPath: <waypoints>k__BackingField.Array.data[1]
       value: 
       objectReference: {fileID: 700666164}
+    - target: {fileID: 7558135117305057005, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: detectionLayer.m_Bits
+      value: 137216
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558135117305057005, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: layeredColliders2D.list.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558135117305057005, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: layeredColliders2D.list.Array.data[1].Key
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
 --- !u!4 &1653331873 stripped
@@ -1354,6 +1308,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6927820565553408170, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
+      propertyPath: detectionLayer.m_Bits
+      value: 133120
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
 --- !u!4 &1983393235 stripped
@@ -1376,7 +1334,7 @@ GameObject:
   - component: {fileID: 2006490040}
   - component: {fileID: 2006490037}
   - component: {fileID: 2006490039}
-  m_Layer: 11
+  m_Layer: 17
   m_Name: Damager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1649,6 +1607,10 @@ PrefabInstance:
       propertyPath: <waypoints>k__BackingField.Array.data[1]
       value: 
       objectReference: {fileID: 700666164}
+    - target: {fileID: 7558135117305057005, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
+      propertyPath: detectionLayer.m_Bits
+      value: 137216
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2937c1f3ebf667479ff00cf86036b05, type: 3}
 --- !u!1001 &2325408018836289400
@@ -1709,6 +1671,10 @@ PrefabInstance:
     - target: {fileID: 4789667312361359268, guid: a142f221f4641a244b7cf792f76722fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789667312361359312, guid: a142f221f4641a244b7cf792f76722fe, type: 3}
+      propertyPath: detectionLayer.m_Bits
+      value: 133120
       objectReference: {fileID: 0}
     - target: {fileID: 4789667312361359313, guid: a142f221f4641a244b7cf792f76722fe, type: 3}
       propertyPath: <waypoints>k__BackingField.Array.data[0]
