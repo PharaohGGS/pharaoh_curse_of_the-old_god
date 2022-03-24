@@ -21,17 +21,12 @@ namespace Pharaoh.AI.Actions
         {
             if (_movement && blackboard.TryGetData("target", out Transform t))
             {
-                var tr = agent.transform;
-                //if (Vector3.Distance(tr.position, t.position) > _movement.closeDistance)
-                {
-                    tr.position = Vector3.MoveTowards(
-                        tr.position, t.position,
-                        _movement.moveSpeed * Time.deltaTime);
-                }
+                agent.transform.position = Vector2.MoveTowards(
+                    agent.transform.position, t.position,
+                    _movement.moveSpeed * Time.deltaTime);
             }
-
-            state = NodeState.Running;
-            return state;
+            
+            return NodeState.Running;
         }
     }
 }
