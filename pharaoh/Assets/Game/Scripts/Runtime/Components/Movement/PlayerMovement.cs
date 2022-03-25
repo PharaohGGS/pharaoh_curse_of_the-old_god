@@ -40,14 +40,13 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsDashing { get => _isDashing; }
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
-        public bool IsGrounded { get => isGrounded; }
         public bool IsHookedToBlock {
             get => _isHookedToBlock;
-            set { _isHookedToBlock = value;
+            private set { _isHookedToBlock = value;
                 if (_isHookedToBlock) { _smoothMovement = Vector2.zero; _isRunning = false; }
             }
         }
-        public bool IsPullingBlock { get => _isPullingBlock; set => _isPullingBlock = value; }
+        public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
@@ -76,6 +75,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
+            if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
         }
 
         private void OnEnable()
@@ -252,7 +252,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                     _hasDashedInAir = false;
                     animator.SetBool("Is Grounded", isGrounded);
                     _rigidbody.velocity = Vector2.zero;
-                    _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+                    _rigidbody.gravityScale = 0f;
                     break;
                 case PullHookBehaviour pull:
                     LockMovement(false);
@@ -272,11 +272,12 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!behaviour.isCurrentTarget) return;
 
             LockMovement(false);
+            _isHooked = false;
 
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+                    _rigidbody.gravityScale = metrics.gravityScale;
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
