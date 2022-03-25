@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerMovementData", menuName = "Data/PlayerMovement")]
 public class PlayerMovementData : ScriptableObject
 {
+    [Header("Physics")]
+    
+    [Tooltip("Scale of gravity applied on player's body")]
+    public float gravityScale = 3f;
 
     [Header("Horizontal Movement")]
 

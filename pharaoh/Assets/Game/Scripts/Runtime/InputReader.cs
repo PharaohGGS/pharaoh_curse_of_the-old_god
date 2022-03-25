@@ -21,8 +21,12 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public UnityAction noclipPerformedEvent;
     
+    public UnityAction hookGrappleStartedEvent;
     public UnityAction hookGrapplePerformedEvent;
+
+    public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
+
     public InputAction hookGrapple { get; private set; }
     public InputAction hookInteract { get; private set; }
     public bool isFacingRight { get; private set; } = true;
@@ -50,12 +54,14 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public void OnHookGrapple(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed) hookGrapplePerformedEvent?.Invoke();
+        if (context.phase == InputActionPhase.Started) hookGrappleStartedEvent?.Invoke();
+        else if (context.phase == InputActionPhase.Performed) hookGrapplePerformedEvent?.Invoke();
     }
 
     public void OnHookInteract(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed) hookInteractPerformedEvent?.Invoke();
+        if (context.phase == InputActionPhase.Started) hookInteractStartedEvent?.Invoke();
+        else if (context.phase == InputActionPhase.Performed) hookInteractPerformedEvent?.Invoke();
     }
 
     public void OnSandSoldier(InputAction.CallbackContext context)

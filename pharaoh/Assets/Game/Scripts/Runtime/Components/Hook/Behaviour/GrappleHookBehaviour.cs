@@ -15,13 +15,15 @@ namespace Pharaoh.Gameplay
         
         protected void OnEnable()
         {
+            inputs.hookGrappleStartedEvent += OnHookGrappleStart;
             inputs.movePerformedEvent += OnMove;
             inputs.jumpStartedEvent += OnJump;
             inputs.dashStartedEvent += OnDash;
         }
-
+        
         protected void OnDisable()
         {
+            inputs.hookGrappleStartedEvent -= OnHookGrappleStart;
             inputs.movePerformedEvent -= OnMove;
             inputs.jumpStartedEvent -= OnJump;
             inputs.dashStartedEvent -= OnDash;
@@ -40,6 +42,11 @@ namespace Pharaoh.Gameplay
             {
                 Release();
             }
+        }
+
+        private void OnHookGrappleStart()
+        {
+            if (isCurrentTarget) Release();
         }
 
         private void OnMove(Vector2 axis)
@@ -61,7 +68,7 @@ namespace Pharaoh.Gameplay
             Release();
         }
 
-        protected override void Release()
+        public override void Release()
         {
             base.Release();
             if (_moveToCoroutine != null) StopCoroutine(_moveToCoroutine);

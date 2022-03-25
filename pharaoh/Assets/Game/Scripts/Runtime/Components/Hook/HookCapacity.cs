@@ -182,7 +182,7 @@ namespace Pharaoh.Gameplay
         private void OnHookGrapple()
         {
             // unhook the current hooked object if there is one
-            if (_currentTarget) Release();
+            //if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
             if (!_potentialTarget) return;
             
