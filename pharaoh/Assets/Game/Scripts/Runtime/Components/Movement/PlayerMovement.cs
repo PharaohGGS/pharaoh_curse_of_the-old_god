@@ -248,6 +248,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             {
                 case GrappleHookBehaviour grapple:
                     //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
+                    inputReader.EnableJump();
                     _isHooked = true;
                     _hasDashedInAir = false;
                     animator.SetBool("Is Grounded", isGrounded);
