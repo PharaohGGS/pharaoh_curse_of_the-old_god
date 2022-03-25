@@ -278,6 +278,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    _rigidbody.gravityScale = metrics.gravityScale;
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
