@@ -132,6 +132,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             {
                 // The player jumps using an impulse force
                 _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
+                _rigidbody.gravityScale = metrics.gravityScale;
                 _jumpClock = Time.time;
                 _isJumping = true;
                 _isHooked = false;
@@ -153,8 +154,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
-
-                _previousGravityScale = _rigidbody.gravityScale;
+                
                 _rigidbody.gravityScale = 0f;
 
                 _dashClock = Time.time;
@@ -171,7 +171,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // DEBUG
         private void OnNoclipPerformed()
         {
-            _rigidbody.gravityScale = (_noclip = !_noclip) ? 0f : 3f;
+            _rigidbody.gravityScale = (_noclip = !_noclip) ? 0f : metrics.gravityScale;
         }
 
         public void LockMovement(bool value)
@@ -278,7 +278,6 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.gravityScale = metrics.gravityScale;
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
@@ -306,7 +305,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (_isDashing && _dashClock + metrics.dashDuration < Time.time)
             {
                 _rigidbody.velocity = Vector2.zero;
-                _rigidbody.gravityScale = _previousGravityScale;
+                _rigidbody.gravityScale = metrics.gravityScale;
                 _isDashing = false;
 
                 gameObject.layer = _defaultLayer;
@@ -440,7 +439,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             _jumpClock = 0f;
             _dashClock = 0f;
 
-            _rigidbody.gravityScale = 3f;
+            _rigidbody.gravityScale = metrics.gravityScale;
 
             gameObject.layer = _defaultLayer;
 
