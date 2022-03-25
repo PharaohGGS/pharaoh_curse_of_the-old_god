@@ -63,8 +63,11 @@ namespace Pharaoh.AI.Actions
             }
             
             _attack.Attack(holder);
+            var rate = holder.gear.isThrown && gearData is MeleeGearData meleeGearData
+                ? meleeGearData.throwablePickingTime : gearData.rate;
+
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", gearData.rate);
+            blackboard.SetData("waitTime", rate);
 
             return state;
         }
