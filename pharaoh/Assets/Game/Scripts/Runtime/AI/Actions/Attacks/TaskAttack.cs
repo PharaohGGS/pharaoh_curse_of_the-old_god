@@ -10,8 +10,6 @@ namespace Pharaoh.AI.Actions
     {
         [SerializeField] protected GearType gearType;
 
-        protected HealthComponent _healthComponent;
-
         protected AttackComponent _attack = null;
         
         protected override void OnStart()
@@ -34,7 +32,7 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
 
-            var gearData = holder.gear.GetBaseData();
+            var gearData = holder.gear.TryGetData(out MeleeGearData meleeGearData) ? meleeGearData : holder.gear.GetBaseData();
 
             if (!gearData.canAttack)
             {
@@ -42,29 +40,16 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
 
-            if (!blackboard.TryGetData("target", out Transform t))
+            if (!blackboard.TryGetData("target", out Transform t) || t == null || !t.gameObject.activeInHierarchy)
             {
                 LogHandler.SendMessage($"{agent.name} doesn't have a target to attack.", MessageType.Error);
                 return NodeState.Failure;
             }
 
             state = NodeState.Running;
-
-            if (t != _attack.target && t.TryGetComponent(out HealthComponent healthComponent))
-            {
-                _attack.target = t;
-
-                if (_healthComponent != healthComponent)
-                {
-                    _healthComponent?.onDeath?.RemoveListener(OnTargetDeath);
-                    _healthComponent = healthComponent;
-                    _healthComponent?.onDeath?.AddListener(OnTargetDeath);
-                }
-            }
             
-            _attack.Attack(holder);
-            var rate = holder.gear.isThrown && gearData is MeleeGearData meleeGearData
-                ? meleeGearData.throwablePickingTime : gearData.rate;
+            _attack.Attack(holder, t.gameObject);
+            var rate = holder.gear.isThrown && meleeGearData ? meleeGearData.throwablePickingTime : gearData.rate;
 
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", rate);
@@ -72,10 +57,9 @@ namespace Pharaoh.AI.Actions
             return state;
         }
 
-        protected void OnTargetDeath(HealthComponent healthComponent)
+        protected override void OnStop()
         {
-            blackboard.ClearData("target");
-            _attack.target = null;
+            if (!_attack.currentTargetHealth) blackboard.ClearData("target");
         }
     }
 }

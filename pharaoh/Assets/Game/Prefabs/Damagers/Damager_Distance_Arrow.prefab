@@ -2082,7 +2082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <data>k__BackingField: {fileID: 11400000, guid: ce76a41f463f425419bbcc0866eb1a88, type: 2}
+  data: {fileID: 11400000, guid: ce76a41f463f425419bbcc0866eb1a88, type: 2}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 131072
@@ -2106,22 +2106,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   onCollisionHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7608911803836466637}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
-        m_MethodName: Disable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxOverlappedColliders: 3
-  onOverlapHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7608911803836466637}

@@ -17,9 +17,7 @@ namespace Pharaoh.Gameplay.Components
 
         [HideInInspector] public UnityEvent<Damager> onGearShoot = new UnityEvent<Damager>();
         public IObjectPool<Damager> ammos { get; private set; }
-
-        private Transform _currentTarget = null;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -53,24 +51,17 @@ namespace Pharaoh.Gameplay.Components
 
             return damager;
         }
-
-        public void SetupShoot(Gear shootingGear, Transform target)
+        
+        public void Shoot(Gear shootingGear, GameObject target)
         {
             if (shootingGear != this || !target) return;
-            
-            _currentTarget = target;
-        }
-        
-        public void Shoot(Gear shootingGear)
-        {
-            if (shootingGear != this) return;
 
             var damager = ammos.Get();
 
             if (damager.TryGetComponent(out Rigidbody2D rb2D))
             {
                 rb2D.bodyType = RigidbodyType2D.Dynamic;
-                var direction = (Vector2)_currentTarget.position - rb2D.position;
+                var direction = (Vector2)target.transform.position - rb2D.position;
                 rb2D.AddForce(direction.normalized * GetData().shootInitialVelocity, ForceMode2D.Impulse);
             }
 

@@ -372,26 +372,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _is2D: 1
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 2048
+  datas:
+  - {fileID: 11400000, guid: 93f7a38e9f372804b9c7e0d704083c6f, type: 2}
+  collider: {fileID: 1822449202396137966}
   maxOverlappedColliders: 3
-  collider2D: {fileID: 1822449202396137966}
-  colliders2D:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  layeredColliders2D:
-    list:
-    - Key: 11
-      Value: []
-    keyCollision: 0
-  collider3D: {fileID: 0}
-  colliders3D: []
-  layeredColliders3D:
-    list: []
-    keyCollision: 0
+  colliders: []
 --- !u!114 &994795391430697508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,28 +389,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holders: []
+  holders:
+  - {fileID: 896387912474590241}
+  - {fileID: 930145574}
   onGearAttack:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
         m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Gear,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onGearAimTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Gear,
           Pharaoh
         m_MethodName: Raise
         m_Mode: 0
@@ -449,8 +420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7079046523897001458}

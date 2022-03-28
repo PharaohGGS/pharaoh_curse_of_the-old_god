@@ -9,11 +9,10 @@ namespace Pharaoh.Gameplay.Components
     public class AttackComponent : MonoBehaviour
     {
         [SerializeField] private GearHolder[] holders;
-        public Transform target { get; set; }
+        public HealthComponent currentTargetHealth { get; private set; }
 
-        public UnityEvent<Gear> onGearAttack = new UnityEvent<Gear>();
-        public UnityEvent<Gear, Transform> onGearAimTarget = new UnityEvent<Gear, Transform>();
-
+        public UnityEvent<Gear, GameObject> onGearAttack = new UnityEvent<Gear, GameObject>();
+        
         private void Awake()
         {
             if (holders.Length <= 0)
@@ -22,26 +21,23 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public void Attack(GearHolder holder)
+        public void Attack(GearHolder holder, GameObject target)
         {
-            if (!holder || !holder.gear) return;
+            if (!holder || !holder.gear || !target) return;
             
-            onGearAimTarget?.Invoke(holder.gear, target);
-            onGearAttack?.Invoke(holder.gear);
+            if (currentTargetHealth?.gameObject != target && target.TryGetComponent(out HealthComponent targetHealth))
+            {
+                currentTargetHealth?.onDeath?.RemoveListener(OnTargetDeath);
+                currentTargetHealth = targetHealth;
+                currentTargetHealth?.onDeath?.AddListener(OnTargetDeath);
+            }
+            
+            onGearAttack?.Invoke(holder.gear, target);
         }
 
-        public bool ContainsHolder(GearData data)
+        private void OnTargetDeath(HealthComponent arg0)
         {
-            if (holders.Length <= 0) return false;
-
-            foreach (var h in holders)
-            {
-                var hData = h.gear != null ? h.gear.GetBaseData() : null;
-                if (hData == null || hData != data) continue;
-                return true;
-            }
-
-            return false;
+            currentTargetHealth = null;
         }
 
         public bool TryGetHolder(GearData data, out GearHolder holder)

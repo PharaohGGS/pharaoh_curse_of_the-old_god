@@ -13,82 +13,52 @@ namespace Pharaoh.Gameplay.Components
         public override GearData GetBaseData() => data;
         public T GetData() => data as T;
     }
-
-    [RequireComponent(typeof(Rigidbody2D))]
+    
     public abstract class Gear : MonoBehaviour
     {
         public LayerMask collidingLayers;
         
-        public Rigidbody2D rb2D { get; protected set; }
-        public Collider2D coll2D { get; protected set; }
-
         public bool isThrown { get; protected set; }
         public bool isGrounded { get; protected set; }
 
-        [HideInInspector] public UnityEvent onGroundHit = new UnityEvent();
-        [HideInInspector] public UnityEvent<Transform> onSocketAttach = new UnityEvent<Transform>();
+        protected Transform _parent = null;
+        protected Rigidbody2D _rigidbody2D = null;
 
-        private Transform _parent = null;
-        
         protected virtual void Awake()
         {
-            rb2D = GetComponent<Rigidbody2D>();
-            coll2D = TryGetComponent(out Collider2D coll) ? coll : null;
-        }
-
-        protected virtual void OnEnable()
-        {
-            onSocketAttach?.AddListener(SocketAttach);
-        }
-
-        protected virtual void OnDisable()
-        {
-            onSocketAttach?.RemoveListener(SocketAttach);
+            if (!TryGetComponent(out _rigidbody2D))
+            {
+                LogHandler.SendMessage($"{name} can't use physics engine", MessageType.Warning);
+            }
         }
 
         protected virtual void Update()
         {
-            if (_parent != transform.parent)
-            {
-                onSocketAttach?.Invoke(transform.parent);
-            }
+            if (_parent != transform.parent) SocketAttach();
         }
         
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (!isThrown || !other.gameObject.HasLayer(collidingLayers)) return;
 
-            coll2D.isTrigger = false;
-        }
-
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (!collision.gameObject.HasLayer(collidingLayers)) return;
-
             isGrounded = true;
-            onGroundHit?.Invoke();
-            rb2D.angularVelocity = 0f;
-            rb2D.velocity = Vector2.zero;
-            rb2D.bodyType = RigidbodyType2D.Kinematic;
+
+            if (_rigidbody2D)
+            {
+                _rigidbody2D.isKinematic = true;
+                _rigidbody2D.Sleep();
+            }
         }
 
-        protected void SocketAttach(Transform socket)
+        protected virtual void SocketAttach()
         {
-            if (!rb2D)
-            {
-                LogHandler.SendMessage($"Can't socket damager.", MessageType.Warning);
-                return;
-            }
-
-            _parent = socket;
-            rb2D.bodyType = !socket ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
-
+            _parent = transform.parent;
             isGrounded = false;
-            isThrown = !socket;
-            if (!isThrown && !isGrounded)
-            {
-                coll2D.isTrigger = true;
-            }
+            isThrown = !_parent;
+            
+            if (!_rigidbody2D) return;
+            _rigidbody2D.isKinematic = transform.parent;
+            if (transform.parent) _rigidbody2D.WakeUp();
         }
 
         public abstract GearData GetBaseData();

@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5079749805808693452}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <data>k__BackingField: {fileID: 11400000, guid: 4657e833cef83f7409a66b337f5468fb, type: 2}
+  data: {fileID: 0}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 131072
@@ -204,10 +204,6 @@ MonoBehaviour:
   onCollisionHit:
     m_PersistentCalls:
       m_Calls: []
-  maxOverlappedColliders: 3
-  onOverlapHit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5079749805808693452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,12 +219,6 @@ MonoBehaviour:
   collidingLayers:
     serializedVersion: 2
     m_Bits: 0
-  onGroundHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onSocketAttach:
-    m_PersistentCalls:
-      m_Calls: []
   data: {fileID: 11400000, guid: ab7804cb95fabf84589101cd12e112c1, type: 2}
   onWeaponThrown:
     m_PersistentCalls:
