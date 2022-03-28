@@ -7,50 +7,54 @@ using UnityEngine.InputSystem.Utilities;
 
 public class ToggleBlocking : MonoBehaviour
 {
+
+
+    public bool displayMesh;
     public int groundLayer = 10;
-    /*public bool blockingVisible = true;
+    private List<MeshRenderer> meshRendererList;
 
-    private bool changed = true;
-
-    private void Update()
+    private void Start()
     {
-        if (Input
+        meshRendererList = GetComponentsInChildren<MeshRenderer>().ToList();
+        Debug.Log("Start");
+        if (!displayMesh)
         {
-            blockingVisible = !blockingVisible;
-            changed = true;
+            meshRendererEnabler(displayMesh);
         }
-
-        if(changed)
-        {
-            changed = false;
-            GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
-            {
-                if(m.gameObject.layer == groundLayer)
-                {
-                    m.enabled = blockingVisible;
-                }
-            });
-        }
-    }*/
+    }
 
     private void OnEnable()
     {
-        GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
+        Debug.Log("OnEnable");
+        /*GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
         {
             if (m.gameObject.layer == groundLayer)
             {
                 m.enabled = true;
             }
-        });
+        });*/
+        meshRendererEnabler(true);
     }
 
     private void OnDisable()
     {
-        GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
+        /*GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
         {
             if (m.gameObject.layer == groundLayer)
             {
                 m.enabled = false;
+            }
+        });*/
+        meshRendererEnabler(false);
+    }
+
+    private void meshRendererEnabler(bool isDisplayed)
+    {
+        meshRendererList.ForEach((m) =>
+        {
+            if (m.gameObject.layer == groundLayer)
+            {
+                m.enabled = isDisplayed;
             }
         });
     }
