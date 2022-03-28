@@ -16,7 +16,6 @@ public class ToggleBlocking : MonoBehaviour
     private void Start()
     {
         meshRendererList = GetComponentsInChildren<MeshRenderer>().ToList();
-        Debug.Log("Start");
         if (!displayMesh)
         {
             meshRendererEnabler(displayMesh);
@@ -25,26 +24,11 @@ public class ToggleBlocking : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("OnEnable");
-        /*GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
-        {
-            if (m.gameObject.layer == groundLayer)
-            {
-                m.enabled = true;
-            }
-        });*/
         meshRendererEnabler(true);
     }
 
     private void OnDisable()
     {
-        /*GetComponentsInChildren<MeshRenderer>().ToList().ForEach((m) =>
-        {
-            if (m.gameObject.layer == groundLayer)
-            {
-                m.enabled = false;
-            }
-        });*/
         meshRendererEnabler(false);
     }
 
