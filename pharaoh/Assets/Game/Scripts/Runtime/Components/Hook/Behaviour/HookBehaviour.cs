@@ -40,11 +40,11 @@ namespace Pharaoh.Gameplay
             events?.Started(this);
         }
         
-        protected virtual void Perform() => events?.Performed(this);
-
-        protected virtual void End() => events?.Ended(this);
-
-        protected virtual void Release()
+        public virtual void Perform() => events?.Performed(this);
+        
+        public virtual void End() => events?.Ended(this);
+        
+        public virtual void Release()
         {
             events?.Released(this);
             isCurrentTarget = false;

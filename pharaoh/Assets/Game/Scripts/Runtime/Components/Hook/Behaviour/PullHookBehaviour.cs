@@ -66,6 +66,7 @@ namespace Pharaoh.Gameplay
 
         protected void OnEnable()
         {
+            inputs.hookInteractStartedEvent += OnHookInteractStart;
             inputs.movePerformedEvent += OnMove;
             inputs.jumpStartedEvent += OnJump;
             inputs.dashStartedEvent += OnDash;
@@ -73,6 +74,7 @@ namespace Pharaoh.Gameplay
 
         protected void OnDisable()
         {
+            inputs.hookInteractStartedEvent -= OnHookInteractStart;
             inputs.movePerformedEvent -= OnMove;
             inputs.jumpStartedEvent -= OnJump;
             inputs.dashStartedEvent -= OnDash;
@@ -89,7 +91,12 @@ namespace Pharaoh.Gameplay
 
             if (_hasBeenReleased) Release();
         }
-        
+
+        private void OnHookInteractStart()
+        {
+            if (isCurrentTarget) Release();
+        }
+
         private void OnMove(Vector2 axis)
         {
             if (!isCurrentTarget || !_movingBlock || !_movingBlock.isHooked) return;
@@ -109,7 +116,7 @@ namespace Pharaoh.Gameplay
             _hasBeenReleased = true;
         }
 
-        protected override void Release()
+        public override void Release()
         {
             base.Release();
             if (_pullCoroutine != null) StopCoroutine(_pullCoroutine);

@@ -40,14 +40,13 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsDashing { get => _isDashing; }
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
-        public bool IsGrounded { get => isGrounded; }
         public bool IsHookedToBlock {
             get => _isHookedToBlock;
-            set { _isHookedToBlock = value;
+            private set { _isHookedToBlock = value;
                 if (_isHookedToBlock) { _smoothMovement = Vector2.zero; _isRunning = false; }
             }
         }
-        public bool IsPullingBlock { get => _isPullingBlock; set => _isPullingBlock = value; }
+        public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
@@ -76,6 +75,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
+            if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
         }
 
         private void OnEnable()
@@ -132,6 +132,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             {
                 // The player jumps using an impulse force
                 _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
+                _rigidbody.gravityScale = metrics.gravityScale;
                 _jumpClock = Time.time;
                 _isJumping = true;
                 _isHooked = false;
@@ -153,8 +154,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
-
-                _previousGravityScale = _rigidbody.gravityScale;
+                
                 _rigidbody.gravityScale = 0f;
 
                 _dashClock = Time.time;
@@ -171,7 +171,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // DEBUG
         private void OnNoclipPerformed()
         {
-            _rigidbody.gravityScale = (_noclip = !_noclip) ? 0f : 3f;
+            _rigidbody.gravityScale = (_noclip = !_noclip) ? 0f : metrics.gravityScale;
         }
 
         public void LockMovement(bool value)
@@ -248,11 +248,12 @@ namespace Pharaoh.Gameplay.Components.Movement
             {
                 case GrappleHookBehaviour grapple:
                     //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
+                    inputReader.EnableJump();
                     _isHooked = true;
                     _hasDashedInAir = false;
                     animator.SetBool("Is Grounded", isGrounded);
                     _rigidbody.velocity = Vector2.zero;
-                    _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+                    _rigidbody.gravityScale = 0f;
                     break;
                 case PullHookBehaviour pull:
                     LockMovement(false);
@@ -272,11 +273,12 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!behaviour.isCurrentTarget) return;
 
             LockMovement(false);
+            _isHooked = false;
 
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+                    _rigidbody.gravityScale = metrics.gravityScale;
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
@@ -304,7 +306,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (_isDashing && _dashClock + metrics.dashDuration < Time.time)
             {
                 _rigidbody.velocity = Vector2.zero;
-                _rigidbody.gravityScale = _previousGravityScale;
+                _rigidbody.gravityScale = metrics.gravityScale;
                 _isDashing = false;
 
                 gameObject.layer = _defaultLayer;
@@ -438,7 +440,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             _jumpClock = 0f;
             _dashClock = 0f;
 
-            _rigidbody.gravityScale = 3f;
+            _rigidbody.gravityScale = metrics.gravityScale;
 
             gameObject.layer = _defaultLayer;
 
