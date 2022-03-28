@@ -320,9 +320,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
             // Lerps between a given orientation when idle facing left and when running facing left
             // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-            Quaternion to = (_movementInput.x == 0f && !_isDashing) || _isPullingBlock ?
-                Quaternion.Lerp(toIdle, toRunning, 0f)
-                : Quaternion.Lerp(toRunning, toIdle, 0f);
+            Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock ?
+                 Quaternion.Lerp(toRunning, toIdle, 0f) : Quaternion.Lerp(toIdle, toRunning, 0f);
             modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
 
             UpdateStates();
@@ -387,6 +386,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
             
             animator.SetBool("Is Grounded", isGrounded);
+            animator.SetBool("Is Pulling", _isPullingBlock);
         }
 
         // Coroutine re-enabling the dash after it's cooldown
