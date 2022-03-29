@@ -23,6 +23,8 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     
     public UnityAction hookGrapplePerformedEvent;
     public UnityAction hookInteractPerformedEvent;
+
+    public UnityAction<float> lookPerformedEvent;
     public InputAction hookGrapple { get; private set; }
     public InputAction hookInteract { get; private set; }
     public bool isFacingRight { get; private set; } = true;
@@ -61,6 +63,12 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void OnSandSoldier(InputAction.CallbackContext context)
     {
         throw new NotImplementedException();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        var value = context.ReadValue<float>();
+        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
     }
 
     public void OnMove(InputAction.CallbackContext context)

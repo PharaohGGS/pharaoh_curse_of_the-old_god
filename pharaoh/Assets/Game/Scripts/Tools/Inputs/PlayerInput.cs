@@ -64,6 +64,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""1e24e252-c391-40ae-90a2-ace7e982dfd7"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -198,6 +207,39 @@ namespace Pharaoh.Tools.Inputs
                     ""action"": ""NOCLIP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""3ba068fa-738f-42d6-9f16-431d4094c499"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3e6b95c4-eed5-47d2-87a9-9253340e1656"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""e41231ae-67c8-4f36-b357-2f99a7f8a4c1"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -311,6 +353,7 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
             m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
             m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
+            m_CharacterControls_Look = m_CharacterControls.FindAction("Look", throwIfNotFound: true);
             // CharacterActions
             m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
@@ -379,6 +422,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterControls_Jump;
         private readonly InputAction m_CharacterControls_Dash;
         private readonly InputAction m_CharacterControls_NOCLIP;
+        private readonly InputAction m_CharacterControls_Look;
         public struct CharacterControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -387,6 +431,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
             public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
             public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
+            public InputAction @Look => m_Wrapper.m_CharacterControls_Look;
             public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -408,6 +453,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                    @Look.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Look.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Look.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
                 }
                 m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -424,6 +472,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started += instance.OnNOCLIP;
                     @NOCLIP.performed += instance.OnNOCLIP;
                     @NOCLIP.canceled += instance.OnNOCLIP;
+                    @Look.started += instance.OnLook;
+                    @Look.performed += instance.OnLook;
+                    @Look.canceled += instance.OnLook;
                 }
             }
         }
@@ -483,6 +534,7 @@ namespace Pharaoh.Tools.Inputs
             void OnJump(InputAction.CallbackContext context);
             void OnDash(InputAction.CallbackContext context);
             void OnNOCLIP(InputAction.CallbackContext context);
+            void OnLook(InputAction.CallbackContext context);
         }
         public interface ICharacterActionsActions
         {
