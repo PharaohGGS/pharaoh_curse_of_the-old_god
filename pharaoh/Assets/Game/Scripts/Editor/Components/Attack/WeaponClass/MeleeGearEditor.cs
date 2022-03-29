@@ -3,25 +3,30 @@ using UnityEditor;
 
 [CanEditMultipleObjects]
 [CustomEditor(typeof(MeleeGear))]
-public class MeleeGearEditor : GearEditor
+public class MeleeGearEditor : Editor
 {
     protected SerializedProperty _dataProp;
     protected SerializedProperty _onWeaponThrownProp;
     
-    protected override void OnEnable()
+    protected void OnEnable()
     {
-        base.OnEnable();
         _dataProp = serializedObject.FindProperty("data");
         _onWeaponThrownProp = serializedObject.FindProperty("onWeaponThrown");
     }
-
-    protected override void DrawSpecificProperties()
+    
+    public override void OnInspectorGUI()
     {
-        base.DrawSpecificProperties();
+        DrawDefaultInspector();
 
+        serializedObject.Update();
+        
         var data = _dataProp.objectReferenceValue as MeleeGearData;
 
-        if (!data || !data.throwable) return;
-        EditorGUILayout.PropertyField(_onWeaponThrownProp);
+        if (data && data.throwable)
+        {
+            EditorGUILayout.PropertyField(_onWeaponThrownProp);
+        }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
