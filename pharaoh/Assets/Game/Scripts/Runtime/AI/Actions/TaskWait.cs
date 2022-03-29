@@ -31,6 +31,11 @@ namespace Pharaoh.AI.Actions
                 ? NodeState.Running : NodeState.Success;
 
             blackboard.SetData("isWaiting", state == NodeState.Running);
+            //if (state == NodeState.Success)
+            //{
+            //    blackboard.ClearData("waitTime");
+            //    timeSince = 0f;
+            //}
 
             return state;
         }
