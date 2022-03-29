@@ -30,13 +30,13 @@ namespace Pharaoh.AI.Actions
         {
             state = NodeState.Running;
             
-            if (!_movement || _movement.waypoints.Count <= 0)
+            if (!_movement || _movement.waypointHolder.childCount <= 0)
             {
                 state = NodeState.Failure;
                 return state;
             }
 
-            var target = _movement.waypoints[currentWaypointIndex].position;
+            var target = _movement.waypointHolder.GetChild(currentWaypointIndex).position;
             if (ignoreHeight) target.y = agent.transform.position.y;
 
             if (Vector2.Distance(agent.transform.position, target) < 0.01f)
@@ -44,7 +44,7 @@ namespace Pharaoh.AI.Actions
                 blackboard.SetData("isWaiting", true);
                 blackboard.SetData("waitTime", _movement.timeBetweenWaypoints);
                 agent.transform.position = target;
-                currentWaypointIndex = (currentWaypointIndex + 1) % _movement.waypoints.Count;
+                currentWaypointIndex = (currentWaypointIndex + 1) % _movement.waypointHolder.childCount;
             }
             else
             {

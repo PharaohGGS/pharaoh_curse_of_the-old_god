@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,8 +11,8 @@ namespace Pharaoh.GameEvents
         where E : AbstractGameEvent 
         where UER : UnityEvent
     {
-        [field: SerializeField] public E gameEvent { get; private set; } 
-        [field: SerializeField] public UER response { get; private set; } 
+        [SerializeField] private E gameEvent;
+        [HideInInspector] public UER response;
 
         public void OnEnable() 
         {
@@ -34,8 +35,8 @@ namespace Pharaoh.GameEvents
         where E : AbstractGameEvent<T> 
         where UER : UnityEvent<T>
     {
-        [field: SerializeField] public E gameEvent { get; private set; } 
-        [field: SerializeField] public UER response { get; private set; } 
+        [SerializeField] private E gameEvent;
+        [HideInInspector] public UER response;
 
         public void OnEnable() 
         {
@@ -58,8 +59,8 @@ namespace Pharaoh.GameEvents
         where E : AbstractGameEvent<T0, T1> 
         where UER : UnityEvent<T0, T1>
     {
-        [field: SerializeField] public E gameEvent { get; private set; } 
-        [field: SerializeField] public UER response { get; private set; } 
+        [SerializeField] private E gameEvent;
+        [HideInInspector] public UER response;
 
         public void OnEnable() 
         {
@@ -82,8 +83,8 @@ namespace Pharaoh.GameEvents
         where E : AbstractGameEvent<T0, T1, T2> 
         where UER : UnityEvent<T0, T1, T2>
     {
-        [field: SerializeField] public E gameEvent { get; private set; } 
-        [field: SerializeField] public UER response { get; private set; } 
+        [SerializeField] private E gameEvent;
+        [HideInInspector] public UER response;
 
         public void OnEnable() 
         {
