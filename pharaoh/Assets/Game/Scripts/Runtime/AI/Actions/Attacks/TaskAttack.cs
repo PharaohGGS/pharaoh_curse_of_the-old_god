@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
@@ -8,9 +9,9 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        [SerializeField] protected GearType gearType;
+        [SerializeField] protected GearData gearData;
 
-        protected AttackComponent _attack = null;
+        private AttackComponent _attack = null;
         
         protected override void OnStart()
         {
@@ -24,19 +25,11 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || gearType == GearType.Null) return NodeState.Failure;
-            
-            if (!_attack.TryGetHolder(gearType, out var holder))
-            {
-                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
-                return NodeState.Failure;
-            }
-
-            var gearData = holder.gear.TryGetData(out MeleeGearData meleeGearData) ? meleeGearData : holder.gear.GetBaseData();
+            if (!_attack || !gearData) return NodeState.Failure;
 
             if (!gearData.canAttack)
             {
-                LogHandler.SendMessage($"{agent.name} can't attack with his weapon", MessageType.Warning);
+                LogHandler.SendMessage($"{agent.name} can't attack with this data", MessageType.Warning);
                 return NodeState.Failure;
             }
 
@@ -46,15 +39,29 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
 
-            state = NodeState.Running;
-            
-            _attack.Attack(holder, t.gameObject);
-            var rate = holder.gear.isThrown && meleeGearData ? meleeGearData.throwablePickingTime : gearData.rate;
+            if (!_attack.dataGears.TryGetValue(gearData, out Gear gear))
+            {
+                LogHandler.SendMessage($"{agent.name} don't have a gear with this kind of data.", MessageType.Error);
+                return NodeState.Failure;
+            }
 
+            if (gear.isThrown)
+            {
+                LogHandler.SendMessage($"{agent.name} have already throw his gear.", MessageType.Warning);
+                return NodeState.Failure;
+            }
+
+            var rate = gearData.rate;
+            if (gearData is MeleeGearData {throwable: true} meleeGearData)
+            {
+                rate = meleeGearData.throwablePickingTime;
+            }
+
+            _attack.Attack(gearData, t.gameObject);
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", rate);
 
-            return state;
+            return NodeState.Running;
         }
 
         protected override void OnStop()

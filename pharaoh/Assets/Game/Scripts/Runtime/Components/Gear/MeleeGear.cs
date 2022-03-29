@@ -43,7 +43,7 @@ namespace Pharaoh.Gameplay.Components
             LaunchData data = LaunchData.Calculate(gravity, height, targetPosition, position/*, speed*/);
             
             _rigidbody2D.velocity = data.initialVelocity;
-            transform.parent = null;
+            SocketAttach(false);
             onWeaponThrown?.Invoke();
         }
     }

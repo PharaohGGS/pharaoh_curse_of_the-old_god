@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 930145573}
-  - component: {fileID: 930145574}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -32,19 +31,6 @@ Transform:
   m_Father: {fileID: 7079046523897001348}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &930145574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930145572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9439ad64a29f0bc45a964727188303fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gearPrefab: {fileID: 0}
 --- !u!1 &1684511585
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +88,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2928968843676526985}
-  - component: {fileID: 896387912474590241}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -125,19 +110,6 @@ Transform:
   m_Father: {fileID: 7079046523897001348}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &896387912474590241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4987220224824025073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9439ad64a29f0bc45a964727188303fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gearPrefab: {fileID: 7451239046983173651, guid: b7b215eb07861e848b46a0ab1bcba085, type: 3}
 --- !u!1 &7079046523897001347
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,12 +326,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <moveSpeed>k__BackingField: 5
-  <closeDistance>k__BackingField: 0.01
+  <closeDistance>k__BackingField: 0.33
   <fleeDistance>k__BackingField: 2
   <timeBetweenWaypoints>k__BackingField: 2
-  <waypoints>k__BackingField:
-  - {fileID: 0}
-  - {fileID: 0}
+  <waypointHolder>k__BackingField: {fileID: 0}
 --- !u!114 &7079046523897001456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,9 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holders:
-  - {fileID: 896387912474590241}
-  - {fileID: 930145574}
+  gears: []
   onGearAttack:
     m_PersistentCalls:
       m_Calls:
