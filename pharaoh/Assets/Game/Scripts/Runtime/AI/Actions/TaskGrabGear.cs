@@ -24,11 +24,8 @@ namespace Pharaoh.AI.Actions
         {
             if (!_attack || !blackboard.TryGetData("target", out Transform t)) return NodeState.Running;
             if (!t.TryGetComponent(out Gear gear) || !gear.isThrown || !gear.isGrounded) return NodeState.Running;
-            if (!_attack.TryGetHolder(gear.GetBaseData(), out GearHolder holder)) return NodeState.Running;
 
-            gear.transform.parent = holder.transform;
-            gear.transform.localPosition = Vector3.zero;
-            gear.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            gear.SocketAttach(true);
             blackboard.ClearData("target");
             return NodeState.Success;
         }
