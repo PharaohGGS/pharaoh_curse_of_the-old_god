@@ -104,6 +104,7 @@ public class Door : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
@@ -112,5 +113,5 @@ public class Door : MonoBehaviour
         style.normal.textColor = IsBlocked() ? Color.red : Color.green;
         Handles.Label(transform.position + Vector3.up, IsBlocked() ? "Blocked" : "Unblocked", style);
     }
-
+#endif
 }

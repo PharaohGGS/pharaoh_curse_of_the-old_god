@@ -5,7 +5,7 @@ namespace Pharaoh.GameEvents
 {
     [CreateAssetMenu(fileName = "New Attack GameEvent", menuName = "GameEvents/Custom/Attack",
         order = 52)]
-    public class AttackGameEvent : AbstractGameEvent<Gear>
+    public class AttackGameEvent : AbstractGameEvent<Gear, GameObject>
     {
     }
 }
