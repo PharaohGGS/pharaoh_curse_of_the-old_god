@@ -9,7 +9,7 @@ public class ToggleBlocking : MonoBehaviour
 {
 
 
-    public bool displayMesh;
+    public bool displayMesh = true;
     public int groundLayer = 10;
     private List<MeshRenderer> meshRendererList;
 
