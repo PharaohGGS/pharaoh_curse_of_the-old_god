@@ -16,6 +16,7 @@ namespace Pharaoh.Gameplay.Components
 
         [Header("Attack")] public bool canAttack;
 
+        [HideInInspector] public float delay;
         [HideInInspector] public float rate;
         [HideInInspector] public float range;
 

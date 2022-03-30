@@ -24,16 +24,13 @@ namespace BehaviourTree.Runtime.Composites
                         anyChildRunning = true;
                         continue;
                     case NodeState.Failure:
-                        state = NodeState.Failure;
-                        return state;
+                        return NodeState.Failure;
                     default:
-                        state = NodeState.Success;
-                        return state;
+                        return NodeState.Success;
                 }
             }
             
-            state = anyChildRunning ? NodeState.Running : NodeState.Success;
-            return state;
+            return anyChildRunning ? NodeState.Running : NodeState.Success;
         }
     }
 }
