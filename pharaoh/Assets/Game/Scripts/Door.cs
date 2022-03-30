@@ -37,11 +37,13 @@ public class Door : MonoBehaviour
         _closedDoorLayer = LayerMask.NameToLayer("Ground");
         _openedDoorLayer = LayerMask.NameToLayer("Ignore Raycast");
 
-        _material.SetFloat("_Clip", transform.position.y - 1.5f);
+        Material mat = new Material(_material.shader);
+        mat.CopyPropertiesFromMaterial(_material);
+        mat.SetFloat("_Clip", transform.position.y - 1.5f);
 
-        door.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
-        firstScarab.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
-        secondScarab.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
+        door.GetComponent<MeshRenderer>().material = mat;
+        firstScarab.GetComponent<MeshRenderer>().material = mat;
+        secondScarab.GetComponent<MeshRenderer>().material = mat;
 
         RefreshState();
     }
