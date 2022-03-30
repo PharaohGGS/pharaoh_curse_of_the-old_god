@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
-    [CreateAssetMenu(fileName = "HookBehaviourEvents", menuName = "HookData/Events", order = 0)]
+    [CreateAssetMenu(fileName = "HookBehaviourEvents", menuName = "Data/Events/Hook", order = 0)]
     public class HookBehaviourEvents : ScriptableObject
     {
         [Tooltip("Event when the behaviour start")]

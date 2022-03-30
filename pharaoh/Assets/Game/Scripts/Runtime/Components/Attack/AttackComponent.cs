@@ -8,7 +8,7 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AttackComponent : MonoBehaviour
     {
-        [SerializeField] private Gear[] gears;
+        [field: SerializeField] public Gear[] gears { get; private set; }
         public readonly Dictionary<GearData, Gear> dataGears = new Dictionary<GearData, Gear>();
 
         public HealthComponent currentTargetHealth { get; private set; }

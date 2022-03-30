@@ -4526,6 +4526,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &64851377838809327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673519014285010721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65adbc7a08072564e830ee20feffb899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 8c676154797a1674a9dee4f5127a77d1, type: 2}
+  showingTransform: {fileID: 0}
+  hidingTransform: {fileID: 0}
 --- !u!114 &830823467303017619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4584,7 +4599,7 @@ MonoBehaviour:
   onWeaponThrown:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8993833834270516769
+--- !u!114 &3451218625639030542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4593,16 +4608,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7673519014285010721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
+  m_Script: {fileID: 11500000, guid: bcfaf54146fe54846b1a93e1e199c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  gameEvent: {fileID: 11400000, guid: cd1baa0c18285254ca1505d921ea2c37, type: 2}
   response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2673636097581239478}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
-        m_MethodName: Stab
+      - m_Target: {fileID: 64851377838809327}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.SpikeTrapBehaviour, Pharaoh
+        m_MethodName: TrapStart
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
