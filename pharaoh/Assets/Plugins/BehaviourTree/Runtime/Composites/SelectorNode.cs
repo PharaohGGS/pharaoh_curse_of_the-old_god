@@ -18,20 +18,17 @@ namespace BehaviourTree.Runtime.Composites
                 switch (child.Evaluate())
                 {
                     case NodeState.Success:
-                        state = NodeState.Success;
-                        return state;
+                        return NodeState.Success;
                     case NodeState.Running:
-                        state = NodeState.Running;
-                        return state;
+                        return NodeState.Running;
                     case NodeState.Failure:
                         continue;
                     default:
                         continue;
                 }
             }
-
-            state = NodeState.Failure;
-            return state;
+            
+            return NodeState.Failure;
         }
     }
 
