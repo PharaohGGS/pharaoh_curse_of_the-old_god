@@ -851,7 +851,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 871
+  m_VersionIndex: 874
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -961,9 +961,13 @@ PolygonCollider2D:
     - - {x: 15, y: 10}
       - {x: 15, y: 5}
       - {x: 10, y: 5}
-      - {x: 10, y: 1}
+      - {x: 10, y: 4.6}
+      - {x: 10.5, y: 4.6}
+      - {x: 10.5, y: 1}
       - {x: 0, y: 1}
-      - {x: 0, y: 0}
+      - {x: 0, y: 0.75}
+      - {x: 1, y: 0.75}
+      - {x: 1, y: 0}
       - {x: 16, y: 0}
       - {x: 16, y: 10}
 --- !u!1 &2092923718970489971
@@ -1011,6 +1015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90cde9aaede601439ba566a5cd43295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayMesh: 1
   groundLayer: 10
 --- !u!1 &7367226968619172904
 GameObject:
@@ -7075,7 +7080,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5898
+  m_VersionIndex: 5901
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7192,11 +7197,13 @@ PolygonCollider2D:
       - {x: -7, y: 1}
       - {x: -9, y: 1}
       - {x: -9, y: 12}
-      - {x: -8, y: 12}
+      - {x: -9, y: 13}
       - {x: -8, y: 13}
       - {x: -1, y: 13}
       - {x: -1, y: 12}
-      - {x: 6, y: 12}
+      - {x: 5, y: 12}
+      - {x: 5, y: 12.75}
+      - {x: 6, y: 12.75}
       - {x: 6, y: 13}
       - {x: 0, y: 13}
       - {x: 0, y: 13}
