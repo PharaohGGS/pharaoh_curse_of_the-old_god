@@ -10,17 +10,20 @@ namespace Pharaoh.Gameplay.Components.Movement
     [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
     public class PlayerMovement : MonoBehaviour
     {
+        private readonly Quaternion RightRotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f));
+        private readonly Quaternion LeftRotationIdle = Quaternion.Euler(new Vector3(0f, -135f, 0f));
+        private readonly Quaternion LeftRotationRunning = Quaternion.Euler(new Vector3(0f, -90.1f, 0f));
+
         private Rigidbody2D _rigidbody;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
+        private Quaternion _rotation; //used to compute the player model rotation
         private float _groundCheckLength = 0.05f;
         private float _previousGravityScale;
         private float _jumpClock = 0f; //used to measure for how long the jump input is held
         private float _dashClock = 0f; //used to measure for how long the dash occurs
         private float _smoothInput = 0.03f;
         private float _turnSpeed = 7f; //value defined with Cl?mence
-        private float _backOrientationIdle = -135f; //value defined with Cl?mence
-        private float _backOrientationRunning = -90.1f; //value defined with Cl?mence
         private int _defaultLayer;
         private int _swarmDashLayer;
         private bool _isRunning = false;
@@ -319,16 +322,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 StartCoroutine(DashCooldown());
             }
 
-            // Turns the character model around when facing the other direction
-            Quaternion from = modelTransform.localRotation;
-            Quaternion toIdle = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationIdle, 0f));
-            Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
-            // Lerps between a given orientation when idle facing left and when running facing left
-            // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-            Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock || _isHooking ?
-                 Quaternion.Lerp(toRunning, toIdle, 0f) : Quaternion.Lerp(toIdle, toRunning, 0f);
-            modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
-
+            RotatePlayerModel(); //don't read this.. or at least don't try to understand it -> it just works
             UpdateStates();
         }
 
@@ -374,10 +368,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _hasDashedInAir = false;
 
             // Updates the direction the player is facing
-            if (_smoothMovement.x != 0f && !_isHookedToBlock && !_isPullingBlock)
-            {
+            if (_smoothMovement.x != 0f && !_isHookedToBlock && !_isPullingBlock && !_isHooking)
                 isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
-            }
 
             // Updates whether the player is running or not
             if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
@@ -397,6 +389,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
             
             animator.SetBool("Is Grounded", isGrounded);
+            animator.SetBool("Is Facing Right", isFacingRight);
             animator.SetBool("Is Pulling", _isPullingBlock);
             animator.SetBool("Is Hooked", _isHooked);
         }
@@ -458,6 +451,24 @@ namespace Pharaoh.Gameplay.Components.Movement
             gameObject.layer = _defaultLayer;
 
             Stun(metrics.respawnStunDuration);
+        }
+
+        // Turns the character model around when facing the other direction
+        private void RotatePlayerModel()
+        {
+            Quaternion from = _rotation;
+            // Lerps between a given orientation when idle facing left and when running facing left
+            // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
+            Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock || _isHooking ?
+                    Quaternion.Lerp(isFacingRight ? RightRotation : LeftRotationRunning, isFacingRight ? RightRotation : LeftRotationIdle, 0f)
+                    : Quaternion.Lerp(isFacingRight ? RightRotation : LeftRotationIdle, isFacingRight ? RightRotation : LeftRotationRunning, 0f);
+            _rotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
+
+            // The previously computed rotation is used only when the player isn't hooked, when he is the animator turns it himself
+            if (!_isHooked)
+                modelTransform.localRotation = _rotation;
+            else
+                modelTransform.localRotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f));
         }
 
     #if UNITY_EDITOR
