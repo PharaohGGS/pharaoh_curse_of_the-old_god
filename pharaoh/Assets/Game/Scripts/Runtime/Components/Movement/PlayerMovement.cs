@@ -33,7 +33,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         private bool _noclip; //DEBUG
         private bool _canMove = true;
         private bool _isHooked = false;
-        private bool _isHookedToBlock = false;
         private bool _isPullingBlock = false;
         private bool _isHooking = false;
 
@@ -44,12 +43,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsDashing { get => _isDashing; }
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
-        public bool IsHookedToBlock {
-            get => _isHookedToBlock;
-            private set { _isHookedToBlock = value;
-                if (_isHookedToBlock) { _smoothMovement = Vector2.zero; _isRunning = false; }
-            }
-        }
         public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
         public bool IsHooking { set => _isHooking = value; }
 
@@ -220,7 +213,6 @@ namespace Pharaoh.Gameplay.Components.Movement
                 case PullHookBehaviour pull:
                     _rigidbody.velocity = Vector2.zero;
                     IsPullingBlock = true;
-                    IsHookedToBlock = true;
                     break;
                 case SnatchHookBehaviour snatch:
                     break;
@@ -266,7 +258,6 @@ namespace Pharaoh.Gameplay.Components.Movement
                 case PullHookBehaviour pull:
                     LockMovement(false);
                     IsPullingBlock = false;
-                    IsHookedToBlock = false;
                     break;
                 case SnatchHookBehaviour snatch:
                     LockMovement(false);
@@ -290,7 +281,6 @@ namespace Pharaoh.Gameplay.Components.Movement
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
-                    IsHookedToBlock = false;
                     break;
                 case SnatchHookBehaviour snatch:
                     break;
@@ -368,7 +358,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _hasDashedInAir = false;
 
             // Updates the direction the player is facing
-            if (_smoothMovement.x != 0f && !_isHookedToBlock && !_isPullingBlock && !_isHooking)
+            if (_smoothMovement.x != 0f && !_isPullingBlock && !_isHooking)
                 isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
 
             // Updates whether the player is running or not
@@ -438,7 +428,6 @@ namespace Pharaoh.Gameplay.Components.Movement
             _isJumping = false;
             _noclip = false; //DEBUG
             _isHooked = false;
-            _isHookedToBlock = false;
             _isPullingBlock = false;
             _isHooking = false;
             LockMovement(false);
@@ -495,7 +484,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             // Displays stats on top of the player
             Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 4.0f, "IsHooked : " + _isHooked, _isHooked ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsHookedToBlock : " + _isHookedToBlock, _isHookedToBlock ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 3.8f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.6f, "IsJumping : " + _isJumping, _isJumping ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
