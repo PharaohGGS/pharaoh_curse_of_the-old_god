@@ -89,6 +89,16 @@ public class Door : MonoBehaviour
         return _blockers > 0;
     }
 
+    public void EnableCollision()
+    {
+        _boxCollider.isTrigger = false;
+    }
+
+    public void EnableTrigger()
+    {
+        _boxCollider.isTrigger = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (whatCanBlockDoor.HasLayer(collision.gameObject.layer))
