@@ -32,6 +32,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private bool _isHooked = false;
         private bool _isHookedToBlock = false;
         private bool _isPullingBlock = false;
+        private bool _isHooking = false;
 
         public bool isFacingRight { get; private set; } = true;
         public bool isGrounded { get; private set; } = false;
@@ -47,6 +48,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             }
         }
         public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
+        public bool IsHooking { set => _isHooking = value; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
@@ -323,7 +325,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             Quaternion toRunning = isFacingRight ? Quaternion.Euler(new Vector3(0f, 89.9f, 0f)) : Quaternion.Euler(new Vector3(0f, _backOrientationRunning, 0f));
             // Lerps between a given orientation when idle facing left and when running facing left
             // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
-            Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock ?
+            Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock || _isHooking ?
                  Quaternion.Lerp(toRunning, toIdle, 0f) : Quaternion.Lerp(toIdle, toRunning, 0f);
             modelTransform.localRotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
 
@@ -437,15 +439,16 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         public void Respawn()
         {
-             _isRunning = false;
-             _isDashing = false;
-             _hasDashedInAir = false;
-             _isJumping = false;
-             _noclip = false; //DEBUG
-             _isHooked = false;
-             _isHookedToBlock = false;
-             _isPullingBlock = false;
-             LockMovement(false);
+            _isRunning = false;
+            _isDashing = false;
+            _hasDashedInAir = false;
+            _isJumping = false;
+            _noclip = false; //DEBUG
+            _isHooked = false;
+            _isHookedToBlock = false;
+            _isPullingBlock = false;
+            _isHooking = false;
+            LockMovement(false);
 
             _jumpClock = 0f;
             _dashClock = 0f;

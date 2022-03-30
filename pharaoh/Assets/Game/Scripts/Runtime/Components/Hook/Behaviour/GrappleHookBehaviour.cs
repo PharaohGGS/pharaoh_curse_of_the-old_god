@@ -12,8 +12,9 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         private Coroutine _moveToCoroutine;
-        private bool _triggerSet = false;
-        
+        private bool _triggerSet = false; //true when the trigger has already been set during this coroutine, false otherwise
+        private bool _isMoving = false; //true when the coroutine is running, false otherwise
+
         protected void OnEnable()
         {
             inputs.hookGrappleStartedEvent += OnHookGrappleStart;
@@ -73,6 +74,14 @@ namespace Pharaoh.Gameplay
         {
             base.Release();
             if (_moveToCoroutine != null) StopCoroutine(_moveToCoroutine);
+
+            _playerMovement.animator.ResetTrigger("Will Be Hooked"); //resets the trigger to avoid remnants when unhooking
+            if (_isMoving) //the player cancelled the action while hooking, ie. while not yet hooked
+            {
+                _playerMovement.IsHooking = false; //the player is no longer hooking
+                _playerMovement.animator.SetTrigger("Hooking Cancelled"); //sends a signal that the player cancelled the hooking process
+            }
+            _triggerSet = false; //reuse this variable each time we grapple
         }
 
         public override void Interact(HookCapacity hook, GameObject target)
@@ -90,6 +99,8 @@ namespace Pharaoh.Gameplay
         {
             if (!_hook) yield break;
 
+            _isMoving = true; //the coroutine is running
+
             float speed = _hook.grappleData.speed;
             AnimationCurve curve = _hook.grappleData.curve;
             Vector2 startPosition = _hook.transform.position;
@@ -102,19 +113,23 @@ namespace Pharaoh.Gameplay
             {
                 nextPosition =  Vector2.Lerp(startPosition, finalMoveTarget.position, curve.Evaluate(currentTime / timeToTravel));
                 currentTime = Mathf.MoveTowards(currentTime, timeToTravel, Time.fixedDeltaTime * speed);
-                //FindObjectOfType<PlayerMovement>().animator.SetTrigger("Will Be Hooked");
 
+                // When reaching a 90% threshold of travelled distance, sends a signal that the player'll soon be hooked
                 if ((currentTime / timeToTravel) >= 0.9f && !_triggerSet)
                 {
-                    Debug.Log((currentTime / timeToTravel));
-                    FindObjectOfType<PlayerMovement>().animator.SetTrigger("Will Be Hooked");
+                    _playerMovement.animator.SetTrigger("Will Be Hooked");
                     _triggerSet = true;
                 }
+
                 Perform();
 
                 yield return _waitForFixedUpdate;
             }
-            _triggerSet = false;
+
+            _triggerSet = false; //reuse this variable each time we grapple
+            _isMoving = false; //the coroutine is no longer running
+            _playerMovement.IsHooking = false; //tells the PlayerMovement that the player finished hooking
+
             End();
         }
     }
