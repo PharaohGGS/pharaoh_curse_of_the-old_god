@@ -356,6 +356,45 @@ namespace Pharaoh.Tools.Inputs
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Game"",
+            ""id"": ""b011d4cf-083d-41e0-abaa-358ab95f315a"",
+            ""actions"": [
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0e25642-3855-407b-a214-0f34a95cc1af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e620ead4-08fd-4ef7-aa59-f19aa23ce36a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b52e63b4-d247-4cdb-877e-6946757d3d3b"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -371,6 +410,9 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
             m_CharacterActions_HookInteract = m_CharacterActions.FindAction("HookInteract", throwIfNotFound: true);
             m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
+            // Game
+            m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+            m_Game_Exit = m_Game.FindAction("Exit", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -532,6 +574,39 @@ namespace Pharaoh.Tools.Inputs
             }
         }
         public CharacterActionsActions @CharacterActions => new CharacterActionsActions(this);
+
+        // Game
+        private readonly InputActionMap m_Game;
+        private IGameActions m_GameActionsCallbackInterface;
+        private readonly InputAction m_Game_Exit;
+        public struct GameActions
+        {
+            private @PlayerInput m_Wrapper;
+            public GameActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Exit => m_Wrapper.m_Game_Exit;
+            public InputActionMap Get() { return m_Wrapper.m_Game; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+            public void SetCallbacks(IGameActions instance)
+            {
+                if (m_Wrapper.m_GameActionsCallbackInterface != null)
+                {
+                    @Exit.started -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                    @Exit.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                    @Exit.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                }
+                m_Wrapper.m_GameActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Exit.started += instance.OnExit;
+                    @Exit.performed += instance.OnExit;
+                    @Exit.canceled += instance.OnExit;
+                }
+            }
+        }
+        public GameActions @Game => new GameActions(this);
         public interface ICharacterControlsActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -544,6 +619,10 @@ namespace Pharaoh.Tools.Inputs
             void OnHookGrapple(InputAction.CallbackContext context);
             void OnHookInteract(InputAction.CallbackContext context);
             void OnSandSoldier(InputAction.CallbackContext context);
+        }
+        public interface IGameActions
+        {
+            void OnExit(InputAction.CallbackContext context);
         }
     }
 }
