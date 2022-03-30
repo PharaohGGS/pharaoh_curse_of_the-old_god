@@ -70,6 +70,8 @@ namespace Pharaoh.Gameplay.Components.Movement
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
 
+        private bool _canJumpHook;
+
         private void Awake()
         {
             _defaultLayer = LayerMask.NameToLayer("Player");
@@ -128,14 +130,14 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player jumps
         private void OnJumpStarted()
         {
-            if ((isGrounded || _isHooked) && !_isDashing && !_isPullingBlock)
+            if ((isGrounded || _isHooked || _canJumpHook) && !_isDashing && !_isPullingBlock)
             {
                 // The player jumps using an impulse force
                 _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
                 _rigidbody.gravityScale = metrics.gravityScale;
                 _jumpClock = Time.time;
                 _isJumping = true;
-                _isHooked = false;
+                _canJumpHook = false;
 
                 animator.SetTrigger("Jumping");
             }
@@ -250,6 +252,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                     //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
                     inputReader.EnableJump();
                     _isHooked = true;
+                    _canJumpHook = true;
                     _hasDashedInAir = false;
                     animator.SetBool("Is Grounded", isGrounded);
                     _rigidbody.velocity = Vector2.zero;
@@ -329,6 +332,12 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         private void FixedUpdate()
         {
+            // remove jump when releasing from hook
+            if (_canJumpHook && _rigidbody.velocity.y <= -Mathf.Epsilon)
+            {
+                _canJumpHook = false;
+            }
+
             // Moves the player horizontally with according speeds while not dashing
             if (!_isDashing && _canMove && !_isPullingBlock)
             {
@@ -387,6 +396,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             
             animator.SetBool("Is Grounded", isGrounded);
             animator.SetBool("Is Pulling", _isPullingBlock);
+            animator.SetBool("Is Hooked", _isHooked);
         }
 
         // Coroutine re-enabling the dash after it's cooldown

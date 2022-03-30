@@ -187,7 +187,9 @@ namespace Pharaoh.Gameplay
             if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
-            
+
+            _movement.animator.SetTrigger("Hooking");
+
             // select the target based on the direction the player's facing
             Debug.Log($"hooking to {_currentTarget.name}");
             onHookGrapple?.Invoke(this, _currentTarget);

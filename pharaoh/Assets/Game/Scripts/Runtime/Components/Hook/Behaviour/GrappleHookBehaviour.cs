@@ -12,6 +12,7 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         private Coroutine _moveToCoroutine;
+        private bool _triggerSet = false;
         
         protected void OnEnable()
         {
@@ -83,6 +84,8 @@ namespace Pharaoh.Gameplay
             _moveToCoroutine = StartCoroutine(Grapple());
         }
 
+        //private bool dd = false;
+
         private System.Collections.IEnumerator Grapple()
         {
             if (!_hook) yield break;
@@ -99,11 +102,19 @@ namespace Pharaoh.Gameplay
             {
                 nextPosition =  Vector2.Lerp(startPosition, finalMoveTarget.position, curve.Evaluate(currentTime / timeToTravel));
                 currentTime = Mathf.MoveTowards(currentTime, timeToTravel, Time.fixedDeltaTime * speed);
+                //FindObjectOfType<PlayerMovement>().animator.SetTrigger("Will Be Hooked");
+
+                if ((currentTime / timeToTravel) >= 0.9f && !_triggerSet)
+                {
+                    Debug.Log((currentTime / timeToTravel));
+                    FindObjectOfType<PlayerMovement>().animator.SetTrigger("Will Be Hooked");
+                    _triggerSet = true;
+                }
                 Perform();
 
                 yield return _waitForFixedUpdate;
             }
-            
+            _triggerSet = false;
             End();
         }
     }
