@@ -9,22 +9,9 @@ namespace Pharaoh.Gameplay.Components
     {
         [SerializeField, Header("HookEvents")]
         private HookBehaviourEvents hookEvents;
-
-        public Damager damager { get; private set; }
-
-        protected override void Awake()
+        
+        private void OnEnable()
         {
-            base.Awake();
-
-            if (!TryGetComponent(out Damager d)) return;
-            damager = d;
-            damager.enabled = false;
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
             // Hook bindings
             if (!hookEvents) return;
             hookEvents.started += OnHookStarted;
@@ -33,10 +20,8 @@ namespace Pharaoh.Gameplay.Components
             hookEvents.released += OnHookReleased;
         }
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
-            base.OnDisable();
-            
             // Hook bindings
             if (!hookEvents) return;
             hookEvents.started -= OnHookStarted;
@@ -45,31 +30,18 @@ namespace Pharaoh.Gameplay.Components
             hookEvents.released -= OnHookReleased;
         }
 
-        /// <summary>
-        /// set enabled to all necessary component for killing
-        /// to be used by the AnimationEvent
-        /// </summary>
-        /// <param name="value">int instead of bool 0 = false > 0 = true</param>
-        public void SetAttackState(int value = 0)
-        {
-            // if (!coll2D) return;
-            // coll2D.enabled = value > 0;
-            if (!damager) return;
-            damager.enabled = value > 0;
-        }
-
-        public void Repel(Gear gear)
+        public void Repel(Gear gear, GameObject target)
         {
             if (gear != this) return;
 
             Debug.Log($"Repel with {name}");
         }
-
         
         private void OnHookStarted(HookBehaviour behaviour)
         {
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
+            if (!TryGetComponent(out Rigidbody2D rb2D)) return;
             
             rb2D.velocity = Vector2.zero;
             rb2D.bodyType = RigidbodyType2D.Kinematic;
@@ -79,7 +51,8 @@ namespace Pharaoh.Gameplay.Components
         { 
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
-            
+            if (!TryGetComponent(out Rigidbody2D rb2D)) return;
+
             transform.parent = null;
             rb2D.MovePosition(behaviour.nextPosition);
         }
@@ -88,7 +61,8 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
-            
+            if (!TryGetComponent(out Rigidbody2D rb2D)) return;
+
             rb2D.bodyType = RigidbodyType2D.Dynamic;
         }
     
@@ -96,7 +70,8 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!behaviour.isCurrentTarget || behaviour.gameObject != gameObject) return;
             if (behaviour is not SnatchHookBehaviour snatch) return;
-            
+            if (!TryGetComponent(out Rigidbody2D rb2D)) return;
+
             rb2D.bodyType = RigidbodyType2D.Dynamic;
         }
     }

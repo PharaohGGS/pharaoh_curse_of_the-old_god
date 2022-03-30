@@ -81,11 +81,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
---- !u!50 &2473299566610043702 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 1033959073703909373, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
-  m_PrefabInstance: {fileID: 3173824523632018635}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3961891405360250932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1941270978020066559, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
@@ -101,12 +96,40 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.15, y: 0.5}
   m_Direction: 0
+--- !u!114 &-5094336525016955194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961891405360250932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb671f150254eac46938af540128725e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 7e048eafab816e04094954f3d347e6a7, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1519241427554425742}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.SnatchHookBehaviour, Pharaoh
+        m_MethodName: Release
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &714299209980879289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,26 +145,9 @@ MonoBehaviour:
   collidingLayers:
     serializedVersion: 2
     m_Bits: 1024
-  onGroundHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2473299566610043702}
-        m_TargetAssemblyTypeName: UnityEngine.Rigidbody2D, UnityEngine
-        m_MethodName: set_isKinematic
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onSocketAttach:
-    m_PersistentCalls:
-      m_Calls: []
+  socket: {fileID: 0}
   data: {fileID: 11400000, guid: 6a9d2da7ba5b160459cf1654a6313680, type: 2}
-  hookEvents: {fileID: 0}
+  hookEvents: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
 --- !u!114 &1519241427554425742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,8 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 714299209980879289}
@@ -197,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <data>k__BackingField: {fileID: 11400000, guid: 5da3c8f5fa67cb243a2f18fbc6d03a34, type: 2}
+  data: {fileID: 11400000, guid: 5da3c8f5fa67cb243a2f18fbc6d03a34, type: 2}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 131072
@@ -223,10 +229,6 @@ MonoBehaviour:
   onCollisionHit:
     m_PersistentCalls:
       m_Calls: []
-  maxOverlappedColliders: 3
-  onOverlapHit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6025110177877744345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,8 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d799dc9e9e7f7d74f9a6854e7fa27c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: 91befd3d2b547a5408e8bb89c46f7ad2, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1519241427554425742}
@@ -267,8 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d40a9b0ce53bc46b15ac6872aecaf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: f396ba7929b886c429c204757f826b11, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1519241427554425742}

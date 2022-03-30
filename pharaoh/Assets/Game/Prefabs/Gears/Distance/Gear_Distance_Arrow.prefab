@@ -138,6 +138,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
+    - {fileID: 1033959073703909373, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
 --- !u!4 &1455324370370325493 stripped
 Transform:
@@ -175,34 +176,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &-6634590221971305810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7673519014285010721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 815006fa4ebf8f047909a042b5ffa6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
-  <response>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5855970113417228140}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.DistanceGear, Pharaoh
-        m_MethodName: SetupShoot
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &5855970113417228140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,12 +191,6 @@ MonoBehaviour:
   collidingLayers:
     serializedVersion: 2
     m_Bits: 0
-  onGroundHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onSocketAttach:
-    m_PersistentCalls:
-      m_Calls: []
   data: {fileID: 11400000, guid: d72e271f43e18f248a10a4d0cbda7770, type: 2}
   damagerPrefab: {fileID: 2599951278245180452, guid: b7c8b7e9c7684824ea4d81a1c1fb0d96, type: 3}
   collectionChecks: 1
@@ -257,8 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5855970113417228140}
@@ -270,6 +237,6 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: isAttacking
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
