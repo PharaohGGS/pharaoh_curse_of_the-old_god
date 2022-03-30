@@ -61,7 +61,7 @@ namespace Pharaoh.AI.Actions
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", rate);
 
-            return NodeState.Running;
+            return NodeState.Success;
         }
 
         protected override void OnStop()

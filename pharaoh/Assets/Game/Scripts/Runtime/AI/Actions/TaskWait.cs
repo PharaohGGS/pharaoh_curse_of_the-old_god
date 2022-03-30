@@ -5,9 +5,7 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskWait : ActionNode
     {
-        private float _startTime = 0f;
-        
-        [SerializeField] private float timeSince;
+        [SerializeField] private float _startTime = 0f;
 
         protected override void OnStart()
         {
@@ -20,24 +18,17 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (state == NodeState.Success || 
-                !blackboard.TryGetData("waitTime", out float waitTime))
+            if (state == NodeState.Success || !blackboard.TryGetData("waitTime", out float waitTime))
             {
                 return state;
             }
 
-            timeSince = Time.time - _startTime;
-            state = timeSince <= waitTime
-                ? NodeState.Running : NodeState.Success;
+            float timeSince = Time.time - _startTime;
+            bool isWaiting = timeSince < waitTime;
+            blackboard.SetData("timeSince", timeSince);
+            blackboard.SetData("isWaiting", isWaiting);
 
-            blackboard.SetData("isWaiting", state == NodeState.Running);
-            //if (state == NodeState.Success)
-            //{
-            //    blackboard.ClearData("waitTime");
-            //    timeSince = 0f;
-            //}
-
-            return state;
+            return isWaiting ? NodeState.Running : NodeState.Success;
         }
 
         protected override void OnStop()
