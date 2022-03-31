@@ -60,6 +60,20 @@ public class SandSoldierBehaviour : MonoBehaviour
 
     public void Preview()
     {
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            transform.position,
+            new Vector2(transform.localScale.x, transform.localScale.y) * 0.9f,
+            0f,
+            Vector2.zero,
+            0f,
+            BlockingLayer);
+        if (hits.Length > 0)
+        {
+            transform.position = _caster.transform.position;
+            Summon();
+            return;
+        }
+        
         _previewCoroutine = StartCoroutine(PreviewCoroutine());
     }
     
@@ -186,7 +200,9 @@ public class SandSoldierBehaviour : MonoBehaviour
     {
         if (_spawned) return;
         _spawned = true;
-        StopCoroutine(_previewCoroutine);
+        if (_previewCoroutine != null)
+            StopCoroutine(_previewCoroutine);
+        _previewCoroutine = null;
         _summonCoroutine = StartCoroutine(SummonCoroutine());
     }
 
