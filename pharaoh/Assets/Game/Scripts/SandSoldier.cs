@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using Pharaoh.Gameplay.Components.Movement;
 using UnityEditor;
 using UnityEngine;
@@ -13,6 +15,9 @@ public class SandSoldier : MonoBehaviour
     public GameObject sandSoldier;
     [Tooltip("Prefab for the soldier preview.")]
     public GameObject soldierPreview;
+
+    [Header("Inputs")]
+    public InputReader inputReader;
     
     [Header("References")]
     [Tooltip("Place the player's model reference, used to get player facing direction.")]
@@ -29,8 +34,12 @@ public class SandSoldier : MonoBehaviour
     public float timeToAppearFromGround = 0.35f;
     [Tooltip("Soldier's life expectancy.")]
     public float timeToExpire = 10f;
+    public float maximumTimeIfMultipleSoldiers = 3f;
+    public int maxSoldiers = 2;
+    public Vector2 soldierSize;
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
+    public LayerMask soldierLayer;
 
     // [Header("VFX")]
     // [Tooltip("Soldier position preview VFX")]
@@ -40,74 +49,165 @@ public class SandSoldier : MonoBehaviour
     private Coroutine _previewCoroutine; // Stores the preview coroutine
     private Coroutine _colliderCoroutine; // Useless to store this coroutine for now
     private Coroutine _expiredCoroutine; // Coroutine to destroy the soldier when its time.
-    private GameObject _soldier; // Stores the reference of the final sand soldier
     private Vector3 _soldierPosition; // used to store the soldier position during the preview
-    private bool _summoned; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
+    private bool _longPress; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
     private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
-    private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
     private PlayerMovement _playerMovement;
+
+    private List<GameObject> _soldiers;
+    private Dictionary<int, float> _soldiersLifetime;
+    private Dictionary<int, Coroutine> _soldiersExpireCoroutine;
+    private SandSoldierBehaviour _soldierPreview;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
         _playerMovement = GetComponent<PlayerMovement>();
+        _soldiers = new List<GameObject>();
+        _soldiersLifetime = new Dictionary<int, float>();
+        _soldiersExpireCoroutine = new Dictionary<int, Coroutine>();
     }
 
     private void OnEnable()
     {
-        _playerInput.Enable();
-        _playerInput.CharacterActions.SandSoldier.started += InitiateSummon; // Pressed
-        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Release
+        inputReader.sandSoldierPerformedEvent += InitiateSummon;
+        inputReader.sandSoldierCanceledEvent += SummonSoldier;
+        inputReader.killAllSoldiersStartedEvent += KillAllSoldiers;
     }
 
     private void OnDisable()
     {
-        _playerInput.Disable();
-        _playerInput.CharacterActions.SandSoldier.started -= InitiateSummon;
-        _playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
+        inputReader.sandSoldierPerformedEvent -= InitiateSummon;
+        inputReader.sandSoldierCanceledEvent -= SummonSoldier;
+        inputReader.killAllSoldiersStartedEvent -= KillAllSoldiers;
     }
-
+    
     // Called on button press
     // Cancel / Delete previous summons and start the preview
-    private void InitiateSummon(InputAction.CallbackContext obj)
+    private void InitiateSummon()
     {
         if (_playerMovement.IsPullingBlock) return;
         
-        StopAllCoroutines();
-        _summoned = false;
-        if (_soldier != null) // If there's already a sand soldier, destroy it
-            Destroy(_soldier);
+        _longPress = true;
+        
         if (_expiredCoroutine != null)
             StopCoroutine(_expiredCoroutine);
-        
-        // Calculate the start position of the preview from minRange and model rotation.
-        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
-        _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
-        _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
+
+        GameObject go = Instantiate(soldierPreview, transform.position, Quaternion.identity);
+        if (!go.TryGetComponent(out _soldierPreview))
+        {
+            Debug.Log("No Sand Soldier Behaviour");
+            Destroy(go);
+            return;
+        }
+
+        _soldierPreview.onSummon += SummonSoldier;
         // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
     }
 
     // Called on button release or on other specific conditions
     // Instantiates the soldier and starts the growing collider coroutine
-    private void SummonSoldier(InputAction.CallbackContext obj = new())
+    private void SummonSoldier()
     {
         if (_playerMovement.IsPullingBlock) return;
-        
-        if (_summoned) return;
-        _summoned = true;
 
-        if (_previewCoroutine != null)
-            StopCoroutine(_previewCoroutine);
-        _previewCoroutine = null;
+        if (!_longPress)
+        {
+            StandSummon();
+            return;
+        }
         
-        // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
-        // previewVFX.Stop();
-        Destroy(_soldierPreviewInstance);
+        _longPress = false;
+
+        if (!_soldierPreview.groundHit) return;
+
+        if (_soldierPreview == null) return;
+
+        Vector3 position = _soldierPreview.transform.position;
+        position.z = transform.position.z;
+
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.zero,
+            0f,
+            soldierLayer);
+        Destroy(_soldierPreview.gameObject);
+        foreach (var hit in hits)
+        {
+            KillSoldier(hit.collider.gameObject);
+        }
         
-        if (!_groundHit) return;
-        _soldierPosition.z = transform.position.z;
-        _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
-        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
+        HandleSoldiers();
+
+        GameObject soldier = Instantiate(sandSoldier, position, Quaternion.identity);
+        _soldiers.Add(soldier);
+        _soldiersLifetime.Add(soldier.GetInstanceID(), timeToExpire);
+        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(soldier));
+    }
+
+    private void StandSummon()
+    {
+        Vector3 position = transform.position;
+        
+        RaycastHit2D groundHit = Physics2D.Raycast(
+            position,
+            Vector2.down,
+            10f,
+            groundLayer);
+
+        position.y = groundHit.point.y + soldierSize.y / 2f;
+        
+        RaycastHit2D leftWallHit = Physics2D.Raycast(
+            position,
+            Vector2.left,
+            soldierSize.x / 2f,
+            groundLayer);
+        RaycastHit2D rightWallHit = Physics2D.Raycast(
+            position,
+            Vector2.right,
+            soldierSize.x / 2f,
+            groundLayer);
+
+        if (leftWallHit && rightWallHit) return;
+
+        if (leftWallHit)
+            position.x = leftWallHit.point.x + soldierSize.x / 2f;
+        else if (rightWallHit)
+            position.x = rightWallHit.point.x - soldierSize.x / 2f;
+        
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.zero,
+            0f,
+            soldierLayer);
+        foreach (var hit in hits)
+        {
+            KillSoldier(hit.collider.gameObject);
+        }
+        
+        HandleSoldiers();
+        
+        GameObject soldier = Instantiate(sandSoldier, position, Quaternion.identity);
+        _soldiers.Add(soldier);
+        _soldiersLifetime.Add(soldier.GetInstanceID(), timeToExpire);
+        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(soldier));
+    }
+
+    private void HandleSoldiers()
+    {
+        if (_soldiers.Count >= maxSoldiers)
+            KillSoldier(_soldiers[0]);
+
+        List<int> ids = new List<int>(_soldiersLifetime.Keys);
+        foreach (int id in ids)
+        {
+            if (_soldiersLifetime[id] > maximumTimeIfMultipleSoldiers)
+                _soldiersLifetime[id] = maximumTimeIfMultipleSoldiers;
+        }
     }
 
     // Lerp from minRange to maxRange to preview the soldier position at time t
@@ -127,7 +227,6 @@ public class SandSoldier : MonoBehaviour
             groundLayer);
         if (wallHit)
         {
-            Debug.Log(wallHit.point);
             _soldierPosition.x = wallHit.point.x -
                                  sandSoldier.GetComponent<BoxCollider2D>().size.x / 2f *
                                  sandSoldier.transform.localScale.x *
@@ -174,7 +273,7 @@ public class SandSoldier : MonoBehaviour
 
             // Vector3 vfxPos = _soldierPosition - previewVFX.gameObject.transform.position;
             // previewVFX.SetVector3("TargetPosition", vfxPos);
-            _soldierPreviewInstance.transform.position = _soldierPosition;
+            _soldierPreview.transform.position = _soldierPosition;
 
             yield return null;
         }
@@ -186,12 +285,18 @@ public class SandSoldier : MonoBehaviour
 
     // Lerp the soldier collider size and offset from 0 to full size
     // Used to lift object
-    private IEnumerator MoveSoldierCollider(BoxCollider2D col)
+    private IEnumerator MoveSoldierCollider(GameObject soldier)
     {
+        if (!soldier.TryGetComponent(out MeshRenderer meshRenderer) ||
+            !soldier.TryGetComponent(out BoxCollider2D col))
+        {
+            yield break;
+        }
+        
         float elapsed = 0f;
         col.offset = new Vector2(0, -0.5f);
         col.size = new Vector2(1, 0);
-        _soldier.GetComponent<MeshRenderer>().enabled = false;
+        meshRenderer.enabled = false;
         while (elapsed < timeToAppearFromGround)
         {
             Vector2 offset = col.offset;
@@ -205,30 +310,44 @@ public class SandSoldier : MonoBehaviour
         }
         col.offset = Vector2.zero;
         col.size = new Vector2(1, 1);
-        _soldier.GetComponent<MeshRenderer>().enabled = true;
-        _expiredCoroutine = StartCoroutine(ExpireSoldier());
+        meshRenderer.enabled = true;
+        _soldiersExpireCoroutine.Add(soldier.GetInstanceID(), StartCoroutine(SoldierExpiration(soldier)));
+        yield return null;
+    }
+    
+    private IEnumerator SoldierExpiration(GameObject soldier)
+    {
+        int id = soldier.GetInstanceID();
+        while (_soldiersLifetime[id] > 0f)
+        {
+            _soldiersLifetime[id] -= Time.deltaTime;
+            yield return null;
+        }
+        KillSoldier(soldier);
         yield return null;
     }
 
-    // Kills the soldier if timeToExpire has been reached.
-    private IEnumerator ExpireSoldier()
+    private void KillSoldier(GameObject soldier)
     {
-        yield return new WaitForSeconds(timeToExpire);
-        Destroy(_soldier);
+        if (soldier == null) return;
+        
+        int id = soldier.GetInstanceID();
+        StopCoroutine(_soldiersExpireCoroutine[id]);
+        _soldiers.Remove(soldier);
+        _soldiersLifetime.Remove(id);
+        _soldiersExpireCoroutine.Remove(id);
+        Destroy(soldier);
     }
-
-    // Useless but I don't want to remove it ...
-    /*private Vector3 GetMouseWorldPosition()
+    
+    private void KillAllSoldiers()
     {
-        Vector3 pos = _playerInput.CharacterActions.MousePosition.ReadValue<Vector2>();
-        if (Camera.main != null)
+        foreach (GameObject soldier in _soldiers)
         {
-            pos.z = Mathf.Abs(Camera.main.gameObject.transform.position.z);
-            pos = Camera.main.ScreenToWorldPoint(pos);
+            Destroy(soldier);
         }
-        pos.z = 0;
-        return pos;
-    }*/
+        _soldiers.Clear();
+        _soldiersLifetime.Clear();
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

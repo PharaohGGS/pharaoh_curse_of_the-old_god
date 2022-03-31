@@ -27,6 +27,11 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
 
+    public UnityAction sandSoldierStartedEvent;
+    public UnityAction sandSoldierPerformedEvent;
+    public UnityAction sandSoldierCanceledEvent;
+    public UnityAction killAllSoldiersStartedEvent;
+
     public UnityAction exitPerformedEvent;
 
     public InputAction hookGrapple { get; private set; }
@@ -65,7 +70,22 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public void OnSandSoldier(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                sandSoldierPerformedEvent?.Invoke();
+                break;
+            case InputActionPhase.Canceled:
+                sandSoldierCanceledEvent?.Invoke();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OnKillAllSoldiers(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started) killAllSoldiersStartedEvent?.Invoke();
     }
 
     public void OnMove(InputAction.CallbackContext context)

@@ -262,6 +262,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KillAllSoldiers",
+                    "type": "Button",
+                    "id": "00481974-5ce6-465d-83ea-231d148fbdaf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -291,7 +300,7 @@
                     "name": "",
                     "id": "dd9af54a-a94a-43e3-962e-b9574a313adf",
                     "path": "<Keyboard>/q",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -302,7 +311,7 @@
                     "name": "",
                     "id": "77ee1f47-04fb-4eac-a2c3-e3a40c47e582",
                     "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -328,6 +337,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "HookInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d792acd-9e55-4fd0-adc1-b577925a9de0",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KillAllSoldiers",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
