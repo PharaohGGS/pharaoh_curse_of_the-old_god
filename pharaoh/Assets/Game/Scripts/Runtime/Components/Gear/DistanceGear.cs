@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 
 namespace Pharaoh.Gameplay.Components
 {
-    public class DistanceGear : Gear<DistanceGearData>
+    public class DistanceGear : Gear<DistanceGearData>, IWeapon
     {
         // weapon bullet pool
         [SerializeField] private Damager damagerPrefab;
@@ -52,9 +52,9 @@ namespace Pharaoh.Gameplay.Components
             return damager;
         }
         
-        public void Shoot(Gear shootingGear, GameObject target)
+        private void Shoot(GameObject target)
         {
-            if (shootingGear != this || !target) return;
+            if (!target) return;
 
             var damager = ammos.Get();
 
@@ -67,7 +67,9 @@ namespace Pharaoh.Gameplay.Components
 
             onGearShoot?.Invoke(damager);
 
-            LogHandler.SendMessage($"{shootingGear.name} shooting {damager.name}", MessageType.Warning);
+            LogHandler.SendMessage($"{name} shooting {damager.name}", MessageType.Warning);
         }
+
+        public void Attack(GameObject target) => Shoot(target);
     }
 }

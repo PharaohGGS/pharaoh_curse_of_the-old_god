@@ -8,13 +8,13 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskGrabGear : ActionNode
     {
-        private AttackComponent _attack = null;
+        private FightComponent _fight = null;
         
         protected override void OnStart()
         {
-            if (_attack) return;
+            if (_fight) return;
 
-            if (!agent.TryGetComponent(out _attack))
+            if (!agent.TryGetComponent(out _fight))
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
             }
@@ -22,7 +22,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || !blackboard.TryGetData("target", out Transform t)) return NodeState.Running;
+            if (!_fight || !blackboard.TryGetData("target", out Transform t)) return NodeState.Running;
             if (!t.TryGetComponent(out Gear gear) || !gear.isThrown || !gear.isGrounded) return NodeState.Running;
 
             gear.SocketAttach(true);

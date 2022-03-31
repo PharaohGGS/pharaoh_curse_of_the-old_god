@@ -21,6 +21,27 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   gearData: {fileID: 11400000, guid: d72e271f43e18f248a10a4d0cbda7770, type: 2}
+--- !u!114 &-6416684230912776584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083b40f4dea97be4e9c446b99b3892e5, type: 3}
+  m_Name: TaskWait
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 1e1013e2b4b1a3c479b6f4d812a47893
+  position: {x: 150, y: 463}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  _startTime: 0
 --- !u!114 &-4286555524523840344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,11 +123,11 @@ MonoBehaviour:
   - {fileID: 5959562998299471666}
   - {fileID: 9220730513248718456}
   - {fileID: -4177806761585027262}
-  - {fileID: 7158439463935566125}
   - {fileID: -2973997059861254435}
   - {fileID: -7023704341929279928}
   - {fileID: -4286555524523840344}
   - {fileID: 3435242174128326388}
+  - {fileID: -6416684230912776584}
   blackboard:
     debugData: []
 --- !u!114 &1953488738548408615
@@ -164,7 +185,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: -4286555524523840344}
-  - {fileID: 7158439463935566125}
+  - {fileID: -6416684230912776584}
 --- !u!114 &5959562998299471666
 MonoBehaviour:
   m_ObjectHideFlags: 0

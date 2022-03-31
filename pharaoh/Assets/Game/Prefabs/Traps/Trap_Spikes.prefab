@@ -77,14 +77,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3567611914596130899, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
-      propertyPath: gears.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3567611914596130899, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
-      propertyPath: gears.Array.data[0]
-      value: 
-      objectReference: {fileID: 6253421294947275725}
     - target: {fileID: 6684974063385550921, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -132,7 +124,7 @@ PrefabInstance:
     - target: {fileID: 6787146677598212142, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
       propertyPath: gearPrefab
       value: 
-      objectReference: {fileID: 2673636097581239478, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6787146677598212142, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
       propertyPath: <data>k__BackingField
       value: 
@@ -147,6 +139,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6787146677598212142, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+    - {fileID: 3567611914596130899, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+    - {fileID: 1006042470448372943, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+    - {fileID: 1507483770201521569, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
 --- !u!1 &122903603835565847 stripped
 GameObject:
@@ -267,24 +262,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2673636097581239478, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
-      propertyPath: socket
-      value: 
-      objectReference: {fileID: 4509982040141776828}
     - target: {fileID: 7673519014285010721, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
       propertyPath: m_Name
-      value: Gear_Melee_Spike
+      value: Damager_Melee_Spike
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
---- !u!114 &6253421294947275725 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2673636097581239478, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
-  m_PrefabInstance: {fileID: 8345790596376420219}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d8a17eb916f8ae41b830a3a69561a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

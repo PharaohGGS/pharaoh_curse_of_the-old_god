@@ -9,15 +9,13 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        [SerializeField] protected GearData gearData;
-
-        private AttackComponent _attack = null;
+        private FightComponent _fight = null;
         
         protected override void OnStart()
         {
-            if (_attack) return;
+            if (_fight) return;
 
-            if (!agent.TryGetComponent(out _attack))
+            if (!agent.TryGetComponent(out _fight))
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
             }
@@ -25,13 +23,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || !gearData) return NodeState.Failure;
-
-            if (!gearData.canAttack)
-            {
-                LogHandler.SendMessage($"{agent.name} can't attack with this data", MessageType.Warning);
-                return NodeState.Failure;
-            }
+            if (!_fight) return NodeState.Failure;
 
             if (!blackboard.TryGetData("target", out Transform t) || t == null || !t.gameObject.activeInHierarchy)
             {
@@ -39,34 +31,43 @@ namespace Pharaoh.AI.Actions
                 return NodeState.Failure;
             }
 
-            if (!_attack.dataGears.TryGetValue(gearData, out Gear gear))
+            var weapon = _fight.activeWeapon;
+            if (!weapon || !weapon.isActiveAndEnabled)
             {
-                LogHandler.SendMessage($"{agent.name} don't have a gear with this kind of data.", MessageType.Error);
+                LogHandler.SendMessage($"{agent.name} don't have a active weapon to attack.", MessageType.Error);
                 return NodeState.Failure;
             }
 
-            if (gear.isThrown)
+            var distance = Vector2.Distance(agent.transform.position, t.position);
+            var data = weapon.GetBaseData();
+            var range = data.range;
+
+            if (distance > range)
+            {
+                LogHandler.SendMessage($"{agent.name} can't attack at this distance ({distance} > {range})", MessageType.Warning);
+                return NodeState.Failure;
+            }
+
+            if (weapon.isThrown)
             {
                 LogHandler.SendMessage($"{agent.name} have already throw his gear.", MessageType.Warning);
                 return NodeState.Failure;
             }
-
-            var rate = gearData.rate;
-            if (gearData is MeleeGearData {throwable: true} meleeGearData)
-            {
-                rate = meleeGearData.throwablePickingTime;
-            }
-
-            _attack.Attack(gearData, t.gameObject);
+            
+            _fight.Attack(t.gameObject);
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", rate);
+            blackboard.SetData("waitTime", data is MeleeGearData { throwable: true } meleeGearData
+                ? meleeGearData.throwablePickingTime : data.rate);
 
             return NodeState.Success;
         }
 
         protected override void OnStop()
         {
-            if (!_attack.currentTargetHealth) blackboard.ClearData("target");
+            if (!_fight.hasTarget && state == NodeState.Success)
+            {
+                blackboard.ClearData("target");
+            }
         }
     }
 }

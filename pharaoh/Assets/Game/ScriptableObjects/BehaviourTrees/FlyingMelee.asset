@@ -591,7 +591,6 @@ MonoBehaviour:
   - {fileID: -7740586410243994410}
   - {fileID: 1246385073974385994}
   - {fileID: -2544149763600791116}
-  - {fileID: 6391869510671860528}
   - {fileID: -2224927277969790943}
   - {fileID: -2000076536378003351}
   - {fileID: 3968242717453709997}
@@ -611,7 +610,6 @@ MonoBehaviour:
   - {fileID: 1359012154370052394}
   - {fileID: -4025043610794586021}
   - {fileID: -5656682697440680594}
-  - {fileID: -8746935461951796396}
   - {fileID: 499366102819698988}
   - {fileID: -2924499960382449861}
   - {fileID: 6345567848589906817}
@@ -625,12 +623,13 @@ MonoBehaviour:
   - {fileID: -3096325535345714479}
   - {fileID: 7359272606187463923}
   - {fileID: 769044212368190556}
-  - {fileID: 7835564540787939621}
   - {fileID: 4645499408214493252}
   - {fileID: -4697926653593632615}
   - {fileID: -4453681926162657428}
   - {fileID: -2148462126973900033}
   - {fileID: -1512577655776041280}
+  - {fileID: 1707250390109407312}
+  - {fileID: 5593632131041044447}
   blackboard:
     debugData: []
 --- !u!114 &499366102819698988
@@ -716,7 +715,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   children:
   - {fileID: 4153016697622680544}
-  - {fileID: 6391869510671860528}
+  - {fileID: 1707250390109407312}
 --- !u!114 &1359012154370052394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,6 +736,27 @@ MonoBehaviour:
   blackboard:
     debugData: []
   agent: {fileID: 0}
+--- !u!114 &1707250390109407312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083b40f4dea97be4e9c446b99b3892e5, type: 3}
+  m_Name: TaskWait
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 0d275a3887c149144b79cc66e3ca70ba
+  position: {x: 663, y: 472}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  _startTime: 0
 --- !u!114 &1949498617498167941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,7 +780,7 @@ MonoBehaviour:
   children:
   - {fileID: -3686407123971193803}
   - {fileID: -5656682697440680594}
-  - {fileID: -8746935461951796396}
+  - {fileID: 5593632131041044447}
 --- !u!114 &2097741043379358183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -961,6 +981,27 @@ MonoBehaviour:
     debugData: []
   agent: {fileID: 0}
   gearData: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
+--- !u!114 &5593632131041044447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083b40f4dea97be4e9c446b99b3892e5, type: 3}
+  m_Name: TaskWait
+  m_EditorClassIdentifier: 
+  state: 0
+  hasStart: 0
+  guid: 41fee65d6a780a04b84ccfb7b6d1467c
+  position: {x: -1285, y: 1140}
+  description: 
+  blackboard:
+    debugData: []
+  agent: {fileID: 0}
+  _startTime: 0
 --- !u!114 &6342410274024144906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1091,6 @@ MonoBehaviour:
   - {fileID: -2148462126973900033}
   - {fileID: -3096325535345714479}
   - {fileID: 769044212368190556}
-  - {fileID: 7835564540787939621}
 --- !u!114 &7543306493078875024
 MonoBehaviour:
   m_ObjectHideFlags: 0

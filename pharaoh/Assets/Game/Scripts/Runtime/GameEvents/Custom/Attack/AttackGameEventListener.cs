@@ -4,5 +4,5 @@ using UnityEngine.Events;
 
 namespace Pharaoh.GameEvents
 {
-    public class AttackGameEventListener : AbstractGameEventListener<Gear, GameObject, AttackGameEvent, UnityEvent<Gear, GameObject>> { }
+    public class AttackGameEventListener : AbstractGameEventListener<int, GameObject, AttackGameEvent, UnityEvent<int, GameObject>> { }
 }
