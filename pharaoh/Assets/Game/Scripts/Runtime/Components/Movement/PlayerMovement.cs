@@ -75,6 +75,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
+            inputReader.Initialize(); //need to manually initialize
             if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
         }
 

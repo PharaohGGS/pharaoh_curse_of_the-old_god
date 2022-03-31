@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "InputReader")]
@@ -33,7 +33,8 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public InputAction hookInteract { get; private set; }
     public bool isFacingRight { get; private set; } = true;
     
-    private void OnEnable()
+    // Used to be OnEnable() method, but OnEnable() doesn't work in a build :/ Unity documentation wrong for years
+    public void Initialize()
     {
         if (_playerInput == null)
         {
@@ -48,13 +49,6 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
         hookGrapple = _playerInput.CharacterActions.HookGrapple;
         hookInteract = _playerInput.CharacterActions.HookInteract;
-    }
-
-    private void OnDisable()
-    {
-        _playerInput.CharacterControls.Disable();
-        _playerInput.CharacterActions.Disable();
-        _playerInput.Game.Disable();
     }
 
     public void OnHookGrapple(InputAction.CallbackContext context)

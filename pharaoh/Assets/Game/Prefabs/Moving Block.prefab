@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4404950806026896874}
   m_Layer: 16
   m_Name: Moving Block
-  m_TagString: Untagged
+  m_TagString: MovingBlock
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <data>k__BackingField: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
+  data: {fileID: 0}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 131072
@@ -345,10 +345,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   onCollisionHit:
-    m_PersistentCalls:
-      m_Calls: []
-  maxOverlappedColliders: 3
-  onOverlapHit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2128136557891325146
