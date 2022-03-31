@@ -8,6 +8,8 @@ using UnityEngine.Events;
 public class MovingBlock : MonoBehaviour
 {
 
+    public ulong instanceID;
+
     public LayerMask whatIsSpike;
     public LayerMask whatIsGround;
 

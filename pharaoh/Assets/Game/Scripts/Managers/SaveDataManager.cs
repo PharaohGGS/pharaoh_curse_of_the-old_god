@@ -3,6 +3,7 @@ using DesignPatterns;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace Pharaoh.Managers
 {
@@ -12,6 +13,8 @@ namespace Pharaoh.Managers
         [System.Serializable]
         private class SaveData
         {
+            public static readonly float DEFLOAT = -666f;
+
             public float[] lastCheckpoint;
             public bool[] skills; //[Swarm Dash, Sand Soldier, Grappling Hook]
             public bool[] enemiesStates;
@@ -19,18 +22,22 @@ namespace Pharaoh.Managers
             public float[] blocksPositions_y;
             public float[] blocksPositions_z;
 
-            public SaveData()
+            public SaveData(uint movingBlockCount)
             {
                 lastCheckpoint = new float[] { 0f, 0f, 0f };
                 skills = new bool[] { false, false, false };
                 enemiesStates = new bool[0];
-                blocksPositions_x = new float[0];
-                blocksPositions_y = new float[0];
-                blocksPositions_z = new float[0];
+                blocksPositions_x = new float[movingBlockCount];
+                blocksPositions_y = new float[movingBlockCount];
+                blocksPositions_z = new float[movingBlockCount];
+                Array.Fill<float>(blocksPositions_x, DEFLOAT);
+                Array.Fill<float>(blocksPositions_y, DEFLOAT);
+                Array.Fill<float>(blocksPositions_z, DEFLOAT);
             }
         }
 
         private readonly string SAVEFILE = "/save.dat";
+        [HideInInspector] public uint MOVINGBLOCKSCOUNT;
 
         private SaveData _saveData;
         private GameObject _player;
@@ -45,7 +52,7 @@ namespace Pharaoh.Managers
 
         private void Start()
         {
-            _saveData = new SaveData();
+            _saveData = new SaveData(MOVINGBLOCKSCOUNT);
             _player = GameObject.FindGameObjectWithTag("Player");
             _playerRespawn = FindObjectOfType<PlayerRespawn>();
         }
@@ -147,29 +154,17 @@ namespace Pharaoh.Managers
         // Saves the blocks positions into the save data object
         private void SaveBlocksPositions()
         {
-            // Finds all GameObjects with tag "MovingBlock" and sort them by position
-            IOrderedEnumerable<GameObject> sortedBlocks =
-                GameObject.FindGameObjectsWithTag("MovingBlock").ToList().OrderBy(block => block.GetInstanceID());
-
-            // Temporary lists
-            List<float> xPosition = new List<float>(), yPosition = new List<float>(), zPosition = new List<float>();
-
-            // Loops through each block and save its position in temporary lists
-            foreach (GameObject block in sortedBlocks)
+            // Loops through each MovingBlock and save its position in the save data
+            foreach (GameObject block in GameObject.FindGameObjectsWithTag("MovingBlock"))
             {
-                xPosition.Add(block.transform.position.x);
-                yPosition.Add(block.transform.position.y);
-                zPosition.Add(block.transform.position.z);
+                _saveData.blocksPositions_x[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.x;
+                _saveData.blocksPositions_y[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.y;
+                _saveData.blocksPositions_z[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.z;
             }
-
-            // Converts the temporary lists to arrays
-            _saveData.blocksPositions_x = xPosition.ToArray();
-            _saveData.blocksPositions_y = yPosition.ToArray();
-            _saveData.blocksPositions_z = zPosition.ToArray();
-
         }
 
         // Loads the blocks positions from the save data object
+        // DEPRECATED
         private void LoadBlocksPositions()
         {
             // Finds all GameObjects with tag "MovingBlock" and sort them by position
@@ -183,6 +178,14 @@ namespace Pharaoh.Managers
                 block.transform.position = new Vector3(_saveData.blocksPositions_x[i], _saveData.blocksPositions_y[i], _saveData.blocksPositions_z[i]);
                 i++;
             }
+        }
+
+        // Loads a block position from the save data object
+        // Returns true if the block ahs previously been saved, false otherwise
+        public bool LoadBlockPosition(ulong instanceID, out Vector3 position)
+        {
+            position = new Vector3(_saveData.blocksPositions_x[instanceID], _saveData.blocksPositions_y[instanceID], _saveData.blocksPositions_z[instanceID]);
+            return !(position.x == SaveData.DEFLOAT && position.y == SaveData.DEFLOAT && position.z == SaveData.DEFLOAT);
         }
 
         // Used to save/load from the inspector script
