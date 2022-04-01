@@ -2,7 +2,7 @@ using UnityEngine;
 using DesignPatterns;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System;
 
 namespace Pharaoh.Managers
@@ -37,12 +37,11 @@ namespace Pharaoh.Managers
         }
 
         private readonly string SAVEFILE = "/save.dat";
-        [HideInInspector] public uint MOVINGBLOCKSCOUNT;
+        public uint MOVING_BLOCKS_COUNT;
 
         private SaveData _saveData;
-        private GameObject _player;
-        private PlayerRespawn _playerRespawn;
 
+        public LastCheckpoint lastCheckpoint;
         public PlayerSkills playerSkills;
 
         [Header("BUTTONS")]
@@ -50,22 +49,60 @@ namespace Pharaoh.Managers
         public bool save;
         public bool load;
 
-        private void Start()
+        // Creates a new save file
+        public void NewSave()
         {
-            _saveData = new SaveData(MOVINGBLOCKSCOUNT);
-            _player = GameObject.FindGameObjectWithTag("Player");
-            _playerRespawn = FindObjectOfType<PlayerRespawn>();
+            Debug.Log("New Game started.");
+            _saveData = new SaveData(MOVING_BLOCKS_COUNT);
+            Save();
+        }
+
+        // Loads the save file
+        public void LoadSave()
+        {
+            Debug.Log("Loading game.");
+            _saveData = new SaveData(MOVING_BLOCKS_COUNT);
+            if (SaveFileExists())
+                Load();
+            else
+                Debug.LogWarning("Trying to load but no save file found.");
+        }
+
+        // Erases the save file
+        public void EraseSave()
+        {
+            if (SaveFileExists())
+                File.Delete(Application.persistentDataPath + SAVEFILE);
+            else
+                Debug.Log("No save file exists.");
         }
 
         // Saves the current state of the game - last checkpoint triggered, enemies states and blocks positions to a save data object
-        public void Save()
+        private void Save()
         {
-            SaveLastCheckpoint(_playerRespawn.respawnPoint);
+            SaveLastCheckpoint();
             SaveSkills();
-            //SaveEnemiesStates();
-            SaveBlocksPositions();
+            // Enemy states are saved during runtime
+            // Blocks positions are saved during runtime
 
             SaveToJSON();
+        }
+
+        // Loads the saved state of the game - last checkpoint triggered, enemies states and blocks positions from a save data object
+        private void Load()
+        {
+            LoadFromJSON();
+
+            LoadLastCheckpoint();
+            LoadSkills();
+            // Enemy states are loaded during runtime
+            // Blocks positions are loaded during runtime
+        }
+
+        // Returns whether there is a save file present or not
+        public bool SaveFileExists()
+        {
+            return File.Exists(Application.persistentDataPath + SAVEFILE);
         }
 
         // Writes the save data to a save file
@@ -73,17 +110,6 @@ namespace Pharaoh.Managers
         {
             File.WriteAllText(Application.persistentDataPath + SAVEFILE, JsonUtility.ToJson(_saveData));
             Debug.Log("Saved on file : " + Application.persistentDataPath + SAVEFILE);
-        }
-
-        // Loads the saved state of the game - last checkpoint triggered, enemies states and blocks positions from a save data object
-        public void Load()
-        {
-            LoadFromJSON();
-
-            LoadLastCheckpoint();
-            LoadSkills();
-            //LoadEnemiesStates();
-            LoadBlocksPositions();
         }
 
         // Loads the save data from the save file
@@ -95,16 +121,15 @@ namespace Pharaoh.Managers
 
 
         // Saves the last checkpoint triggered to the save data object
-        private void SaveLastCheckpoint(Vector3 checkpoint)
+        private void SaveLastCheckpoint()
         {
-            _saveData.lastCheckpoint = new float[] { checkpoint.x, checkpoint.y, checkpoint.z };
+            _saveData.lastCheckpoint = new float[] { lastCheckpoint.position.x, lastCheckpoint.position.y, lastCheckpoint.position.z };
         }
 
         // Loads the last checkpoint triggered from the save data object
         private void LoadLastCheckpoint()
         {
-            _playerRespawn.respawnPoint = new Vector3(_saveData.lastCheckpoint[0], _saveData.lastCheckpoint[1], _saveData.lastCheckpoint[2]);
-            _player.transform.position = _playerRespawn.respawnPoint;
+            lastCheckpoint.position = new Vector3(_saveData.lastCheckpoint[0], _saveData.lastCheckpoint[1], _saveData.lastCheckpoint[2]);
         }
 
         // Saves the states of the player skills to the save data object
@@ -151,16 +176,22 @@ namespace Pharaoh.Managers
             }*/
         }
 
-        // Saves the blocks positions into the save data object
         private void SaveBlocksPositions()
         {
-            // Loops through each MovingBlock and save its position in the save data
-            foreach (GameObject block in GameObject.FindGameObjectsWithTag("MovingBlock"))
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("MovingBlock"))
             {
-                _saveData.blocksPositions_x[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.x;
-                _saveData.blocksPositions_y[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.y;
-                _saveData.blocksPositions_z[block.GetComponent<MovingBlock>().instanceID] = block.transform.position.z;
+                _saveData.blocksPositions_x[go.GetComponent<SaveInstance>().instanceID] = go.transform.position.x;
+                _saveData.blocksPositions_y[go.GetComponent<SaveInstance>().instanceID] = go.transform.position.y;
+                _saveData.blocksPositions_z[go.GetComponent<SaveInstance>().instanceID] = go.transform.position.z;
             }
+        }
+
+        // Saves one block defined by its intance ID to a given position
+        public void SaveBlockPosition(ulong instanceID, Vector3 position)
+        {
+            _saveData.blocksPositions_x[instanceID] = position.x;
+            _saveData.blocksPositions_y[instanceID] = position.y;
+            _saveData.blocksPositions_z[instanceID] = position.z;
         }
 
         // Loads the blocks positions from the save data object
@@ -193,6 +224,7 @@ namespace Pharaoh.Managers
         {
             if (save)
             {
+                SaveBlocksPositions();
                 Save();
                 save = false;
             }
@@ -202,7 +234,6 @@ namespace Pharaoh.Managers
                 load = false;
             }
         }
-
     }
 }
 
