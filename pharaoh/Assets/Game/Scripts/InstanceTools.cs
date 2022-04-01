@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 
 public class InstanceTools
 {
@@ -12,7 +13,10 @@ public class InstanceTools
             go.GetComponent<MovingBlock>().instanceID = id++;
         }
 
-        GameObject.FindObjectOfType<Pharaoh.Managers.SaveDataManager>().GetComponent<Pharaoh.Managers.SaveDataManager>().MOVINGBLOCKSCOUNT = (uint)id;
+        if (Object.FindObjectOfType<SaveDataManager>().TryGetComponent(out SaveDataManager sdm))
+            sdm.MOVINGBLOCKSCOUNT = (uint)id;
+        else
+            Debug.LogWarning("Could not find any SaveDataManager in the current scene.");
         Debug.Log("Counted " + id + " moving blocks.");
     }
 }
