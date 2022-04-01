@@ -98,7 +98,8 @@ namespace BehaviourTree.Tools
             foreach (var key in keyData)
             {
                 var value = _data[key];
-                debugData.Add(new Data
+                if (value == null) continue;
+                debugData?.Add(new Data
                 {
                     key = key,
                     type = value.GetType().ToString(),
