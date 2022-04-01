@@ -187,7 +187,10 @@ namespace Pharaoh.Gameplay
             if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
-            
+
+            _movement.animator.SetTrigger("Hooking"); //sends a signal that the player has started the hooking process
+            _movement.IsHooking = true; //tells the PlayerMovement that the player is in a state of hooking
+
             // select the target based on the direction the player's facing
             Debug.Log($"hooking to {_currentTarget.name}");
             onHookGrapple?.Invoke(this, _currentTarget);

@@ -18,7 +18,7 @@ public class RespawnPoint : MonoBehaviour
         if (whatIsPlayer == (whatIsPlayer | 1 << collision.gameObject.layer))
         {
             //Binds this respawn point to the player
-            _playerRespawn.respawnPoint = respawnPoint;
+            _playerRespawn.respawnPoint = respawnPoint.transform.position;
         }
     }
 

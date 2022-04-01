@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "InputReader")]
-public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActions, PlayerInput.ICharacterActionsActions
+public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActions, PlayerInput.ICharacterActionsActions, PlayerInput.IGameActions
 {
 
     private PlayerInput _playerInput;
@@ -27,29 +27,28 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
 
+    public UnityAction exitPerformedEvent;
+
     public InputAction hookGrapple { get; private set; }
     public InputAction hookInteract { get; private set; }
     public bool isFacingRight { get; private set; } = true;
     
-    private void OnEnable()
+    // Used to be OnEnable() method, but OnEnable() doesn't work in a build :/ Unity documentation wrong for years
+    public void Initialize()
     {
         if (_playerInput == null)
         {
             _playerInput = new PlayerInput();
             _playerInput.CharacterControls.SetCallbacks(this);
             _playerInput.CharacterActions.SetCallbacks(this);
+            _playerInput.Game.SetCallbacks(this);
         }
         _playerInput.CharacterControls.Enable();
         _playerInput.CharacterActions.Enable();
+        _playerInput.Game.Enable();
 
         hookGrapple = _playerInput.CharacterActions.HookGrapple;
         hookInteract = _playerInput.CharacterActions.HookInteract;
-    }
-
-    private void OnDisable()
-    {
-        _playerInput.CharacterControls.Disable();
-        _playerInput.CharacterActions.Disable();
     }
 
     public void OnHookGrapple(InputAction.CallbackContext context)
@@ -104,6 +103,12 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     {
         if (context.phase == InputActionPhase.Performed && noclipPerformedEvent != null)
             noclipPerformedEvent.Invoke();
+    }
+
+    public void OnExit(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && exitPerformedEvent != null)
+            exitPerformedEvent.Invoke();
     }
 
     public void DisableMove()

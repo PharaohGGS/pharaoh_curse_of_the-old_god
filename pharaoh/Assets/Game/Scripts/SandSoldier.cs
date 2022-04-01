@@ -71,7 +71,7 @@ public class SandSoldier : MonoBehaviour
     // Cancel / Delete previous summons and start the preview
     private void InitiateSummon(InputAction.CallbackContext obj)
     {
-        if (_playerMovement.IsHookedToBlock) return;
+        if (_playerMovement.IsPullingBlock) return;
         
         StopAllCoroutines();
         _summoned = false;
@@ -91,7 +91,7 @@ public class SandSoldier : MonoBehaviour
     // Instantiates the soldier and starts the growing collider coroutine
     private void SummonSoldier(InputAction.CallbackContext obj = new())
     {
-        if (_playerMovement.IsHookedToBlock) return;
+        if (_playerMovement.IsPullingBlock) return;
         
         if (_summoned) return;
         _summoned = true;

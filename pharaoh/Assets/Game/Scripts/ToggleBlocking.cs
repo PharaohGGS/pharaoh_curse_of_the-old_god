@@ -34,6 +34,7 @@ public class ToggleBlocking : MonoBehaviour
 
     private void meshRendererEnabler(bool isDisplayed)
     {
+        if (meshRendererList == null) return;
         meshRendererList.ForEach((m) =>
         {
             if (m.gameObject.layer == groundLayer)
