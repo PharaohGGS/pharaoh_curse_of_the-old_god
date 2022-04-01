@@ -27,6 +27,14 @@ namespace Pharaoh.AI.Actions
 
             gear.SocketAttach(true);
             blackboard.ClearData("target");
+            
+            var weapon = _fight.activeWeapon;
+            if (weapon && weapon.isActiveAndEnabled)
+            {
+                blackboard.SetData("isWaiting", true);
+                blackboard.SetData("waitTime", weapon.GetBaseData().rate);
+            }   
+            
             return NodeState.Success;
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Pharaoh.Gameplay
 {
-    [CreateAssetMenu(fileName = "New Reaction Trap Data", menuName = "Data/Trap/Melee")]
+    [CreateAssetMenu(fileName = "New Melee Trap Data", menuName = "Data/Trap/Melee")]
     public class MeleeTrapData : TrapData
     {
         public float showingSpeed;

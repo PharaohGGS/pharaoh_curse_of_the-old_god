@@ -8,35 +8,19 @@ namespace Pharaoh.Gameplay.Components
 {
     public class FightComponent : MonoBehaviour
     {
-        [Header("Gears"), SerializeField] 
-        private Gear[] gears;
-
-        [Header("Armors")]
-        private readonly List<Gear> _armors = new List<Gear>();
-        public float armorDeal
-        {
-            get
-            {
-                if (_armors.Count <= 0) return 0f;
-
-                float deal = 0f;
-                foreach (var gear in _armors)
-                {
-                    if (!gear.transform.parent || !gear.TryGetData(out DefenseGearData defenseData)) continue;
-                    deal += defenseData.deal;
-                }
-
-                return deal;
-            }
-        }
-
         [Header("Weapons")]
+
+        [SerializeField] private Gear[] gears;
+        [field: SerializeField, Range(0.5f, 10f)] public float range { get; private set; } = 5f;
+
         private int _weaponIndex = -1;
         private readonly List<Gear> _weapons = new List<Gear>();
-        [field: SerializeField, Range(0.5f, 10f)] public float attackRange { get; private set; } = 5f;
+        
+        private GameObject _currentTarget;
+        private HealthComponent _targetHealth;
+
         public Gear activeWeapon => _weapons.Count >= 1 ? _weapons[_weaponIndex] : null;
-        private HealthComponent _currentTargetHealth;
-        public bool hasTarget => _currentTargetHealth != null;
+        public bool hasTarget => _currentTarget != null;
         
         private void Awake()
         {
@@ -45,15 +29,7 @@ namespace Pharaoh.Gameplay.Components
                 gears = GetComponentsInChildren<Gear>();
             }
 
-            foreach (var gear in gears)
-            {
-                var data = gear.GetBaseData();
-                if (data == null) continue;
-
-                if (data.GetGearType() == GearType.Defense) continue;
-                _weapons.Add(gear);
-            }
-
+            foreach (var gear in gears) if (gear is IWeapon) _weapons.Add(gear);
             if (_weapons.Count <= 0) return;
             _weaponIndex = 0;
         }
@@ -68,25 +44,35 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!activeWeapon || !target) return;
 
-            if (target.TryGetComponent(out HealthComponent targetHealth))
-            {
-                SubscribeToTargetHealth(targetHealth);
+            if (_currentTarget != target)
+            { 
+                _currentTarget = target;
+                SubscribeToTargetHealth();
             }
 
-            if (activeWeapon is IWeapon weapon) weapon.Attack(target);
+            if (activeWeapon is IWeapon weapon)
+            {
+                weapon.Attack(target);
+            }
         }
 
-        private void SubscribeToTargetHealth(HealthComponent targetHealth)
+        private void SubscribeToTargetHealth()
         {
-            if (_currentTargetHealth == targetHealth) return;
-            _currentTargetHealth?.onDeath?.RemoveListener(OnTargetDeath);
-            _currentTargetHealth = targetHealth;
-            _currentTargetHealth?.onDeath?.AddListener(OnTargetDeath);
+            if (!_currentTarget.TryGetComponent(out HealthComponent health) || health == _targetHealth)
+            {
+                return;
+            }   
+            
+            _targetHealth?.onDeath?.RemoveListener(OnTargetDeath);
+            _targetHealth = health;
+            _targetHealth?.onDeath?.AddListener(OnTargetDeath);
         }
 
         private void OnTargetDeath(HealthComponent targetHealth)
         {
-            _currentTargetHealth = null;
+            _targetHealth?.onDeath?.RemoveListener(OnTargetDeath);
+            _currentTarget = null;
+            _targetHealth = null;
         }
     }
 }

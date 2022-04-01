@@ -23,13 +23,14 @@ namespace Pharaoh.Gameplay
             }
         }
 
-        public override void TrapStart(TrapCapacity capacity, TrapBehaviour behaviour)
+        public override void Activate(GameObject target)
         {
-            if (behaviour != this) return;
-            StartCoroutine(Action(capacity, true));
+            bool isSameTarget = _currentTarget == target;
+            if (!isSameTarget) _currentTarget = target;
+            StartCoroutine(Action(!isSameTarget));
         }
 
-        private IEnumerator Action(TrapCapacity capacity, bool addDelay)
+        private IEnumerator Action(bool addDelay)
         {
             var delay = new WaitForSeconds(data.delay);
             var lifeTime = new WaitForSeconds(data.lifeTime);
@@ -38,11 +39,10 @@ namespace Pharaoh.Gameplay
             var show = Move(data.showingSpeed, hidingTransform.position, showingTransform.position);
             var hide = Move(data.hidingSpeed, showingTransform.position, hidingTransform.position);
 
+            isStarted = true;
+
             // wait a delay before activate the trap
-            if (addDelay)
-            {
-                yield return delay;
-            }
+            if (addDelay) yield return delay;
             
             // when showing, activate collider
             if (_col) _col.enabled = true;
@@ -57,12 +57,7 @@ namespace Pharaoh.Gameplay
 
             // timeOut after hiding
             yield return timeOut;
-
-            // if started continue the action
-            if (capacity.isStarted)
-            {
-                yield return StartCoroutine(Action(capacity, false));
-            }
+            isStarted = false;
         }
 
         private IEnumerator Move(float speed, Vector2 start, Vector2 end)

@@ -40,7 +40,9 @@ namespace Pharaoh.AI.Actions
 
             var distance = Vector2.Distance(agent.transform.position, t.position);
             var data = weapon.GetBaseData();
-            var range = data.range;
+            var meleeData = data as MeleeGearData;
+            var isThrowable = meleeData && meleeData.throwable;
+            var range = isThrowable ? meleeData.throwableRange : data.range;
 
             if (distance > range)
             {
@@ -56,8 +58,7 @@ namespace Pharaoh.AI.Actions
             
             _fight.Attack(t.gameObject);
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", data is MeleeGearData { throwable: true } meleeGearData
-                ? meleeGearData.throwablePickingTime : data.rate);
+            blackboard.SetData("waitTime", isThrowable ? meleeData.throwablePickingTime : data.rate);
 
             return NodeState.Success;
         }

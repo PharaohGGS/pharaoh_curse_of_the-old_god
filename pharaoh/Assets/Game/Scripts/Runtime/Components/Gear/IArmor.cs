@@ -1,7 +1,9 @@
-﻿namespace Pharaoh.Gameplay.Components
+﻿using UnityEngine;
+
+namespace Pharaoh.Gameplay.Components
 {
     public interface IArmor
     {
-        public void Defend();
+        public void Defend(GameObject target);
     }
 }

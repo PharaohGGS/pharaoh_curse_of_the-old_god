@@ -7,34 +7,24 @@ namespace Pharaoh.Gameplay
     [RequireComponent(typeof(DetectionComponent))]
     public class TrapCapacity : MonoBehaviour
     {
-        [SerializeField] protected UnityEvent<TrapCapacity, TrapBehaviour> onStart;
+        [SerializeField] private TrapBehaviour _behaviour;
 
-        private TrapBehaviour _behaviour;
         private DetectionComponent _detection;
-        private GameObject _currentTarget;
-        public bool isStarted { get; protected set; }
 
         protected virtual void Awake()
         {
             _detection = GetComponent<DetectionComponent>();
-            _behaviour = GetComponentInChildren<TrapBehaviour>();
-            isStarted = false;
+            if (!_behaviour) _behaviour = GetComponentInChildren<TrapBehaviour>();
         }
 
         protected virtual void Update()
         {
             // check if the current target is different (I mean null here)
             var currentTarget = _detection.GetGameObjectAtIndex(0);
-            if (_currentTarget != currentTarget)
-            {
-                if (currentTarget == null) isStarted = false;
-                _currentTarget = currentTarget;
-            }
-
-            // don't start trap when there isn't any target
-            if (!_currentTarget || isStarted) return;
-            isStarted = true;
-            onStart?.Invoke(this, _behaviour);
+            
+            // don't start trap when there isn't any target or already processing
+            if (!currentTarget || _behaviour.isStarted) return;
+            _behaviour.Activate(currentTarget);
         }
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
 {
-    [RequireComponent(typeof(Damager))]
-    public class DefenseGear : Gear<DefenseGearData>
+    public class DefenseGear : Gear<DefenseGearData>, IArmor
     {
         [SerializeField, Header("HookEvents")]
         private HookBehaviourEvents hookEvents;
@@ -28,13 +27,6 @@ namespace Pharaoh.Gameplay.Components
             hookEvents.performed -= OnHookPerformed;
             hookEvents.ended -= OnHookEnded;
             hookEvents.released -= OnHookReleased;
-        }
-
-        public void Repel(int id, GameObject target)
-        {
-            if (id != GetInstanceID()) return;
-
-            Debug.Log($"Repel with {name}");
         }
         
         private void OnHookStarted(HookBehaviour behaviour)
@@ -73,6 +65,16 @@ namespace Pharaoh.Gameplay.Components
             if (!_rigidbody2D) return;
 
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        }
+
+        public void Defend(GameObject target)
+        {
+            Repel(target);
+        }
+
+        public void Repel(GameObject target)
+        {
+            Debug.Log($"Repel with {name}");
         }
     }
 }

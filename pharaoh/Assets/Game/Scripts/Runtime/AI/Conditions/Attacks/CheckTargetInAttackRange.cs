@@ -25,7 +25,7 @@ namespace Pharaoh.AI.Actions
         {
             if (!_fight || !blackboard.TryGetData("target", out Transform t)) return NodeState.Failure;
             distance = Vector2.Distance(agent.transform.position, t.position);
-            return distance > _fight.attackRange ? NodeState.Failure : NodeState.Success;
+            return distance > _fight.range ? NodeState.Failure : NodeState.Success;
         }
     }
 }

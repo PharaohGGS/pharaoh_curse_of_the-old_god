@@ -150,9 +150,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684974063385550921}
-  - component: {fileID: 3567611914596130899}
-  - component: {fileID: 1507483770201521569}
-  - component: {fileID: 1006042470448372943}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
@@ -177,58 +174,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3567611914596130899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7198938675935875298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gears>k__BackingField: []
-  onGearAttack:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Gear,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1507483770201521569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7198938675935875298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b63bfa64d59fe948adf1bd28eb3d301, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: db7b53810ba92c642a2f8f7192a34344, type: 2}
---- !u!114 &1006042470448372943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7198938675935875298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d39594babef61f49b2463e68aa9b63b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trapAgentRuntimeSet: {fileID: 11400000, guid: c84a98961c17f7848a11488e607de536, type: 2}

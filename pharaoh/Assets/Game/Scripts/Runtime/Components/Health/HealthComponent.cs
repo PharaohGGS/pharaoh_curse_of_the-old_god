@@ -77,15 +77,8 @@ namespace Pharaoh.Gameplay.Components
             {
                 gears = GetComponentsInChildren<Gear>();
             }
-
-            foreach (var gear in gears)
-            {
-                var data = gear.GetBaseData();
-                if (data == null) continue;
-
-                if (data.GetGearType() != GearType.Defense) continue;
-                _armors.Add(gear);
-            }
+            
+            foreach (var gear in gears) if (gear is IArmor) _armors.Add(gear);
         }
 
         private void Start()
