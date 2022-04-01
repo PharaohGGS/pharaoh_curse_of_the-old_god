@@ -18,7 +18,7 @@ namespace BehaviourTree.Tools
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             tree?.Evaluate();
         }
