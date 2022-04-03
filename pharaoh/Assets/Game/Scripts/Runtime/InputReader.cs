@@ -72,6 +72,9 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     {
         switch (context.phase)
         {
+            case InputActionPhase.Started:
+                sandSoldierStartedEvent?.Invoke();
+                break;
             case InputActionPhase.Performed:
                 sandSoldierPerformedEvent?.Invoke();
                 break;

@@ -40,6 +40,7 @@ public class SandSoldier : MonoBehaviour
     [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
     public LayerMask groundLayer;
     public LayerMask soldierLayer;
+    public LayerMask movingBlockLayer;
 
     // [Header("VFX")]
     // [Tooltip("Soldier position preview VFX")]
@@ -70,6 +71,7 @@ public class SandSoldier : MonoBehaviour
 
     private void OnEnable()
     {
+        inputReader.sandSoldierStartedEvent += ResetFlags;
         inputReader.sandSoldierPerformedEvent += InitiateSummon;
         inputReader.sandSoldierCanceledEvent += SummonSoldier;
         inputReader.killAllSoldiersStartedEvent += KillAllSoldiers;
@@ -77,11 +79,17 @@ public class SandSoldier : MonoBehaviour
 
     private void OnDisable()
     {
+        inputReader.sandSoldierStartedEvent -= ResetFlags;
         inputReader.sandSoldierPerformedEvent -= InitiateSummon;
         inputReader.sandSoldierCanceledEvent -= SummonSoldier;
         inputReader.killAllSoldiersStartedEvent -= KillAllSoldiers;
     }
-    
+
+    private void ResetFlags()
+    {
+        _longPress = false;
+    }
+
     // Called on button press
     // Cancel / Delete previous summons and start the preview
     private void InitiateSummon()
@@ -116,8 +124,6 @@ public class SandSoldier : MonoBehaviour
             StandSummon();
             return;
         }
-        
-        _longPress = false;
 
         if (!_soldierPreview.groundHit) return;
 
@@ -292,11 +298,49 @@ public class SandSoldier : MonoBehaviour
         {
             yield break;
         }
+
+        meshRenderer.enabled = false;
+        RaycastHit2D roomCheck = Physics2D.BoxCast(
+            soldier.transform.position,
+            col.bounds.size * 0.9f,
+            0f,
+            Vector2.up,
+            0f,
+            groundLayer);
+        if (roomCheck)
+        {
+            Destroy(soldier);
+            yield break;
+        }
+        
+        RaycastHit2D movingBlockCheck = Physics2D.BoxCast(
+            soldier.transform.position,
+            col.bounds.size * 0.9f,
+            0f,
+            Vector2.up,
+            0f,
+            movingBlockLayer);
+        if (movingBlockCheck)
+        {
+            Vector2 size = movingBlockCheck.collider.bounds.size;
+            Vector2 checkSize = new Vector2(size.x, col.bounds.size.y + size.y);
+            RaycastHit2D movingBlockRoomCheck = Physics2D.BoxCast(
+                soldier.transform.position,
+                checkSize * 0.9f,
+                0f,
+                Vector2.up,
+                0f,
+                groundLayer);
+            if (movingBlockRoomCheck)
+            {
+                Destroy(soldier);
+                yield break;
+            }
+        }
         
         float elapsed = 0f;
         col.offset = new Vector2(0, -0.5f);
         col.size = new Vector2(1, 0);
-        meshRenderer.enabled = false;
         while (elapsed < timeToAppearFromGround)
         {
             Vector2 offset = col.offset;
