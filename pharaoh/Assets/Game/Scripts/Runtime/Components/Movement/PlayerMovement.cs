@@ -420,7 +420,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 foreach (var hit in hits)
                 {
-                    if (!hit.collider.gameObject) continue;
+                    if (!hit.collider || !hit.collider.gameObject) continue;
                     LogHandler.SendMessage($"{name} found {hit.collider.name} while dashing", MessageType.Log);
                     onDashStun?.Invoke(hit.collider.gameObject, dashStunData);
                 }
