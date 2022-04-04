@@ -27,6 +27,8 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
 
+    public UnityAction attackPerformedEvent;
+
     public UnityAction exitPerformedEvent;
 
     public InputAction hookGrapple { get; private set; }
@@ -99,6 +101,12 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
             dashStartedEvent.Invoke();
     }
 
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && attackPerformedEvent != null)
+            attackPerformedEvent.Invoke();
+    }
+
     public void OnNOCLIP(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed && noclipPerformedEvent != null)
@@ -139,6 +147,16 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void EnableDash()
     {
         _playerInput.CharacterControls.Dash.Enable();
+    }
+
+    public void DisableAttack()
+    {
+        _playerInput.CharacterControls.Attack.Disable();
+    }
+
+    public void EnableAttack()
+    {
+        _playerInput.CharacterControls.Attack.Enable();
     }
 
     public void DisableHookGrapple()

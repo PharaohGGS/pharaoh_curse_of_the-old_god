@@ -48,7 +48,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
         public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
-        public bool IsHooking { set => _isHooking = value; }
+        public bool IsHooking { get => _isHooking; set => _isHooking = value; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
