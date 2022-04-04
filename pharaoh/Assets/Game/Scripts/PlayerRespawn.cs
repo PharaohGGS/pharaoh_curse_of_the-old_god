@@ -1,5 +1,3 @@
-using Pharaoh.GameEvents;
-using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,8 +14,8 @@ public class PlayerRespawn : MonoBehaviour
 
     [Header("RespawnCoroutine")]
 
-    [Tooltip("Transform at which the player will respawn")]
-    public Vector3 respawnPoint;
+    [Tooltip("ScriptableObject containing the position at which the player will respawn")]
+    public LastCheckpoint respawnPoint;
     [Tooltip("Delay before which the player respawns")]
     public float delayBeforeRespawn = 0.1f;
     [Tooltip("Event invoke when the player respawns")]
@@ -30,7 +28,7 @@ public class PlayerRespawn : MonoBehaviour
 
     public void MoveToSpawnPoint()
     {
-        _rigidBody.position = respawnPoint;
+        _rigidBody.position = respawnPoint.position;
     }
 
     public void Respawn()
