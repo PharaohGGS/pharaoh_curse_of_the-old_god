@@ -14,6 +14,7 @@ namespace Pharaoh.Gameplay.Components
         
         [Header("Physics")]
         private Rigidbody2D _rb2D;
+        private Vector2 _velocityStart;
         
         [Header("Routine")]
         private Coroutine _updateVelocity;
@@ -28,6 +29,7 @@ namespace Pharaoh.Gameplay.Components
         public void Enable()
         {
             if (!_rb2D) return;
+            _velocityStart = _rb2D.velocity;
             _updateVelocity = StartCoroutine(UpdatePhysicsVelocity());
         }
 
@@ -45,7 +47,7 @@ namespace Pharaoh.Gameplay.Components
         {
             while (true)
             {
-                _rb2D.AddForce(Vector2.up * (gravity * -2f));
+                _rb2D.AddForce(_velocityStart.normalized * (gravity * -2f));
                 if (rotate && _rb2D.velocity.normalized.magnitude >= Mathf.Epsilon)
                 {
                     var velocity = _rb2D.velocity.normalized;
