@@ -8,5 +8,7 @@ namespace Pharaoh.Managers
         public GameObject player;
         public GameObject vcamFollowOffset;
         public Vector3 cameraOffset;
+
+        public string currentRoom;
     }
 }

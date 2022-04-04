@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +17,7 @@ public class SceneLoader : MonoBehaviour
     public Transform player;
     public CheckMethod checkMethod;
     public float loadRange;
-    public List<Transform> neighbours;
+    public List<string> neighbours;
 
     private bool _isLoaded;
     private bool _shouldLoad;
@@ -52,9 +53,12 @@ public class SceneLoader : MonoBehaviour
 
     private void NeighboursCheck()
     {
-        if (CameraManager.Instance.CurrentRoom.TryGetComponent(out SceneLoader sceneLoader) &&
-            sceneLoader.neighbours.Contains(transform) ||
-            sceneLoader.transform == transform)
+        if (CameraManager.Instance.currentRoom == null) return;
+        
+        GameObject currentRoomLoader = GameObject.Find(CameraManager.Instance.currentRoom);
+        if (!currentRoomLoader.TryGetComponent(out SceneLoader sceneLoader)) return;
+        
+        if (sceneLoader.neighbours.Contains(gameObject.name) || gameObject.name == currentRoomLoader.name)
         {
             LoadScene();
         }
