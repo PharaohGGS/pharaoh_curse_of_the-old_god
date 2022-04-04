@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace BehaviourTree.Runtime.Composites
 {
+    /// <summary>
+    /// Fail when one of the child is failing
+    /// Success when all of the child success
+    /// Running when one child is running
+    /// </summary>
     public class SequencerNode : CompositeNode
     {
        protected override NodeState OnUpdate()
@@ -19,16 +24,13 @@ namespace BehaviourTree.Runtime.Composites
                         anyChildRunning = true;
                         continue;
                     case NodeState.Failure:
-                        state = NodeState.Failure;
-                        return state;
+                        return NodeState.Failure;
                     default:
-                        state = NodeState.Success;
-                        return state;
+                        return NodeState.Success;
                 }
             }
             
-            state = anyChildRunning ? NodeState.Running : NodeState.Success;
-            return state;
+            return anyChildRunning ? NodeState.Running : NodeState.Success;
         }
     }
 }

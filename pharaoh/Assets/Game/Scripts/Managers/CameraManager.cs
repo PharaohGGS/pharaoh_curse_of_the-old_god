@@ -1,15 +1,12 @@
 using DesignPatterns;
 using UnityEngine;
 
-public class CameraManager : Singleton<CameraManager>
+namespace Pharaoh.Managers
 {
-    private Transform _currentRoom;
-    private Bounds _currentRoomBoundaries;
-    
-    public Transform CurrentRoom { get; set; }
-    public Bounds CurrentRoomBoundaries
+    public class CameraManager : PersistantMonoSingleton<CameraManager>
     {
-        get => CurrentRoom.TryGetComponent(out BoxCollider2D boxCollider2D) ? boxCollider2D.bounds : new Bounds();
-        private set => _currentRoomBoundaries = value;
+        public GameObject player;
+        public GameObject vcamFollowOffset;
+        public Vector3 cameraOffset;
     }
 }

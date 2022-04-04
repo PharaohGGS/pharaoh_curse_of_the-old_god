@@ -14,8 +14,10 @@ namespace BehaviourTree.Runtime.Actions
         protected override void OnStart()
         {
             _startTime = Time.time;
-            var isWaiting = blackboard.GetData("isWaiting");
-            if (isWaiting == null) blackboard.SetData("isWaiting", false);
+            if (!blackboard.ContainsData("isWaiting"))
+            {
+                blackboard.SetData("isWaiting", false);
+            }
         }
 
         protected override NodeState OnUpdate()
@@ -33,7 +35,7 @@ namespace BehaviourTree.Runtime.Actions
 
         protected override void OnStop()
         {
-            if (blackboard.GetData("isWaiting") is true)
+            if (blackboard.GetData<bool>("isWaiting"))
             {
                 state = NodeState.Running;
             }

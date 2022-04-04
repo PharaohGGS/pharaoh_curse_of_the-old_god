@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using BehaviourTree.Tools;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -20,7 +22,7 @@ namespace BehaviourTree.Editor
         public NodeView(BNode node) : base($"Assets/Plugins/BehaviourTree/UiBuilder/NodeView.uxml")
         {
             this.node = node;
-            title = node.name;
+            title = ObjectNames.NicifyVariableName(node.name.Replace("(Clone)", "").Replace("Node", "")); 
             viewDataKey = node.guid;
             
             style.left = node.position.x;
@@ -114,10 +116,17 @@ namespace BehaviourTree.Editor
 
         public void SortChildren()
         {
-            if (node is CompositeNode compositeNode)
+            if (node is not CompositeNode compositeNode) return;
+
+            // remove all null referenced node
+            var childrenNull = new List<int>();
+            for (int childIndex = 0; childIndex < compositeNode.children.Count; childIndex++)
             {
-                compositeNode.children.Sort(SortByHorizontalPosition);
+                var child = compositeNode.children[childIndex];
+                if (!child) compositeNode.children.Remove(child);
             }
+
+            compositeNode.children.Sort(SortByHorizontalPosition);
         }
 
         private int SortByHorizontalPosition(BNode left, BNode right)

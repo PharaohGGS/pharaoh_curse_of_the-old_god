@@ -1,51 +1,72 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject menu;
-    public GameObject loadingUI;
-    public Image loadingProgressBar;
 
-    private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
+    private int _preferredRefreshRate = 60;
+    private bool _isMainMenuDisplayed = true;
+    private GameObject _mainMenu;
+    private GameObject _settingsMenu;
+    private readonly int[] _screenSizes = new int[] { 3840, 2160, 2560, 1440, 1920, 1080, 1600, 900, 1366, 768 };
 
-    public void StartGame()
+    private readonly int _defaultScreenSize = 4;
+    private readonly int _defaultWindowMode = 0;
+
+    public TMPro.TMP_Dropdown windowModeDropdown;
+    public TMPro.TMP_Dropdown resolutionDropdown;
+
+    private void Awake()
     {
-        ToggleMenu();
-        ToggleLoadingUI();
-        StartCoroutine(LoadingScreen());
+        _mainMenu = transform.Find("Main Menu").gameObject;
+        _settingsMenu = transform.Find("Settings Menu").gameObject;
+
+        UpdateMenus();
+        UpdateScreenSizeAndWindowMode();
     }
 
-    IEnumerator LoadingScreen()
+    public void PlayGame()
     {
-        float progress = 0f;
-        foreach (var op in _scenesToLoad)
-        {
-            while (!op.isDone)
-            {
-                progress += op.progress;
-                loadingProgressBar.fillAmount = progress / _scenesToLoad.Count;
-                yield return null;
-            }
-        }
-        ToggleLoadingUI();
+        Debug.Log("Loading Game Scene");
+        SceneManager.LoadScene(1);
     }
 
-    public void ToggleMenu()
+    public void SwitchMenu()
     {
-        menu.SetActive(!menu.activeSelf);
+        _isMainMenuDisplayed = !_isMainMenuDisplayed;
+
+        UpdateMenus();
     }
-    
-    private void ToggleLoadingUI()
-    {
-        loadingUI.SetActive(!loadingUI.activeSelf);
-    }
-    
+
     public void ExitGame()
     {
         Application.Quit();
     }
+
+    private void UpdateMenus()
+    {
+        if (_isMainMenuDisplayed)
+        {
+            _mainMenu.SetActive(true);
+            _settingsMenu.SetActive(false);
+        }
+        else
+        {
+            _mainMenu.SetActive(false);
+            _settingsMenu.SetActive(true);
+        }
+    }
+
+    public void UpdateScreenSizeAndWindowMode()
+    {
+        Screen.SetResolution(_screenSizes[resolutionDropdown.value * 2], _screenSizes[(resolutionDropdown.value * 2) + 1], windowModeDropdown.value == 0, _preferredRefreshRate);
+    }
+
+    public void ResetSettings()
+    {
+        windowModeDropdown.value = _defaultWindowMode;
+        resolutionDropdown.value = _defaultScreenSize;
+        UpdateScreenSizeAndWindowMode();
+    }
+
 }

@@ -39,7 +39,7 @@ namespace BehaviourTree.Editor
 
         public void CreateGUI()
         {
-            // Each editor window contains a root VisualElement object
+            // Each editor editorWindow contains a root VisualElement object
             VisualElement root = rootVisualElement;
             var uiBuilderPath = this.GetAssetPath().Replace("Editor/BehaviourTreeEditor.cs", "UiBuilder");
 
@@ -56,14 +56,14 @@ namespace BehaviourTree.Editor
 
             _treeView = root.Q<BehaviourTreeView>();
             _treeView.OnNodeSelected = OnNodeSelectionChanged;
-            _treeView.window = this;
+            _treeView.editorWindow = this;
 
             _inspectorView = root.Q<InspectorView>();
             _blackboardView = root.Q<IMGUIContainer>();
             _blackboardView.MarkDirtyLayout();
             _blackboardView.onGUIHandler = () =>
             {
-                if (_blackboardProperty.FindPropertyRelative("debugData") == null) return;
+                if (_blackboardProperty?.FindPropertyRelative("debugData") == null) return;
 
                 _treeObject?.Update();
                 EditorGUI.BeginChangeCheck();
