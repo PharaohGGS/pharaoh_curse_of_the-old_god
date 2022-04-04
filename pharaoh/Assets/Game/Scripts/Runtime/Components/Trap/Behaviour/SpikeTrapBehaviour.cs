@@ -31,8 +31,10 @@ namespace Pharaoh.Gameplay
 
         public override void Respawn()
         {
+            if (data.oneTimeDelay) return;
             StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
-            mesh.SetActive(false);
+            if (_col) _col.enabled = false;
+            mesh?.SetActive(false);
         }
 
         private IEnumerator Action(bool addDelay)
@@ -41,8 +43,8 @@ namespace Pharaoh.Gameplay
             var lifeTime = new WaitForSeconds(data.lifeTime);
             var timeOut = new WaitForSeconds(data.timeOut);
 
-            var show = StartCoroutine(Move(data.showingSpeed, hidingTransform.position, showingTransform.position));
-            var hide = StartCoroutine(Move(data.hidingSpeed, showingTransform.position, hidingTransform.position));
+            var show = Move(data.showingSpeed, hidingTransform.position, showingTransform.position);
+            var hide = Move(data.hidingSpeed, showingTransform.position, hidingTransform.position);
 
             isStarted = true;
 
@@ -52,13 +54,13 @@ namespace Pharaoh.Gameplay
             // when showing, activate collider
             if (_col) _col.enabled = true;
             mesh?.SetActive(true);
-            yield return show;
+            yield return StartCoroutine(show);
 
             // after showing wait some lifeTime
             yield return lifeTime; 
 
             // when hiding, disable collider after finish hiding
-            yield return hide;
+            yield return StartCoroutine(hide);
             mesh?.SetActive(false);
             if (_col) _col.enabled = false; 
 
