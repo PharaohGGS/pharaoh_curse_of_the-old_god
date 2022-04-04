@@ -22,7 +22,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private CapsuleCollider2D _dashCollider;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
-        private Quaternion _rotation; //used to compute the player model rotation
+        private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
         private float _groundCheckLength = 0.05f;
         private float _previousGravityScale;
         private float _jumpClock = 0f; //used to measure for how long the jump input is held
