@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 7079046523897001456}
   - component: {fileID: 994795391430697508}
   - component: {fileID: 2816072151982639455}
+  - component: {fileID: 42543094342105160}
   m_Layer: 11
   m_Name: Guard
   m_TagString: Untagged
@@ -267,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011e43d7012684b4ea75775d8c4ac34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAgentRuntimeSet: {fileID: 11400000, guid: abaeb1ab7ac1c3e458d7ddf8de3055c3, type: 2}
 --- !u!114 &7079046523897001458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,6 +382,47 @@ MonoBehaviour:
       - m_Target: {fileID: 7079046523897001458}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
         m_MethodName: TakeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
+        m_MethodName: HitStun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &42543094342105160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7f018ef4e61f84cbfd10682b89f088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 3324d5e08b277d745868e5c116fc4809, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MovementComponent,
+          Pharaoh
+        m_MethodName: DashStun
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

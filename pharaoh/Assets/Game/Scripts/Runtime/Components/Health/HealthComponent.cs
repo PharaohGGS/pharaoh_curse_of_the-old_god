@@ -17,12 +17,12 @@ namespace Pharaoh.Gameplay.Components
     public class HealthComponent : MonoBehaviour
     {
         [Header("Health")] 
-        [SerializeField] private float startMax = 100;
+        public float startMax = 100;
 
         public UnityEvent<HealthComponent, float> onHealthChange;
         public UnityEvent<HealthComponent> onDeath;
 
-        public float max => startMax;
+        public float max { get; private set; }
         public float current { get; private set; }
         public float percent => current / max;
 
@@ -83,7 +83,8 @@ namespace Pharaoh.Gameplay.Components
 
         private void Start()
         {
-            current = max;
+            max = startMax;
+            Set(startMax);
         }
 
         private void OnDisable()
@@ -94,9 +95,10 @@ namespace Pharaoh.Gameplay.Components
 
         public void TakeHit(Damager damager, Collider2D other)
         {
+            if (!damager || !damager.damagerData) return;
             if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
-            var damage = damager.data.damage - armorDeal;
+            var damage = damager.damagerData.damage - armorDeal;
 
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             Decrease(damage);

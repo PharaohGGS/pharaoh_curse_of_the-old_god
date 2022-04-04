@@ -1,5 +1,9 @@
 using System;
+using Pharaoh.Tools;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
+using UnityEngine.Events;
+using MessageType = Pharaoh.Tools.Debug.MessageType;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,9 +19,10 @@ namespace Pharaoh.Gameplay.Components.Movement
         private readonly Quaternion LeftRotationRunning = Quaternion.Euler(new Vector3(0f, -90.1f, 0f));
 
         private Rigidbody2D _rigidbody;
+        private CapsuleCollider2D _dashCollider;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
-        private Quaternion _rotation; //used to compute the player model rotation
+        private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
         private float _groundCheckLength = 0.05f;
         private float _previousGravityScale;
         private float _jumpClock = 0f; //used to measure for how long the jump input is held
@@ -68,6 +73,11 @@ namespace Pharaoh.Gameplay.Components.Movement
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
 
+        [Header("Dash Detection")]
+        [SerializeField] private LayerMask dashStunLayer;
+        [SerializeField] private StunData dashStunData;
+        [SerializeField] private UnityEvent<GameObject, StunData> onDashStun;
+
         private bool _canJumpHook;
 
         private void Awake()
@@ -75,6 +85,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
+            _dashCollider = GetComponentInChildren<CapsuleCollider2D>();
+            _dashCollider.enabled = false;
             inputReader.Initialize(); //need to manually initialize
             if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
         }
@@ -166,6 +178,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                 gameObject.layer = _swarmDashLayer;
 
                 animator.SetTrigger("Dashing");
+
+                StartCoroutine(OverlapStunable());
             }
         }
 
@@ -386,11 +400,39 @@ namespace Pharaoh.Gameplay.Components.Movement
         }
 
         // Coroutine re-enabling the dash after it's cooldown
-        System.Collections.IEnumerator DashCooldown()
+        private System.Collections.IEnumerator DashCooldown()
         {
+            _dashCollider.enabled = false; 
+            onDashStun?.Invoke(null, null);
+
             yield return new WaitForSeconds(metrics.dashCooldown);
 
             inputReader.EnableDash();
+        }
+
+        private System.Collections.IEnumerator OverlapStunable()
+        {
+            if (!_dashCollider) yield break;
+
+            _dashCollider.enabled = true;
+
+            int size = 0;
+            Collider2D[] colls = new Collider2D[3];
+
+            while (_isDashing)
+            {
+                size = _dashCollider.OverlapNonAlloc(ref colls, dashStunLayer);
+                if (size <= 0) yield return null;
+
+                foreach (var col in colls)
+                {
+                    if (!col) continue;
+                    LogHandler.SendMessage($"{name} found {col.name} while dashing", MessageType.Log);
+                    onDashStun?.Invoke(col.gameObject, dashStunData);
+                }
+
+                yield return null;
+            }
         }
 
         public void Stun(float duration)
