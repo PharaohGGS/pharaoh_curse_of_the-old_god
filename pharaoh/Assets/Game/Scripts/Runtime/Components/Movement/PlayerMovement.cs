@@ -19,7 +19,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         private readonly Quaternion LeftRotationRunning = Quaternion.Euler(new Vector3(0f, -90.1f, 0f));
 
         private Rigidbody2D _rigidbody;
-        private CapsuleCollider2D _dashCollider;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
         private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
@@ -85,8 +84,6 @@ namespace Pharaoh.Gameplay.Components.Movement
             _defaultLayer = LayerMask.NameToLayer("Player");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
-            _dashCollider = GetComponentInChildren<CapsuleCollider2D>();
-            _dashCollider.enabled = false;
             inputReader.Initialize(); //need to manually initialize
             if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
         }
@@ -402,7 +399,6 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Coroutine re-enabling the dash after it's cooldown
         private System.Collections.IEnumerator DashCooldown()
         {
-            _dashCollider.enabled = false; 
             onDashStun?.Invoke(null, null);
 
             yield return new WaitForSeconds(metrics.dashCooldown);
@@ -412,23 +408,21 @@ namespace Pharaoh.Gameplay.Components.Movement
 
         private System.Collections.IEnumerator OverlapStunable()
         {
-            if (!_dashCollider) yield break;
-
-            _dashCollider.enabled = true;
+            if (!_rigidbody) yield break;
 
             int size = 0;
-            Collider2D[] colls = new Collider2D[3];
+            RaycastHit2D[] hits = new RaycastHit2D[3];
 
             while (_isDashing)
             {
-                size = _dashCollider.OverlapNonAlloc(ref colls, dashStunLayer);
+                size = Physics2D.CapsuleCastNonAlloc(_rigidbody.position, new Vector2(1, 2), CapsuleDirection2D.Vertical, _rigidbody.rotation, _rigidbody.velocity.normalized, hits, 0.05f, dashStunLayer);
                 if (size <= 0) yield return null;
 
-                foreach (var col in colls)
+                foreach (var hit in hits)
                 {
-                    if (!col) continue;
-                    LogHandler.SendMessage($"{name} found {col.name} while dashing", MessageType.Log);
-                    onDashStun?.Invoke(col.gameObject, dashStunData);
+                    if (!hit.collider.gameObject) continue;
+                    LogHandler.SendMessage($"{name} found {hit.collider.name} while dashing", MessageType.Log);
+                    onDashStun?.Invoke(hit.collider.gameObject, dashStunData);
                 }
 
                 yield return null;
