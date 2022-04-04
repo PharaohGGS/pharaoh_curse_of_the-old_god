@@ -1,14 +1,27 @@
 using UnityEngine;
 using DesignPatterns;
 using System.IO;
-using System.Linq;
-using UnityEngine.SceneManagement;
 using System;
 
 namespace Pharaoh.Managers
 {
-    public class SaveDataManager : PersistantMonoSingleton<SaveDataManager>
+    public class SaveDataManager : MonoBehaviour
     {
+
+        public static SaveDataManager Instance { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         [System.Serializable]
         private class SaveData

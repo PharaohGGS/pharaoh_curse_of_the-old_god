@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
     public TMPro.TMP_Dropdown windowModeDropdown;
     public TMPro.TMP_Dropdown resolutionDropdown;
     
-    private void Awake()
+    private void Start()
     {
         _mainMenu = transform.Find("Main Menu").gameObject;
         _settingsMenu = transform.Find("Settings Menu").gameObject;
