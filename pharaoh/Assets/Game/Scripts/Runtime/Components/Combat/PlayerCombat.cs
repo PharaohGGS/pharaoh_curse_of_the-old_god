@@ -8,9 +8,17 @@ public class PlayerCombat : MonoBehaviour
 
     private short _combatPhase = 0;
     private PlayerMovement _playerMovement;
+    private bool _sheathed = true;
 
     public InputReader inputReader;
     public Animator animator;
+    public Transform rightHand;
+    public Transform leftHand;
+    public Transform rightSocket;
+    public Transform leftSocket;
+    public Transform rightSword;
+    public Transform leftSword;
+
 
     private void Awake()
     {
@@ -56,6 +64,18 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    private void SwitchStance()
+    {
+        Debug.Log("Switching Stance");
+
+        if (_sheathed)
+            animator.SetTrigger("Draw");
+        else
+            animator.SetTrigger("Sheathe");
+
+        _sheathed = !_sheathed;
+    }
+
     private void LockMovement(float time)
     {
         inputReader.DisableMove();
@@ -80,6 +100,26 @@ public class PlayerCombat : MonoBehaviour
         inputReader.EnableSandSoldier();
         inputReader.EnableHookInteract();
         inputReader.EnableHookGrapple();
+    }
+
+    private void DrawSwords()
+    {
+        rightSword.parent = rightHand;
+        rightSword.localPosition = Vector3.zero;
+        rightSword.localRotation = Quaternion.identity;
+        leftSword.parent = leftHand;
+        leftSword.localPosition = Vector3.zero;
+        leftSword.localRotation = Quaternion.identity;
+    }
+
+    private void SheatheSwords()
+    {
+        rightSword.parent = rightSocket;
+        rightSword.localPosition = Vector3.zero;
+        rightSword.localRotation = Quaternion.identity;
+        leftSword.parent = leftSocket;
+        leftSword.localPosition = Vector3.zero;
+        leftSword.localRotation = Quaternion.identity;
     }
 
 }
