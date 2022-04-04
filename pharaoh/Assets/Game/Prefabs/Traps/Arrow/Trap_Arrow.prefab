@@ -11,6 +11,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2609016641276421804, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+      propertyPath: _behaviour
+      value: 
+      objectReference: {fileID: 7051322844903529892}
+    - target: {fileID: 2683696243840683768, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+      propertyPath: response.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7051322844903529892}
+    - target: {fileID: 2683696243840683768, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+      propertyPath: response.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Respawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683696243840683768, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
+      propertyPath: response.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Pharaoh.Gameplay.ArrowTrapBehaviour, Pharaoh
+      objectReference: {fileID: 0}
     - target: {fileID: 4082437492315050596, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
       propertyPath: m_Size.x
       value: 3
@@ -77,53 +93,13 @@ PrefabInstance:
       objectReference: {fileID: 5855970113417228140, guid: 088bcc0b017d76c4bb54bd57a6c7a123, type: 3}
     - target: {fileID: 7198938675935875298, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
       propertyPath: m_Name
-      value: Trap_Arrows
+      value: Trap_Arrow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
 --- !u!4 &341162198979587494 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6684974063385550921, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
-  m_PrefabInstance: {fileID: 6375339278006980079}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4295877545981189389 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7198938675935875298, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
-  m_PrefabInstance: {fileID: 6375339278006980079}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &177532844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4295877545981189389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  datas:
-  - {fileID: 11400000, guid: 93f7a38e9f372804b9c7e0d704083c6f, type: 2}
-  collider: {fileID: 6980150675688611723}
-  maxOverlappedColliders: 3
-  colliders: []
---- !u!114 &7337401752894647145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4295877545981189389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e30fa66eff42942867ed839b17abe8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _behaviour: {fileID: 7051322844903529892}
---- !u!61 &6980150675688611723 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 4082437492315050596, guid: 36d692d269a65d848ba34c2be52bc1ca, type: 3}
   m_PrefabInstance: {fileID: 6375339278006980079}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7055565772424273049
