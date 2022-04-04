@@ -47,6 +47,12 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void EraseSaveFile()
+    {
+        SaveDataManager.Instance.EraseSave();
+        UpdateMenus();
+    }
+
     public void SwitchMenu()
     {
         _isMainMenuDisplayed = !_isMainMenuDisplayed;

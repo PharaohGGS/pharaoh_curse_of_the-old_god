@@ -1045,21 +1045,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2080238087}
-        m_TargetAssemblyTypeName: Pharaoh.Managers.SaveDataManager, Assembly-CSharp
-        m_MethodName: EraseSave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 22355042}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: UpdateMenus
+        m_MethodName: EraseSaveFile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5455,17 +5443,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045140766}
   m_CullTransparentMesh: 1
---- !u!114 &2080238087 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5649953499984004895, guid: 600edfab8faaddb4ba8a2cb5fbbf0de2, type: 3}
-  m_PrefabInstance: {fileID: 562651352}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6aa7e581c9f48649b946f57b75fdf9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2081879597
 GameObject:
   m_ObjectHideFlags: 0

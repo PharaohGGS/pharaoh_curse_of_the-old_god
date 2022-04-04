@@ -71,6 +71,7 @@ namespace Pharaoh.Managers
         // Erases the save file
         public void EraseSave()
         {
+            Debug.Log("Erasing save");
             if (SaveFileExists())
                 File.Delete(Application.persistentDataPath + SAVEFILE);
             else

@@ -22,6 +22,12 @@ public class SaveInstance : MonoBehaviour
         Load();
     }
 
+    private void OnDestroy()
+    {
+        // Saves the instance when unloaded
+        Save();
+    }
+
     private void Load()
     {
         // Load this object instance from save data depending on data type
