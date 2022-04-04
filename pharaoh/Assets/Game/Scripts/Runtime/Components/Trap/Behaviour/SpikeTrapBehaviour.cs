@@ -33,7 +33,8 @@ namespace Pharaoh.Gameplay
         {
             if (data.oneTimeDelay) return;
             StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
-            mesh.SetActive(false);
+            if (_col) _col.enabled = false;
+            mesh?.SetActive(false);
         }
 
         private IEnumerator Action(bool addDelay)
