@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4295877545981189389, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 389aff38ea1f9574c95762dea918c80f, type: 3}
@@ -406,8 +406,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 1755125447}
     m_Modifications:
     - target: {fileID: 2245374821432040193, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
-      propertyPath: gears.Array.size
-      value: 1
+      propertyPath: <attackRange>k__BackingField
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5240172165508659000, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_IsActive
@@ -467,7 +467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396134, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396180, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: <waypointHolder>k__BackingField
@@ -1237,12 +1237,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 122903603835565847, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319863507638189510, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4351507797015771099, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
       propertyPath: gearPrefab
       value: 
-      objectReference: {fileID: 2673636097581239478, guid: 1cb8a43cf68519d488ed5bf1db864cb0, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4509982040141776828, guid: 4810a81d683cbd74bb8769de5085d427, type: 3}
       propertyPath: m_RootOrder
       value: 1

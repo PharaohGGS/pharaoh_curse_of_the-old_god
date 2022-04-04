@@ -197,11 +197,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
---- !u!50 &7045382122724303303 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 1033959073703909373, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
-  m_PrefabInstance: {fileID: 8043259587408131642}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8462160696281281221 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1941270978020066559, guid: d02d7fcae9c151d4ca059ac93c03f1c2, type: 3}
@@ -223,34 +218,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.5, y: 0}
   m_Size: {x: 1, y: 0.25}
   m_Direction: 1
---- !u!114 &4299332175705398009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8462160696281281221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7451239046983173651}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
-        m_MethodName: Throw
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &5447866745009660862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 67f02f2b5af484146b56d6a882cd22b7, type: 2}
+  damagerData: {fileID: 11400000, guid: 67f02f2b5af484146b56d6a882cd22b7, type: 2}
+  stunData: {fileID: 11400000, guid: 4d56be772b9ab9740b88e8499c566de0, type: 2}
   damagingLayers:
     serializedVersion: 2
     m_Bits: 131072
@@ -285,25 +253,13 @@ MonoBehaviour:
         m_CallState: 2
   collidingLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 66560
   onCollisionHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7045382122724303303}
-        m_TargetAssemblyTypeName: UnityEngine.Rigidbody2D, UnityEngine
-        m_MethodName: set_isKinematic
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 7045382122724303303}
-        m_TargetAssemblyTypeName: UnityEngine.Rigidbody2D, UnityEngine
-        m_MethodName: Sleep
+      - m_Target: {fileID: 6013927071415405160}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
+        m_MethodName: Disable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -311,7 +267,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &6013927071415405160
 MonoBehaviour:

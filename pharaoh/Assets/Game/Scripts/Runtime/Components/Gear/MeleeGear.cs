@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Pharaoh.Gameplay.Components
 {
     [RequireComponent(typeof(Damager))]
-    public class MeleeGear : Gear<MeleeGearData>
+    public class MeleeGear : Gear<MeleeGearData>, IWeapon
     {
         [HideInInspector] public UnityEvent onWeaponThrown = new UnityEvent();
 
@@ -23,25 +23,31 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public void Stab(Gear gear, GameObject target)
+        public void Attack(GameObject target)
         {
-            if (gear != this || !target || !_animator) return;
-            
+            if (GetData().throwable) Throw(target); 
+            else Stab(target);
+        }
+
+        private void Stab(GameObject target)
+        {
+            if (!target || !_animator) return;
+
             _animator.ResetTrigger("isAttacking");
             _animator.SetTrigger("isAttacking");
         }
 
-        public void Throw(Gear gear, GameObject target)
+        private void Throw(GameObject target)
         {
-            if (this != gear || !target || GetData()?.throwable == false || !_rigidbody2D) return;
-            
+            if (!target || GetData()?.throwable == false || !_rigidbody2D) return;
+
             //float speed = GetData().throwableInitialVelocity;
             float gravity = Physics2D.gravity.magnitude;
             Vector2 targetPosition = target.transform.position;
             Vector2 position = _rigidbody2D.position;
             float height = position.y;
             LaunchData data = LaunchData.Calculate(gravity, height, targetPosition, position/*, speed*/);
-            
+
             _rigidbody2D.velocity = data.initialVelocity;
             SocketAttach(false);
             onWeaponThrown?.Invoke();

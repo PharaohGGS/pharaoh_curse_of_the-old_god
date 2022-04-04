@@ -1,5 +1,9 @@
 using System;
+using Pharaoh.Tools;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
+using UnityEngine.Events;
+using MessageType = Pharaoh.Tools.Debug.MessageType;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,7 +21,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private Rigidbody2D _rigidbody;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
-        private Quaternion _rotation; //used to compute the player model rotation
+        private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
         private float _groundCheckLength = 0.05f;
         private float _previousGravityScale;
         private float _jumpClock = 0f; //used to measure for how long the jump input is held
@@ -67,6 +71,11 @@ namespace Pharaoh.Gameplay.Components.Movement
         public Animator animator;
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
+
+        [Header("Dash Detection")]
+        [SerializeField] private LayerMask dashStunLayer;
+        [SerializeField] private StunData dashStunData;
+        [SerializeField] private UnityEvent<GameObject, StunData> onDashStun;
 
         private bool _canJumpHook;
 
@@ -166,6 +175,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                 gameObject.layer = _swarmDashLayer;
 
                 animator.SetTrigger("Dashing");
+
+                StartCoroutine(OverlapStunable());
             }
         }
 
@@ -386,11 +397,36 @@ namespace Pharaoh.Gameplay.Components.Movement
         }
 
         // Coroutine re-enabling the dash after it's cooldown
-        System.Collections.IEnumerator DashCooldown()
+        private System.Collections.IEnumerator DashCooldown()
         {
+            onDashStun?.Invoke(null, null);
+
             yield return new WaitForSeconds(metrics.dashCooldown);
 
             inputReader.EnableDash();
+        }
+
+        private System.Collections.IEnumerator OverlapStunable()
+        {
+            if (!_rigidbody) yield break;
+
+            int size = 0;
+            RaycastHit2D[] hits = new RaycastHit2D[3];
+
+            while (_isDashing)
+            {
+                size = Physics2D.CapsuleCastNonAlloc(_rigidbody.position, new Vector2(1, 2), CapsuleDirection2D.Vertical, _rigidbody.rotation, _rigidbody.velocity.normalized, hits, 0.05f, dashStunLayer);
+                if (size <= 0) yield return null;
+
+                foreach (var hit in hits)
+                {
+                    if (!hit.collider.gameObject) continue;
+                    LogHandler.SendMessage($"{name} found {hit.collider.name} while dashing", MessageType.Log);
+                    onDashStun?.Invoke(hit.collider.gameObject, dashStunData);
+                }
+
+                yield return null;
+            }
         }
 
         public void Stun(float duration)

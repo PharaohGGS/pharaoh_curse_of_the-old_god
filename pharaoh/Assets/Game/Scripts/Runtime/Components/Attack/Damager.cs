@@ -12,7 +12,8 @@ namespace Pharaoh.Gameplay.Components
     [RequireComponent(typeof(Collider2D))]
     public class Damager : MonoBehaviour
     {
-        public DamagerData data;
+        public DamagerData damagerData;
+        public StunData stunData;
 
         [SerializeField] private LayerMask damagingLayers;
         [HideInInspector] public UnityEvent<Damager, Collider2D> onTriggerHit;

@@ -1,4 +1,5 @@
-﻿using BehaviourTree.Tools;
+﻿using System.Collections;
+using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Sets;
 using Pharaoh.Tools.Debug;
@@ -8,16 +9,5 @@ namespace Pharaoh.AI
 {
     public class EnemyAgent : AiAgent
     {
-        public EnemyAgentRuntimeSet enemyAgentRuntimeSet;
-        
-        private void OnEnable()
-        {
-            enemyAgentRuntimeSet?.Add(this);
-        }
-
-        private void OnDisable()
-        {
-            enemyAgentRuntimeSet?.Remove(this);
-        }
     }
 }
