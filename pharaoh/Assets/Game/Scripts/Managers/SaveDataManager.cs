@@ -22,21 +22,23 @@ namespace Pharaoh.Managers
             public float[] blocksPositions_y;
             public float[] blocksPositions_z;
 
-            public SaveData(uint movingBlockCount)
+            public SaveData(uint enemiesCount, uint movingBlockCount)
             {
                 lastCheckpoint = new float[] { 0f, 0f, 0f };
                 skills = new bool[] { false, false, false };
-                enemiesStates = new bool[0];
+                enemiesStates = new bool[enemiesCount];
                 blocksPositions_x = new float[movingBlockCount];
                 blocksPositions_y = new float[movingBlockCount];
                 blocksPositions_z = new float[movingBlockCount];
-                Array.Fill<float>(blocksPositions_x, DEFLOAT);
-                Array.Fill<float>(blocksPositions_y, DEFLOAT);
-                Array.Fill<float>(blocksPositions_z, DEFLOAT);
+                Array.Fill(enemiesStates, true);
+                Array.Fill(blocksPositions_x, DEFLOAT);
+                Array.Fill(blocksPositions_y, DEFLOAT);
+                Array.Fill(blocksPositions_z, DEFLOAT);
             }
         }
 
         private readonly string SAVEFILE = "/save.dat";
+        public uint ENEMIES_COUNT;
         public uint MOVING_BLOCKS_COUNT;
 
         private SaveData _saveData;
@@ -44,7 +46,7 @@ namespace Pharaoh.Managers
         public LastCheckpoint lastCheckpoint;
         public PlayerSkills playerSkills;
 
-        [Header("BUTTONS")]
+        [Header("MANUAL BUTTONS")]
 
         public bool save;
         public bool load;
@@ -53,7 +55,7 @@ namespace Pharaoh.Managers
         public void NewSave()
         {
             Debug.Log("New Game started.");
-            _saveData = new SaveData(MOVING_BLOCKS_COUNT);
+            _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             Save();
         }
 
@@ -61,7 +63,7 @@ namespace Pharaoh.Managers
         public void LoadSave()
         {
             Debug.Log("Loading game.");
-            _saveData = new SaveData(MOVING_BLOCKS_COUNT);
+            _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             if (SaveFileExists())
                 Load();
             else
@@ -79,18 +81,18 @@ namespace Pharaoh.Managers
         }
 
         // Saves the current state of the game - last checkpoint triggered, enemies states and blocks positions to a save data object
-        private void Save()
+        public void Save()
         {
             SaveLastCheckpoint();
             SaveSkills();
-            // Enemy states are saved during runtime
-            // Blocks positions are saved during runtime
+            SaveEnemiesStates(); //saving currently displayed enemies
+            SaveBlocksPositions(); //saving currently displayed moving blocks
 
             SaveToJSON();
         }
 
         // Loads the saved state of the game - last checkpoint triggered, enemies states and blocks positions from a save data object
-        private void Load()
+        public void Load()
         {
             LoadFromJSON();
 
@@ -147,36 +149,28 @@ namespace Pharaoh.Managers
             playerSkills.hasGrapplingHook = _saveData.skills[2];
         }
 
-        // Saves the enemies states into the save data object
+        // Saves all the currently loaded enemies states
         private void SaveEnemiesStates()
         {
-            // Finds all GameObjects with tag "Enemy" and sort them by position
-            /*IOrderedEnumerable<GameObject> sortedEnemies =
-                GameObject.FindGameObjectsWithTag("Enemy").ToList().OrderBy(enemy => enemy.GetInstanceID());
-            _saveData.enemiesStates = new bool[sortedEnemies.Count()];
-
-            int i = 0;
-            foreach (GameObject enemy in sortedEnemies)
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
             {
-                _saveData.enemiesStates[i++] = enemy.GetComponent<Enemy>().IsAlive;
-            }*/
+                _saveData.enemiesStates[go.GetComponent<SaveInstance>().instanceID] = go.activeInHierarchy;
+            }
         }
 
-        // Loads the enemies states from the save data object
-        private void LoadEnemiesStates()
+        // Saves one enemy defined by its intance ID to a given state
+        public void SaveEnemyState(ulong instanceID, bool state)
         {
-            // Finds all GameObjects with tag "MovingBlock" and sort them by position
-            /*IOrderedEnumerable<GameObject> sortedEnemies =
-                GameObject.FindGameObjectsWithTag("Enemy").ToList().OrderBy(enemy => enemy.GetInstanceID());
-
-            // Loops through each blocks and load their position
-            int i = 0;
-            foreach (GameObject enemy in sortedEnemies)
-            {
-                enemy.GetComponent<Enemy>().IsAlive = _saveData.enemiesStates[i++];
-            }*/
+            _saveData.enemiesStates[instanceID] = state;
         }
 
+        // Loads an enemy state from the save data object
+        public void LoadEnemyState(ulong instanceID, out bool state)
+        {
+            state = _saveData.enemiesStates[instanceID];
+        }
+
+        // Saves all the currently loaded blocks positions
         private void SaveBlocksPositions()
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("MovingBlock"))
@@ -195,23 +189,6 @@ namespace Pharaoh.Managers
             _saveData.blocksPositions_z[instanceID] = position.z;
         }
 
-        // Loads the blocks positions from the save data object
-        // DEPRECATED
-        private void LoadBlocksPositions()
-        {
-            // Finds all GameObjects with tag "MovingBlock" and sort them by position
-            IOrderedEnumerable<GameObject> sortedBlocks =
-                GameObject.FindGameObjectsWithTag("MovingBlock").ToList().OrderBy(block => block.GetInstanceID());
-
-            // Loops through each blocks and load their position
-            int i = 0;
-            foreach (GameObject block in sortedBlocks)
-            {
-                block.transform.position = new Vector3(_saveData.blocksPositions_x[i], _saveData.blocksPositions_y[i], _saveData.blocksPositions_z[i]);
-                i++;
-            }
-        }
-
         // Loads a block position from the save data object
         // Returns true if the block ahs previously been saved, false otherwise
         public bool LoadBlockPosition(ulong instanceID, out Vector3 position)
@@ -225,7 +202,6 @@ namespace Pharaoh.Managers
         {
             if (save)
             {
-                SaveBlocksPositions();
                 Save();
                 save = false;
             }

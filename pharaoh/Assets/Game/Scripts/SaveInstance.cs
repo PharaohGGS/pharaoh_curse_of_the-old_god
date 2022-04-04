@@ -10,6 +10,7 @@ public class SaveInstance : MonoBehaviour
         MovingBlock
     };
 
+    private readonly int ENEMY_PARSE_INDEX = 6;
     private readonly int MOVING_BLOCK_PARSE_INDEX = 12;
 
     [HideInInspector] public ulong instanceID;
@@ -17,7 +18,10 @@ public class SaveInstance : MonoBehaviour
 
     private void Awake()
     {
-        instanceID = ulong.Parse(gameObject.name.Substring(MOVING_BLOCK_PARSE_INDEX));
+        if (type == Type.Enemy)
+            instanceID = ulong.Parse(gameObject.name.Substring(ENEMY_PARSE_INDEX));
+        else if (type == Type.MovingBlock)
+            instanceID = ulong.Parse(gameObject.name.Substring(MOVING_BLOCK_PARSE_INDEX));
 
         Load();
     }
@@ -35,6 +39,9 @@ public class SaveInstance : MonoBehaviour
         {
             case Type.Enemy:
                 // Load this enemy state
+                bool state;
+                SaveDataManager.Instance.LoadEnemyState(instanceID, out state);
+                gameObject.SetActive(state);
                 break;
 
             case Type.MovingBlock:
@@ -57,6 +64,7 @@ public class SaveInstance : MonoBehaviour
         {
             case Type.Enemy:
                 // Save this enemy state
+                SaveDataManager.Instance.SaveEnemyState(instanceID, gameObject.activeInHierarchy);
                 break;
 
             case Type.MovingBlock:

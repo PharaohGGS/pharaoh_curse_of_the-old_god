@@ -28,6 +28,33 @@ public class InstanceTools
         }
     }
 
+    [MenuItem("Instances/Generate Enemies Instance IDs")]
+    private static void GenerateEnemiesInstanceIDs()
+    {
+        ulong id = 0;
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            go.name = "Enemy_" + id++;
+        }
+
+        if (Object.FindObjectOfType<SaveDataManager>().TryGetComponent(out SaveDataManager sdm))
+        {
+            // Changes the moving blocks count and force save the variable
+            sdm.ENEMIES_COUNT = (uint)id;
+            EditorUtility.SetDirty(sdm);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
+        else
+            Debug.LogWarning("Could not find any SaveDataManager in the current scene.");
+
+        foreach (string s in GetAllBuildScenes())
+        {
+            EditorSceneManager.SaveScene(SceneManager.GetSceneByPath(s));
+        }
+
+        Debug.Log("Counted " + id + " enemies.");
+    }
+
     [MenuItem("Instances/Generate Blocks Instance IDs")]
     private static void GenerateBlocksInstanceIDs()
     {
