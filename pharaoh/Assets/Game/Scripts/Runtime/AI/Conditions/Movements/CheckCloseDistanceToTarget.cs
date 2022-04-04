@@ -7,11 +7,11 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckCloseDistanceToTarget : ActionNode
     {
-        private MovementComponent _movement = null;
+        private AiMovement _aiMovement = null;
 
         protected override void OnStart()
         {
-            if (_movement == null && !agent.TryGetComponent(out _movement))
+            if (_aiMovement == null && !agent.TryGetComponent(out _aiMovement))
             {
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
             }
@@ -19,9 +19,9 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_movement || !blackboard.TryGetData("target", out Transform t)) return NodeState.Failure;
+            if (!_aiMovement || !blackboard.TryGetData("target", out Transform t)) return NodeState.Failure;
             
-            return Vector2.Distance(agent.transform.position, t.position) <= _movement.closeDistance 
+            return Vector2.Distance(agent.transform.position, t.position) <= _aiMovement.closeDistance 
                 ? NodeState.Success : NodeState.Failure;
         }
     }
