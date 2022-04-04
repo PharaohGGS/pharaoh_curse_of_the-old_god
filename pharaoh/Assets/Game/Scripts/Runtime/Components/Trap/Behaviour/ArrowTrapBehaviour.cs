@@ -27,7 +27,12 @@ namespace Pharaoh.Gameplay
             bool addDelay = !isSameTarget || !data.oneTimeDelay;
             StartCoroutine(Action(addDelay));
         }
-        
+
+        public override void Respawn()
+        {
+            // do nothing for now
+        }
+
         private IEnumerator Action(bool addDelay)
         {
             var delay = new WaitForSeconds(data.delay);

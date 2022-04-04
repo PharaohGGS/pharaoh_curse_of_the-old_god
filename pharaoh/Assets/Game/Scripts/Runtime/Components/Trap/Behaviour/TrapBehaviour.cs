@@ -11,11 +11,13 @@ namespace Pharaoh.Gameplay
         public bool isStarted { get; protected set; }
         
         public abstract void Activate(GameObject target);
+        public abstract void Respawn();
     }
 
     public abstract class TrapBehaviour<T> : TrapBehaviour
         where T : TrapData
     {
         [SerializeField] protected T data;
+
     }
 }
