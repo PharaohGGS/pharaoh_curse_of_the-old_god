@@ -27,7 +27,8 @@ namespace Pharaoh.Gameplay
         {
             bool isSameTarget = _currentTarget == target;
             if (!isSameTarget) _currentTarget = target;
-            StartCoroutine(Action(!isSameTarget));
+            bool addDelay = !isSameTarget || !data.oneTimeDelay;
+            StartCoroutine(Action(addDelay));
         }
 
         private IEnumerator Action(bool addDelay)
