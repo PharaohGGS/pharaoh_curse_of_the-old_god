@@ -149,6 +149,7 @@ public class PlayerCombat : MonoBehaviour
         leftSword.localRotation = Quaternion.identity;
 
         _sheathed = false;
+        animator.SetFloat("Sheathed", 0f);
     }
 
     // Sheathes the swords, switching sockets
@@ -162,6 +163,7 @@ public class PlayerCombat : MonoBehaviour
         leftSword.localRotation = Quaternion.identity;
 
         _sheathed = true;
+        animator.SetFloat("Sheathed", 1f);
     }
 
 }
