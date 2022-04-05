@@ -213,7 +213,7 @@ MonoBehaviour:
   leftGroundCheck: {fileID: 8898427098348061736}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 66560
+    m_Bits: 2163712
   animator: {fileID: 5280757643533625441}
   modelTransform: {fileID: 2281400649281040923}
   dashStunLayer:
@@ -354,17 +354,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201fc878f5619e647b42d1378c699010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sandSoldier: {fileID: 2857470292283219416, guid: d9b5a4c78c527e241a1606bfebf363b5, type: 3}
+  sandSoldier: {fileID: 887649318346508230, guid: f5e3f0d6f5d924245a7854a2dab0349e, type: 3}
   soldierPreview: {fileID: 5987998499529800469, guid: 5a1bef3bfd64bca499e5a6d674eb119d, type: 3}
-  playerModel: {fileID: 2281400649281040923}
+  inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
+  timeToAppearFromGround: 0.35
+  timeToExpire: 10
+  maximumTimeIfMultipleSoldiers: 3
+  maxSoldiers: 2
+  soldierSize: {x: 1.65, y: 2.15}
+  yOffset: 0.8
   minRange: 1
   maxRange: 6
   timeToMaxRange: 1
-  timeToAppearFromGround: 0.35
-  timeToExpire: 10
-  groundLayer:
+  blockingLayer:
     serializedVersion: 2
     m_Bits: 525312
+  soldierLayer:
+    serializedVersion: 2
+    m_Bits: 2097152
+  movingBlockLayer:
+    serializedVersion: 2
+    m_Bits: 65536
+  startColliderOffset: {x: 0.1, y: 0}
+  endColliderOffset: {x: 0.1, y: 1.05}
+  startColliderSize: {x: 1.65, y: 0}
+  endColliderSize: {x: 1.65, y: 2.15}
 --- !u!114 &6215234791223536456
 MonoBehaviour:
   m_ObjectHideFlags: 0

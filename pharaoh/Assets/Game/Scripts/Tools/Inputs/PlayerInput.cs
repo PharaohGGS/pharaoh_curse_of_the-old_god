@@ -306,6 +306,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KillAllSoldiers"",
+                    ""type"": ""Button"",
+                    ""id"": ""00481974-5ce6-465d-83ea-231d148fbdaf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -335,7 +344,7 @@ namespace Pharaoh.Tools.Inputs
                     ""name"": """",
                     ""id"": ""dd9af54a-a94a-43e3-962e-b9574a313adf"",
                     ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.3)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SandSoldier"",
@@ -346,7 +355,7 @@ namespace Pharaoh.Tools.Inputs
                     ""name"": """",
                     ""id"": ""77ee1f47-04fb-4eac-a2c3-e3a40c47e582"",
                     ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.3)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SandSoldier"",
@@ -372,6 +381,17 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HookInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d792acd-9e55-4fd0-adc1-b577925a9de0"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KillAllSoldiers"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -431,6 +451,7 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
             m_CharacterActions_HookInteract = m_CharacterActions.FindAction("HookInteract", throwIfNotFound: true);
             m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
+            m_CharacterActions_KillAllSoldiers = m_CharacterActions.FindAction("KillAllSoldiers", throwIfNotFound: true);
             // Game
             m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
             m_Game_Exit = m_Game.FindAction("Exit", throwIfNotFound: true);
@@ -561,6 +582,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterActions_HookGrapple;
         private readonly InputAction m_CharacterActions_HookInteract;
         private readonly InputAction m_CharacterActions_SandSoldier;
+        private readonly InputAction m_CharacterActions_KillAllSoldiers;
         public struct CharacterActionsActions
         {
             private @PlayerInput m_Wrapper;
@@ -568,6 +590,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @HookGrapple => m_Wrapper.m_CharacterActions_HookGrapple;
             public InputAction @HookInteract => m_Wrapper.m_CharacterActions_HookInteract;
             public InputAction @SandSoldier => m_Wrapper.m_CharacterActions_SandSoldier;
+            public InputAction @KillAllSoldiers => m_Wrapper.m_CharacterActions_KillAllSoldiers;
             public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -586,6 +609,9 @@ namespace Pharaoh.Tools.Inputs
                     @SandSoldier.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                     @SandSoldier.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                     @SandSoldier.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
+                    @KillAllSoldiers.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
+                    @KillAllSoldiers.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
+                    @KillAllSoldiers.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
                 }
                 m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -599,6 +625,9 @@ namespace Pharaoh.Tools.Inputs
                     @SandSoldier.started += instance.OnSandSoldier;
                     @SandSoldier.performed += instance.OnSandSoldier;
                     @SandSoldier.canceled += instance.OnSandSoldier;
+                    @KillAllSoldiers.started += instance.OnKillAllSoldiers;
+                    @KillAllSoldiers.performed += instance.OnKillAllSoldiers;
+                    @KillAllSoldiers.canceled += instance.OnKillAllSoldiers;
                 }
             }
         }
@@ -649,6 +678,7 @@ namespace Pharaoh.Tools.Inputs
             void OnHookGrapple(InputAction.CallbackContext context);
             void OnHookInteract(InputAction.CallbackContext context);
             void OnSandSoldier(InputAction.CallbackContext context);
+            void OnKillAllSoldiers(InputAction.CallbackContext context);
         }
         public interface IGameActions
         {
