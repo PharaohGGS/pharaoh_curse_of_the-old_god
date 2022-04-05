@@ -134,7 +134,6 @@ public class PlayerCombat : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        Debug.Log("Sheathing");
         animator.SetTrigger("Sheathing Swords");
     }
 
