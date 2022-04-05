@@ -5,60 +5,24 @@ using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum CheckMethod
-{
-    Distance,
-    Trigger,
-    Neighbours
-}
 
 public class SceneLoader : MonoBehaviour
 {
-    public Transform player;
-    public CheckMethod checkMethod;
-    public float loadRange;
-    public List<string> neighbours;
+    public List<string> neighbours; // List of room's neighbours
 
-    private bool _isLoaded;
-    private bool _shouldLoad;
+    private bool _isLoaded; // Is this room loaded or not
 
     private void Update()
     {
-        switch (checkMethod)
-        {
-            case CheckMethod.Distance:
-                DistanceCheck();
-                break;
-            case CheckMethod.Trigger:
-                break;
-            case CheckMethod.Neighbours:
-                NeighboursCheck();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    private void DistanceCheck()
-    {
-        if (Vector3.Distance(player.position, transform.position) < loadRange)
-        {
-            LoadScene();
-        }
-        else
-        {
-            UnloadScene();
-        }
-    }
-
-    private void NeighboursCheck()
-    {
-        if (CameraManager.Instance.currentRoom == null) return;
+        if (LevelManager.Instance.currentRoom == null) return;
         
-        GameObject currentRoomLoader = GameObject.Find(CameraManager.Instance.currentRoom);
-        if (!currentRoomLoader.TryGetComponent(out SceneLoader sceneLoader)) return;
+        // Get the GameObject which represents the current room
+        GameObject currentRoom = GameObject.Find(LevelManager.Instance.currentRoom);
         
-        if (sceneLoader.neighbours.Contains(gameObject.name) || gameObject.name == currentRoomLoader.name)
+        if (!currentRoom.TryGetComponent(out SceneLoader sceneLoader)) return; // If it has no SceneLoader, return
+        
+        // If this room is in CurrentRoom's neighbours or is the CurrentRoom, load it
+        if (sceneLoader.neighbours.Contains(gameObject.name) || gameObject.name == currentRoom.name)
         {
             LoadScene();
         }

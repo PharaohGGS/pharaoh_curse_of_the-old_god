@@ -2,5 +2,5 @@ using DesignPatterns;
 
 public class LevelManager : MonoSingleton<LevelManager>
 {
-    public bool loadEnemyStateOnStart;
+    public string currentRoom; // Stores the current room scene name
 }
