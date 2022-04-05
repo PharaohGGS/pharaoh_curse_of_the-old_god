@@ -18,6 +18,10 @@ public class SaveInstance : MonoBehaviour
 
     private void Awake()
     {
+        // Prevents error while debugging
+        if (SaveDataManager.Instance == null)
+            return;
+
         if (type == Type.Enemy)
             instanceID = ulong.Parse(gameObject.name.Substring(ENEMY_PARSE_INDEX));
         else if (type == Type.MovingBlock)
@@ -28,6 +32,10 @@ public class SaveInstance : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Prevents error while debugging
+        if (SaveDataManager.Instance == null)
+            return;
+
         // Saves the instance when unloaded
         Save();
     }
