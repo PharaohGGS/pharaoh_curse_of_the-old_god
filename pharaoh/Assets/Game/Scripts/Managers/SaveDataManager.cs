@@ -1,5 +1,4 @@
 using UnityEngine;
-using DesignPatterns;
 using System.IO;
 using System;
 
@@ -58,11 +57,6 @@ namespace Pharaoh.Managers
 
         public LastCheckpoint lastCheckpoint;
         public PlayerSkills playerSkills;
-
-        [Header("MANUAL BUTTONS")]
-
-        public bool save;
-        public bool load;
 
         // Creates a new save file
         public void NewSave()
@@ -210,20 +204,6 @@ namespace Pharaoh.Managers
             return !(position.x == SaveData.DEFLOAT && position.y == SaveData.DEFLOAT && position.z == SaveData.DEFLOAT);
         }
 
-        // Used to save/load from the inspector script
-        private void OnValidate()
-        {
-            if (save)
-            {
-                Save();
-                save = false;
-            }
-            if (load)
-            {
-                Load();
-                load = false;
-            }
-        }
     }
 }
 

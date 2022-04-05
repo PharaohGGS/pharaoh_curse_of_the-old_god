@@ -56,6 +56,9 @@ namespace Pharaoh.Gameplay.Components.Movement
         [Header("Player Movement Data")]
         public PlayerMovementData metrics;
 
+        [Header("Player Skills Unlocked")]
+        public PlayerSkills skills;
+
         [SerializeField, Header("Hook Events")]
         private HookBehaviourEvents hookEvents;
 
@@ -161,6 +164,9 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player dashes
         private void OnDashStarted()
         {
+            if (!skills.hasSwarmDash)
+                return;
+
             if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
