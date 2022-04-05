@@ -14,6 +14,8 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
 
+        private bool _isFirstTime = false;
+
         protected void Awake()
         {
             // at start hide gear
@@ -25,13 +27,19 @@ namespace Pharaoh.Gameplay
         {
             bool isSameTarget = _currentTarget == target;
             if (!isSameTarget) _currentTarget = target;
-            bool addDelay = !isSameTarget || !data.oneTimeDelay;
+            bool addDelay = _isFirstTime || !isSameTarget || !data.oneTimeDelay;
+            if (_isFirstTime) _isFirstTime = false;
             StartCoroutine(Action(addDelay));
         }
 
         public override void Respawn()
         {
-            if (data.oneTimeDelay) return;
+            if (data.oneTimeDelay)
+            {
+                _isFirstTime = true;
+                return;
+            }
+
             StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
             if (_col) _col.enabled = false;
             mesh?.SetActive(false);

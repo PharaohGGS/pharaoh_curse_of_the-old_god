@@ -1,14 +1,26 @@
 using UnityEngine;
-using DesignPatterns;
 using System.IO;
-using System.Linq;
-using UnityEngine.SceneManagement;
 using System;
 
 namespace Pharaoh.Managers
 {
-    public class SaveDataManager : PersistantMonoSingleton<SaveDataManager>
+    public class SaveDataManager : MonoBehaviour
     {
+
+        public static SaveDataManager Instance { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         [System.Serializable]
         private class SaveData
@@ -45,11 +57,6 @@ namespace Pharaoh.Managers
 
         public LastCheckpoint lastCheckpoint;
         public PlayerSkills playerSkills;
-
-        [Header("MANUAL BUTTONS")]
-
-        public bool save;
-        public bool load;
 
         // Creates a new save file
         public void NewSave()
@@ -197,20 +204,6 @@ namespace Pharaoh.Managers
             return !(position.x == SaveData.DEFLOAT && position.y == SaveData.DEFLOAT && position.z == SaveData.DEFLOAT);
         }
 
-        // Used to save/load from the inspector script
-        private void OnValidate()
-        {
-            if (save)
-            {
-                Save();
-                save = false;
-            }
-            if (load)
-            {
-                Load();
-                load = false;
-            }
-        }
     }
 }
 

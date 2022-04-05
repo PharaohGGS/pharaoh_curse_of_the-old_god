@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "1751c3d3-98c2-4751-a78f-f6247e1e969a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -229,6 +238,17 @@
                     "action": "NOCLIP",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d123266-1cda-464d-b03f-6bcc479b4917",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -262,6 +282,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KillAllSoldiers",
+                    "type": "Button",
+                    "id": "00481974-5ce6-465d-83ea-231d148fbdaf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -291,7 +320,7 @@
                     "name": "",
                     "id": "dd9af54a-a94a-43e3-962e-b9574a313adf",
                     "path": "<Keyboard>/q",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.2,pressPoint=0.3)",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -302,7 +331,7 @@
                     "name": "",
                     "id": "77ee1f47-04fb-4eac-a2c3-e3a40c47e582",
                     "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.2,pressPoint=0.3)",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -328,6 +357,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "HookInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d792acd-9e55-4fd0-adc1-b577925a9de0",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KillAllSoldiers",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
