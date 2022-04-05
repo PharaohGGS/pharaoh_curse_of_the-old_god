@@ -249,12 +249,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   animator: {fileID: 5280757643533625441}
+  animationEventsReceiver: {fileID: 3707285322232323955}
   rightHand: {fileID: 8613937999053526085}
   leftHand: {fileID: 4716540348454035076}
   rightSocket: {fileID: 4539851903350135344}
   leftSocket: {fileID: 9029138249168344907}
   rightSword: {fileID: 1056674046930762498}
   leftSword: {fileID: 7736959816141729621}
+  timeBeforeSheathing: 5
 --- !u!114 &7790090175714034903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -940,6 +942,23 @@ CapsuleCollider:
   m_Height: 0.26730284
   m_Direction: 2
   m_Center: {x: 0.0013075935, y: 0.005178914, z: -0.002254515}
+--- !u!1 &1505039420503206049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3707285322232323955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505039420503206049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f603a65d4c77c4b8fc58b595eb2640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2281400649281040923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
