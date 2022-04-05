@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BehaviourTree.Tools;
+using Pharaoh.Tools;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
@@ -19,6 +20,7 @@ namespace Pharaoh.Gameplay.Components
         public StunData lastStunData { get; private set; }
 
         private Collider2D[] _colliders;
+        private Rigidbody2D _rigidbody;
 
         private void Awake()
         {
@@ -46,6 +48,19 @@ namespace Pharaoh.Gameplay.Components
         {
             isStunned = false;
             lastStunData = null;
+        }
+
+        public void Move(Vector3 target)
+        {
+            Vector2 nextPosition = Vector2.MoveTowards(_rigidbody.position, target, 
+                moveSpeed * Time.fixedDeltaTime);
+            _rigidbody?.MovePosition(nextPosition);
+        }
+
+        public void LookAt(Vector3 target)
+        {
+            var nextRotation = transform.LookAt2D(target);
+            _rigidbody?.MoveRotation(nextRotation);
         }
     }
 }

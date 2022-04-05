@@ -18,7 +18,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (state == NodeState.Success || !blackboard.TryGetData("waitTime", out float waitTime))
+            if (state == NodeState.Failure || !blackboard.TryGetData("waitTime", out float waitTime))
             {
                 return state;
             }
@@ -28,7 +28,7 @@ namespace Pharaoh.AI.Actions
             blackboard.SetData("timeSince", timeSince);
             blackboard.SetData("isWaiting", isWaiting);
 
-            return isWaiting ? NodeState.Running : NodeState.Success;
+            return isWaiting ? NodeState.Running : NodeState.Failure;
         }
 
         protected override void OnStop()

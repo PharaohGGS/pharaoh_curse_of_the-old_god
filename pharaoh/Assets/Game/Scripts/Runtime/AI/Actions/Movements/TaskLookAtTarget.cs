@@ -8,15 +8,19 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskLookAtTarget : ActionNode
     {
+        private AiMovement _aiMovement;
+
+        protected override void OnStart()
+        {
+            if (_aiMovement || agent.TryGetComponent(out _aiMovement)) return;
+            LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
+        }
+
         protected override NodeState OnUpdate()
         {
-            if (blackboard.TryGetData("target", out Transform t))
-            {
-                agent.transform.LookAt2D(t.position);
-            }
-
-            state = NodeState.Running;
-            return state;
+            if (!_aiMovement) return NodeState.Failure;
+            _aiMovement.LookAt(blackboard.GetData<Transform>("target").position);
+            return NodeState.Running;
         }
     }
 }

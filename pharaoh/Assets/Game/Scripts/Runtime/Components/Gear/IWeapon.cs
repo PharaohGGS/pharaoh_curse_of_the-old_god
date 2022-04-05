@@ -4,6 +4,6 @@ namespace Pharaoh.Gameplay.Components
 {
     public interface IWeapon
     {
-        public void Attack(GameObject target);
+        public void Attack(Transform target);
     }
 }

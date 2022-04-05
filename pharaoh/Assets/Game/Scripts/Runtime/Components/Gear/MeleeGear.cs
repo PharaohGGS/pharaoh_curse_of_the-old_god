@@ -23,13 +23,13 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public void Attack(GameObject target)
+        public void Attack(Transform target)
         {
             if (GetData().throwable) Throw(target); 
             else Stab(target);
         }
 
-        private void Stab(GameObject target)
+        private void Stab(Transform target)
         {
             if (!target || !_animator) return;
 
@@ -37,16 +37,13 @@ namespace Pharaoh.Gameplay.Components
             _animator.SetTrigger("isAttacking");
         }
 
-        private void Throw(GameObject target)
+        private void Throw(Transform target)
         {
             if (!target || GetData()?.throwable == false || !_rigidbody2D) return;
 
             //float speed = GetData().throwableInitialVelocity;
-            float gravity = Physics2D.gravity.magnitude;
-            Vector2 targetPosition = target.transform.position;
-            Vector2 position = _rigidbody2D.position;
-            float height = position.y;
-            LaunchData data = LaunchData.Calculate(gravity, height, targetPosition, position/*, speed*/);
+            LaunchData data = LaunchData.Calculate(Physics2D.gravity.magnitude, _rigidbody2D.position.y, 
+                (Vector2)target.position, _rigidbody2D.position/*, speed*/);
 
             _rigidbody2D.velocity = data.initialVelocity;
             SocketAttach(false);

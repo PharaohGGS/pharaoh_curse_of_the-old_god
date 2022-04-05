@@ -10,17 +10,13 @@ namespace Pharaoh.AI.Actions
         
         protected override void OnStart()
         {
-            if (_aiMovement) return;
-
-            if (agent.TryGetComponent(out _aiMovement)) return;
-
+            if (_aiMovement || agent.TryGetComponent(out _aiMovement)) return;
             LogHandler.SendMessage($"[{agent.name}] Can't be stunned", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            if (!_aiMovement) return NodeState.Failure;
-            return _aiMovement.isStunned ? NodeState.Success : NodeState.Failure;
+            return _aiMovement?.isStunned == true ? NodeState.Success : NodeState.Failure;
         }
     }
 }

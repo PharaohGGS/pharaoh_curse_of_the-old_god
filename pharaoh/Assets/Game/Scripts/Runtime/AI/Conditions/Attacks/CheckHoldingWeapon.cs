@@ -9,28 +9,27 @@ namespace Pharaoh.AI.Actions
     public class CheckHoldingWeapon : ActionNode
     {
         private FightComponent _fight;
+        [SerializeField] private bool holding;
 
         protected override void OnStart()
         {
-            if (_fight) return;
-
-            if (agent.TryGetComponent(out _fight) == true) return;
-
+            if (_fight || agent.TryGetComponent(out _fight)) return;
             LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            return !_fight || !_fight.activeWeapon || !_fight.activeWeapon.transform.parent
-                ? NodeState.Failure : NodeState.Success;
+            holding = _fight && _fight.activeWeapon && 
+                           _fight.activeWeapon.isActiveAndEnabled &&
+                           !_fight.activeWeapon.isThrown;
+            return holding ? NodeState.Success : NodeState.Failure;
         }
 
         protected override void OnStop()
         {
-            if (state != NodeState.Failure || !_fight) return;
-            var weapon = _fight.activeWeapon;
-            if (!weapon) return;
+            if (!_fight || !_fight.activeWeapon || state != NodeState.Failure) return;
 
+            var weapon = _fight.activeWeapon;
             if (weapon.isThrown && weapon.isGrounded)
             {
                 blackboard.SetData("target", weapon.transform);

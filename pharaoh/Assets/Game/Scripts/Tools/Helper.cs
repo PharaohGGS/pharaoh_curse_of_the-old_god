@@ -13,18 +13,24 @@ namespace Pharaoh.Tools
             return objectToCompare.gameObject.GetInstanceID() == comparisonObject.GetInstanceID();
         }
 
-        public static void LookAt2D(this Transform transform, Transform target)
+        public static Quaternion LookAt2D(this Transform transform, Transform target)
         {
             Vector2 direction = target.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            return Quaternion.AngleAxis(angle, Vector3.up);
         }
 
-        public static void LookAt2D(this Transform transform, Vector3 target)
+        public static Quaternion LookAt2D(this Transform transform, Vector3 target)
         {
             Vector2 direction = target - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            return Quaternion.AngleAxis(angle, Vector3.up);
+        }
+        public static Quaternion LookAt2D(this Vector3 position, Vector3 target)
+        {
+            Vector2 direction = target - position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            return Quaternion.AngleAxis(angle, Vector3.up);
         }
 
         public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;

@@ -30,7 +30,7 @@ namespace Pharaoh.AI.Actions
             var target = _detection.GetGameObjectWithLayer(mask);
             if (target == null)
             {
-                blackboard.ClearData("target");
+                //blackboard.ClearData("target");
                 return NodeState.Failure;
             }
             
