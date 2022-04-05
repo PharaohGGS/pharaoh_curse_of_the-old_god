@@ -96,6 +96,8 @@ public class SandSoldierBehaviour : MonoBehaviour
             blockingLayer);
 
         _estimatedPosition.x = newX; // Update estimated x position with the new x value
+        Debug.Log(groundHit.point);
+        Debug.Log(soldierSize.y / 2f);
         if (groundHit)
             _estimatedPosition.y = groundHit.point.y + soldierSize.y / 2f; // Update estimated y position snapped to ground
 

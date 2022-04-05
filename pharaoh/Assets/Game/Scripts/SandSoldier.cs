@@ -49,6 +49,12 @@ public class SandSoldier : MonoBehaviour
     [Tooltip("Moving Block layer, used to avoid the block getting stuck")]
     public LayerMask movingBlockLayer;
 
+    [Header("Spawning parameters")]
+    public Vector2 startColliderOffset = new Vector2(0.1f, 0f);
+    public Vector2 endColliderOffset = new Vector2(0.1f, 1.05f);
+    public Vector2 startColliderSize = new Vector2(1.65f, 0f);
+    public Vector2 endColliderSize = new Vector2(1.65f, 2.15f);
+
     private bool _longPress; // Bool to check if the input has been held or not
     private PlayerMovement _playerMovement;
 
@@ -243,13 +249,17 @@ public class SandSoldier : MonoBehaviour
     // Used to lift object
     private IEnumerator SoldierSpawning(GameObject soldier)
     {
-        if (!soldier.TryGetComponent(out MeshRenderer meshRenderer) ||
-            !soldier.TryGetComponent(out BoxCollider2D col))
-        {
+        if (!soldier.TryGetComponent(out BoxCollider2D col))
             yield break;
-        }
+        if (!soldier.transform.GetChild(0).TryGetComponent(out MeshRenderer meshRenderer))
+            yield break;
 
         meshRenderer.enabled = false; // Hide the mesh
+
+        // Rotate the soldier based on player's facing side
+        Vector3 scale = soldier.transform.localScale;
+        scale.x = _playerMovement.isFacingRight ? 1 : -1;
+        soldier.transform.localScale = scale;
         
         // Check if soldier has enough height space to spawn
         RaycastHit2D roomCheck = Physics2D.BoxCast(
@@ -293,21 +303,21 @@ public class SandSoldier : MonoBehaviour
         
         // Lerp the collider size from ground to full size
         float elapsed = 0f;
-        col.offset = new Vector2(0, -0.5f);
-        col.size = new Vector2(1, 0);
+        col.offset = startColliderOffset;
+        col.size = startColliderSize;
         while (elapsed < timeToAppearFromGround)
         {
             Vector2 offset = col.offset;
             Vector2 size = col.size;
-            offset.y = Mathf.Lerp(-0.5f, 0, elapsed / timeToAppearFromGround);
-            size.y = Mathf.Lerp(0, 1, elapsed / timeToAppearFromGround);
+            offset.y = Mathf.Lerp(startColliderOffset.y, endColliderOffset.y, elapsed / timeToAppearFromGround);
+            size.y = Mathf.Lerp(startColliderSize.y, endColliderSize.y, elapsed / timeToAppearFromGround);
             col.offset = offset;
             col.size = size;
             elapsed += Time.deltaTime;
             yield return null;
         }
-        col.offset = Vector2.zero;
-        col.size = new Vector2(1, 1);
+        col.offset = endColliderOffset;
+        col.size = endColliderSize;
         meshRenderer.enabled = true; // Show the mesh
         _soldiersExpireCoroutine.Add(soldier.GetInstanceID(), StartCoroutine(SoldierExpiration(soldier))); // Start the timer
         yield return null;
@@ -353,6 +363,7 @@ public class SandSoldier : MonoBehaviour
     // Prevent below actions from being executed
     private void DisableActions()
     {
+        inputReader.DisableAttack();
         inputReader.DisableMove();
         inputReader.DisableDash();
         inputReader.DisableJump();
@@ -363,6 +374,7 @@ public class SandSoldier : MonoBehaviour
     // Allow below actions to be executed
     private void EnableActions()
     {
+        inputReader.EnableAttack();
         inputReader.EnableMove();
         inputReader.EnableDash();
         inputReader.EnableJump();
