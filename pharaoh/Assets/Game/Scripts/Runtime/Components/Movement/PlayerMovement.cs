@@ -48,13 +48,16 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
         public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
-        public bool IsHooking { set => _isHooking = value; }
+        public bool IsHooking { get => _isHooking; set => _isHooking = value; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
 
         [Header("Player Movement Data")]
         public PlayerMovementData metrics;
+
+        [Header("Player Skills Unlocked")]
+        public PlayerSkills skills;
 
         [SerializeField, Header("Hook Events")]
         private HookBehaviourEvents hookEvents;
@@ -161,6 +164,9 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player dashes
         private void OnDashStarted()
         {
+            if (!skills.hasSwarmDash)
+                return;
+
             if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
@@ -420,7 +426,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 foreach (var hit in hits)
                 {
-                    if (!hit.collider.gameObject) continue;
+                    if (!hit.collider || !hit.collider.gameObject) continue;
                     LogHandler.SendMessage($"{name} found {hit.collider.name} while dashing", MessageType.Log);
                     onDashStun?.Invoke(hit.collider.gameObject, dashStunData);
                 }

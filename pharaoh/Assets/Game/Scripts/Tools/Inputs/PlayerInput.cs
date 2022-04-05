@@ -64,6 +64,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1751c3d3-98c2-4751-a78f-f6247e1e969a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -253,6 +262,17 @@ namespace Pharaoh.Tools.Inputs
                     ""action"": ""NOCLIP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d123266-1cda-464d-b03f-6bcc479b4917"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -425,6 +445,7 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
             m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
             m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
+            m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
             // CharacterActions
             m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
@@ -497,6 +518,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterControls_Jump;
         private readonly InputAction m_CharacterControls_Dash;
         private readonly InputAction m_CharacterControls_NOCLIP;
+        private readonly InputAction m_CharacterControls_Attack;
         public struct CharacterControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -505,6 +527,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
             public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
             public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
+            public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
             public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -526,6 +549,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
+                    @Attack.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
+                    @Attack.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
+                    @Attack.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
                 }
                 m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -542,6 +568,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started += instance.OnNOCLIP;
                     @NOCLIP.performed += instance.OnNOCLIP;
                     @NOCLIP.canceled += instance.OnNOCLIP;
+                    @Attack.started += instance.OnAttack;
+                    @Attack.performed += instance.OnAttack;
+                    @Attack.canceled += instance.OnAttack;
                 }
             }
         }
@@ -642,6 +671,7 @@ namespace Pharaoh.Tools.Inputs
             void OnJump(InputAction.CallbackContext context);
             void OnDash(InputAction.CallbackContext context);
             void OnNOCLIP(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
         }
         public interface ICharacterActionsActions
         {
