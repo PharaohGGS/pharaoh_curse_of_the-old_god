@@ -24,25 +24,33 @@ public class SceneLoader : MonoBehaviour
         // If this room is in CurrentRoom's neighbours or is the CurrentRoom, load it
         if (sceneLoader.neighbours.Contains(gameObject.name) || gameObject.name == currentRoom.name)
         {
-            LoadScene();
+            if (_isLoaded) return;
+            _isLoaded = true;
+            StartCoroutine(LoadScene());
         }
         else
         {
-            UnloadScene();
+            if (!_isLoaded) return;
+            _isLoaded = false;
+            StartCoroutine(UnloadScene());
         }
     }
 
-    private void LoadScene()
+    private IEnumerator LoadScene()
     {
-        if (_isLoaded) return;
-        SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
-        _isLoaded = true;
+        AsyncOperation operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
-
-    private void UnloadScene()
+    
+    private IEnumerator UnloadScene()
     {
-        if (!_isLoaded) return;
-        SceneManager.UnloadSceneAsync(gameObject.name);
-        _isLoaded = false;
+        AsyncOperation operation = SceneManager.UnloadSceneAsync(gameObject.name);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 }
