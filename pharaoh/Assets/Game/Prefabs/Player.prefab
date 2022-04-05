@@ -301,15 +301,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sandSoldier: {fileID: 2857470292283219416, guid: d9b5a4c78c527e241a1606bfebf363b5, type: 3}
   soldierPreview: {fileID: 5987998499529800469, guid: 5a1bef3bfd64bca499e5a6d674eb119d, type: 3}
+  inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   playerModel: {fileID: 2281400649281040923}
   minRange: 1
   maxRange: 6
   timeToMaxRange: 1
   timeToAppearFromGround: 0.35
   timeToExpire: 10
+  maximumTimeIfMultipleSoldiers: 3
+  maxSoldiers: 2
+  soldierSize: {x: 1.5, y: 2.1}
   groundLayer:
     serializedVersion: 2
     m_Bits: 525312
+  soldierLayer:
+    serializedVersion: 2
+    m_Bits: 2097152
+  movingBlockLayer:
+    serializedVersion: 2
+    m_Bits: 65536
 --- !u!114 &6215234791223536456
 MonoBehaviour:
   m_ObjectHideFlags: 0
