@@ -65,6 +65,7 @@ namespace Pharaoh.Managers
         {
             Debug.Log("New Game started.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
+            lastCheckpoint.position = new Vector3(-2.5f, 2f, 1f); //need because ScriptableObjects are saved in editor
             Save();
             LevelManager.Instance.ChangeRoom(_saveData.lastScene);
         }
