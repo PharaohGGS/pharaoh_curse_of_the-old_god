@@ -26,7 +26,8 @@ public class PlayerRespawn : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody2D>();
 
-        MoveToSpawnPoint();
+        if (SaveDataManager.Instance != null)
+            MoveToSpawnPoint();
     }
 
     public void MoveToSpawnPoint()
