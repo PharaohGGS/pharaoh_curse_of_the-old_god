@@ -21,7 +21,6 @@ public class LevelManager : MonoBehaviour
     }
 
     public string currentRoom; // Stores the current room scene name
-    public bool debugging = false;
     public UnityAction roomChanged;
 
     public void ChangeRoom(string room)

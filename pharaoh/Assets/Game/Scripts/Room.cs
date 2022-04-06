@@ -16,7 +16,7 @@ public class Room : MonoBehaviour
 
         virtualCamera.SetActive(true);
 
-        if (!LevelManager.Instance.debugging)
+        if (LevelManager.Instance != null)
             LevelManager.Instance.ChangeRoom(gameObject.scene.name);
     }
 

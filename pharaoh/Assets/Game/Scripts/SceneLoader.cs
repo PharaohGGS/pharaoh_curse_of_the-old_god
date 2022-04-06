@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!LevelManager.Instance.debugging)
+        if (LevelManager.Instance != null)
         {
             LevelManager.Instance.roomChanged += OnRoomChanged;
         }
@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour
 
     private void OnDisable()
     {
-        if (!LevelManager.Instance.debugging)
+        if (LevelManager.Instance != null)
         {
             LevelManager.Instance.roomChanged -= OnRoomChanged;
         }
@@ -35,6 +35,9 @@ public class SceneLoader : MonoBehaviour
 
     private void OnRoomChanged()
     {
+        if (LevelManager.Instance == null)
+            return;
+
         // Get the GameObject which represents the current room
         GameObject currentRoom = GameObject.Find(LevelManager.Instance.currentRoom);
 
