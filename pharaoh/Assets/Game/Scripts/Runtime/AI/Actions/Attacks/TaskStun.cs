@@ -28,10 +28,5 @@ namespace Pharaoh.AI.Actions
 
             return NodeState.Success;
         }
-
-        protected override void OnStop()
-        {
-            if (!stun) _aiMovement.EndStun();
-        }
     }
 }

@@ -69,8 +69,7 @@ namespace Pharaoh.Gameplay.Components
                 // skip detection component object
                 if (coll == null || coll.gameObject == gameObject) continue;
                 // add object in the proper list layered
-                var list = _layeredColliders[coll.gameObject.layer];
-                if (list == null || list.Contains(coll)) continue;
+                if (!_layeredColliders.TryGetValue(coll.gameObject.layer, out var list) || list.Contains(coll)) continue;
                 // add collider to the list if it doesn't contains it already
                 list.Add(coll);
             }

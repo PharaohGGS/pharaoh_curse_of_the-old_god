@@ -8,9 +8,6 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskChangeWaypoint : ActionNode
     {
-        ///* Patrol attributes *///
-        [SerializeField] private bool ignoreHeight;
-
         private AiMovement _aiMovement;
 
         protected override void OnStart()
@@ -36,8 +33,6 @@ namespace Pharaoh.AI.Actions
             }
 
             var index = blackboard.GetData<int>("currentWaypointIndex");
-            var target = _aiMovement.waypointHolder.GetChild(index).position;
-            if (ignoreHeight) target.y = agent.transform.position.y;
 
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", _aiMovement.timeBetweenWaypoints);
@@ -45,7 +40,7 @@ namespace Pharaoh.AI.Actions
             var nextIndex = (index + 1) % _aiMovement.waypointHolder.childCount;
             blackboard.SetData("currentWaypointIndex", nextIndex);
 
-            var nextTarget = _aiMovement.waypointHolder.GetChild(nextIndex).position;
+            var nextTarget = _aiMovement.waypointHolder.GetChild(nextIndex);
             blackboard.SetData("target", nextTarget);
 
             return NodeState.Success;

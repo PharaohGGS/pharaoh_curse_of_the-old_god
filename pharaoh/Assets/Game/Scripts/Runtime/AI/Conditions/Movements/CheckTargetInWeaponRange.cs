@@ -22,9 +22,9 @@ namespace Pharaoh.AI.Actions
             var target = blackboard.GetData<Transform>("target").position;
             var position = _fight.activeWeapon.transform.position;
             var range = _fight.activeWeapon.GetRange();
+            var distance = Vector2.Distance(position, target);
 
-            return Vector2.Distance(position, target) <= range 
-                ? NodeState.Success : NodeState.Failure;
+            return distance <= range ? NodeState.Success : NodeState.Failure;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Pharaoh.AI.Actions
     {
         protected override NodeState OnUpdate()
         {
-            var hasTarget = !blackboard.TryGetData("target", out Transform target);
+            var hasTarget = blackboard.TryGetData("target", out Transform target);
             return hasTarget && target ? NodeState.Success : NodeState.Failure;
         }
     }

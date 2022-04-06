@@ -19,6 +19,7 @@ namespace Pharaoh.Gameplay.Components
     {
         public LayerMask collidingLayers;
         [SerializeField] protected Transform socket;
+        [SerializeField] protected Vector3 overrideRotation = Vector3.zero;
 
         public bool isThrown { get; protected set; }
         public bool isGrounded { get; protected set; }
@@ -64,7 +65,7 @@ namespace Pharaoh.Gameplay.Components
             {
                 transform.parent = socket;
                 transform.localPosition = Vector3.zero;
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
+                transform.localRotation = Quaternion.Euler(overrideRotation);
                 _rigidbody2D.WakeUp();
             }
         }

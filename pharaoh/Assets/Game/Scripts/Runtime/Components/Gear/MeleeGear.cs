@@ -31,6 +31,7 @@ namespace Pharaoh.Gameplay.Components
 
         private void Stab(Transform target)
         {
+            LogHandler.SendMessage($"{name} stabbing {target}", MessageType.Log);
             if (!target || !_animator) return;
 
             _animator.ResetTrigger("isAttacking");

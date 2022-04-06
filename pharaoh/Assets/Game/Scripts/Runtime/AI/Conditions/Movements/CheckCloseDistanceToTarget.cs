@@ -8,6 +8,7 @@ namespace Pharaoh.AI.Actions
     public class CheckCloseDistanceToTarget : ActionNode
     {
         private AiMovement _aiMovement = null;
+        [SerializeField] private bool ignoreHeight = true;
 
         protected override void OnStart()
         {
@@ -18,13 +19,16 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             if (!_aiMovement) return NodeState.Failure;
-
+            
             var target = blackboard.GetData<Transform>("target").position;
             var position = agent.transform.position;
             var closeDistance = _aiMovement.closeDistance;
 
-            return Vector2.Distance(position, target) <= closeDistance 
-                ? NodeState.Success : NodeState.Failure;
+            var distance = ignoreHeight 
+                ? Mathf.Abs(position.x - target.x) 
+                : Vector2.Distance(position, target);
+
+            return distance <= closeDistance ? NodeState.Success : NodeState.Failure;
         }
     }
 }

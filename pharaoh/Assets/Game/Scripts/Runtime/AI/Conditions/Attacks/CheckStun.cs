@@ -18,5 +18,13 @@ namespace Pharaoh.AI.Actions
         {
             return _aiMovement?.isStunned == true ? NodeState.Success : NodeState.Failure;
         }
+
+        protected override void OnStop()
+        {
+            if (_aiMovement?.isStunned == true && blackboard.TryGetData("isWaiting", out bool isWaiting) && !isWaiting)
+            {
+                _aiMovement.EndStun();
+            }
+        }
     }
 }
