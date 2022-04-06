@@ -11,7 +11,6 @@ namespace Pharaoh.Gameplay.Components
         [Header("Weapons")]
 
         [SerializeField] private Gear[] gears;
-        [field: SerializeField, Range(0.5f, 10f)] public float range { get; private set; } = 5f;
 
         private int _weaponIndex = -1;
         private readonly List<Gear> _weapons = new List<Gear>();

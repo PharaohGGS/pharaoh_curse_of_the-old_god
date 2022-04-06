@@ -1,15 +1,14 @@
-﻿using BehaviourTree.Tools;
+﻿using System;
+using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
-using UnityEngine;
 
 namespace Pharaoh.AI.Actions
 {
     public class TaskStun : ActionNode
     {
-        [SerializeField] private bool stun;
-        private AiMovement _aiMovement;
-
+        private AiMovement _aiMovement; 
+        
         protected override void OnStart()
         {
             if (_aiMovement || agent.TryGetComponent(out _aiMovement)) return;
@@ -20,11 +19,9 @@ namespace Pharaoh.AI.Actions
         {
             if (!_aiMovement || !_aiMovement.lastStunData) return NodeState.Failure;
 
-            if (stun)
-            {
-                blackboard.SetData("isWaiting", true);
-                blackboard.SetData("waitTime", _aiMovement.lastStunData.time);
-            }
+            blackboard.SetData("isStunned", true);
+            blackboard.SetData("isWaiting", true);
+            blackboard.SetData("waitTime", _aiMovement.lastStunData.time);
 
             return NodeState.Success;
         }

@@ -83,30 +83,10 @@ namespace Pharaoh.Gameplay.Components
             return true;
         }
 
-        public float GetRate()
+        public virtual float GetRate()
         {
             var data = GetBaseData();
-            if (data == null) return 0f;
-            
-            if (TryGetData(out MeleeGearData melee) && melee.throwable)
-            {
-                return melee.throwablePickingTime;
-            }
-
-            return data.rate;
-        }
-
-        public float GetRange()
-        {
-            var data = GetBaseData();
-            if (data == null) return 0f;
-            
-            if (TryGetData(out MeleeGearData melee) && melee.throwable)
-            {
-                return melee.throwableRange;
-            }
-
-            return data.rate;
+            return !data ? 0f : data.rate;
         }
     }
 }

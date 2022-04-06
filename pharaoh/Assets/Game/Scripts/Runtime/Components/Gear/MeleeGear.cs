@@ -25,8 +25,27 @@ namespace Pharaoh.Gameplay.Components
 
         public void Attack(Transform target)
         {
-            if (GetData().throwable) Throw(target); 
-            else Stab(target);
+            var data = GetData();
+            var distance = Mathf.Abs(target.position.x - transform.position.x);
+
+            var canThrow = data.throwable;
+            var isThrowable = distance <= data.throwableRange;
+            var isStabbable = distance <= data.range;
+
+
+            switch (canThrow)
+            {
+                case false when isStabbable:
+                case true when isStabbable && isThrowable:
+                    Stab(target);
+                    break;
+                case true when !isStabbable && isThrowable:
+                    Throw(target);
+                    break;
+                default:
+                    LogHandler.SendMessage($"{name} is too far from {target.name}", MessageType.Warning);
+                    break;
+            }
         }
 
         private void Stab(Transform target)
@@ -40,15 +59,25 @@ namespace Pharaoh.Gameplay.Components
 
         private void Throw(Transform target)
         {
-            if (!target || GetData()?.throwable == false || !_rigidbody2D) return;
+            var data = GetData();
+            if (!target || !data || !data.throwable || !_rigidbody2D) return;
 
-            //float speed = GetData().throwableInitialVelocity;
-            LaunchData data = LaunchData.Calculate(Physics2D.gravity.magnitude, _rigidbody2D.position.y, 
-                (Vector2)target.position, _rigidbody2D.position/*, speed*/);
-
-            _rigidbody2D.velocity = data.initialVelocity;
+            var initialVelocity = data.throwableInitialVelocity;
+            var direction = (target.position + Vector3.up) - transform.position;
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody2D.AddForce(direction.normalized * initialVelocity, ForceMode2D.Impulse);
             SocketAttach(false);
             onWeaponThrown?.Invoke();
+        }
+
+        public override float GetRate()
+        {
+            if (TryGetData(out MeleeGearData melee) && melee.throwable && isThrown)
+            {
+                return melee.throwablePickingTime;
+            }
+
+            return base.GetRate();
         }
     }
 }

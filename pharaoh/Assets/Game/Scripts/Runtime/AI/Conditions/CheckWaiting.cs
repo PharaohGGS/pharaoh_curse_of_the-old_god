@@ -1,4 +1,5 @@
 ﻿using BehaviourTree.Tools;
+using Pharaoh.Gameplay.Components;
 
 namespace Pharaoh.AI.Actions
 {
@@ -6,9 +7,8 @@ namespace Pharaoh.AI.Actions
     {
         protected override NodeState OnUpdate()
         {
-            state = !blackboard.TryGetData("isWaiting", out bool value) || !value
-                ? NodeState.Failure : NodeState.Success;
-            return state;
+            bool isWaiting = blackboard.TryGetData("isWaiting", out bool value) && value;
+            return isWaiting ? NodeState.Success : NodeState.Failure;
         }
     }
 }

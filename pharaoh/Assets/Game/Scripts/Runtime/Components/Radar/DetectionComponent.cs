@@ -10,7 +10,7 @@ namespace Pharaoh.Gameplay.Components
     public class DetectionComponent : MonoBehaviour
     {
         [SerializeField] private DetectionData[] datas;
-        [SerializeField] private new Collider2D collider;
+        [SerializeField] public new Collider2D collider;
 
         [SerializeField] private int maxOverlappedColliders = 8;
         [SerializeField] private Collider2D[] colliders;
@@ -20,6 +20,11 @@ namespace Pharaoh.Gameplay.Components
         public bool hasDetectionCollider { get; private set; } = false;
         public int overlappedCount { get; private set; } = 0;
 
+        public float radius
+        {
+            get => collider is CircleCollider2D circle ? circle.radius : 0f;
+            set { if (collider is CircleCollider2D circle) circle.radius = value; }
+        }
 
         private void OnEnable()
         {
@@ -51,6 +56,7 @@ namespace Pharaoh.Gameplay.Components
             if (!hasDetectionCollider) return;
 
             // do the overlap operation each fixedUpdate
+            for (var i = 0; i < colliders.Length; i++) colliders[i] = null;
             overlappedCount = collider.OverlapNonAlloc(ref colliders, detectionLayer);
             if (overlappedCount <= 0)
             {

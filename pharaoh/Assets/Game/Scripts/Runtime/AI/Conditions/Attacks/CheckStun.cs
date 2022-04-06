@@ -1,4 +1,5 @@
-﻿using BehaviourTree.Tools;
+﻿using System.Runtime.InteropServices;
+using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
 
@@ -10,21 +11,21 @@ namespace Pharaoh.AI.Actions
         
         protected override void OnStart()
         {
-            if (_aiMovement || agent.TryGetComponent(out _aiMovement)) return;
-            LogHandler.SendMessage($"[{agent.name}] Can't be stunned", MessageType.Warning);
+            if (!_aiMovement && !agent.TryGetComponent(out _aiMovement))
+            {
+                LogHandler.SendMessage($"[{agent.name}] Can't be stunned", MessageType.Warning);
+                return;
+            }
+
+            if (!blackboard.TryGetData("isStunned", out bool isStunned) || !isStunned || !_aiMovement.isStunned) return;
+            blackboard.ClearData("isStunned");
+            _aiMovement.EndStun();
         }
 
         protected override NodeState OnUpdate()
         {
-            return _aiMovement?.isStunned == true ? NodeState.Success : NodeState.Failure;
-        }
-
-        protected override void OnStop()
-        {
-            if (_aiMovement?.isStunned == true && blackboard.TryGetData("isWaiting", out bool isWaiting) && !isWaiting)
-            {
-                _aiMovement.EndStun();
-            }
+            return _aiMovement && _aiMovement.isStunned && _aiMovement.lastStunData
+                ? NodeState.Success : NodeState.Failure;
         }
     }
 }

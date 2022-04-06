@@ -1,4 +1,5 @@
-﻿using BehaviourTree.Tools;
+﻿using System;
+using BehaviourTree.Tools;
 using UnityEngine;
 
 namespace Pharaoh.AI.Actions
@@ -18,10 +19,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (state == NodeState.Failure || !blackboard.TryGetData("waitTime", out float waitTime))
-            {
-                return state;
-            }
+            if (!blackboard.TryGetData("waitTime", out float waitTime)) return NodeState.Failure;
 
             float timeSince = Time.time - _startTime;
             bool isWaiting = timeSince < waitTime;
@@ -33,10 +31,8 @@ namespace Pharaoh.AI.Actions
 
         protected override void OnStop()
         {
-            if (blackboard.TryGetData("isWaiting", out bool isWaiting) && isWaiting)
-            {
-                state = NodeState.Running;
-            }
+            if (!blackboard.TryGetData("waitTime", out float waitTime)) return;
+            blackboard.ClearData("waitTime");
         }
     }
 }
