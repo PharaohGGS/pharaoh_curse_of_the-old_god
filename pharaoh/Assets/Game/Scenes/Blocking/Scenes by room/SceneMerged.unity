@@ -164,12 +164,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 35618261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1548fd08334a33740a28589900c14615, type: 3}
+  m_Script: {fileID: 11500000, guid: da8c665e42309c14db73feededd17d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1661445265}
-  vcamFollowOffset: {fileID: 1370085187}
-  cameraOffset: {x: 1, y: 0, z: 0}
+  vcamFollowOffset: {fileID: 1661445265}
+  cameraOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &134467297
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,11 +880,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1370085187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9071571554302007626, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-  m_PrefabInstance: {fileID: 1550075735}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1550075735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1149,7 +1144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9176382231787214312, guid: ffc3d9d83971e8641b98bbc6c78e7480, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffc3d9d83971e8641b98bbc6c78e7480, type: 3}
