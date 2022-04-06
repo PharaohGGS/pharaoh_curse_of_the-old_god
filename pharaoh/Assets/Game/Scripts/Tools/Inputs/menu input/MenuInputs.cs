@@ -1,16 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuInputs : MonoBehaviour
 {
-    public GameObject brackets;
-    private void OnMouseOver()
+    public Image effectImage;
+    public Color imagecolor;
+    public float speed = 1f;
+    public float baseAlpha = 200f;
+
+    void Start()
     {
-        brackets.SetActive(true);
+        imagecolor = effectImage.color;
     }
-    private void OnMouseExit()
+
+    private void Update()
     {
-        brackets.SetActive(false);
+        imagecolor.a = ((Mathf.Sin(Time.time * speed) + 1.0f) / 2.0f);
+        if(imagecolor.a <= 200)
+        {
+            effectImage.color = imagecolor;
+        }
     }
 }

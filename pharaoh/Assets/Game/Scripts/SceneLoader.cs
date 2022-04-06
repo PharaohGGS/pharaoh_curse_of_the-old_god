@@ -14,7 +14,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Update()
     {
-        if (LevelManager.Instance.currentRoom == null) return;
+        if (LevelManager.Instance.currentRoom == null || LevelManager.Instance.debugging) return;
         
         // Get the GameObject which represents the current room
         GameObject currentRoom = GameObject.Find(LevelManager.Instance.currentRoom);

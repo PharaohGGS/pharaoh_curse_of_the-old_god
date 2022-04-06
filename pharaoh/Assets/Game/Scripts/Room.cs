@@ -15,7 +15,9 @@ public class Room : MonoBehaviour
         if (col.gameObject.layer != LayerMask.NameToLayer("Player") && col.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
 
         virtualCamera.SetActive(true);
-        LevelManager.Instance.currentRoom = gameObject.scene.name;
+
+        if (!LevelManager.Instance.debugging)
+            LevelManager.Instance.currentRoom = gameObject.scene.name;
     }
 
     private void OnTriggerExit2D(Collider2D other)
