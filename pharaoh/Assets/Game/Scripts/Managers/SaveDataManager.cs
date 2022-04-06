@@ -28,6 +28,7 @@ namespace Pharaoh.Managers
             public static readonly float DEFLOAT = -666f;
 
             public float[] lastCheckpoint;
+            public string lastScene;
             public bool[] skills; //[Swarm Dash, Sand Soldier, Grappling Hook]
             public bool[] enemiesStates;
             public float[] blocksPositions_x;
@@ -37,7 +38,8 @@ namespace Pharaoh.Managers
             public SaveData(uint enemiesCount, uint movingBlockCount)
             {
                 lastCheckpoint = new float[] { 0f, 0f, 0f };
-                skills = new bool[] { false, false, false };
+                lastScene = "0-0 - SCENE";
+                skills = new bool[] { false, false, false, false, false };
                 enemiesStates = new bool[enemiesCount];
                 blocksPositions_x = new float[movingBlockCount];
                 blocksPositions_y = new float[movingBlockCount];
@@ -64,6 +66,7 @@ namespace Pharaoh.Managers
             Debug.Log("New Game started.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             Save();
+            LevelManager.Instance.ChangeRoom(_saveData.lastScene);
         }
 
         // Loads the save file
@@ -134,18 +137,20 @@ namespace Pharaoh.Managers
         private void SaveLastCheckpoint()
         {
             _saveData.lastCheckpoint = new float[] { lastCheckpoint.position.x, lastCheckpoint.position.y, lastCheckpoint.position.z };
+            _saveData.lastScene = LevelManager.Instance.currentRoom;
         }
 
         // Loads the last checkpoint triggered from the save data object
         private void LoadLastCheckpoint()
         {
             lastCheckpoint.position = new Vector3(_saveData.lastCheckpoint[0], _saveData.lastCheckpoint[1], _saveData.lastCheckpoint[2]);
+            LevelManager.Instance.currentRoom = _saveData.lastScene;
         }
 
         // Saves the states of the player skills to the save data object
         private void SaveSkills()
         {
-            _saveData.skills = new bool[] { playerSkills.hasSwarmDash, playerSkills.hasSandSoldier, playerSkills.hasGrapplingHook };
+            _saveData.skills = new bool[] { playerSkills.hasSwarmDash, playerSkills.hasSandSoldier, playerSkills.hasGrapplingHook, playerSkills.hasCanopicJar1, playerSkills.hasCanopicJar2 };
         }
 
         // Loads the states of skills from the save data object
@@ -154,6 +159,8 @@ namespace Pharaoh.Managers
             playerSkills.hasSwarmDash = _saveData.skills[0];
             playerSkills.hasSandSoldier = _saveData.skills[1];
             playerSkills.hasGrapplingHook = _saveData.skills[2];
+            playerSkills.hasCanopicJar1 = _saveData.skills[3];
+            playerSkills.hasCanopicJar2 = _saveData.skills[4];
         }
 
         // Saves all the currently loaded enemies states

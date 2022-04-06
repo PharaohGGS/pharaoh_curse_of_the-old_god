@@ -1,3 +1,4 @@
+using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,8 @@ public class PlayerRespawn : MonoBehaviour
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+
+        MoveToSpawnPoint();
     }
 
     public void MoveToSpawnPoint()

@@ -1,4 +1,6 @@
+using Pharaoh.Managers;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
@@ -19,5 +21,13 @@ public class LevelManager : MonoBehaviour
     }
 
     public string currentRoom; // Stores the current room scene name
-    public bool debugging;
+    public bool debugging = false;
+    public UnityAction roomChanged;
+
+    public void ChangeRoom(string room)
+    {
+        currentRoom = room;
+        roomChanged?.Invoke();
+    }
+
 }

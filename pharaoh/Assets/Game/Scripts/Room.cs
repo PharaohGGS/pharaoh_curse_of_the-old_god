@@ -17,7 +17,7 @@ public class Room : MonoBehaviour
         virtualCamera.SetActive(true);
 
         if (!LevelManager.Instance.debugging)
-            LevelManager.Instance.currentRoom = gameObject.scene.name;
+            LevelManager.Instance.ChangeRoom(gameObject.scene.name);
     }
 
     private void OnTriggerExit2D(Collider2D other)
