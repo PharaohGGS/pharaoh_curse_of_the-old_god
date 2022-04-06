@@ -55,6 +55,9 @@ public class SandSoldier : MonoBehaviour
     public Vector2 startColliderSize = new Vector2(1.65f, 0f);
     public Vector2 endColliderSize = new Vector2(1.65f, 2.15f);
 
+    [Header("Tweaks")]
+    [Range(0f, 1f)] public float blockPlusSoldierThreshold = 0.7f;
+
     private bool _longPress; // Bool to check if the input has been held or not
     private PlayerMovement _playerMovement;
 
@@ -278,7 +281,7 @@ public class SandSoldier : MonoBehaviour
         // If there's a moving block, check if there is space for soldier's height + block's height
         RaycastHit2D movingBlockCheck = Physics2D.BoxCast(
             soldier.transform.position,
-            col.bounds.size * 0.9f,
+            soldierSize * 0.9f,
             0f,
             Vector2.up,
             0f,
@@ -286,10 +289,12 @@ public class SandSoldier : MonoBehaviour
         if (movingBlockCheck)
         {
             Vector2 size = movingBlockCheck.collider.bounds.size;
-            Vector2 checkSize = new Vector2(size.x, col.bounds.size.y + size.y);
+            Vector2 checkSize = new Vector2(size.x, soldierSize.y + size.y);
+            Vector3 pos = soldier.transform.position;
+            pos.y += -(soldierSize.y / 2f) + (checkSize.y / 2f);
             RaycastHit2D movingBlockRoomCheck = Physics2D.BoxCast(
-                soldier.transform.position,
-                checkSize * 0.9f,
+                pos,
+                checkSize * blockPlusSoldierThreshold,
                 0f,
                 Vector2.up,
                 0f,
