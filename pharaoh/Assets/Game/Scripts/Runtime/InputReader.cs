@@ -29,6 +29,8 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public UnityAction attackPerformedEvent;
 
+    public UnityAction<float> lookPerformedEvent;
+
     public UnityAction sandSoldierStartedEvent;
     public UnityAction sandSoldierPerformedEvent;
     public UnityAction sandSoldierCanceledEvent;
@@ -91,6 +93,12 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void OnKillAllSoldiers(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) killAllSoldiersStartedEvent?.Invoke();
+    }
+    
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        var value = context.ReadValue<float>();
+        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
     }
 
     public void OnMove(InputAction.CallbackContext context)

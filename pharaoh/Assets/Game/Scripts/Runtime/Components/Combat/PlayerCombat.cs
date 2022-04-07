@@ -19,6 +19,7 @@ public class PlayerCombat : MonoBehaviour
     private short _combatPhase = 0;
     private bool _sheathed = true;
     private Coroutine _sheatheCoroutine;
+    private Coroutine _combatPhaseReset;
 
     [Header("Components")]
 
@@ -92,18 +93,26 @@ public class PlayerCombat : MonoBehaviour
         {
             default:
             case 0:
+                if (_combatPhaseReset != null)
+                    StopCoroutine(_combatPhaseReset);
                 animator.SetTrigger("Attack1");
+                _combatPhaseReset = StartCoroutine(ResetCombatPhase(1.5f));
                 LockMovement(1f);
                 _combatPhase = 1;
                 break;
 
             case 1:
+                if (_combatPhaseReset != null)
+                    StopCoroutine(_combatPhaseReset);
                 animator.SetTrigger("Attack2");
+                _combatPhaseReset = StartCoroutine(ResetCombatPhase(1.5f));
                 LockMovement(1f);
                 _combatPhase = 2;
                 break;
 
             case 2:
+                if (_combatPhaseReset != null)
+                    StopCoroutine(_combatPhaseReset);
                 animator.SetTrigger("Attack3");
                 LockMovement(1.5f);
                 _combatPhase = 0;
@@ -137,6 +146,15 @@ public class PlayerCombat : MonoBehaviour
         inputReader.EnableSandSoldier();
         inputReader.EnableHookInteract();
         inputReader.EnableHookGrapple();
+    }
+
+    // Resets the combat phase after a time
+    private IEnumerator ResetCombatPhase(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Debug.Log("Reset");
+        _combatPhase = 0;
     }
 
     // Resets the sheathing timer, used when not attacking to automatically sheathe back the weapons
