@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using SaveDataManager = Pharaoh.Managers.SaveDataManager;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class MainMenu : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class MainMenu : MonoBehaviour
     
     private void Start()
     {
+        AudioManager.Instance.Play("ambiance");
+
         _mainMenu = transform.Find("Main Menu").gameObject;
         _settingsMenu = transform.Find("Settings Menu").gameObject;
         _continueButton = _mainMenu.transform.Find("Continue Button").GetComponent<Button>();

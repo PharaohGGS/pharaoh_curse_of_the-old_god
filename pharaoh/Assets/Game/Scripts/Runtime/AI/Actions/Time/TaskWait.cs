@@ -7,10 +7,12 @@ namespace Pharaoh.AI.Actions
     public class TaskWait : ActionNode
     {
         [SerializeField] private float _startTime = 0f;
+        private float _waitTime = 0f;
 
         protected override void OnStart()
         {
             _startTime = Time.time;
+            // always have isWaiting inside the blackboard
             if (!blackboard.ContainsData("isWaiting"))
             {
                 blackboard.SetData("isWaiting", false);
@@ -19,8 +21,11 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!blackboard.TryGetData("waitTime", out float waitTime)) return NodeState.Failure;
-
+            if (!blackboard.TryGetData("waitTime", out float waitTime))
+            {
+                return NodeState.Failure;
+            }
+            
             float timeSince = Time.time - _startTime;
             bool isWaiting = timeSince < waitTime;
             blackboard.SetData("timeSince", timeSince);

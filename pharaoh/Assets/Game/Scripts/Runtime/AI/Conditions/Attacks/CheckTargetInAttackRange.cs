@@ -19,13 +19,8 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             if (!_detection) return NodeState.Failure;
-
             var target = blackboard.GetData<Transform>("target").position;
-            var position = agent.transform.position;
-            var range = _detection.radius;
-
-            return Vector2.Distance(position, target) > range 
-                ? NodeState.Failure : NodeState.Success;
+            return _detection.OverlapPoint(target) ? NodeState.Success : NodeState.Failure;
         }
     }
 }

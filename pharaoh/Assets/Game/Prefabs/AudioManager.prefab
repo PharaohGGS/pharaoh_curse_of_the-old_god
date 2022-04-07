@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1330603988909350982}
   - component: {fileID: 3545863962414996424}
+  - component: {fileID: 2199613194498635937}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1330603988909350982
 Transform:
@@ -44,4 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46046172a1919294195c1c102e38e282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: ambiance
+    clip: {fileID: 8300000, guid: 99a7861db7adaf84880f0240ccc2ba2f, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    audioSource: {fileID: 0}
+--- !u!81 &2199613194498635937
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509091087091232412}
+  m_Enabled: 1

@@ -18,7 +18,6 @@ namespace Pharaoh.Gameplay.Components
         [field: SerializeField] public Transform waypointHolder { get; private set; }
 
         public bool isStunned { get; private set; }
-        public StunData lastStunData { get; private set; }
 
         private Collider2D[] _colliders;
         private Rigidbody2D _rigidbody;
@@ -38,21 +37,15 @@ namespace Pharaoh.Gameplay.Components
 
             var data = damager.stunData;
             isStunned = data != null;
-            lastStunData = data;
+            StartCoroutine(WaitStunTime(data.time));
         }
 
         public void DashStun(GameObject target, StunData data)
         {
-            if ((!isStunned && target != gameObject) || (isStunned && target)) return;
+            if (target != gameObject) return;
 
             isStunned = data != null;
-            lastStunData = data;
-        }
-
-        public void EndStun()
-        {
-            isStunned = false;
-            lastStunData = null;
+            StartCoroutine(WaitStunTime(data.time));
         }
 
         public void Move(Vector3 target)
@@ -66,6 +59,19 @@ namespace Pharaoh.Gameplay.Components
         {
             target.z = transform.position.z;
             transform.LookAt2D(target);
+        }
+
+        private IEnumerator WaitStunTime(float time)
+        {
+            if (!_rigidbody) yield break;
+
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            
+            yield return new WaitForSeconds(time);
+            
+            isStunned = false;
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 }
