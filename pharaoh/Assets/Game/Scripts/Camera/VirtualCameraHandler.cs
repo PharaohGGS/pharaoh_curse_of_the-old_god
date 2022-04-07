@@ -9,6 +9,10 @@ public class VirtualCameraHandler : MonoBehaviour
 
     private PlayerMovement _playerMovement;
 
+    private bool _isOnTrack;
+    private PolygonCollider2D _polygonCollider2D;
+    private CinemachineTrackedDolly _trackedDolly;
+
     private void Awake()
     {
         _playerMovement = CameraManager.Instance.player.GetComponent<PlayerMovement>();
@@ -20,11 +24,26 @@ public class VirtualCameraHandler : MonoBehaviour
             Debug.Log("No CinemachineVirtualCamera component found.");
         
         _virtualCamera.Follow = CameraManager.Instance.vcamFollowOffset.transform;
+        _trackedDolly = _virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+        if (_trackedDolly != null)
+        {
+            _isOnTrack = true;
+            _polygonCollider2D = _virtualCamera.GetComponent<CinemachineConfiner2D>().m_BoundingShape2D as PolygonCollider2D;
+        }
+
     }
 
     private void LateUpdate()
     {
         CameraManager.Instance.vcamFollowOffset.transform.position =
             CameraManager.Instance.player.transform.position + CameraManager.Instance.cameraOffset * (_playerMovement.IsFacingRight ? 1 : -1);
+
+        if (_isOnTrack)
+        {
+            Debug.Log(_polygonCollider2D.bounds.max);
+            _trackedDolly.m_PathPosition =
+                (CameraManager.Instance.vcamFollowOffset.transform.position.x - _polygonCollider2D.bounds.min.x) /
+                (_polygonCollider2D.bounds.max.x - _polygonCollider2D.bounds.min.x);
+        }
     }
 }
