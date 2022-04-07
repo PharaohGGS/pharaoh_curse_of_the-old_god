@@ -372,7 +372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4206312360621909673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.15, y: -0.925, z: 0}
+  m_LocalPosition: {x: -0.15, y: 0.075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -403,7 +403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5732736214096156552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15, y: -0.925, z: 0}
+  m_LocalPosition: {x: 0.15, y: 0.075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -492,7 +492,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -571,12 +571,14 @@ MonoBehaviour:
   inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   animator: {fileID: 5280757643533625441}
   animationEventsReceiver: {fileID: 3707285322232323955}
-  rightHand: {fileID: 8613937999053526085}
-  leftHand: {fileID: 4716540348454035076}
-  rightSocket: {fileID: 4539851903350135344}
-  leftSocket: {fileID: 9029138249168344907}
   rightSword: {fileID: 1056674046930762498}
+  rightSocket:
+    hand: {fileID: 8613937999053526085}
+    back: {fileID: 4539851903350135344}
   leftSword: {fileID: 7736959816141729621}
+  leftSocket:
+    hand: {fileID: 4716540348454035076}
+    back: {fileID: 9029138249168344907}
   timeBeforeSheathing: 5
 --- !u!114 &7790090175714034903
 MonoBehaviour:
@@ -1136,7 +1138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9071571554302007626}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1160,7 +1162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.92
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -49301,6 +49303,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9029138249168344907}
     m_Modifications:
+    - target: {fileID: 920090944100346836, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: socket
+      value: 
+      objectReference: {fileID: 4716540348454035076}
     - target: {fileID: 4206637792107780825, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: m_CollisionDetection
       value: 0
@@ -49379,6 +49385,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4539851903350135344}
     m_Modifications:
+    - target: {fileID: 920090944100346836, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: socket
+      value: 
+      objectReference: {fileID: 8613937999053526085}
     - target: {fileID: 6241577712928867038, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: m_Name
       value: Khepesh

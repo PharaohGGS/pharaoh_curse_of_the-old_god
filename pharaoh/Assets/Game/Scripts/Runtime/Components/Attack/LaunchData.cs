@@ -45,19 +45,17 @@ namespace Pharaoh.Gameplay.Components
             return new LaunchData(vx + vy * -Mathf.Sign(g), time);
         }
 
-        public static LaunchData Calculate(float gravity, float height, Vector2 target, Vector2 position, float speed)
-        {
-            float g = gravity * -2;
+        //public static LaunchData Calculate(float gravity, float height, Vector2 target, Vector2 position, float speed)
+        //{
+        //    float angle = Vector2.Angle(target, position);
+        //    float vx = speed * Mathf.Cos(angle);
+        //    float vy = speed * Mathf.Sin(angle);
 
-            Vector2 offset = target - position;
-            float time = Mathf.Sqrt(-2 * height / (g * 2)) +
-                         Mathf.Sqrt(2 * (offset.y - height) / g);
-            time /= Mathf.Max(1, Mathf.Abs(speed));
+        //    Vector2 offset = target - position;
+        //    float dx = 
+        //    float g = gravity * -2;
             
-            Vector2 vy = Vector2.up * Mathf.Sqrt(-2 * g * height);
-            Vector2 vx = new Vector2(offset.x, 0) / time;
-
-            return new LaunchData(vx + vy * -Mathf.Sign(g), time);
-        }
+        //    return new LaunchData(vx + vy * -Mathf.Sign(g), time);
+        //}
     }
 }

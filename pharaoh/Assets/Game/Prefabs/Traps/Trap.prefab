@@ -202,11 +202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datas:
-  - {fileID: 11400000, guid: 93f7a38e9f372804b9c7e0d704083c6f, type: 2}
-  collider: {fileID: 4082437492315050596}
-  maxOverlappedColliders: 3
-  colliders: []
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 131072
+  detectionCollider: {fileID: 4082437492315050596}
+  overlapCount: 8
 --- !u!114 &2683696243840683768
 MonoBehaviour:
   m_ObjectHideFlags: 0
