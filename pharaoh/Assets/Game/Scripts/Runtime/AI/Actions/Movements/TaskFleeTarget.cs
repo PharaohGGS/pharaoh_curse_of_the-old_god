@@ -11,25 +11,22 @@ namespace Pharaoh.AI.Actions
 
         protected override void OnStart()
         {
-            if (_aiMovement == null && !agent.TryGetComponent(out _aiMovement))
-            {
-                LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
-            }
+            if (_aiMovement || agent.TryGetComponent(out _aiMovement)) return;
+            LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
         }
 
         protected override NodeState OnUpdate()
         {
-            if (_aiMovement && blackboard.TryGetData("target", out Transform t))
+            if (!_aiMovement) return NodeState.Failure;
+            
+            if (blackboard.TryGetData("target", out Transform t))
             {
                 var agentPosition = agent.transform.position;
                 var fleePosition = agentPosition - (t.position - agentPosition);
-                agent.transform.position = Vector2.MoveTowards(
-                    agentPosition, fleePosition,
-                    _aiMovement.moveSpeed * Time.deltaTime);
+                _aiMovement.Move(fleePosition);
             }
-
-            state = NodeState.Running;
-            return state;
+            
+            return NodeState.Running;
         }
     }
 }

@@ -417,21 +417,23 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!_rigidbody) yield break;
 
             int size = 0;
-            RaycastHit2D[] hits = new RaycastHit2D[3];
+            Collider2D[] colls = new Collider2D[5];
+            var boxSize = new Vector2(1, 2);
 
             while (_isDashing)
             {
-                size = Physics2D.CapsuleCastNonAlloc(_rigidbody.position, new Vector2(1, 2), CapsuleDirection2D.Vertical, _rigidbody.rotation, _rigidbody.velocity.normalized, hits, 0.05f, dashStunLayer);
-                if (size <= 0) yield return null;
+                size = Physics2D.OverlapBoxNonAlloc(_rigidbody.position, boxSize, 0f, colls, dashStunLayer);
 
-                foreach (var hit in hits)
+                if (size <= 0) yield return new WaitForFixedUpdate();
+
+                foreach (var col in colls)
                 {
-                    if (!hit.collider || !hit.collider.gameObject) continue;
-                    LogHandler.SendMessage($"{name} found {hit.collider.name} while dashing", MessageType.Log);
-                    onDashStun?.Invoke(hit.collider.gameObject, dashStunData);
+                    if (!col || !col.gameObject) continue;
+                    LogHandler.SendMessage($"{name} found {col.name} while dashing", MessageType.Log);
+                    onDashStun?.Invoke(col.gameObject, dashStunData);
                 }
 
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
         }
 
@@ -522,7 +524,8 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             // Displays the velocity
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
+            Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity.normalized * 0.05f);
+            //Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _rigidbody.velocity);
 
             // Displays stats on top of the player
             Handles.Label(_rigidbody.position + Vector2.up * 4.2f, "IsPullingBlock : " + _isPullingBlock, _isPullingBlock ? greenStyle : redStyle);

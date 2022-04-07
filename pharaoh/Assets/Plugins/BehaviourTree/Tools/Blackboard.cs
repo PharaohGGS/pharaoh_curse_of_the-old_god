@@ -37,16 +37,16 @@ namespace BehaviourTree.Tools
 
         public bool TryGetData<T>(string key, out T value)
         {
-            bool found = ContainsData(key);
-            value = found ? (T) _data[key] : default;
-            return found;
+            object obj = null;
+            bool dontHaveValue = !ContainsData(key) || !_data.TryGetValue(key, out obj) || obj is not T;
+            value = dontHaveValue ? default : (T)(obj);
+            return !dontHaveValue;
         }
 
         public T GetData<T>(string key)
         {
-            bool isGettingValue = _data.TryGetValue(key, out var value);
-            bool isGenericType = value is T;
-            return isGettingValue && isGenericType ? (T)value : default;
+            return !ContainsData(key) || !_data.TryGetValue(key, out var obj) || obj is not T typedValue
+                ? default : typedValue;
         }
 
         public void SetData(string key, object value)

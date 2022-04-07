@@ -20,11 +20,9 @@ namespace Pharaoh.Gameplay
         protected virtual void Update()
         {
             // check if the current target is different (I mean null here)
-            var currentTarget = _detection.GetGameObjectAtIndex(0);
-            
             // don't start trap when there isn't any target or already processing
-            if (!currentTarget || _behaviour.isStarted) return;
-            _behaviour.Activate(currentTarget);
+            if (_behaviour.isStarted || !_detection.TryGetByIndex(0, out GameObject target)) return;
+            _behaviour.Activate(target);
         }
     }
 }

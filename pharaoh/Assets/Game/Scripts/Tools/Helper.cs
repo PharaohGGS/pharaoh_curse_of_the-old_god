@@ -15,16 +15,24 @@ namespace Pharaoh.Tools
 
         public static void LookAt2D(this Transform transform, Transform target)
         {
-            Vector2 direction = target.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            transform.rotation = Quaternion.AngleAxis(AngleLookAt2D(transform, target), Vector3.up);
         }
 
         public static void LookAt2D(this Transform transform, Vector3 target)
         {
-            Vector2 direction = target - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            transform.rotation = Quaternion.AngleAxis(AngleLookAt2D(transform, target), Vector3.up);
+        }
+
+        public static float AngleLookAt2D(this Transform transform, Transform target)
+        {
+            Vector2 direction = (target.position - transform.position).normalized;
+            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        }
+
+        public static float AngleLookAt2D(this Transform transform, Vector3 target)
+        {
+            Vector2 direction = (target - transform.position).normalized;
+            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         }
 
         public static bool HasLayer(this GameObject go, LayerMask mask) => (mask.value & (1 << go.layer)) > 0;
@@ -113,26 +121,59 @@ namespace Pharaoh.Tools
         public static int OverlapNonAlloc(this Collider2D collider, ref Collider2D[] colliders, LayerMask layerMask)
         {
             int size = 0;
-            Vector2 center = Vector2.zero;
+            Vector2 point = Vector2.zero;
             switch (collider)
             {
                 case BoxCollider2D box:
-                    center = box.transform.TransformPoint(box.offset);
-                    size = Physics2D.OverlapBoxNonAlloc(center, box.size, box.transform.rotation.x, colliders, layerMask);
+                    point = collider.transform.TransformPoint(box.offset);
+                    size = Physics2D.OverlapBoxNonAlloc(point, box.size, box.transform.rotation.x, colliders, layerMask);
                     break;
                 case CircleCollider2D sphere:
-                    center = sphere.transform.TransformPoint(sphere.offset);
-                    size = Physics2D.OverlapCircleNonAlloc(center, sphere.radius, colliders, layerMask);
+                    point = collider.transform.TransformPoint(sphere.offset);
+                    size = Physics2D.OverlapCircleNonAlloc(point, sphere.radius, colliders, layerMask);
                     break;
                 case CapsuleCollider2D capsule:
-                    center = capsule.transform.TransformPoint(capsule.offset);
-                    size = Physics2D.OverlapCapsuleNonAlloc(center, capsule.size, capsule.direction, capsule.transform.rotation.x, colliders, layerMask);
+                    point = collider.transform.TransformPoint(capsule.offset);
+                    size = Physics2D.OverlapCapsuleNonAlloc(point, capsule.size, capsule.direction, capsule.transform.rotation.x, colliders, layerMask);
+                    break;
+                case PolygonCollider2D polygon:
+                    point = collider.transform.TransformPoint(polygon.offset);
+                    size = Physics2D.OverlapPointNonAlloc(point, colliders, layerMask);
                     break;
                 default:
                     throw new NotImplementedException("Not implemented overlap non alloc method for this collider");
             }
 
             return size;
+        }
+
+        public static Collider2D[] OverlapAll(this Collider2D collider, LayerMask layerMask)
+        {
+            Collider2D[] colls;
+            Vector2 center = Vector2.zero;
+            switch (collider)
+            {
+                case BoxCollider2D box:
+                    center = box.transform.TransformPoint(box.offset);
+                    colls = Physics2D.OverlapBoxAll(center, box.size, box.transform.rotation.z, layerMask);
+                    break;
+                case CircleCollider2D sphere:
+                    center = sphere.transform.TransformPoint(sphere.offset);
+                    colls = Physics2D.OverlapCircleAll(center, sphere.radius, layerMask);
+                    break;
+                case CapsuleCollider2D capsule:
+                    center = capsule.transform.TransformPoint(capsule.offset);
+                    colls = Physics2D.OverlapCapsuleAll(center, capsule.size, capsule.direction, capsule.transform.rotation.x, layerMask);
+                    break;
+                case PolygonCollider2D polygon:
+                    center = polygon.transform.TransformPoint(polygon.offset);
+                    colls = Physics2D.OverlapPointAll(center, layerMask);
+                    break;
+                default:
+                    throw new NotImplementedException("Not implemented overlap all method for this collider");
+            }
+
+            return colls;
         }
     }
 }
