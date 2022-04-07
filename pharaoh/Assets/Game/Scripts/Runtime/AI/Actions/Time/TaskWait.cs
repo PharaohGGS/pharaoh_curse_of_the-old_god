@@ -32,6 +32,7 @@ namespace Pharaoh.AI.Actions
         protected override void OnStop()
         {
             if (!blackboard.TryGetData("waitTime", out float waitTime)) return;
+            blackboard.ClearData("timeSince");
             blackboard.ClearData("waitTime");
         }
     }

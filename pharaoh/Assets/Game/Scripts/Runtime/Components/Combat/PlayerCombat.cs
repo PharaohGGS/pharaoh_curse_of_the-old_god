@@ -1,6 +1,15 @@
+using System;
 using PlayerMovement = Pharaoh.Gameplay.Components.Movement.PlayerMovement;
 using System.Collections;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
+
+[Serializable]
+public struct Sockets
+{
+    public Transform hand;
+    public Transform back;
+}
 
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerCombat : MonoBehaviour
@@ -18,14 +27,15 @@ public class PlayerCombat : MonoBehaviour
     public AnimationEventsReceiver animationEventsReceiver;
 
     [Header("Sockets")]
-
-    public Transform rightHand;
-    public Transform leftHand;
-    public Transform rightSocket;
-    public Transform leftSocket;
+    
     public Transform rightSword;
-    public Transform leftSword;
+    public Sockets rightSocket;
+    private Collider2D _rightCollider;
 
+    public Transform leftSword;
+    public Sockets leftSocket;
+    private Collider2D _leftCollider;
+    
     [Header("Variables")]
 
     public float timeBeforeSheathing = 5f;
@@ -34,6 +44,16 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
+        
+        if (leftSword?.TryGetComponent(out _leftCollider) == false)
+        {
+            LogHandler.SendMessage($"[{name}] can't found Collider2D on leftSword", MessageType.Warning);
+        }
+        
+        if (rightSword?.TryGetComponent(out _rightCollider) == false)
+        {
+            LogHandler.SendMessage($"[{name}] can't found Collider2D on rightSword", MessageType.Warning);
+        }
     }
 
     private void OnEnable()
@@ -137,16 +157,21 @@ public class PlayerCombat : MonoBehaviour
         animator.SetTrigger("Sheathing Swords");
     }
 
+    private void SetupLocal(Transform sword, Transform parent, Vector3 localPosition, Quaternion localRotation)
+    {
+        sword.parent = parent;
+        sword.localPosition = localPosition;
+        sword.localRotation = localRotation;
+    }
+
     // Draws the swords, switching sockets
     public void DrawSwords()
     {
-        rightSword.parent = rightHand;
-        rightSword.localPosition = Vector3.zero;
-        rightSword.localRotation = Quaternion.identity;
-        leftSword.parent = leftHand;
-        leftSword.localPosition = Vector3.zero;
-        leftSword.localRotation = Quaternion.identity;
-
+        SetupLocal(rightSword, rightSocket.hand, Vector3.zero, Quaternion.identity);
+        SetupLocal(leftSword, leftSocket.hand, Vector3.zero, Quaternion.identity);
+        _rightCollider.enabled = true;
+        _leftCollider.enabled = true;
+        
         _sheathed = false;
         animator.SetFloat("Sheathed", 0f);
     }
@@ -154,12 +179,10 @@ public class PlayerCombat : MonoBehaviour
     // Sheathes the swords, switching sockets
     public void SheatheSwords()
     {
-        rightSword.parent = rightSocket;
-        rightSword.localPosition = Vector3.zero;
-        rightSword.localRotation = Quaternion.identity;
-        leftSword.parent = leftSocket;
-        leftSword.localPosition = Vector3.zero;
-        leftSword.localRotation = Quaternion.identity;
+        SetupLocal(rightSword, rightSocket.back, Vector3.zero, Quaternion.identity);
+        SetupLocal(leftSword, leftSocket.back, Vector3.zero, Quaternion.identity);
+        _rightCollider.enabled = false;
+        _leftCollider.enabled = false;
 
         _sheathed = true;
         animator.SetFloat("Sheathed", 1f);

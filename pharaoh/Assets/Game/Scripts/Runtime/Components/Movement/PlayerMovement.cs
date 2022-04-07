@@ -417,15 +417,14 @@ namespace Pharaoh.Gameplay.Components.Movement
             if (!_rigidbody) yield break;
 
             int size = 0;
-            Collider2D[] colls = new Collider2D[3];
-            var capsuleSize = new Vector2(1, 2);
+            Collider2D[] colls = new Collider2D[5];
+            var boxSize = new Vector2(1, 2);
 
             while (_isDashing)
             {
-                size = Physics2D.OverlapCapsuleNonAlloc(_rigidbody.position, capsuleSize, 
-                    CapsuleDirection2D.Vertical, 0f, colls, dashStunLayer);
+                size = Physics2D.OverlapBoxNonAlloc(_rigidbody.position, boxSize, 0f, colls, dashStunLayer);
 
-                if (size <= 0) yield return null;
+                if (size <= 0) yield return new WaitForFixedUpdate();
 
                 foreach (var col in colls)
                 {
@@ -434,7 +433,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                     onDashStun?.Invoke(col.gameObject, dashStunData);
                 }
 
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
         }
 
