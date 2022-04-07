@@ -73,6 +73,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""faed6114-f770-4817-a1f2-a19239852ba3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -273,6 +282,72 @@ namespace Pharaoh.Tools.Inputs
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""b268efc5-4037-46a4-801d-6544f8443ca9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""dffcfd9f-0c4e-4e81-8a8a-4fabd70088b2"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""028abe2d-6f63-4e61-ba5a-09553198cf80"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Controller"",
+                    ""id"": ""68200e54-8227-437c-8405-741472585cbf"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""74330f14-59dc-4a38-bc8f-864ac392d943"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7615c81b-4555-43fc-bb92-897c20f2b0d3"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -446,6 +521,7 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
             m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
             m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
+            m_CharacterControls_Look = m_CharacterControls.FindAction("Look", throwIfNotFound: true);
             // CharacterActions
             m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
@@ -519,6 +595,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterControls_Dash;
         private readonly InputAction m_CharacterControls_NOCLIP;
         private readonly InputAction m_CharacterControls_Attack;
+        private readonly InputAction m_CharacterControls_Look;
         public struct CharacterControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -528,6 +605,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
             public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
             public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
+            public InputAction @Look => m_Wrapper.m_CharacterControls_Look;
             public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -552,6 +630,9 @@ namespace Pharaoh.Tools.Inputs
                     @Attack.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
                     @Attack.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
                     @Attack.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
+                    @Look.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Look.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Look.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
                 }
                 m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -571,6 +652,9 @@ namespace Pharaoh.Tools.Inputs
                     @Attack.started += instance.OnAttack;
                     @Attack.performed += instance.OnAttack;
                     @Attack.canceled += instance.OnAttack;
+                    @Look.started += instance.OnLook;
+                    @Look.performed += instance.OnLook;
+                    @Look.canceled += instance.OnLook;
                 }
             }
         }
@@ -672,6 +756,7 @@ namespace Pharaoh.Tools.Inputs
             void OnDash(InputAction.CallbackContext context);
             void OnNOCLIP(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
+            void OnLook(InputAction.CallbackContext context);
         }
         public interface ICharacterActionsActions
         {
