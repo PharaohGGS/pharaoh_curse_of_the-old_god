@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
@@ -8,17 +9,13 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskAttack : ActionNode
     {
-        [SerializeField] protected GearType gearType;
-
-        protected HealthComponent _healthComponent;
-
-        protected AttackComponent _attack = null;
+        private FightComponent _fight = null;
         
         protected override void OnStart()
         {
-            if (_attack) return;
+            if (_fight) return;
 
-            if (!agent.TryGetComponent(out _attack))
+            if (!agent.TryGetComponent(out _fight))
             {
                 LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
             }
@@ -26,53 +23,52 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || gearType == GearType.Null) return NodeState.Failure;
-            
-            if (!_attack.TryGetHolder(gearType, out var holder))
-            {
-                LogHandler.SendMessage($"{agent.name} don't have a weapon of this type.", MessageType.Error);
-                return NodeState.Failure;
-            }
+            if (!_fight) return NodeState.Failure;
 
-            var gearData = holder.gear.GetBaseData();
-
-            if (!gearData.canAttack)
-            {
-                LogHandler.SendMessage($"{agent.name} can't attack with his weapon", MessageType.Warning);
-                return NodeState.Failure;
-            }
-
-            if (!blackboard.TryGetData("target", out Transform t))
+            if (!blackboard.TryGetData("target", out Transform t) || t == null || !t.gameObject.activeInHierarchy)
             {
                 LogHandler.SendMessage($"{agent.name} doesn't have a target to attack.", MessageType.Error);
                 return NodeState.Failure;
             }
 
-            state = NodeState.Running;
-
-            if (t != _attack.target && t.TryGetComponent(out HealthComponent healthComponent))
+            var weapon = _fight.activeWeapon;
+            if (!weapon || !weapon.isActiveAndEnabled)
             {
-                _attack.target = t;
+                LogHandler.SendMessage($"{agent.name} don't have a active weapon to attack.", MessageType.Error);
+                return NodeState.Failure;
+            }
 
-                if (_healthComponent != healthComponent)
-                {
-                    _healthComponent?.onDeath?.RemoveListener(OnTargetDeath);
-                    _healthComponent = healthComponent;
-                    _healthComponent?.onDeath?.AddListener(OnTargetDeath);
-                }
+            var distance = Vector2.Distance(agent.transform.position, t.position);
+            var data = weapon.GetBaseData();
+            var meleeData = data as MeleeGearData;
+            var isThrowable = meleeData && meleeData.throwable;
+            var range = isThrowable ? meleeData.throwableRange : data.range;
+
+            if (distance > range)
+            {
+                LogHandler.SendMessage($"{agent.name} can't attack at this distance ({distance} > {range})", MessageType.Warning);
+                return NodeState.Failure;
+            }
+
+            if (weapon.isThrown)
+            {
+                LogHandler.SendMessage($"{agent.name} have already throw his gear.", MessageType.Warning);
+                return NodeState.Failure;
             }
             
-            _attack.Attack(holder);
+            _fight.Attack(t.gameObject);
             blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", gearData.rate);
+            blackboard.SetData("waitTime", isThrowable ? meleeData.throwablePickingTime : data.rate);
 
-            return state;
+            return NodeState.Success;
         }
 
-        protected void OnTargetDeath(HealthComponent healthComponent)
+        protected override void OnStop()
         {
-            blackboard.ClearData("target");
-            _attack.target = null;
+            if (!_fight.hasTarget && state == NodeState.Success)
+            {
+                blackboard.ClearData("target");
+            }
         }
     }
 }

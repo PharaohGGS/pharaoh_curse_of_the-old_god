@@ -1,5 +1,6 @@
 ﻿using System;
 using Pharaoh.Tools.Inputs;
+using PlayerMovement = Pharaoh.Gameplay.Components.Movement.PlayerMovement;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay
@@ -18,6 +19,8 @@ namespace Pharaoh.Gameplay
         protected HookCapacity _hook;
         protected RaycastHit2D[] _hits;
 
+        protected PlayerMovement _playerMovement; //need this to manage the hooking/hooked animations
+
         public bool isCurrentTarget { get; protected set; }
         public Vector2 nextPosition { get; protected set; }
         
@@ -26,9 +29,11 @@ namespace Pharaoh.Gameplay
             _hook = null;
             _hits = new RaycastHit2D[2];
             if (hookIndicator) hookIndicator.SetActive(false);
+
+            _playerMovement = FindObjectOfType<PlayerMovement>();
         }
 
-        public virtual void FoundBestTarget(TargetFinder finder, GameObject target)
+        public virtual void FoundBestTarget(HookCapacity hook, GameObject target)
         {
             if (hookIndicator) hookIndicator.SetActive(target == gameObject);
         }
@@ -40,11 +45,11 @@ namespace Pharaoh.Gameplay
             events?.Started(this);
         }
         
-        protected virtual void Perform() => events?.Performed(this);
-
-        protected virtual void End() => events?.Ended(this);
-
-        protected virtual void Release()
+        public virtual void Perform() => events?.Performed(this);
+        
+        public virtual void End() => events?.Ended(this);
+        
+        public virtual void Release()
         {
             events?.Released(this);
             isCurrentTarget = false;

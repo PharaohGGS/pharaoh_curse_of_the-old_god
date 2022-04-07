@@ -1,4 +1,5 @@
-﻿using Pharaoh.Tools;
+﻿using System;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,10 +7,8 @@ using UnityEngine.Events;
 namespace Pharaoh.Gameplay.Components
 {
     [RequireComponent(typeof(Damager))]
-    public class MeleeGear : Gear<MeleeGearData>
+    public class MeleeGear : Gear<MeleeGearData>, IWeapon
     {
-        public Damager damager { get; private set; }
-        
         [HideInInspector] public UnityEvent onWeaponThrown = new UnityEvent();
 
         private Animator _animator;
@@ -18,53 +17,39 @@ namespace Pharaoh.Gameplay.Components
         protected override void Awake()
         {
             base.Awake();
-            damager = TryGetComponent(out Damager d) ? d : null;
             if (!TryGetComponent(out _animator))
             {
                 LogHandler.SendMessage($"{name} can't play animation", MessageType.Warning);
             }
-
-            SetAttackState();
         }
 
-        public void Stab(Gear gear)
+        public void Attack(GameObject target)
         {
-            if (gear != this || !_animator) return;
-            
+            if (GetData().throwable) Throw(target); 
+            else Stab(target);
+        }
+
+        private void Stab(GameObject target)
+        {
+            if (!target || !_animator) return;
+
             _animator.ResetTrigger("isAttacking");
             _animator.SetTrigger("isAttacking");
         }
 
-        /// <summary>
-        /// set enabled to all necessary component for killing
-        /// to be used by the AnimationEvent
-        /// </summary>
-        /// <param name="value">int instead of bool 0 = false > 0 = true</param>
-        public void SetAttackState(int value = 0)
+        private void Throw(GameObject target)
         {
-            if (!coll2D) return;
-            coll2D.enabled = value > 0;
-        }
+            if (!target || GetData()?.throwable == false || !_rigidbody2D) return;
 
-        public void SetupAttack(Gear attackingGear, Transform target)
-        {
-            if (attackingGear != this || !target) return;
+            //float speed = GetData().throwableInitialVelocity;
+            float gravity = Physics2D.gravity.magnitude;
+            Vector2 targetPosition = target.transform.position;
+            Vector2 position = _rigidbody2D.position;
+            float height = position.y;
+            LaunchData data = LaunchData.Calculate(gravity, height, targetPosition, position/*, speed*/);
 
-            _currentTarget = target;
-        }
-
-        public void Throw(Gear gear)
-        {
-            if (this != gear || GetData()?.throwable == false) return;
-
-            if (rb2D)
-            {
-                rb2D.bodyType = RigidbodyType2D.Dynamic;
-                var direction = (Vector2)_currentTarget.position - rb2D.position; 
-                rb2D.AddForce(direction.normalized * GetData().throwableInitialVelocity, ForceMode2D.Impulse);
-            }
-
-            transform.parent = null;
+            _rigidbody2D.velocity = data.initialVelocity;
+            SocketAttach(false);
             onWeaponThrown?.Invoke();
         }
     }

@@ -42,13 +42,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Look",
-                    "type": "PassThrough",
-                    "id": "1e24e252-c391-40ae-90a2-ace7e982dfd7",
-                    "expectedControlType": "Axis",
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "1751c3d3-98c2-4751-a78f-f6247e1e969a",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -100,6 +100,61 @@
                     "name": "right",
                     "id": "c9fffeda-baf3-4793-8564-255cec8c684a",
                     "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "WASD",
+                    "id": "6c4757d5-eaac-4440-b53b-889b54a9a9ef",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "f4565d5b-8f35-413f-9d54-a80a907079ab",
+                    "path": "<Keyboard>/pageUp",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "62139ec4-b188-4bfb-9bdf-ff9bffa70793",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "fcb9c1dc-053f-4977-b50d-344111eb60ef",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "fb7ca47c-1c5e-4ff6-9072-a63c40e28a14",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -185,37 +240,15 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "3ba068fa-738f-42d6-9f16-431d4094c499",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "3d123266-1cda-464d-b03f-6bcc479b4917",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
-                    "isComposite": true,
+                    "action": "Attack",
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "3e6b95c4-eed5-47d2-87a9-9253340e1656",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "e41231ae-67c8-4f36-b357-2f99a7f8a4c1",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         },
@@ -249,6 +282,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KillAllSoldiers",
+                    "type": "Button",
+                    "id": "00481974-5ce6-465d-83ea-231d148fbdaf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -278,7 +320,7 @@
                     "name": "",
                     "id": "dd9af54a-a94a-43e3-962e-b9574a313adf",
                     "path": "<Keyboard>/q",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.2,pressPoint=0.3)",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -289,7 +331,7 @@
                     "name": "",
                     "id": "77ee1f47-04fb-4eac-a2c3-e3a40c47e582",
                     "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.2,pressPoint=0.3)",
                     "processors": "",
                     "groups": "",
                     "action": "SandSoldier",
@@ -315,6 +357,56 @@
                     "processors": "",
                     "groups": "",
                     "action": "HookInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d792acd-9e55-4fd0-adc1-b577925a9de0",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KillAllSoldiers",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Game",
+            "id": "b011d4cf-083d-41e0-abaa-358ab95f315a",
+            "actions": [
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "c0e25642-3855-407b-a214-0f34a95cc1af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e620ead4-08fd-4ef7-aa59-f19aa23ce36a",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b52e63b4-d247-4cdb-877e-6946757d3d3b",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

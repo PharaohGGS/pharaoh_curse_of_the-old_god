@@ -8,39 +8,24 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        [SerializeField] private GearType gearType;
         [SerializeField] private float distance;
 
-        private AttackComponent _attack;
+        private FightComponent _fight;
 
         protected override void OnStart()
         {
-            if (_attack) return;
+            if (_fight) return;
 
-            if (agent.TryGetComponent(out _attack)) return;
+            if (agent.TryGetComponent(out _fight)) return;
 
             LogHandler.SendMessage($"[{agent.name}] Can't _attack enemies", MessageType.Warning);
         }
 
         protected override NodeState OnUpdate()
         {
-            if (!_attack || gearType == GearType.Null || !_attack.TryGetHolder(gearType, out var holder) || 
-                !blackboard.TryGetData("target", out Transform t))
-            {
-                return NodeState.Failure;
-            }
-
-            var gearData = holder.gear.GetBaseData();
-            if (gearData == null) return NodeState.Failure;
-
-            var range = gearData.range;
-            if (gearData is MeleeGearData {throwable: true} meleeGearData)
-            {
-                range = meleeGearData.throwableRange;
-            }
-
-            distance = Vector2.Distance(holder.gear.transform.position, t.position);
-            return distance > range ? NodeState.Failure : NodeState.Success;
+            if (!_fight || !blackboard.TryGetData("target", out Transform t)) return NodeState.Failure;
+            distance = Vector2.Distance(agent.transform.position, t.position);
+            return distance > _fight.range ? NodeState.Failure : NodeState.Success;
         }
     }
 }

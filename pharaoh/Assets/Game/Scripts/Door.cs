@@ -37,11 +37,13 @@ public class Door : MonoBehaviour
         _closedDoorLayer = LayerMask.NameToLayer("Ground");
         _openedDoorLayer = LayerMask.NameToLayer("Ignore Raycast");
 
-        _material.SetFloat("_Clip", transform.position.y - 1.5f);
+        Material mat = new Material(_material.shader);
+        mat.CopyPropertiesFromMaterial(_material);
+        mat.SetFloat("_Clip", transform.position.y - 1.5f);
 
-        door.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
-        firstScarab.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
-        secondScarab.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(_material);
+        door.GetComponent<MeshRenderer>().material = mat;
+        firstScarab.GetComponent<MeshRenderer>().material = mat;
+        secondScarab.GetComponent<MeshRenderer>().material = mat;
 
         RefreshState();
     }
@@ -87,6 +89,16 @@ public class Door : MonoBehaviour
         return _blockers > 0;
     }
 
+    public void EnableCollision()
+    {
+        _boxCollider.isTrigger = false;
+    }
+
+    public void EnableTrigger()
+    {
+        _boxCollider.isTrigger = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (whatCanBlockDoor.HasLayer(collision.gameObject.layer))
@@ -104,6 +116,7 @@ public class Door : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
@@ -112,5 +125,5 @@ public class Door : MonoBehaviour
         style.normal.textColor = IsBlocked() ? Color.red : Color.green;
         Handles.Label(transform.position + Vector3.up, IsBlocked() ? "Blocked" : "Unblocked", style);
     }
-
+#endif
 }

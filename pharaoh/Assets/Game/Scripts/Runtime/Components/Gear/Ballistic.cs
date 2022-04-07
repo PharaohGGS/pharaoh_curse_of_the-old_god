@@ -11,15 +11,11 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] private bool rotate;
         public float gravity = 9.81f;
         public float height = 2f;
-
-        [Header("Non Physics")]
-        private Vector3 _velocity;
-
+        
         [Header("Physics")]
         private Rigidbody2D _rb2D;
-        private LaunchData _launchData;
-
-
+        private Vector2 _velocityStart;
+        
         [Header("Routine")]
         private Coroutine _updateVelocity;
         private WaitForFixedUpdate _waitForFixedUpdate;
@@ -33,17 +29,13 @@ namespace Pharaoh.Gameplay.Components
         public void Enable()
         {
             if (!_rb2D) return;
-
-            //_rb2D.bodyType = RigidbodyType2D.Dynamic;
-            //_rb2D.velocity = _velocity;
-
+            _velocityStart = _rb2D.velocity;
             _updateVelocity = StartCoroutine(UpdatePhysicsVelocity());
         }
 
         public void Disable()
         {
             if (_updateVelocity == null) return;
-
             StopCoroutine(_updateVelocity);
         }
 
@@ -55,37 +47,17 @@ namespace Pharaoh.Gameplay.Components
         {
             while (true)
             {
-                _rb2D.AddForce(Vector2.up * (gravity * -2f));
+                _rb2D.AddForce(_velocityStart.normalized * (gravity * -2f));
                 if (rotate && _rb2D.velocity.normalized.magnitude >= Mathf.Epsilon)
                 {
                     var velocity = _rb2D.velocity.normalized;
                     float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
                     var diffAngle = Mathf.Abs(velocityAngle - _rb2D.rotation);
                     _rb2D.MoveRotation(_rb2D.rotation + diffAngle * Time.fixedDeltaTime);
-                    //_rb2D.rotation = Mathf.MoveTowardsAngle(_rb2D.rotation, velocityAngle - 90, gravity * 2f);
-                    //var rotatedVectorToTarget = Quaternion.Euler(0, 0, velocityAngle - 90);
-                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, rotatedVectorToTarget,
-                    //    (_rb2D.velocity.sqrMagnitude * gravity) * Time.fixedDeltaTime);
                 }
 
                 yield return _waitForFixedUpdate;
             }
         }
-
-        //public void AimForImpact(Transform target)
-        //{
-        //    if (!target) return;
-
-        //    if (!_rb2D)
-        //    {
-        //        LogHandler.SendMessage($"[{name}] doesn't have rigidbody to perform ballistic", MessageType.Warning);
-        //        return;
-        //    }
-
-        //    _velocity = !usePhysics 
-        //        ? target.position - transform.position 
-        //        : LaunchData.Calculate(Mathf.Max(gravity, Mathf.Epsilon), Mathf.Max(height, Mathf.Epsilon), 
-        //            (Vector2)target.position + Vector2.up, _rb2D.position).initialVelocity;
-        //}
     }
 }

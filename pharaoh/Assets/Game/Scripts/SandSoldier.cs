@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using Pharaoh.Gameplay.Components.Movement;
 using UnityEditor;
 using UnityEngine;
@@ -13,233 +15,375 @@ public class SandSoldier : MonoBehaviour
     public GameObject sandSoldier;
     [Tooltip("Prefab for the soldier preview.")]
     public GameObject soldierPreview;
-    
-    [Header("References")]
-    [Tooltip("Place the player's model reference, used to get player facing direction.")]
-    public Transform playerModel;
-    
-    [Header("Parameters")]
-    [Tooltip("Sand soldier minimum range from player.")]
-    public float minRange = 1f;
-    [Tooltip("Sand soldier maximum range from player.")]
-    public float maxRange = 6f;
-    [Tooltip("Pretty explicit, how much time the preview takes to go to the max range.")]
-    public float timeToMaxRange = 1f;
+
+    [Header("Inputs")]
+    public InputReader inputReader;
+
+    [Header("Soldier Parameters")]
     [Tooltip("How much time does it take from button release to fully grown soldier. A low value can create conflicts with other colliders.")]
     public float timeToAppearFromGround = 0.35f;
     [Tooltip("Soldier's life expectancy.")]
     public float timeToExpire = 10f;
-    [Tooltip("Pick every layer which represent the ground, used to snap the objects to the ground.")]
-    public LayerMask groundLayer;
+    [Tooltip("Time left to other soldiers if a new one is summoned")]
+    public float maximumTimeIfMultipleSoldiers = 3f;
+    [Tooltip("Maximum number of soldiers")]
+    public int maxSoldiers = 2;
+    [Tooltip("Soldier width and height (Ref: x:1.5, y:2.1")]
+    public Vector2 soldierSize = new Vector2(1.5f, 2.1f);
 
-    // [Header("VFX")]
-    // [Tooltip("Soldier position preview VFX")]
-    // public VisualEffect previewVFX;
+    [Header("Preview parameters")]
+    [Tooltip("Small Y offset to avoid the preview getting blocked by small steps")]
+    public float yOffset = 0.8f;
+    [Tooltip("Minimum range value for the soldier preview")]
+    public float minRange = 1f;
+    [Tooltip("Maximum range value for the soldier preview")]
+    public float maxRange = 6f;
+    [Tooltip("Time for the preview to reach maximum range")]
+    public float timeToMaxRange = 1f;
+    
+    [Header("Layers")]
+    [Tooltip("Pick every layer which represent the ground / walls, used to snap the objects to the ground.")]
+    public LayerMask blockingLayer;
+    [Tooltip("Sand soldier layer, used to prevent overlapping")]
+    public LayerMask soldierLayer;
+    [Tooltip("Moving Block layer, used to avoid the block getting stuck")]
+    public LayerMask movingBlockLayer;
 
-    private PlayerInput _playerInput; // Input System
-    private Coroutine _previewCoroutine; // Stores the preview coroutine
-    private Coroutine _colliderCoroutine; // Useless to store this coroutine for now
-    private Coroutine _expiredCoroutine; // Coroutine to destroy the soldier when its time.
-    private GameObject _soldier; // Stores the reference of the final sand soldier
-    private Vector3 _soldierPosition; // used to store the soldier position during the preview
-    private bool _summoned; // boolean to check whether the soldier has already been summoned (to avoid conflicts)
-    private RaycastHit2D _groundHit; // stores whether the current position is over a proper ground
-    private GameObject _soldierPreviewInstance; // stores the instantiated preview prefab
+    [Header("Spawning parameters")]
+    public Vector2 startColliderOffset = new Vector2(0.1f, 0f);
+    public Vector2 endColliderOffset = new Vector2(0.1f, 1.05f);
+    public Vector2 startColliderSize = new Vector2(1.65f, 0f);
+    public Vector2 endColliderSize = new Vector2(1.65f, 2.15f);
+
+    [Header("Tweaks")]
+    [Range(0f, 1f)] public float blockPlusSoldierThreshold = 0.7f;
+
+    private bool _longPress; // Bool to check if the input has been held or not
     private PlayerMovement _playerMovement;
+
+    private List<GameObject> _soldiers; // Stores all sand soldiers GameObject
+    private Dictionary<int, float> _soldiersLifetime; // Stores SandSoldierInstanceID => Time left before disappearing
+    private Dictionary<int, Coroutine> _soldiersExpireCoroutine; // Stores coroutines that counts second before soldier disappears
+    private SandSoldierBehaviour _soldierBehaviour; // Stores current soldier behaviour
 
     private void Awake()
     {
-        _playerInput = new PlayerInput();
         _playerMovement = GetComponent<PlayerMovement>();
+        _soldiers = new List<GameObject>();
+        _soldiersLifetime = new Dictionary<int, float>();
+        _soldiersExpireCoroutine = new Dictionary<int, Coroutine>();
     }
 
     private void OnEnable()
     {
-        _playerInput.Enable();
-        _playerInput.CharacterActions.SandSoldier.started += InitiateSummon; // Pressed
-        _playerInput.CharacterActions.SandSoldier.canceled += SummonSoldier; // Release
+        inputReader.sandSoldierStartedEvent += ResetFlags;
+        inputReader.sandSoldierPerformedEvent += InitiateSummon;
+        inputReader.sandSoldierCanceledEvent += SummonSoldier;
+        inputReader.killAllSoldiersStartedEvent += KillAllSoldiers;
     }
 
     private void OnDisable()
     {
-        _playerInput.Disable();
-        _playerInput.CharacterActions.SandSoldier.started -= InitiateSummon;
-        _playerInput.CharacterActions.SandSoldier.canceled -= SummonSoldier;
+        inputReader.sandSoldierStartedEvent -= ResetFlags;
+        inputReader.sandSoldierPerformedEvent -= InitiateSummon;
+        inputReader.sandSoldierCanceledEvent -= SummonSoldier;
+        inputReader.killAllSoldiersStartedEvent -= KillAllSoldiers;
     }
 
-    // Called on button press
-    // Cancel / Delete previous summons and start the preview
-    private void InitiateSummon(InputAction.CallbackContext obj)
+    // Called at InputActionPhase.Started
+    // Always called when input is pressed
+    //      Reset every flag
+    //      Disable player actions
+    private void ResetFlags()
     {
-        if (_playerMovement.IsHookedToBlock) return;
-        
-        StopAllCoroutines();
-        _summoned = false;
-        if (_soldier != null) // If there's already a sand soldier, destroy it
-            Destroy(_soldier);
-        if (_expiredCoroutine != null)
-            StopCoroutine(_expiredCoroutine);
-        
-        // Calculate the start position of the preview from minRange and model rotation.
-        Vector3 startPosition = transform.position + new Vector3(minRange, 0, 0) * (_playerMovement.isFacingRight ? 1 : -1);
-        _soldierPreviewInstance = Instantiate(soldierPreview, startPosition, Quaternion.identity);
-        _previewCoroutine = StartCoroutine(PreviewSoldier(startPosition));
-        // previewVFX.SetVector3("KillBoxSize", Vector3.zero);
+        _longPress = false;
+        DisableActions();
     }
-
-    // Called on button release or on other specific conditions
-    // Instantiates the soldier and starts the growing collider coroutine
-    private void SummonSoldier(InputAction.CallbackContext obj = new())
+    
+    // Called at InputActionPhase.Performed
+    // Called when the input has been held long enough
+    //      Instantiate Soldier Preview which has a SandSoldierBehaviour on it
+    private void InitiateSummon()
     {
-        if (_playerMovement.IsHookedToBlock) return;
+        if (_playerMovement.IsPullingBlock) return;
         
-        if (_summoned) return;
-        _summoned = true;
+        _longPress = true;
 
-        if (_previewCoroutine != null)
-            StopCoroutine(_previewCoroutine);
-        _previewCoroutine = null;
-        
-        // previewVFX.SetVector3("KillBoxSize", new Vector3(50, 50, 50));
-        // previewVFX.Stop();
-        Destroy(_soldierPreviewInstance);
-        
-        if (!_groundHit) return;
-        _soldierPosition.z = transform.position.z;
-        _soldier = Instantiate(sandSoldier, _soldierPosition, Quaternion.identity);
-        _colliderCoroutine = StartCoroutine(MoveSoldierCollider(_soldier.GetComponent<BoxCollider2D>()));
-    }
-
-    // Lerp from minRange to maxRange to preview the soldier position at time t
-    // Check if ground is below and if a wall is in the way
-    private IEnumerator PreviewSoldier(Vector3 startPosition)
-    {
-        // VFX
-        // previewVFX.gameObject.transform.position = transform.position;
-        // previewVFX.Play();
-        float playerSize = 1.75f;
-
-        RaycastHit2D wallHit;
-        wallHit = Physics2D.Raycast(
-            new Vector2(transform.position.x, startPosition.y + playerSize / 2f),
-            _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
-            minRange,
-            groundLayer);
-        if (wallHit)
+        GameObject go = Instantiate(soldierPreview, transform.position, Quaternion.identity);
+        if (!go.TryGetComponent(out _soldierBehaviour))
         {
-            Debug.Log(wallHit.point);
-            _soldierPosition.x = wallHit.point.x -
-                                 sandSoldier.GetComponent<BoxCollider2D>().size.x / 2f *
-                                 sandSoldier.transform.localScale.x *
-                                 (_playerMovement.isFacingRight ? 1 : -1);
-            _groundHit = Physics2D.Raycast(new Vector2(_soldierPosition.x, wallHit.point.y), Vector2.down, 10f, groundLayer);
-            _soldierPosition.y = _groundHit.point.y +
-                                 sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f *
-                                 sandSoldier.transform.localScale.y;
-            SummonSoldier();
-            yield break;
+            Debug.Log("No Sand Soldier Behaviour");
+            Destroy(go);
+            return;
         }
 
-        _soldierPosition = startPosition;
-        float endX = startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1);
+        // Give preview values to the behaviour
+        _soldierBehaviour.yOffset = yOffset;
+        _soldierBehaviour.minRange = minRange;
+        _soldierBehaviour.maxRange = maxRange;
+        _soldierBehaviour.timeToMaxRange = timeToMaxRange;
+        _soldierBehaviour.blockingLayer = blockingLayer;
+        _soldierBehaviour.soldierSize = soldierSize;
+        _soldierBehaviour.onSummon += SummonSoldier;
+    }
+
+    // Called at InputActionPhase.Canceled
+    // Always called when the player release the input
+    private void SummonSoldier()
+    {
+        EnableActions(); // Re-enable player inputs
         
+        if (_playerMovement.IsPullingBlock) return;
         
-        float elapsed = 0f;
-        while (elapsed < timeToMaxRange)
+        // If it's a simple press, summon under player
+        if (!_longPress)
         {
-            elapsed += Time.deltaTime;
-            
-            float newX = Mathf.Lerp(startPosition.x, endX, elapsed / timeToMaxRange);
-
-            Vector3 raycastPos = new Vector3(newX, _soldierPosition.y + playerSize / 2f, startPosition.z);
-
-            _groundHit = Physics2D.Raycast(raycastPos, Vector2.down, 10f, groundLayer);
-            wallHit = Physics2D.Raycast(
-                raycastPos,
-                _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
-                sandSoldier.transform.localScale.x / 2f,
-                groundLayer);
-
-            if (_groundHit)
-                _soldierPosition = _groundHit.point + new Vector2(0,
-                    sandSoldier.GetComponent<BoxCollider2D>().size.y / 2f * sandSoldier.transform.localScale.y);
-            else
-                _soldierPosition = new Vector3(newX, _soldierPosition.y);
-            
-            if (wallHit)
-            {
-                SummonSoldier();
-                yield break;
-            }
-
-            // Vector3 vfxPos = _soldierPosition - previewVFX.gameObject.transform.position;
-            // previewVFX.SetVector3("TargetPosition", vfxPos);
-            _soldierPreviewInstance.transform.position = _soldierPosition;
-
-            yield return null;
+            StandSummon();
+            return;
         }
-        // previewVFX.SetVector3("TargetPosition", endPosition - transform.position);
-        _soldierPosition = new Vector3(endX, _soldierPosition.y);
-        SummonSoldier();
-        yield return null;
+
+        if (!_soldierBehaviour.groundHit) return; // If last ground hit was failed => Soldier is above a gap so don't summon
+
+        if (_soldierBehaviour == null) return; // If behaviour has been destroyed for whatever reason, stop
+
+        Vector3 position = _soldierBehaviour.transform.position; // Get final position (x,y)
+        position.z = transform.position.z; // Make sure z is correct
+
+        // Check if the position overlaps with other soldiers.
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.zero,
+            0f,
+            soldierLayer);
+        
+        Destroy(_soldierBehaviour.gameObject); // Destroy the preview
+        
+        // Kill every overlapping soldiers detected above
+        foreach (var hit in hits)
+        {
+            KillSoldier(hit.collider.gameObject);
+        }
+        
+        HandleSoldiers(); // Remove extra soldiers and reduce timer of the others
+
+        GameObject soldier = Instantiate(sandSoldier, position, Quaternion.identity); // Instantiate the true soldier
+        _soldiers.Add(soldier); // Store the soldier to keep a track
+        _soldiersLifetime.Add(soldier.GetInstanceID(), timeToExpire); // Add soldier timer to the list
+        StartCoroutine(SoldierSpawning(soldier)); // Start spawning coroutine
+    }
+
+    // Called if the input hasn't been held long enough
+    //      Summon the soldier under the player
+    private void StandSummon()
+    {
+        Vector3 position = transform.position;
+        
+        // Raycast to ground from player
+        RaycastHit2D groundHit = Physics2D.Raycast(
+            position,
+            Vector2.down,
+            10f,
+            blockingLayer);
+
+        // Snap the soldier y to the ground
+        position.y = groundHit.point.y + soldierSize.y / 2f;
+        
+        // Check if soldier has enough space to spawn
+        // (Boxcasting may also detect the ground underneath so better check left and right
+        RaycastHit2D leftWallHit = Physics2D.Raycast(
+            position,
+            Vector2.left,
+            soldierSize.x / 2f,
+            blockingLayer);
+        RaycastHit2D rightWallHit = Physics2D.Raycast(
+            position,
+            Vector2.right,
+            soldierSize.x / 2f,
+            blockingLayer);
+
+        if (leftWallHit && rightWallHit) return; // Doesn't summon if not enough space
+
+        // Snap the soldier to a wall if one has been detected
+        if (leftWallHit)
+            position.x = leftWallHit.point.x + soldierSize.x / 2f;
+        else if (rightWallHit)
+            position.x = rightWallHit.point.x - soldierSize.x / 2f;
+        
+        // Check if the position overlaps with other soldiers.
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.zero,
+            0f,
+            soldierLayer);
+        // Kill every overlapping soldiers detected above
+        foreach (var hit in hits)
+        {
+            KillSoldier(hit.collider.gameObject);
+        }
+        
+        HandleSoldiers(); // Remove extra soldiers and reduce timer of the others
+
+        GameObject soldier = Instantiate(sandSoldier, position, Quaternion.identity); // Instantiate the true soldier
+        _soldiers.Add(soldier); // Store the soldier to keep a track
+        _soldiersLifetime.Add(soldier.GetInstanceID(), timeToExpire); // Add soldier timer to the list
+        StartCoroutine(SoldierSpawning(soldier)); // Start spawning coroutine
+    }
+
+    // Remove extra soldiers and reduce timer of the others
+    private void HandleSoldiers()
+    {
+        if (_soldiers.Count >= maxSoldiers) // Kill older soldier if max has been reached
+            KillSoldier(_soldiers[0]);
+
+        // Reduce all soldiers' timer
+        List<int> ids = new List<int>(_soldiersLifetime.Keys);
+        foreach (int id in ids)
+        {
+            if (_soldiersLifetime[id] > maximumTimeIfMultipleSoldiers)
+                _soldiersLifetime[id] = maximumTimeIfMultipleSoldiers;
+        }
     }
 
     // Lerp the soldier collider size and offset from 0 to full size
     // Used to lift object
-    private IEnumerator MoveSoldierCollider(BoxCollider2D col)
+    private IEnumerator SoldierSpawning(GameObject soldier)
     {
+        if (!soldier.TryGetComponent(out BoxCollider2D col))
+            yield break;
+        if (!soldier.transform.GetChild(0).TryGetComponent(out MeshRenderer meshRenderer))
+            yield break;
+
+        meshRenderer.enabled = false; // Hide the mesh
+
+        // Rotate the soldier based on player's facing side
+        Vector3 scale = soldier.transform.localScale;
+        scale.x = _playerMovement.isFacingRight ? 1 : -1;
+        soldier.transform.localScale = scale;
+        
+        // Check if soldier has enough height space to spawn
+        RaycastHit2D roomCheck = Physics2D.BoxCast(
+            soldier.transform.position,
+            col.bounds.size * 0.9f,
+            0f,
+            Vector2.up,
+            0f,
+            blockingLayer);
+        if (roomCheck)
+        {
+            Destroy(soldier); // If not, destroy it
+            yield break;
+        }
+        
+        // If there's a moving block, check if there is space for soldier's height + block's height
+        RaycastHit2D movingBlockCheck = Physics2D.BoxCast(
+            soldier.transform.position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.up,
+            0f,
+            movingBlockLayer);
+        if (movingBlockCheck)
+        {
+            Vector2 size = movingBlockCheck.collider.bounds.size;
+            Vector2 checkSize = new Vector2(size.x, soldierSize.y + size.y);
+            Vector3 pos = soldier.transform.position;
+            pos.y += -(soldierSize.y / 2f) + (checkSize.y / 2f);
+            RaycastHit2D movingBlockRoomCheck = Physics2D.BoxCast(
+                pos,
+                checkSize * blockPlusSoldierThreshold,
+                0f,
+                Vector2.up,
+                0f,
+                blockingLayer);
+            if (movingBlockRoomCheck)
+            {
+                Destroy(soldier);
+                yield break;
+            }
+        }
+        
+        // Lerp the collider size from ground to full size
         float elapsed = 0f;
-        col.offset = new Vector2(0, -0.5f);
-        col.size = new Vector2(1, 0);
-        _soldier.GetComponent<MeshRenderer>().enabled = false;
+        col.offset = startColliderOffset;
+        col.size = startColliderSize;
         while (elapsed < timeToAppearFromGround)
         {
             Vector2 offset = col.offset;
             Vector2 size = col.size;
-            offset.y = Mathf.Lerp(-0.5f, 0, elapsed / timeToAppearFromGround);
-            size.y = Mathf.Lerp(0, 1, elapsed / timeToAppearFromGround);
+            offset.y = Mathf.Lerp(startColliderOffset.y, endColliderOffset.y, elapsed / timeToAppearFromGround);
+            size.y = Mathf.Lerp(startColliderSize.y, endColliderSize.y, elapsed / timeToAppearFromGround);
             col.offset = offset;
             col.size = size;
             elapsed += Time.deltaTime;
             yield return null;
         }
-        col.offset = Vector2.zero;
-        col.size = new Vector2(1, 1);
-        _soldier.GetComponent<MeshRenderer>().enabled = true;
-        _expiredCoroutine = StartCoroutine(ExpireSoldier());
+        col.offset = endColliderOffset;
+        col.size = endColliderSize;
+        meshRenderer.enabled = true; // Show the mesh
+        _soldiersExpireCoroutine.Add(soldier.GetInstanceID(), StartCoroutine(SoldierExpiration(soldier))); // Start the timer
+        yield return null;
+    }
+    
+    // Counts soldiers' time left before destruction
+    private IEnumerator SoldierExpiration(GameObject soldier)
+    {
+        int id = soldier.GetInstanceID();
+        while (_soldiersLifetime[id] > 0f)
+        {
+            _soldiersLifetime[id] -= Time.deltaTime;
+            yield return null;
+        }
+        KillSoldier(soldier);
         yield return null;
     }
 
-    // Kills the soldier if timeToExpire has been reached.
-    private IEnumerator ExpireSoldier()
+    // Destroy a soldier and remove any data about it
+    private void KillSoldier(GameObject soldier)
     {
-        yield return new WaitForSeconds(timeToExpire);
-        Destroy(_soldier);
+        if (soldier == null) return;
+        
+        int id = soldier.GetInstanceID();
+        StopCoroutine(_soldiersExpireCoroutine[id]);
+        _soldiers.Remove(soldier);
+        _soldiersLifetime.Remove(id);
+        _soldiersExpireCoroutine.Remove(id);
+        Destroy(soldier);
     }
-
-    // Useless but I don't want to remove it ...
-    /*private Vector3 GetMouseWorldPosition()
+    
+    // Destroy all soldiers
+    private void KillAllSoldiers()
     {
-        Vector3 pos = _playerInput.CharacterActions.MousePosition.ReadValue<Vector2>();
-        if (Camera.main != null)
+        foreach (GameObject soldier in _soldiers)
         {
-            pos.z = Mathf.Abs(Camera.main.gameObject.transform.position.z);
-            pos = Camera.main.ScreenToWorldPoint(pos);
+            Destroy(soldier);
         }
-        pos.z = 0;
-        return pos;
-    }*/
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        GUIStyle greenStyle = new GUIStyle();
-        GUIStyle redStyle = new GUIStyle();
-        redStyle.normal.textColor = Color.red;
-        greenStyle.normal.textColor = Color.green;
-
-        Handles.Label(transform.position + Vector3.up * 4f, "Pressing : " + (_previewCoroutine != null ? "Yes" : "No"),
-            _previewCoroutine != null ? greenStyle : redStyle);
+        _soldiers.Clear();
+        _soldiersLifetime.Clear();
     }
-#endif
+    
+    // Prevent below actions from being executed
+    private void DisableActions()
+    {
+        inputReader.DisableAttack();
+        inputReader.DisableMove();
+        inputReader.DisableDash();
+        inputReader.DisableJump();
+        inputReader.DisableHookGrapple();
+        inputReader.DisableHookInteract();
+    }
+    
+    // Allow below actions to be executed
+    private void EnableActions()
+    {
+        inputReader.EnableAttack();
+        inputReader.EnableMove();
+        inputReader.EnableDash();
+        inputReader.EnableJump();
+        inputReader.EnableHookGrapple();
+        inputReader.EnableHookInteract();
+    }
 }

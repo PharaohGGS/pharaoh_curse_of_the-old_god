@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 930145573}
-  - component: {fileID: 930145574}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -32,19 +31,6 @@ Transform:
   m_Father: {fileID: 7079046523897001348}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &930145574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930145572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9439ad64a29f0bc45a964727188303fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gearPrefab: {fileID: 0}
 --- !u!1 &1684511585
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +88,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2928968843676526985}
-  - component: {fileID: 896387912474590241}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -125,19 +110,6 @@ Transform:
   m_Father: {fileID: 7079046523897001348}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &896387912474590241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4987220224824025073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9439ad64a29f0bc45a964727188303fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gearPrefab: {fileID: 7451239046983173651, guid: b7b215eb07861e848b46a0ab1bcba085, type: 3}
 --- !u!1 &7079046523897001347
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +130,7 @@ GameObject:
   - component: {fileID: 7079046523897001456}
   - component: {fileID: 994795391430697508}
   - component: {fileID: 2816072151982639455}
+  - component: {fileID: 42543094342105160}
   m_Layer: 11
   m_Name: Guard
   m_TagString: Untagged
@@ -295,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011e43d7012684b4ea75775d8c4ac34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAgentRuntimeSet: {fileID: 11400000, guid: abaeb1ab7ac1c3e458d7ddf8de3055c3, type: 2}
 --- !u!114 &7079046523897001458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ac2de5a498e614fb19ff5e7916cfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <max>k__BackingField: 100
+  startMax: 100
   onHealthChange:
     m_PersistentCalls:
       m_Calls:
@@ -341,6 +313,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  gears:
+  - {fileID: 0}
 --- !u!114 &7079046523897001457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,12 +328,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <moveSpeed>k__BackingField: 5
-  <closeDistance>k__BackingField: 0.01
+  <closeDistance>k__BackingField: 0.33
   <fleeDistance>k__BackingField: 2
   <timeBetweenWaypoints>k__BackingField: 2
-  <waypoints>k__BackingField:
-  - {fileID: 0}
-  - {fileID: 0}
+  <waypointHolder>k__BackingField: {fileID: 0}
 --- !u!114 &7079046523897001456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,26 +344,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _is2D: 1
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 2048
+  datas:
+  - {fileID: 11400000, guid: 93f7a38e9f372804b9c7e0d704083c6f, type: 2}
+  collider: {fileID: 1822449202396137966}
   maxOverlappedColliders: 3
-  collider2D: {fileID: 1822449202396137966}
-  colliders2D:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  layeredColliders2D:
-    list:
-    - Key: 11
-      Value: []
-    keyCollision: 0
-  collider3D: {fileID: 0}
-  colliders3D: []
-  layeredColliders3D:
-    list: []
-    keyCollision: 0
+  colliders: []
 --- !u!114 &994795391430697508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,39 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holders: []
-  onGearAttack:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Gear,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onGearAimTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 749a74b5fe15a9e4ba08f78bc0459538, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Gear,
-          Pharaoh
-        m_MethodName: Raise
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  gears: []
+  <range>k__BackingField: 5
 --- !u!114 &2816072151982639455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,18 +370,59 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7079046523897001347}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-  <response>k__BackingField:
+  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
+  response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7079046523897001458}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
         m_MethodName: TakeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
+        m_MethodName: HitStun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &42543094342105160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7f018ef4e61f84cbfd10682b89f088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 3324d5e08b277d745868e5c116fc4809, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MovementComponent,
+          Pharaoh
+        m_MethodName: DashStun
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

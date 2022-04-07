@@ -5,6 +5,7 @@ public class RespawnPoint : MonoBehaviour
 
     private PlayerRespawn _playerRespawn;
 
+    public LastCheckpoint checkpoint;
     public LayerMask whatIsPlayer;
     public Transform respawnPoint;
 
@@ -18,7 +19,7 @@ public class RespawnPoint : MonoBehaviour
         if (whatIsPlayer == (whatIsPlayer | 1 << collision.gameObject.layer))
         {
             //Binds this respawn point to the player
-            _playerRespawn.respawnPoint = respawnPoint;
+            checkpoint.position = respawnPoint.position;
         }
     }
 

@@ -66,13 +66,13 @@ namespace Pharaoh.Tools.Inputs
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""1e24e252-c391-40ae-90a2-ace7e982dfd7"",
-                    ""expectedControlType"": ""Axis"",
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1751c3d3-98c2-4751-a78f-f6247e1e969a"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -124,6 +124,61 @@ namespace Pharaoh.Tools.Inputs
                     ""name"": ""right"",
                     ""id"": ""c9fffeda-baf3-4793-8564-255cec8c684a"",
                     ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""6c4757d5-eaac-4440-b53b-889b54a9a9ef"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""f4565d5b-8f35-413f-9d54-a80a907079ab"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""62139ec4-b188-4bfb-9bdf-ff9bffa70793"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""fcb9c1dc-053f-4977-b50d-344111eb60ef"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""fb7ca47c-1c5e-4ff6-9072-a63c40e28a14"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -209,37 +264,15 @@ namespace Pharaoh.Tools.Inputs
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""3ba068fa-738f-42d6-9f16-431d4094c499"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""3d123266-1cda-464d-b03f-6bcc479b4917"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""3e6b95c4-eed5-47d2-87a9-9253340e1656"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""e41231ae-67c8-4f36-b357-2f99a7f8a4c1"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -273,6 +306,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KillAllSoldiers"",
+                    ""type"": ""Button"",
+                    ""id"": ""00481974-5ce6-465d-83ea-231d148fbdaf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -302,7 +344,7 @@ namespace Pharaoh.Tools.Inputs
                     ""name"": """",
                     ""id"": ""dd9af54a-a94a-43e3-962e-b9574a313adf"",
                     ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.3)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SandSoldier"",
@@ -313,7 +355,7 @@ namespace Pharaoh.Tools.Inputs
                     ""name"": """",
                     ""id"": ""77ee1f47-04fb-4eac-a2c3-e3a40c47e582"",
                     ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.3)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SandSoldier"",
@@ -341,6 +383,56 @@ namespace Pharaoh.Tools.Inputs
                     ""action"": ""HookInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d792acd-9e55-4fd0-adc1-b577925a9de0"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KillAllSoldiers"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Game"",
+            ""id"": ""b011d4cf-083d-41e0-abaa-358ab95f315a"",
+            ""actions"": [
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0e25642-3855-407b-a214-0f34a95cc1af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e620ead4-08fd-4ef7-aa59-f19aa23ce36a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b52e63b4-d247-4cdb-877e-6946757d3d3b"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -353,12 +445,16 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
             m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
             m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
-            m_CharacterControls_Look = m_CharacterControls.FindAction("Look", throwIfNotFound: true);
+            m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
             // CharacterActions
             m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
             m_CharacterActions_HookInteract = m_CharacterActions.FindAction("HookInteract", throwIfNotFound: true);
             m_CharacterActions_SandSoldier = m_CharacterActions.FindAction("SandSoldier", throwIfNotFound: true);
+            m_CharacterActions_KillAllSoldiers = m_CharacterActions.FindAction("KillAllSoldiers", throwIfNotFound: true);
+            // Game
+            m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+            m_Game_Exit = m_Game.FindAction("Exit", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -422,7 +518,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterControls_Jump;
         private readonly InputAction m_CharacterControls_Dash;
         private readonly InputAction m_CharacterControls_NOCLIP;
-        private readonly InputAction m_CharacterControls_Look;
+        private readonly InputAction m_CharacterControls_Attack;
         public struct CharacterControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -431,7 +527,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
             public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
             public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
-            public InputAction @Look => m_Wrapper.m_CharacterControls_Look;
+            public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
             public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -453,9 +549,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
                     @NOCLIP.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnNOCLIP;
-                    @Look.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
-                    @Look.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
-                    @Look.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Attack.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
+                    @Attack.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
+                    @Attack.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAttack;
                 }
                 m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -472,9 +568,9 @@ namespace Pharaoh.Tools.Inputs
                     @NOCLIP.started += instance.OnNOCLIP;
                     @NOCLIP.performed += instance.OnNOCLIP;
                     @NOCLIP.canceled += instance.OnNOCLIP;
-                    @Look.started += instance.OnLook;
-                    @Look.performed += instance.OnLook;
-                    @Look.canceled += instance.OnLook;
+                    @Attack.started += instance.OnAttack;
+                    @Attack.performed += instance.OnAttack;
+                    @Attack.canceled += instance.OnAttack;
                 }
             }
         }
@@ -486,6 +582,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterActions_HookGrapple;
         private readonly InputAction m_CharacterActions_HookInteract;
         private readonly InputAction m_CharacterActions_SandSoldier;
+        private readonly InputAction m_CharacterActions_KillAllSoldiers;
         public struct CharacterActionsActions
         {
             private @PlayerInput m_Wrapper;
@@ -493,6 +590,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @HookGrapple => m_Wrapper.m_CharacterActions_HookGrapple;
             public InputAction @HookInteract => m_Wrapper.m_CharacterActions_HookInteract;
             public InputAction @SandSoldier => m_Wrapper.m_CharacterActions_SandSoldier;
+            public InputAction @KillAllSoldiers => m_Wrapper.m_CharacterActions_KillAllSoldiers;
             public InputActionMap Get() { return m_Wrapper.m_CharacterActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -511,6 +609,9 @@ namespace Pharaoh.Tools.Inputs
                     @SandSoldier.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                     @SandSoldier.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
                     @SandSoldier.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnSandSoldier;
+                    @KillAllSoldiers.started -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
+                    @KillAllSoldiers.performed -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
+                    @KillAllSoldiers.canceled -= m_Wrapper.m_CharacterActionsActionsCallbackInterface.OnKillAllSoldiers;
                 }
                 m_Wrapper.m_CharacterActionsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -524,23 +625,64 @@ namespace Pharaoh.Tools.Inputs
                     @SandSoldier.started += instance.OnSandSoldier;
                     @SandSoldier.performed += instance.OnSandSoldier;
                     @SandSoldier.canceled += instance.OnSandSoldier;
+                    @KillAllSoldiers.started += instance.OnKillAllSoldiers;
+                    @KillAllSoldiers.performed += instance.OnKillAllSoldiers;
+                    @KillAllSoldiers.canceled += instance.OnKillAllSoldiers;
                 }
             }
         }
         public CharacterActionsActions @CharacterActions => new CharacterActionsActions(this);
+
+        // Game
+        private readonly InputActionMap m_Game;
+        private IGameActions m_GameActionsCallbackInterface;
+        private readonly InputAction m_Game_Exit;
+        public struct GameActions
+        {
+            private @PlayerInput m_Wrapper;
+            public GameActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Exit => m_Wrapper.m_Game_Exit;
+            public InputActionMap Get() { return m_Wrapper.m_Game; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+            public void SetCallbacks(IGameActions instance)
+            {
+                if (m_Wrapper.m_GameActionsCallbackInterface != null)
+                {
+                    @Exit.started -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                    @Exit.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                    @Exit.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnExit;
+                }
+                m_Wrapper.m_GameActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Exit.started += instance.OnExit;
+                    @Exit.performed += instance.OnExit;
+                    @Exit.canceled += instance.OnExit;
+                }
+            }
+        }
+        public GameActions @Game => new GameActions(this);
         public interface ICharacterControlsActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnDash(InputAction.CallbackContext context);
             void OnNOCLIP(InputAction.CallbackContext context);
-            void OnLook(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
         }
         public interface ICharacterActionsActions
         {
             void OnHookGrapple(InputAction.CallbackContext context);
             void OnHookInteract(InputAction.CallbackContext context);
             void OnSandSoldier(InputAction.CallbackContext context);
+            void OnKillAllSoldiers(InputAction.CallbackContext context);
+        }
+        public interface IGameActions
+        {
+            void OnExit(InputAction.CallbackContext context);
         }
     }
 }

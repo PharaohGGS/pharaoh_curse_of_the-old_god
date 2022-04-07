@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "InputReader")]
-public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActions, PlayerInput.ICharacterActionsActions
+public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActions, PlayerInput.ICharacterActionsActions, PlayerInput.IGameActions
 {
 
     private PlayerInput _playerInput;
@@ -21,54 +21,76 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     public UnityAction noclipPerformedEvent;
     
+    public UnityAction hookGrappleStartedEvent;
     public UnityAction hookGrapplePerformedEvent;
+
+    public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
 
-    public UnityAction<float> lookPerformedEvent;
+    public UnityAction attackPerformedEvent;
+
+    public UnityAction sandSoldierStartedEvent;
+    public UnityAction sandSoldierPerformedEvent;
+    public UnityAction sandSoldierCanceledEvent;
+    public UnityAction killAllSoldiersStartedEvent;
+
+    public UnityAction exitPerformedEvent;
+
     public InputAction hookGrapple { get; private set; }
     public InputAction hookInteract { get; private set; }
     public bool isFacingRight { get; private set; } = true;
     
-    private void OnEnable()
+    // Used to be OnEnable() method, but OnEnable() doesn't work in a build :/ Unity documentation wrong for years
+    public void Initialize()
     {
         if (_playerInput == null)
         {
             _playerInput = new PlayerInput();
             _playerInput.CharacterControls.SetCallbacks(this);
             _playerInput.CharacterActions.SetCallbacks(this);
+            _playerInput.Game.SetCallbacks(this);
         }
         _playerInput.CharacterControls.Enable();
         _playerInput.CharacterActions.Enable();
+        _playerInput.Game.Enable();
 
         hookGrapple = _playerInput.CharacterActions.HookGrapple;
         hookInteract = _playerInput.CharacterActions.HookInteract;
     }
 
-    private void OnDisable()
-    {
-        _playerInput.CharacterControls.Disable();
-        _playerInput.CharacterActions.Disable();
-    }
-
     public void OnHookGrapple(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed) hookGrapplePerformedEvent?.Invoke();
+        if (context.phase == InputActionPhase.Started) hookGrappleStartedEvent?.Invoke();
+        else if (context.phase == InputActionPhase.Performed) hookGrapplePerformedEvent?.Invoke();
     }
 
     public void OnHookInteract(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed) hookInteractPerformedEvent?.Invoke();
+        if (context.phase == InputActionPhase.Started) hookInteractStartedEvent?.Invoke();
+        else if (context.phase == InputActionPhase.Performed) hookInteractPerformedEvent?.Invoke();
     }
 
     public void OnSandSoldier(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        switch (context.phase)
+        {
+            case InputActionPhase.Started:
+                sandSoldierStartedEvent?.Invoke();
+                break;
+            case InputActionPhase.Performed:
+                sandSoldierPerformedEvent?.Invoke();
+                break;
+            case InputActionPhase.Canceled:
+                sandSoldierCanceledEvent?.Invoke();
+                break;
+            default:
+                break;
+        }
     }
 
-    public void OnLook(InputAction.CallbackContext context)
+    public void OnKillAllSoldiers(InputAction.CallbackContext context)
     {
-        var value = context.ReadValue<float>();
-        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
+        if (context.phase == InputActionPhase.Started) killAllSoldiersStartedEvent?.Invoke();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -102,10 +124,22 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
             dashStartedEvent.Invoke();
     }
 
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && attackPerformedEvent != null)
+            attackPerformedEvent.Invoke();
+    }
+
     public void OnNOCLIP(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed && noclipPerformedEvent != null)
             noclipPerformedEvent.Invoke();
+    }
+
+    public void OnExit(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && exitPerformedEvent != null)
+            exitPerformedEvent.Invoke();
     }
 
     public void DisableMove()
@@ -136,6 +170,16 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void EnableDash()
     {
         _playerInput.CharacterControls.Dash.Enable();
+    }
+
+    public void DisableAttack()
+    {
+        _playerInput.CharacterControls.Attack.Disable();
+    }
+
+    public void EnableAttack()
+    {
+        _playerInput.CharacterControls.Attack.Enable();
     }
 
     public void DisableHookGrapple()

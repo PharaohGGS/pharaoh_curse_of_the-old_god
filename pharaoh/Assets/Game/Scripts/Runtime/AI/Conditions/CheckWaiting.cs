@@ -6,8 +6,8 @@ namespace Pharaoh.AI.Actions
     {
         protected override NodeState OnUpdate()
         {
-            state = blackboard.TryGetData("isWaiting", out bool value) && value 
-                ? NodeState.Success : NodeState.Failure;
+            state = !blackboard.TryGetData("isWaiting", out bool value) || !value
+                ? NodeState.Failure : NodeState.Success;
             return state;
         }
     }

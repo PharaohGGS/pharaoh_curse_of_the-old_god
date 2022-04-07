@@ -7,11 +7,11 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskFleeTarget : ActionNode
     {
-        private MovementComponent _movement = null;
+        private AiMovement _aiMovement = null;
 
         protected override void OnStart()
         {
-            if (_movement == null && !agent.TryGetComponent(out _movement))
+            if (_aiMovement == null && !agent.TryGetComponent(out _aiMovement))
             {
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
             }
@@ -19,16 +19,13 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (_movement && blackboard.TryGetData("target", out Transform t))
+            if (_aiMovement && blackboard.TryGetData("target", out Transform t))
             {
-                var tr = agent.transform;
-                var fleePosition = tr.position - (t.position - tr.position);
-                //if (Vector3.Distance(tr.position, t.position) <= _movement.fleeDistance)
-                {
-                    tr.position = Vector3.MoveTowards(
-                        tr.position, fleePosition,
-                        _movement.moveSpeed * Time.deltaTime);
-                }
+                var agentPosition = agent.transform.position;
+                var fleePosition = agentPosition - (t.position - agentPosition);
+                agent.transform.position = Vector2.MoveTowards(
+                    agentPosition, fleePosition,
+                    _aiMovement.moveSpeed * Time.deltaTime);
             }
 
             state = NodeState.Running;

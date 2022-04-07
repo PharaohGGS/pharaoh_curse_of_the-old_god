@@ -138,34 +138,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &306038661694954169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4645641552996667476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9917c38de96a9642a7e240fefc3985d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <gameEvent>k__BackingField: {fileID: 11400000, guid: b9c91d9eb02ece94983e26166e0cc11b, type: 2}
-  <response>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5079749805808693452}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.MeleeGear, Pharaoh
-        m_MethodName: Stab
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &2021356391912413328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,10 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <data>k__BackingField: {fileID: 11400000, guid: 4657e833cef83f7409a66b337f5468fb, type: 2}
+  damagerData: {fileID: 11400000, guid: 4657e833cef83f7409a66b337f5468fb, type: 2}
+  stunData: {fileID: 11400000, guid: 4d56be772b9ab9740b88e8499c566de0, type: 2}
   damagingLayers:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 131072
   onTriggerHit:
     m_PersistentCalls:
       m_Calls:
@@ -204,10 +177,6 @@ MonoBehaviour:
   onCollisionHit:
     m_PersistentCalls:
       m_Calls: []
-  maxOverlappedColliders: 3
-  onOverlapHit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5079749805808693452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,12 +192,7 @@ MonoBehaviour:
   collidingLayers:
     serializedVersion: 2
     m_Bits: 0
-  onGroundHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onSocketAttach:
-    m_PersistentCalls:
-      m_Calls: []
+  socket: {fileID: 0}
   data: {fileID: 11400000, guid: ab7804cb95fabf84589101cd12e112c1, type: 2}
   onWeaponThrown:
     m_PersistentCalls:
