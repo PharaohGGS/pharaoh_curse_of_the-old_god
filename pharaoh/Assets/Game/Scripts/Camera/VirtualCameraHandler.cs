@@ -27,6 +27,7 @@ public class VirtualCameraHandler : MonoBehaviour
         _trackedDolly = _virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
         if (_trackedDolly != null)
         {
+            _virtualCamera.LookAt = CameraManager.Instance.player.transform;
             _isOnTrack = true;
             _polygonCollider2D = _virtualCamera.GetComponent<CinemachineConfiner2D>().m_BoundingShape2D as PolygonCollider2D;
         }
