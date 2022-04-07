@@ -16,7 +16,7 @@ namespace Pharaoh.Gameplay.Components
             _pool = GetComponent<DamagerPool>();
         }
         
-        private void Shoot(GameObject target)
+        private void Shoot(Transform target)
         {
             if (!target) return;
 
@@ -25,13 +25,13 @@ namespace Pharaoh.Gameplay.Components
             if (damager.TryGetComponent(out Rigidbody2D rb2D))
             {
                 rb2D.bodyType = RigidbodyType2D.Dynamic;
-                var direction = (Vector2)target.transform.position - rb2D.position;
+                var direction = (Vector2)target.position - rb2D.position;
                 rb2D.AddForce(direction.normalized * GetData().shootInitialVelocity, ForceMode2D.Impulse);
             }
 
             LogHandler.SendMessage($"{name} shooting {damager.name}", MessageType.Warning);
         }
 
-        public void Attack(GameObject target) => Shoot(target);
+        public void Attack(Transform target) => Shoot(target);
     }
 }
