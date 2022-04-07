@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -424,7 +424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 1303997357}
-  hider: {fileID: 0}
 --- !u!1 &299883103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1000,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 571855529}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1548fd08334a33740a28589900c14615, type: 3}
+  m_Script: {fileID: 11500000, guid: da8c665e42309c14db73feededd17d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1056721229}
@@ -1534,7 +1533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Path: {fileID: 1581758371}
-  m_PathPosition: 0.6781752
+  m_PathPosition: 0.275
   m_PositionUnits: 2
   m_PathOffset: {x: 0, y: 0, z: 0}
   m_XDamping: 0
@@ -1720,7 +1719,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 64743122}
-  hider: {fileID: 0}
 --- !u!1 &922874808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,7 +1753,7 @@ Transform:
   - {fileID: 520760623}
   - {fileID: 1581758370}
   m_Father: {fileID: 1988395010}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &922874810
 PolygonCollider2D:
@@ -1799,7 +1797,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 520760622}
-  hider: {fileID: 0}
 --- !u!1 &1056721229 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5732736215046696853, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
@@ -1861,7 +1858,7 @@ Transform:
   - {fileID: 1142755450}
   - {fileID: 849594878}
   m_Father: {fileID: 1988395010}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &1133102319
 PolygonCollider2D:
@@ -1905,7 +1902,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 849594877}
-  hider: {fileID: 0}
 --- !u!1 &1142755449
 GameObject:
   m_ObjectHideFlags: 0
@@ -2809,7 +2805,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1988395010}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1492538230
 BoxCollider2D:
@@ -3643,10 +3639,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 836607985}
+  - {fileID: 1492538229}
   - {fileID: 922874809}
   - {fileID: 2088631523}
   - {fileID: 1133102318}
-  - {fileID: 1492538229}
   - {fileID: 1781067780}
   - {fileID: 456730154}
   m_Father: {fileID: 0}
@@ -3687,7 +3683,7 @@ Transform:
   - {fileID: 1866172990}
   - {fileID: 589528241}
   m_Father: {fileID: 1988395010}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &2088631524
 PolygonCollider2D:
@@ -3731,4 +3727,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 589528240}
-  hider: {fileID: 0}
