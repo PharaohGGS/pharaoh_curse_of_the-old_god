@@ -2751,10 +2751,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -4, y: 2}
-      - {x: -4, y: 1}
+    - - {x: -4, y: 1}
+      - {x: -4, y: 0}
+      - {x: 0, y: 0}
       - {x: 0, y: 1}
-      - {x: 0, y: 2}
 --- !u!1 &880223110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5270,7 +5270,13 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 6, y: 7}
-      - {x: 6, y: 1}
+      - {x: 6.122711, y: 6.6020746}
+      - {x: 6.6637, y: 6.5471735}
+      - {x: 6.701782, y: 5.0076275}
+      - {x: 4.003563, y: 5.0541573}
+      - {x: 4.0735855, y: 4.637911}
+      - {x: 4.684326, y: 4.5671215}
+      - {x: 4.833191, y: 1}
       - {x: 0, y: 1}
       - {x: 0, y: 0}
       - {x: 7, y: 0}
@@ -7063,7 +7069,7 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: -6}
-      - {x: 0, y: -5}
+      - {x: 0.34729004, y: -5.0069494}
       - {x: -1, y: -5}
       - {x: -1, y: -7}
       - {x: 3, y: -7}
@@ -9824,7 +9830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90cde9aaede601439ba566a5cd43295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayMesh: 1
+  displayMesh: 0
   groundLayer: 10
 --- !u!1 &5247733682055104122
 GameObject:
@@ -9839,7 +9845,6 @@ GameObject:
   - component: {fileID: 7216255957889973098}
   - component: {fileID: 8647778101333508215}
   - component: {fileID: 5538745323183716828}
-  - component: {fileID: 4754095085858906490}
   m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -10516,32 +10521,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5247733682055104122}
   m_Mesh: {fileID: 0}
---- !u!61 &4754095085858906490
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5247733682055104122}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 2}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2, y: 4}
-  m_EdgeRadius: 0
 --- !u!1 &7343294699235396923
 GameObject:
   m_ObjectHideFlags: 0
@@ -17734,9 +17713,5 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -5, y: 1}
       - {x: -5, y: -1}
-      - {x: -4, y: -1}
-      - {x: -4, y: 0}
-      - {x: 0, y: 0}
-      - {x: 0, y: -1}
       - {x: 1, y: -1}
       - {x: 1, y: 1}

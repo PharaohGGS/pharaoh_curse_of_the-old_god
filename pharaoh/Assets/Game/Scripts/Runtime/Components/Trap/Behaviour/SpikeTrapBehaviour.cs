@@ -14,6 +14,8 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
 
+        private bool _isFirstTime = false;
+
         protected void Awake()
         {
             // at start hide gear
@@ -25,14 +27,22 @@ namespace Pharaoh.Gameplay
         {
             bool isSameTarget = _currentTarget == target;
             if (!isSameTarget) _currentTarget = target;
-            bool addDelay = !isSameTarget || !data.oneTimeDelay;
+            bool addDelay = _isFirstTime || !isSameTarget || !data.oneTimeDelay;
+            if (_isFirstTime) _isFirstTime = false;
             StartCoroutine(Action(addDelay));
         }
 
         public override void Respawn()
         {
+            if (data.oneTimeDelay)
+            {
+                _isFirstTime = true;
+                return;
+            }
+
             StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
-            mesh.SetActive(false);
+            if (_col) _col.enabled = false;
+            mesh?.SetActive(false);
         }
 
         private IEnumerator Action(bool addDelay)
@@ -41,8 +51,8 @@ namespace Pharaoh.Gameplay
             var lifeTime = new WaitForSeconds(data.lifeTime);
             var timeOut = new WaitForSeconds(data.timeOut);
 
-            var show = StartCoroutine(Move(data.showingSpeed, hidingTransform.position, showingTransform.position));
-            var hide = StartCoroutine(Move(data.hidingSpeed, showingTransform.position, hidingTransform.position));
+            var show = Move(data.showingSpeed, hidingTransform.position, showingTransform.position);
+            var hide = Move(data.hidingSpeed, showingTransform.position, hidingTransform.position);
 
             isStarted = true;
 
@@ -52,13 +62,13 @@ namespace Pharaoh.Gameplay
             // when showing, activate collider
             if (_col) _col.enabled = true;
             mesh?.SetActive(true);
-            yield return show;
+            yield return StartCoroutine(show);
 
             // after showing wait some lifeTime
             yield return lifeTime; 
 
             // when hiding, disable collider after finish hiding
-            yield return hide;
+            yield return StartCoroutine(hide);
             mesh?.SetActive(false);
             if (_col) _col.enabled = false; 
 

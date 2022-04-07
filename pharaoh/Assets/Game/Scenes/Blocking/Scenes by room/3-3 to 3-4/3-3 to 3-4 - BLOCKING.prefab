@@ -908,7 +908,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1426
+  m_VersionIndex: 1432
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2224,7 +2224,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1545
+  m_VersionIndex: 1548
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2345,7 +2345,7 @@ GameObject:
   - component: {fileID: 4784296689333541517}
   - component: {fileID: 2595381708422977947}
   - component: {fileID: 6409850772919070000}
-  - component: {fileID: 3364310794918326107}
+  - component: {fileID: 1902891697676732416}
   m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
@@ -2940,7 +2940,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1299
+  m_VersionIndex: 1302
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3022,8 +3022,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528620331600707930}
   m_Mesh: {fileID: 0}
---- !u!61 &3364310794918326107
-BoxCollider2D:
+--- !u!60 &1902891697676732416
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3035,7 +3035,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3045,9 +3045,14 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: 0, y: 0}
+      - {x: 1, y: 0}
+      - {x: 1.0454025, y: 0.7230582}
+      - {x: 1.8276535, y: 0.80205274}
+      - {x: 2, y: 1}
 --- !u!1 &1723675663522779025
 GameObject:
   m_ObjectHideFlags: 0
@@ -3189,7 +3194,7 @@ GameObject:
   - component: {fileID: 5900324885550933785}
   - component: {fileID: 3824325384131601886}
   - component: {fileID: 8817814258501372644}
-  - component: {fileID: 5599754689163644357}
+  - component: {fileID: 1809939138780705179}
   m_Layer: 10
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -3784,7 +3789,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1299
+  m_VersionIndex: 1305
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3866,8 +3871,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3421256308168586638}
   m_Mesh: {fileID: 0}
---- !u!61 &5599754689163644357
-BoxCollider2D:
+--- !u!60 &1809939138780705179
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3879,7 +3884,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 0.5}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3889,9 +3894,14 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2, y: 1}
+      - {x: 0, y: 1}
+      - {x: 0.084503174, y: 0.75443625}
+      - {x: 1.0335755, y: 0.7339748}
+      - {x: 1, y: 0}
+      - {x: 2, y: 0}
 --- !u!1 &6067341239949473957
 GameObject:
   m_ObjectHideFlags: 0
@@ -9548,7 +9558,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 8908
+  m_VersionIndex: 8911
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9824,7 +9834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210749565430414526, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_VersionIndex
-      value: 1912
+      value: 1915
       objectReference: {fileID: 0}
     - target: {fileID: 8210749565430414526, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_Faces.Array.size
@@ -14532,7 +14542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210749566246523943, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_VersionIndex
-      value: 1618
+      value: 1621
       objectReference: {fileID: 0}
     - target: {fileID: 8210749566246523943, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_Faces.Array.size
@@ -21994,7 +22004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210749565430414526, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_VersionIndex
-      value: 1542
+      value: 1545
       objectReference: {fileID: 0}
     - target: {fileID: 8210749565430414526, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_Faces.Array.size
@@ -26686,7 +26696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210749566246523943, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_VersionIndex
-      value: 1624
+      value: 1627
       objectReference: {fileID: 0}
     - target: {fileID: 8210749566246523943, guid: 6cd513e6272b9464498a74042173cd09, type: 3}
       propertyPath: m_Faces.Array.size
