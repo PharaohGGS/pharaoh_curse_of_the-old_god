@@ -62,6 +62,8 @@ namespace Pharaoh.Gameplay
         private GameObject _bestTargetLeft;
         private GameObject _currentTarget;
 
+        public RopeRenderer ropeRenderer;
+
         private void Awake()
         {
             _overlaps = new Collider2D[overlapCount];
@@ -161,6 +163,8 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget) return;
 
+            ropeRenderer.RetrieveRope();
+
             Debug.Log($"release from {_currentTarget.name}");
             _currentTarget = null;
         }
@@ -173,6 +177,8 @@ namespace Pharaoh.Gameplay
             if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
+
+            ropeRenderer.ShootRope(_currentTarget.transform);
             
             // select the target based on the direction the player's facing
             Debug.Log($"hooking to {_currentTarget.name}");
