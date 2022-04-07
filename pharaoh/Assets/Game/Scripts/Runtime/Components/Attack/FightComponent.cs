@@ -11,12 +11,11 @@ namespace Pharaoh.Gameplay.Components
         [Header("Weapons")]
 
         [SerializeField] private Gear[] gears;
-        [field: SerializeField, Range(0.5f, 10f)] public float range { get; private set; } = 5f;
 
         private int _weaponIndex = -1;
         private readonly List<Gear> _weapons = new List<Gear>();
         
-        private GameObject _currentTarget;
+        private Transform _currentTarget;
         private HealthComponent _targetHealth;
 
         public Gear activeWeapon => _weapons.Count >= 1 ? _weapons[_weaponIndex] : null;
@@ -40,7 +39,7 @@ namespace Pharaoh.Gameplay.Components
             _weaponIndex = (_weaponIndex + 1) % _weapons.Count;
         } 
 
-        public void Attack(GameObject target)
+        public void Attack(Transform target)
         {
             if (!activeWeapon || !target) return;
 

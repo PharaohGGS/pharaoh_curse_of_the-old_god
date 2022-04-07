@@ -413,6 +413,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5372285138702421455, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6327909308838946516, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -427,7 +431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396129, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396129, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_LocalPosition.z
@@ -467,7 +471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396134, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396180, guid: 1d33674f864b7664cbffe0f9d55dd784, type: 3}
       propertyPath: <waypointHolder>k__BackingField
@@ -1103,11 +1107,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 2}
   m_EdgeRadius: 0
---- !u!50 &1683965654 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 4364312874253679013, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-  m_PrefabInstance: {fileID: 2015153650}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1755125446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,53 +1320,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1755125447}
     m_Modifications:
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.65061516
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.35005718
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 4
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.055397943
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 4
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.67163306
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 1683965654}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 32
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_gravityScale
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 28
       objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_gravityScale
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: set_gravityScale
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: UnityEngine.Rigidbody2D, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643157632491830236, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
-      propertyPath: onCollisionHit.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+    - target: {fileID: 6230507599322736243, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396129, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
       propertyPath: m_RootOrder
@@ -1419,7 +1398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396134, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8132030799389396180, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
       propertyPath: <waypointHolder>k__BackingField
@@ -1449,7 +1428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732736215046696848, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5732736215046696848, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
       propertyPath: m_LocalPosition.z

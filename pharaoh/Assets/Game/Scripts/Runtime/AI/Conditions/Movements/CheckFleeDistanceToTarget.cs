@@ -8,6 +8,7 @@ namespace Pharaoh.AI.Actions
     public class CheckFleeDistanceToTarget : ActionNode
     {
         private AiMovement _aiMovement = null;
+        [SerializeField] private bool ignoreHeight = true;
 
         protected override void OnStart()
         {
@@ -19,10 +20,17 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_aiMovement || !blackboard.TryGetData("target", out Transform t)) return NodeState.Failure;
+            if (!_aiMovement) return NodeState.Failure;
             
-            return Vector2.Distance(agent.transform.position, t.position) <= _aiMovement.fleeDistance 
-                ? NodeState.Failure : NodeState.Success;
+            var target = blackboard.GetData<Transform>("target").position;
+            var position = agent.transform.position;
+            var fleeDistance = _aiMovement.fleeDistance;
+
+            var distance = ignoreHeight
+                ? Mathf.Abs(position.x - target.x)
+                : Vector2.Distance(position, target);
+
+            return distance > fleeDistance ? NodeState.Success : NodeState.Failure;
         }
     }
 }

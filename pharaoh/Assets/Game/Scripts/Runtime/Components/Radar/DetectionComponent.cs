@@ -9,37 +9,27 @@ namespace Pharaoh.Gameplay.Components
 {
     public class DetectionComponent : MonoBehaviour
     {
-        [SerializeField] private DetectionData[] datas;
-        [SerializeField] private new Collider2D collider;
+        [Header("Settings")]
 
-        [SerializeField] private int maxOverlappedColliders = 8;
-        [SerializeField] private Collider2D[] colliders;
-        private Dictionary<int, List<Collider2D>> _layeredColliders;
-        private LayerMask detectionLayer;
+        [SerializeField] public Collider2D detectionCollider;
+        [SerializeField] private LayerMask whatIsTarget;
+        [SerializeField, Range(1, 20)] private int overlapCount = 8;
+        
+        private Collider2D[] _colliders;
 
-        public bool hasDetectionCollider { get; private set; } = false;
+        public bool canDetect { get; private set; } = false;
         public int overlappedCount { get; private set; } = 0;
-
-
+        
         private void OnEnable()
         {
-            if (hasDetectionCollider) return;
+            if (canDetect) return;
 
-            hasDetectionCollider = false;
-            detectionLayer = datas.CombineLayers();
+            canDetect = false;
 
-            if (collider)
+            if (detectionCollider)
             {
-                colliders = new Collider2D[maxOverlappedColliders];
-
-                // get all the layer in detection layer and setup dictionary
-                _layeredColliders = new Dictionary<int, List<Collider2D>>();
-                foreach (var index in datas.GetLayerIndexes())
-                {
-                    _layeredColliders.TryAdd(index, new List<Collider2D>());
-                }
-
-                hasDetectionCollider = true;
+                _colliders = new Collider2D[overlapCount];
+                canDetect = true;
                 return;
             }
 
@@ -48,58 +38,48 @@ namespace Pharaoh.Gameplay.Components
 
         private void FixedUpdate()
         {
-            if (!hasDetectionCollider) return;
+            if (!canDetect) return;
 
             // do the overlap operation each fixedUpdate
-            overlappedCount = collider.OverlapNonAlloc(ref colliders, detectionLayer);
-            if (overlappedCount <= 0)
-            {
-                // clear registered colliders
-                foreach (var kvp in _layeredColliders) kvp.Value.Clear();
-                return;
-            }
-            
-            foreach (var kvp in _layeredColliders)
-            {
-                kvp.Value?.RemoveAll(coll => !colliders.Contains(coll));
-            }
-
-            foreach (var coll in colliders)
-            {
-                // skip detection component object
-                if (coll == null || coll.gameObject == gameObject) continue;
-                // add object in the proper list layered
-                var list = _layeredColliders[coll.gameObject.layer];
-                if (list == null || list.Contains(coll)) continue;
-                // add collider to the list if it doesn't contains it already
-                list.Add(coll);
-            }
+            for (int i = 0; i < _colliders.Length; i++) _colliders[i] = null;
+            overlappedCount = detectionCollider.OverlapNonAlloc(ref _colliders, whatIsTarget);
         }
 
-        public GameObject GetGameObjectWithLayer(DetectionData data)
+        public bool TryGetByLayerMask(LayerMask layer, out GameObject obj)
+        {
+            obj = GetByLayerMask(layer);
+            return obj != null;
+        }
+
+        public GameObject GetByLayerMask(LayerMask layer)
         {
             if (overlappedCount <= 0) return null;
 
-            // check if the mask as colliders
-            var index = data.GetLayerIndex();
-            if (!_layeredColliders.ContainsKey(index)) return null;
-            
-            // return the corresponding collider in index
-            foreach (var coll in _layeredColliders[index])
+            // check if the mask as multiple layers
+            var layerIndexes = layer.GetLayerIndexes();
+            if (layerIndexes.Length > 1)
             {
-                // only get the active object different from detector
-                var gameObjectWithLayer = coll.gameObject;
-                if (!gameObjectWithLayer.activeInHierarchy || gameObjectWithLayer == gameObject) continue;
-                
-                if (colliders.Any(coll2D => coll2D.gameObject == gameObjectWithLayer))
-                {
-                    return gameObjectWithLayer;
-                }
+                LogHandler.SendMessage($"Too much layers for just one gameObject", MessageType.Error);
+                return null;
+            }
+
+            foreach (var coll in _colliders)
+            {
+                if (!coll || !coll.gameObject.activeInHierarchy || !coll.gameObject.HasLayer(layer)) continue;
+                return coll.gameObject;
             }
 
             return null;
         }
 
-        public GameObject GetGameObjectAtIndex(int index) => overlappedCount <= 0 ? null : colliders[index].gameObject;
+        public bool TryGetByIndex(int index, out GameObject obj)
+        {
+            obj = GetByIndex(index);
+            return obj != null;
+        }
+
+        public GameObject GetByIndex(int index) => overlappedCount <= 0 ? null : _colliders[index].gameObject;
+
+        public bool OverlapPoint(Vector2 point) => detectionCollider && detectionCollider.OverlapPoint(point);
     }
 }
