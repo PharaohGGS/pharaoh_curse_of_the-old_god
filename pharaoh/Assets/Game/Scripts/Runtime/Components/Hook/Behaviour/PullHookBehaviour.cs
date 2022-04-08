@@ -26,9 +26,9 @@ namespace Pharaoh.Gameplay
             {
                 if (!_hook) return false;
                 float offset = _hook.pullData.offset;
-                Vector2 position = transform.position;
-                Vector2 hookPosition = _hook.transform.position;
-                return position.x > (hookPosition.x + offset) || position.x < (hookPosition.x - offset);
+                float x = transform.position.x;
+                float hookX = _hook.transform.position.x;
+                return x > (hookX + offset) || x < (hookX - offset);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Pharaoh.Gameplay
                 if (!_hook) return false;
                 
                 Vector2 position = transform.position;
-                Vector2 hookPosition = _hook.transform.position;
+                Vector2 hookPosition = _hook.center;
                 Vector2 direction = hookPosition - position;
                 bool isFacingRight = Mathf.Sign(-direction.x) >= 1f;
 
@@ -135,7 +135,8 @@ namespace Pharaoh.Gameplay
                 Release();
                 return;
             }
-
+            
+            Debug.Log($"{hook.name} hooking to {name}");
             _pullCoroutine = StartCoroutine(Pull());
             if (hookIndicator) hookIndicator.SetActive(false);
         }
@@ -152,7 +153,7 @@ namespace Pharaoh.Gameplay
             
             Vector2 startPosition = _movingBlock.transform.position;
 
-            Vector2 direction = _hook.transform.position - transform.position;
+            Vector2 direction = _hook.center - (Vector2)transform.position;
             Vector2 velocityX = (direction.x < 0.0f ? Vector2.left : Vector2.right) * maxMovement;
 
             Vector2 endPosition = startPosition + velocityX;
