@@ -45,6 +45,7 @@ public class SandSoldierBehaviour : MonoBehaviour
         // If it does, summon snapped to the obstacle
         if (wallHit)
         {
+            Debug.Log(wallHit.collider.gameObject.name);
             _estimatedPosition.x = wallHit.point.x -
                                    soldierSize.x / 2f *
                                    (_playerMovement.isFacingRight ? 1 : -1);
