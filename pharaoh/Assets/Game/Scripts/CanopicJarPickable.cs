@@ -1,6 +1,7 @@
 using UnityEngine;
-using Pharaoh.Tools;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class CanopicJarPickable : MonoBehaviour
 {
@@ -77,10 +78,12 @@ public class CanopicJarPickable : MonoBehaviour
         inputReader.hookInteractPerformedEvent -= OnInteract;
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (!EditorApplication.isPlayingOrWillChangePlaymode)
             ChangeSkin();
     }
+#endif
 
 }
