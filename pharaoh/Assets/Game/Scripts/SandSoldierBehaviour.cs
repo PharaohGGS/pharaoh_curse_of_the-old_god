@@ -34,12 +34,12 @@ public class SandSoldierBehaviour : MonoBehaviour
         }
 
         // Calculate start position based on minimum range, y offset and player's facing side
-        _startPosition = transform.position + new Vector3(minRange, yOffset, 0) * (_playerMovement.isFacingRight ? 1 : -1);
+        _startPosition = transform.position + new Vector3(minRange, yOffset, 0) * (_playerMovement.IsFacingRight ? 1 : -1);
 
         // Check if start position is going through an obstacle
         wallHit = Physics2D.Raycast(
             transform.position,
-            _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
+            _playerMovement.IsFacingRight ? Vector2.right : Vector2.left,
             minRange,
             blockingLayer);
         // If it does, summon snapped to the obstacle
@@ -48,7 +48,7 @@ public class SandSoldierBehaviour : MonoBehaviour
             Debug.Log(wallHit.collider.gameObject.name);
             _estimatedPosition.x = wallHit.point.x -
                                    soldierSize.x / 2f *
-                                   (_playerMovement.isFacingRight ? 1 : -1);
+                                   (_playerMovement.IsFacingRight ? 1 : -1);
             groundHit = Physics2D.Raycast(
                 new Vector2(_estimatedPosition.x, wallHit.point.y),
                 Vector2.down,
@@ -63,7 +63,7 @@ public class SandSoldierBehaviour : MonoBehaviour
         }
 
         _estimatedPosition = _startPosition; // Initialize estimated position
-        endX = _startPosition.x + (maxRange - minRange) * (_playerMovement.isFacingRight ? 1 : -1); // Calculate maximum x
+        endX = _startPosition.x + (maxRange - minRange) * (_playerMovement.IsFacingRight ? 1 : -1); // Calculate maximum x
     }
 
     private void Update()
@@ -92,7 +92,7 @@ public class SandSoldierBehaviour : MonoBehaviour
         // Check forward for blocking obstacle
         wallHit = Physics2D.Raycast(
             raycastPos,
-            _playerMovement.isFacingRight ? Vector2.right : Vector2.left,
+            _playerMovement.IsFacingRight ? Vector2.right : Vector2.left,
             soldierSize.x / 2f,
             blockingLayer);
 
@@ -105,7 +105,7 @@ public class SandSoldierBehaviour : MonoBehaviour
         {
             _estimatedPosition.x = wallHit.point.x -
                                    soldierSize.x / 2f *
-                                   (_playerMovement.isFacingRight ? 1 : -1);
+                                   (_playerMovement.IsFacingRight ? 1 : -1);
             transform.position = _estimatedPosition;
             onSummon?.Invoke();
             _summoned = true;

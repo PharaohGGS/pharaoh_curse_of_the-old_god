@@ -263,7 +263,7 @@ public class SandSoldier : MonoBehaviour
 
         // Rotate the soldier based on player's facing side
         Vector3 scale = soldier.transform.localScale;
-        scale.x = _playerMovement.isFacingRight ? 1 : -1;
+        scale.x = _playerMovement.IsFacingRight ? 1 : -1;
         soldier.transform.localScale = scale;
         
         // Check if soldier has enough height space to spawn

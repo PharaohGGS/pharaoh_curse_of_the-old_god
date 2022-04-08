@@ -67,8 +67,6 @@ namespace Pharaoh.Gameplay
 
         public Vector2 center { get; private set; }
 
-        public RopeRenderer ropeRenderer;
-
         private void Awake()
         {
             _overlaps = new Collider2D[overlapCount];
@@ -149,13 +147,13 @@ namespace Pharaoh.Gameplay
             {
                 var overlap = _overlaps[overlapIndex];
 
-                if (_currentTarget == overlap.gameObject) continue;
+                //if (_currentTarget == overlap.gameObject) continue;
 
                 Vector2 direction = (Vector2)overlap.transform.position - center;
                 float distance = direction.magnitude;
                 
                 if (Vector2.Angle(transform.right * (inputs.isFacingRight ? 1 : -1), direction.normalized) >= overlappingFov / 2) continue;
-                if (Physics2D.Raycast(center, direction.normalized, distance, whatIsObstacle)) continue;
+                if (Physics2D.RaycastAll(center, direction.normalized, distance, whatIsObstacle).Length > 0) continue;
 
                 switch (overlap.transform.position.x > center.x)
                 {
@@ -179,8 +177,6 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget) return;
 
-            ropeRenderer.RetrieveRope();
-
             Debug.Log($"release from {_currentTarget.name}");
             _currentTarget = null;
         }
@@ -193,8 +189,6 @@ namespace Pharaoh.Gameplay
             if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
-
-            ropeRenderer.ShootRope(_currentTarget.transform);
             
             // select the target based on the direction the player's facing
             onHookInteract?.Invoke(this, _currentTarget);
@@ -229,14 +223,14 @@ namespace Pharaoh.Gameplay
             if (!TryGetComponent(out Collider2D coll)) return;
 
             // Draws the best target to the right(red if not the faced direction)
-            Gizmos.color = _movement.isFacingRight
+            Gizmos.color = _movement.IsFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetRight != null)
                 Gizmos.DrawLine(transform.position + (Vector3)coll.offset, _bestTargetRight.transform.position);
 
             // Draws the best target to the left (red if not the faced direction)
-            Gizmos.color = !_movement.isFacingRight
+            Gizmos.color = !_movement.IsFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetLeft != null)

@@ -75,7 +75,7 @@ public class PlayerCombat : MonoBehaviour
     private void OnAttack()
     {
         // Can't attack while doing something else or not grounded
-        if (_playerMovement.IsDashing || _playerMovement.IsHooking || _playerMovement.IsPullingBlock || !_playerMovement.isGrounded)
+        if (_playerMovement.IsDashing || _playerMovement.IsHooking || _playerMovement.IsPullingBlock || !_playerMovement.IsGrounded)
             return;
 
         ResetSheathingTimer();

@@ -130,7 +130,7 @@ namespace Pharaoh.Gameplay
 
             // can't be pull when player is in air
             if (!canBePulled || !_movingBlock || !_movingBlock.isGrounded || _movingBlock.isPulled ||
-                !_hook.TryGetComponent(out PlayerMovement movement) || !movement.isGrounded)
+                !_hook.TryGetComponent(out PlayerMovement movement) || !movement.IsGrounded)
             {
                 Release();
                 return;

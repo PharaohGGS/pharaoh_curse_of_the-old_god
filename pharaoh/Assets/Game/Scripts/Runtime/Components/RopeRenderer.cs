@@ -1,3 +1,4 @@
+using System;
 using Pharaoh.Gameplay;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ namespace Pharaoh.Gameplay
         private Transform _rightHand;
         private Transform _leftHand;
 
+        [SerializeField, Header("Hook Events")]
+        private HookBehaviourEvents hookEvents;
+
+        [Header("Animation Event")]
         public AnimationEventsReceiver animationEventsReceiver;
         public Transform pullingSocketRight;
         public Transform pullingSocketLeft;
@@ -24,6 +29,16 @@ namespace Pharaoh.Gameplay
             _lineRenderer.enabled = false;
 
             animationEventsReceiver.switchHands += SwitchHands;
+        }
+
+        private void OnEnable()
+        {
+            HookAddListener();
+        }
+
+        private void OnDisable()
+        {
+            HookRemoveListener();
         }
 
         private void Update()
@@ -56,6 +71,84 @@ namespace Pharaoh.Gameplay
             _rightHand = _leftHand;
             _leftHand = temp;
         }
+
+
+        #region Hook
+
+        private void HookAddListener()
+        {
+            if (!hookEvents) return;
+            hookEvents.started += OnHookStarted;
+            hookEvents.ended += OnHookEnded;
+            hookEvents.released += OnHookReleased;
+        }
+
+        private void HookRemoveListener()
+        {
+            if (!hookEvents) return;
+            hookEvents.started -= OnHookStarted;
+            hookEvents.ended -= OnHookEnded;
+            hookEvents.released -= OnHookReleased;
+        }
+
+        private void OnHookStarted(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+
+            switch (behaviour)
+            {
+                case GrappleHookBehaviour grapple:
+                    break;
+                case PullHookBehaviour pull:
+                    ShootRope(behaviour.transform);
+                    break;
+                case SnatchHookBehaviour snatch:
+                    ShootRope(behaviour.transform);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
+        }
+
+        private void OnHookEnded(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+
+            switch (behaviour)
+            {
+                case GrappleHookBehaviour grapple:
+                    break;
+                case PullHookBehaviour pull:
+                    RetrieveRope();
+                    break;
+                case SnatchHookBehaviour snatch:
+                    RetrieveRope();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
+        }
+
+        private void OnHookReleased(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+            
+            switch (behaviour)
+            {
+                case GrappleHookBehaviour grapple:
+                    break;
+                case PullHookBehaviour pull:
+                    RetrieveRope();
+                    break;
+                case SnatchHookBehaviour snatch:
+                    RetrieveRope();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(behaviour));
+            }
+        }
+
+        #endregion
 
     }
 }
