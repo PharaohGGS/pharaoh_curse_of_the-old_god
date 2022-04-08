@@ -1,4 +1,5 @@
 using UnityEngine;
+using Pharaoh.Managers;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,6 +12,7 @@ public class CanopicJarPickable : MonoBehaviour
         None,
         Bird,
         Monkey,
+        Dog,
         Crocodile,
         Human
     };
