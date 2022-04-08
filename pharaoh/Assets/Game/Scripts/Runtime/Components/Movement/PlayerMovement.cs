@@ -39,7 +39,10 @@ namespace Pharaoh.Gameplay.Components.Movement
         private bool _canMove = true;
         private bool _isHooked = false;
         private bool _isPullingBlock = false;
+        //true when the grappling is running, false otherwise
         private bool _isHooking = false;
+        //true when the trigger has already been set during this coroutine, false otherwise
+        private bool _willBeHooked = false;
 
         public bool isFacingRight { get; private set; } = true;
         public bool isGrounded { get; private set; } = false;
@@ -49,7 +52,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsJumping { get => _isJumping; }
         public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
         public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
-        public bool IsHooking { get => _isHooking; set => _isHooking = value; }
+        public bool IsHooking { get => _isHooking; }
 
         [Header("Input Reader")]
         public InputReader inputReader;
@@ -232,7 +235,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    //animator?.SetTrigger(Animator.StringToHash("grapple_start"));
+                    animator.SetTrigger("Hooking"); //sends a signal that the player has started the hooking process
+                    _isHooking = true; //tells the PlayerMovement that the player is in a state of hooking
                     break;
                 case PullHookBehaviour pull:
                     _rigidbody.velocity = Vector2.zero;
@@ -252,8 +256,16 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    // offset the body with the collider center
-                    _rigidbody.MovePosition(grapple.nextPosition - _collider.offset);
+                    // When reaching a 90% threshold of travelled distance,
+                    // sends a signal that the player'll soon be hooked
+                    if (grapple.travelPercent >= 0.9f && !_willBeHooked)
+                    {
+                        animator.SetTrigger("Will Be Hooked");
+                        _willBeHooked = true;
+                    }
+                    // center the body with the collider center
+                    var target = grapple.nextPosition - _collider.offset;
+                    _rigidbody.MovePosition(target);
                     break;
                 case PullHookBehaviour pull:
                     break;
@@ -271,7 +283,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
+                    _willBeHooked = false; //reuse this variable each time we grapple
+                    _isHooking = false; //tells the PlayerMovement that the player finished hooking
                     inputReader.EnableJump();
                     _isHooked = true;
                     _canJumpHook = true;
@@ -302,7 +315,14 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.gravityScale = metrics.gravityScale;
+                    animator.ResetTrigger("Will Be Hooked"); //resets the trigger to avoid remnants when unhooking
+                    if (_isHooking) //the player cancelled the action while hooking, ie. while not yet hooked
+                    {
+                        _isHooking = false; //the player is no longer hooking
+                        animator.SetTrigger("Hooking Cancelled"); //sends a signal that the player cancelled the hooking process
+                    }
+                    _willBeHooked = false; //reuse this variable each time we grapple
+                    _rigidbody.gravityScale = metrics.gravityScale; // reset the base gravity of the player
                     break;
                 case PullHookBehaviour pull:
                     IsPullingBlock = false;
