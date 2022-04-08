@@ -10,15 +10,20 @@ namespace Pharaoh.Gameplay
         private LineRenderer _lineRenderer;
         private bool _ropeShot = false;
         private Transform _target;
+        private Transform _rightHand;
+        private Transform _leftHand;
 
-        public Transform leftHandSocket;
-        public Transform rightHandSocket;
+        public AnimationEventsReceiver animationEventsReceiver;
+        public Transform pullingSocketRight;
+        public Transform pullingSocketLeft;
 
         private void Awake()
         {
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.positionCount = 3;
             _lineRenderer.enabled = false;
+
+            animationEventsReceiver.switchHands += SwitchHands;
         }
 
         private void Update()
@@ -26,11 +31,13 @@ namespace Pharaoh.Gameplay
             if (!_ropeShot || _target == null)
                 return;
 
-            _lineRenderer.SetPositions(new Vector3[] { leftHandSocket.position, rightHandSocket.position, _target.position });
+            _lineRenderer.SetPositions(new Vector3[] { _leftHand.position, _rightHand.position, _target.position });
         }
 
         public void ShootRope(Transform target)
         {
+            _rightHand = pullingSocketRight;
+            _leftHand = pullingSocketLeft;
             _target = target;
             _lineRenderer.enabled = true;
             _ropeShot = true;
@@ -41,6 +48,13 @@ namespace Pharaoh.Gameplay
             _lineRenderer.enabled = false;
             _ropeShot = false;
             _target = null;
+        }
+
+        public void SwitchHands()
+        {
+            Transform temp = _rightHand;
+            _rightHand = _leftHand;
+            _leftHand = temp;
         }
 
     }

@@ -14,7 +14,7 @@ namespace Pharaoh.Gameplay
         
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
 
-        private bool _isFirstTime = false;
+        private bool _isFirstTime;
 
         protected void Awake()
         {
@@ -27,22 +27,21 @@ namespace Pharaoh.Gameplay
         {
             bool isSameTarget = _currentTarget == target;
             if (!isSameTarget) _currentTarget = target;
-            bool addDelay = _isFirstTime || !isSameTarget || !data.oneTimeDelay;
+
+            bool addDelay = (data.oneTimeDelay && _isFirstTime) || !data.oneTimeDelay || !isSameTarget;
             if (_isFirstTime) _isFirstTime = false;
             StartCoroutine(Action(addDelay));
         }
 
         public override void Respawn()
         {
-            if (data.oneTimeDelay)
-            {
-                _isFirstTime = true;
-                return;
-            }
-
-            StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
+            StopAllCoroutines(); // kind of break the synchro of oneTimeDelayed 
+            if (data.oneTimeDelay) _isFirstTime = true;
             if (_col) _col.enabled = false;
             mesh?.SetActive(false);
+            _currentTarget = null;
+
+            StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
         }
 
         private IEnumerator Action(bool addDelay)
@@ -97,7 +96,7 @@ namespace Pharaoh.Gameplay
                 yield return _waitForFixedUpdate;
             }
 
-            nextPosition = Vector2.Lerp(start, end, curve.Evaluate(currentTime / duration)); 
+            nextPosition = Vector2.Lerp(start, end, curve.Evaluate(1)); 
             _rb.MovePosition(nextPosition);
         }
     }

@@ -109,7 +109,9 @@ public class SandSoldier : MonoBehaviour
         
         _longPress = true;
 
-        GameObject go = Instantiate(soldierPreview, transform.position, Quaternion.identity);
+        Vector3 spawnPos = transform.position;
+        spawnPos.y += soldierSize.y / 2f;
+        GameObject go = Instantiate(soldierPreview, spawnPos, Quaternion.identity);
         if (!go.TryGetComponent(out _soldierBehaviour))
         {
             Debug.Log("No Sand Soldier Behaviour");

@@ -137,8 +137,12 @@ namespace Pharaoh.Tools
                     size = Physics2D.OverlapCapsuleNonAlloc(point, capsule.size, capsule.direction, capsule.transform.rotation.x, colliders, layerMask);
                     break;
                 case PolygonCollider2D polygon:
+                    ContactFilter2D legacyFilter = new ContactFilter2D();
+                    legacyFilter.useTriggers = Physics2D.queriesHitTriggers;
+                    legacyFilter.SetLayerMask(layerMask);
+                    legacyFilter.SetDepth(float.NegativeInfinity, float.PositiveInfinity);
                     point = collider.transform.TransformPoint(polygon.offset);
-                    size = Physics2D.OverlapPointNonAlloc(point, colliders, layerMask);
+                    size = Physics2D.OverlapCollider(collider, legacyFilter, colliders);
                     break;
                 default:
                     throw new NotImplementedException("Not implemented overlap non alloc method for this collider");
@@ -164,10 +168,6 @@ namespace Pharaoh.Tools
                 case CapsuleCollider2D capsule:
                     center = capsule.transform.TransformPoint(capsule.offset);
                     colls = Physics2D.OverlapCapsuleAll(center, capsule.size, capsule.direction, capsule.transform.rotation.x, layerMask);
-                    break;
-                case PolygonCollider2D polygon:
-                    center = polygon.transform.TransformPoint(polygon.offset);
-                    colls = Physics2D.OverlapPointAll(center, layerMask);
                     break;
                 default:
                     throw new NotImplementedException("Not implemented overlap all method for this collider");
