@@ -53,12 +53,9 @@ namespace Pharaoh.Gameplay
 
             if (damager.TryGetComponent(out Rigidbody2D rb2D))
             {
-                //rb2D.rotation = transform.rotation.z;
                 rb2D.bodyType = RigidbodyType2D.Dynamic;
-                var direction = (Vector2)_currentTarget.transform.position - rb2D.position;
                 rb2D.AddTorque(transform.rotation.z * Mathf.Deg2Rad * rb2D.inertia);
                 rb2D.AddForceAtPosition(transform.up * data.initialVelocity, transform.position, ForceMode2D.Impulse);
-                //rb2D.velocity = Vector2.up * data.initialVelocity;
             }
 
             LogHandler.SendMessage($"{name} shooting {damager.name}", MessageType.Warning);

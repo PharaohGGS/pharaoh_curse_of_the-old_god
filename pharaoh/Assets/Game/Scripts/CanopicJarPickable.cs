@@ -1,5 +1,6 @@
 using UnityEngine;
 using Pharaoh.Managers;
+using Pharaoh.Tools;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -7,7 +8,7 @@ using UnityEditor;
 public class CanopicJarPickable : MonoBehaviour
 {
 
-    public enum CanopicJar
+    public enum CanopicJar : int
     {
         None,
         Bird,
@@ -66,12 +67,14 @@ public class CanopicJarPickable : MonoBehaviour
     private void ChangeSkin()
     {
         foreach (GameObject go in canopicJars) go.SetActive(false);
-        canopicJars[(int)jar * 2].SetActive(true);
+
+        int index = (int)jar * 2;
+        canopicJars[index].SetActive(true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (whatIsPlayer == (whatIsPlayer | 1 << collision.gameObject.layer))
+        if (collision.gameObject.HasLayer(whatIsPlayer))
             inputReader.hookInteractPerformedEvent += OnInteract;
     }
 
