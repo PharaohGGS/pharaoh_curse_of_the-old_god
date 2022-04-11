@@ -41,7 +41,8 @@ namespace Pharaoh.Managers
             public bool loop = false;
             public bool fadeIn = false;
             public bool fadeOut = false;
-            public float fadeDuration = 1f;
+            public float fadeInDuration = 1f;
+            public float fadeOutDuration = 1f;
             [HideInInspector] public AudioSource audioSource;
         }
 
@@ -60,7 +61,7 @@ namespace Pharaoh.Managers
             s.audioSource?.Play();
             if (s.fadeIn)
             {
-                StartCoroutine(StartFadeIn(s.audioSource, 5, s.volume));
+                StartCoroutine(StartFadeIn(s.audioSource, s.fadeInDuration, s.volume));
             }
         }
 
@@ -90,7 +91,7 @@ namespace Pharaoh.Managers
             
             if (s.fadeOut)
             {
-                StartCoroutine(StartFadeIn(s.audioSource, 5, s.volume));
+                StartCoroutine(StartFadeOut(s.audioSource, s.fadeOutDuration));
             } 
             else
             {
@@ -112,17 +113,17 @@ namespace Pharaoh.Managers
             yield break;
         }
 
-        public static IEnumerator StartFadeOut(Sound s, float duration)
+        public static IEnumerator StartFadeOut(AudioSource s, float duration)
         {
             float currentTime = 0;
-            float start = s.audioSource.volume;
+            float start = s.volume;
             while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
-                s.audioSource.volume = Mathf.Lerp(start, 0, currentTime / duration);
+                s.volume = Mathf.Lerp(start, 0, currentTime / duration);
                 yield return null;
             }
-            s.audioSource.Stop();
+            s.Stop();
             yield break;
         }
     }

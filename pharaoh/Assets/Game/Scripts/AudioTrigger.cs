@@ -35,10 +35,10 @@ public class AudioTrigger : MonoBehaviour
     [Tooltip("Player layer number")]
     [SerializeField] private int playerLayer;
 
-    private bool playedOnEnter;
-    private bool playedOnExit;
-    private bool stoppedOnEnter;
-    private bool stoppedOnExit;
+    private bool playedOnEnter = false;
+    private bool playedOnExit = false;
+    private bool stoppedOnEnter = false;
+    private bool stoppedOnExit = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -58,10 +58,6 @@ public class AudioTrigger : MonoBehaviour
                 stoppedOnEnter = !Restop;
             }
         }
-        else
-        {
-            Debug.Log("-- Not player");
-        }
     }
 
 
@@ -80,14 +76,8 @@ public class AudioTrigger : MonoBehaviour
             {
                 AudioManager.Instance.Stop(soundToStop);
                 Debug.Log("--Stoping " + soundToStop + " on exit");
-                stoppedOnExit = !Replay;
+                stoppedOnExit = !Restop;
             }
         }
-        else
-        {
-            Debug.Log("-- Not player");
-        }
-        Debug.Log("param : " + playerLayer);
-        Debug.Log(collision.gameObject.layer);
     }
 }
