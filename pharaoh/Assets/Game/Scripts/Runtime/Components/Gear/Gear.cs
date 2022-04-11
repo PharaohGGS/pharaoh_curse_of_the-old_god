@@ -66,6 +66,10 @@ namespace Pharaoh.Gameplay.Components
                 transform.parent = socket;
                 transform.localPosition = Vector3.zero;
                 transform.localRotation = Quaternion.Euler(overrideRotation);
+                if (TryGetComponent(out Collider2D col))
+                {
+                    col.enabled = false;
+                }
                 _rigidbody2D.WakeUp();
             }
         }

@@ -11,6 +11,8 @@ namespace Pharaoh.Gameplay.Components
 {
     public class AiMovement : MonoBehaviour
     {
+        [SerializeField] private Animator animator;
+
         [field: SerializeField, Range(1f, 100f)] public float moveSpeed { get; private set; } = 5;
         [field: SerializeField, Range(0.01f, 100.0f)] public float closeDistance { get; private set; } = 0.01f;
         [field: SerializeField, Range(1f, 100f)] public float fleeDistance { get; private set; } = 2;
@@ -28,6 +30,11 @@ namespace Pharaoh.Gameplay.Components
             if (!TryGetComponent(out _rigidbody))
             {
                 LogHandler.SendMessage("No rigidbody on this ai", MessageType.Warning);
+            }
+
+            if (!animator)
+            {
+                LogHandler.SendMessage("No animator on this ai", MessageType.Warning);
             }
         }
 
@@ -52,12 +59,14 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!_rigidbody) return;
             var direction = (Vector2)target - _rigidbody.position;
-            _rigidbody.AddForce(direction.normalized * moveSpeed/* * Time.fixedDeltaTime*/, ForceMode2D.Force);
+            _rigidbody.AddForce(direction.normalized * moveSpeed, ForceMode2D.Force);
+            animator.SetFloat("Horizontal Speed", _rigidbody.velocity.x);
         }
 
         public void LookAt(Vector3 target)
         {
             target.z = transform.position.z;
+            target.y = transform.position.y;
             transform.LookAt2D(target);
         }
 
@@ -67,7 +76,8 @@ namespace Pharaoh.Gameplay.Components
 
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-            
+            animator.SetFloat("Horizontal Speed", _rigidbody.velocity.x);
+
             yield return new WaitForSeconds(time);
             
             isStunned = false;
