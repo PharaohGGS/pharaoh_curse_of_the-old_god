@@ -686,6 +686,7 @@ MonoBehaviour:
   maximumTimeIfMultipleSoldiers: 3
   maxSoldiers: 2
   soldierSize: {x: 1.65, y: 2.15}
+  particleForce: 10
   yOffset: 0.8
   minRange: 1
   maxRange: 6
@@ -699,8 +700,8 @@ MonoBehaviour:
   movingBlockLayer:
     serializedVersion: 2
     m_Bits: 65536
-  startColliderOffset: {x: 0.1, y: 0}
-  endColliderOffset: {x: 0.1, y: 1.05}
+  startColliderOffset: {x: 0.1, y: -1.075}
+  endColliderOffset: {x: 0.1, y: 0}
   startColliderSize: {x: 1.65, y: 0}
   endColliderSize: {x: 1.65, y: 2.15}
   blockPlusSoldierThreshold: 0.7
