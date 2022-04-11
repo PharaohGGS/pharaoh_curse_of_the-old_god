@@ -25,8 +25,6 @@ public class Door : MonoBehaviour
     [Tooltip("Clipping Material")]
     public Material _material;
     public GameObject door;
-    public GameObject firstScarab;
-    public GameObject secondScarab;
 
     private void Awake()
     {
@@ -42,8 +40,6 @@ public class Door : MonoBehaviour
         mat.SetFloat("_Clip", transform.position.y - 1.5f);
 
         door.GetComponent<MeshRenderer>().material = mat;
-        firstScarab.GetComponent<MeshRenderer>().material = mat;
-        secondScarab.GetComponent<MeshRenderer>().material = mat;
 
         RefreshState();
     }

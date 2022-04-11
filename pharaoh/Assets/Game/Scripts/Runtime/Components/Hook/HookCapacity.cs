@@ -62,12 +62,25 @@ namespace Pharaoh.Gameplay
         private GameObject _bestTargetLeft;
         private GameObject _currentTarget;
 
-        public RopeRenderer ropeRenderer;
+        private Rigidbody2D _rigidbody;
+        private Collider2D _collider;
+
+        public Vector2 center { get; private set; }
 
         private void Awake()
         {
             _overlaps = new Collider2D[overlapCount];
             _movement = GetComponent<PlayerMovement>();
+            
+            if (!TryGetComponent(out _rigidbody))
+            {
+                LogHandler.SendMessage($"No rigidbody to center", MessageType.Warning);
+            }
+            
+            if (!TryGetComponent(out _collider))
+            {
+                LogHandler.SendMessage($"No collider to center", MessageType.Warning);
+            }
         }
 
         private void OnEnable()
@@ -119,7 +132,8 @@ namespace Pharaoh.Gameplay
 
         private void SearchTargets()
         {
-            int overlapCount = Physics2D.OverlapCircleNonAlloc(transform.position, overlappingRadius, _overlaps, whatIsTarget);
+            center = _rigidbody.position + _collider.offset;
+            int overlapCount = Physics2D.OverlapCircleNonAlloc(center, overlappingRadius, _overlaps, whatIsTarget);
 
             float closestDistanceRight = Mathf.Infinity;
             float closestDistanceLeft = Mathf.Infinity;
@@ -133,15 +147,15 @@ namespace Pharaoh.Gameplay
             {
                 var overlap = _overlaps[overlapIndex];
 
-                if (_currentTarget == overlap.gameObject) continue;
+                //if (_currentTarget == overlap.gameObject) continue;
 
-                Vector2 direction = overlap.transform.position - transform.position;
+                Vector2 direction = (Vector2)overlap.transform.position - center;
                 float distance = direction.magnitude;
                 
                 if (Vector2.Angle(transform.right * (inputs.isFacingRight ? 1 : -1), direction.normalized) >= overlappingFov / 2) continue;
-                if (Physics2D.Raycast(transform.position, direction.normalized, distance, whatIsObstacle)) continue;
+                if (Physics2D.RaycastAll(center, direction.normalized, distance, whatIsObstacle).Length > 0) continue;
 
-                switch (overlap.transform.position.x > transform.position.x)
+                switch (overlap.transform.position.x > center.x)
                 {
                     case true when distance < closestDistanceRight:
                         bestOverlapRight = overlapIndex;
@@ -163,8 +177,6 @@ namespace Pharaoh.Gameplay
         {
             if (!_currentTarget) return;
 
-            ropeRenderer.RetrieveRope();
-
             Debug.Log($"release from {_currentTarget.name}");
             _currentTarget = null;
         }
@@ -177,11 +189,8 @@ namespace Pharaoh.Gameplay
             if (!_potentialTarget) return;
             
             _currentTarget = _potentialTarget;
-
-            ropeRenderer.ShootRope(_currentTarget.transform);
             
             // select the target based on the direction the player's facing
-            Debug.Log($"hooking to {_currentTarget.name}");
             onHookInteract?.Invoke(this, _currentTarget);
         }
 
@@ -194,11 +203,7 @@ namespace Pharaoh.Gameplay
             
             _currentTarget = _potentialTarget;
 
-            _movement.animator.SetTrigger("Hooking"); //sends a signal that the player has started the hooking process
-            _movement.IsHooking = true; //tells the PlayerMovement that the player is in a state of hooking
-
             // select the target based on the direction the player's facing
-            Debug.Log($"hooking to {_currentTarget.name}");
             onHookGrapple?.Invoke(this, _currentTarget);
         }
         
@@ -215,20 +220,21 @@ namespace Pharaoh.Gameplay
         protected void OnDrawGizmos()
         {
             if (!_movement) return;
+            if (!TryGetComponent(out Collider2D coll)) return;
 
             // Draws the best target to the right(red if not the faced direction)
-            Gizmos.color = _movement.isFacingRight
+            Gizmos.color = _movement.IsFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetRight != null)
-                Gizmos.DrawLine(transform.position, _bestTargetRight.transform.position);
+                Gizmos.DrawLine(transform.position + (Vector3)coll.offset, _bestTargetRight.transform.position);
 
             // Draws the best target to the left (red if not the faced direction)
-            Gizmos.color = !_movement.isFacingRight
+            Gizmos.color = !_movement.IsFacingRight
                 ? new Color(1f, 0.7531517f, 0f, 1f)
                 : new Color(1f, 0.7531517f, 0f, 0.1f);
             if (_bestTargetLeft != null)
-                Gizmos.DrawLine(transform.position, _bestTargetLeft.transform.position);
+                Gizmos.DrawLine(transform.position + (Vector3)coll.offset, _bestTargetLeft.transform.position);
         }
 
         private void OnDrawGizmosSelected()
@@ -239,9 +245,11 @@ namespace Pharaoh.Gameplay
                 return new Vector2(Mathf.Sin(degreeAngle * Mathf.Deg2Rad), Mathf.Cos(degreeAngle * Mathf.Deg2Rad));
             }
 
+            if (!TryGetComponent(out Collider2D coll)) return;
+
             // Draws a disc around the player displaying the targeting range
             UnityEditor.Handles.color = new Color(1f, 0.7531517f, 0f, 1f);
-            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, overlappingRadius);
+            UnityEditor.Handles.DrawWireDisc(transform.position + (Vector3)coll.offset, Vector3.forward, overlappingRadius);
 
             if (!inputs) return;
             
@@ -250,8 +258,8 @@ namespace Pharaoh.Gameplay
             Vector3 angle1 = DirectionFromAngle(eulerY, overlappingFov / 2);
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, transform.position + angle0 * overlappingRadius);
-            Gizmos.DrawLine(transform.position, transform.position + angle1 * overlappingRadius);
+            Gizmos.DrawLine(transform.position + (Vector3)coll.offset, transform.position + (Vector3)coll.offset + angle0 * overlappingRadius);
+            Gizmos.DrawLine(transform.position + (Vector3)coll.offset, transform.position + (Vector3)coll.offset + angle1 * overlappingRadius);
 
             if (_overlaps is not {Length: > 0}) return;
 
@@ -260,7 +268,7 @@ namespace Pharaoh.Gameplay
             foreach (var overlap in _overlaps)
             {
                 if (overlap == null) continue;
-                Gizmos.DrawLine(transform.position, overlap.transform.position);
+                Gizmos.DrawLine(transform.position + (Vector3)coll.offset, overlap.transform.position);
             }
         }
 #endif

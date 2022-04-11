@@ -1,49 +1,58 @@
 using UnityEngine;
+using Pharaoh.Managers;
 using Pharaoh.Tools;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class CanopicJarPickable : MonoBehaviour
 {
 
-    public enum Skill
+    public enum CanopicJar : int
     {
         None,
-        SwarmDash,
-        SandSoldier,
-        Hook
+        Bird,
+        Monkey,
+        Dog,
+        Crocodile,
+        Human
     };
 
     public InputReader inputReader;
     public PlayerSkills playerSkills;
 
-    public GameObject canopicJar;
-    public GameObject canopicJarUsed;
-
     public BoxCollider2D boxCollider;
     public ParticleSystem psIdle;
     public ParticleSystem psPickup;
 
+    public GameObject[] canopicJars;
+
     public LayerMask whatIsPlayer;
-    public Skill skill;
+    public CanopicJar jar = CanopicJar.None;
+
+    private void Awake()
+    {
+        //ChangeSkin();
+    }
 
     public void OnInteract()
     {
         //Grant the player the given power
-        switch (skill)
+        switch (jar)
         {
-            case Skill.SwarmDash:
+            case CanopicJar.Bird:
                 playerSkills.hasSwarmDash = true;
                 break;
 
-            case Skill.SandSoldier:
+            case CanopicJar.Monkey:
                 playerSkills.hasSandSoldier = true;
                 break;
 
-            case Skill.Hook:
+            case CanopicJar.Crocodile:
                 playerSkills.hasGrapplingHook = true;
                 break;
 
             default:
-            case Skill.None:
                 break;
         }
 
@@ -51,13 +60,21 @@ public class CanopicJarPickable : MonoBehaviour
         psIdle.Stop();
         psPickup.Play();
 
-        canopicJarUsed.SetActive(true);
-        canopicJar.SetActive(false);
+        canopicJars[(int)jar * 2].SetActive(false);
+        canopicJars[((int)jar * 2) + 1].SetActive(true);
+    }
+
+    private void ChangeSkin()
+    {
+        foreach (GameObject go in canopicJars) go.SetActive(false);
+
+        int index = (int)jar * 2;
+        canopicJars[index].SetActive(true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (whatIsPlayer == (whatIsPlayer | 1 << collision.gameObject.layer))
+        if (collision.gameObject.HasLayer(whatIsPlayer))
             inputReader.hookInteractPerformedEvent += OnInteract;
     }
 
@@ -65,5 +82,13 @@ public class CanopicJarPickable : MonoBehaviour
     {
         inputReader.hookInteractPerformedEvent -= OnInteract;
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!EditorApplication.isPlayingOrWillChangePlaymode)
+            ChangeSkin();
+    }
+#endif
 
 }

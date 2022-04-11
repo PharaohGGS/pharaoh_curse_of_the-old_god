@@ -38,7 +38,7 @@ public class VirtualCameraHandler : MonoBehaviour
     private void LateUpdate()
     {
         CameraManager.Instance.vcamFollowOffset.transform.position =
-            CameraManager.Instance.player.transform.position + CameraManager.Instance.cameraOffset * (_playerMovement.IsFacingRight ? 1 : -1);
+            (CameraManager.Instance.player.transform.position + Vector3.up) + CameraManager.Instance.cameraOffset * (_playerMovement.IsFacingRight ? 1 : -1);
 
         if (_isOnTrack)
         {

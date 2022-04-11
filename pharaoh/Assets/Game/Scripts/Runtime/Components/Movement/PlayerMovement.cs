@@ -19,6 +19,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private readonly Quaternion LeftRotationRunning = Quaternion.Euler(new Vector3(0f, -90.1f, 0f));
 
         private Rigidbody2D _rigidbody;
+        private Collider2D _collider;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
         private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
@@ -38,17 +39,20 @@ namespace Pharaoh.Gameplay.Components.Movement
         private bool _canMove = true;
         private bool _isHooked = false;
         private bool _isPullingBlock = false;
+        //true when the grappling is running, false otherwise
         private bool _isHooking = false;
+        //true when the trigger has already been set during this coroutine, false otherwise
+        private bool _willBeHooked = false;
+        private bool _isFacingRight = true;
+        private bool _isGrounded = false;
 
-        public bool isFacingRight { get; private set; } = true;
-        public bool isGrounded { get; private set; } = false;
-
-        public bool IsRunning { get => _isRunning; }
-        public bool IsDashing { get => _isDashing; }
-        public bool IsJumping { get => _isJumping; }
-        public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
-        public bool IsPullingBlock { get => _isPullingBlock; private set => _isPullingBlock = value; }
-        public bool IsHooking { get => _isHooking; set => _isHooking = value; }
+        public bool IsFacingRight => _isFacingRight;
+        public bool IsGrounded => _isGrounded;
+        public bool IsRunning => _isRunning;
+        public bool IsDashing => _isDashing;
+        public bool IsJumping => _isJumping;
+        public bool IsPullingBlock => _isPullingBlock;
+        public bool IsHooking => _isHooking;
 
         [Header("Input Reader")]
         public InputReader inputReader;
@@ -89,6 +93,11 @@ namespace Pharaoh.Gameplay.Components.Movement
             _rigidbody = GetComponent<Rigidbody2D>();
             inputReader.Initialize(); //need to manually initialize
             if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
+
+            if (!TryGetComponent(out _collider))
+            {
+                LogHandler.SendMessage($"No collider on the player", MessageType.Warning);
+            }
         }
 
         private void OnEnable()
@@ -141,7 +150,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player jumps
         private void OnJumpStarted()
         {
-            if ((isGrounded || _isHooked || _canJumpHook) && !_isDashing && !_isPullingBlock)
+            if ((_isGrounded || _isHooked || _canJumpHook) && !_isDashing && !_isPullingBlock)
             {
                 // The player jumps using an impulse force
                 _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
@@ -226,11 +235,12 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    //animator?.SetTrigger(Animator.StringToHash("grapple_start"));
+                    animator.SetTrigger("Hooking"); //sends a signal that the player has started the hooking process
+                    _isHooking = true; //tells the PlayerMovement that the player is in a state of hooking
                     break;
                 case PullHookBehaviour pull:
                     _rigidbody.velocity = Vector2.zero;
-                    IsPullingBlock = true;
+                    _isPullingBlock = true;
                     break;
                 case SnatchHookBehaviour snatch:
                     break;
@@ -246,7 +256,16 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.MovePosition(grapple.nextPosition);
+                    // When reaching a 90% threshold of travelled distance,
+                    // sends a signal that the player'll soon be hooked
+                    if (grapple.travelPercent >= 0.9f && !_willBeHooked)
+                    {
+                        animator.SetTrigger("Will Be Hooked");
+                        _willBeHooked = true;
+                    }
+                    // center the body with the collider center
+                    var target = grapple.nextPosition - _collider.offset;
+                    _rigidbody.MovePosition(target);
                     break;
                 case PullHookBehaviour pull:
                     break;
@@ -264,18 +283,19 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    //animator?.SetTrigger(Animator.StringToHash("grapple_end"));
+                    _willBeHooked = false; //reuse this variable each time we grapple
+                    _isHooking = false; //tells the PlayerMovement that the player finished hooking
                     inputReader.EnableJump();
                     _isHooked = true;
                     _canJumpHook = true;
                     _hasDashedInAir = false;
-                    animator.SetBool("Is Grounded", isGrounded);
+                    animator.SetBool("Is Grounded", _isGrounded);
                     _rigidbody.velocity = Vector2.zero;
                     _rigidbody.gravityScale = 0f;
                     break;
                 case PullHookBehaviour pull:
                     LockMovement(false);
-                    IsPullingBlock = false;
+                    _isPullingBlock = false;
                     break;
                 case SnatchHookBehaviour snatch:
                     LockMovement(false);
@@ -295,10 +315,17 @@ namespace Pharaoh.Gameplay.Components.Movement
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
-                    _rigidbody.gravityScale = metrics.gravityScale;
+                    animator.ResetTrigger("Will Be Hooked"); //resets the trigger to avoid remnants when unhooking
+                    if (_isHooking) //the player cancelled the action while hooking, ie. while not yet hooked
+                    {
+                        _isHooking = false; //the player is no longer hooking
+                        animator.SetTrigger("Hooking Cancelled"); //sends a signal that the player cancelled the hooking process
+                    }
+                    _willBeHooked = false; //reuse this variable each time we grapple
+                    _rigidbody.gravityScale = metrics.gravityScale; // reset the base gravity of the player
                     break;
                 case PullHookBehaviour pull:
-                    IsPullingBlock = false;
+                    _isPullingBlock = false;
                     break;
                 case SnatchHookBehaviour snatch:
                     break;
@@ -345,7 +372,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             // Moves the player horizontally with according speeds while not dashing
             if (!_isDashing && _canMove && !_isPullingBlock)
             {
-                if (isGrounded || _isHooked)
+                if (_isGrounded || _isHooked)
                     _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.horizontalSpeed, _rigidbody.velocity.y);
                 else
                     _rigidbody.velocity = new Vector2(_smoothMovement.x * metrics.inAirHorizontalSpeed, _rigidbody.velocity.y);
@@ -360,7 +387,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _rigidbody.AddForce(Vector2.up * metrics.heldJumpForce, ForceMode2D.Force);
 
             if (_isDashing)
-                _rigidbody.velocity = (IsFacingRight ? Vector2.right : Vector2.left) * metrics.dashForce;
+                _rigidbody.velocity = (_isFacingRight ? Vector2.right : Vector2.left) * metrics.dashForce;
         }
 
         private void LateUpdate()
@@ -372,32 +399,32 @@ namespace Pharaoh.Gameplay.Components.Movement
         private void UpdateStates()
         {
             // Limit the dash to one use per air-time
-            if (_hasDashedInAir && isGrounded)
+            if (_hasDashedInAir && _isGrounded)
                 _hasDashedInAir = false;
 
             // Updates the direction the player is facing
             if (_smoothMovement.x != 0f && !_isPullingBlock && !_isHooking)
-                isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
+                _isFacingRight = Mathf.Sign(_smoothMovement.x) == 1f;
 
             // Updates whether the player is running or not
             if (_smoothMovement.x != 0f && Mathf.Abs(_rigidbody.velocity.x) > 0.01f) _isRunning = true;
             else _isRunning = false;
             
-            bool wasGrounded = isGrounded;
+            bool wasGrounded = _isGrounded;
 
             // Updates the grounded state - check if one or both "feet" are on a ground
-            isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+            _isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
                 || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
 
             // only when reach the ground and not falling
-            isGrounded = isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
+            _isGrounded = _isGrounded && _rigidbody.velocity.y <= Mathf.Epsilon && _rigidbody.velocity.y >= -Mathf.Epsilon;
 
             // Updates the grounded state - check if one or both "feet" are on a ground
-            isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
-                || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
+            _isGrounded = Physics2D.Raycast(rightGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer)
+                          || Physics2D.Raycast(leftGroundCheck.position, Vector2.down, _groundCheckLength, groundLayer);
             
-            animator.SetBool("Is Grounded", isGrounded);
-            animator.SetBool("Is Facing Right", isFacingRight);
+            animator.SetBool("Is Grounded", _isGrounded);
+            animator.SetBool("Is Facing Right", _isFacingRight);
             animator.SetBool("Is Pulling", _isPullingBlock);
             animator.SetBool("Is Hooked", _isHooked);
         }
@@ -494,8 +521,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             // Lerps between a given orientation when idle facing left and when running facing left
             // This is used because facing left would normally put the back of the model towards the camera -> not fancy !!
             Quaternion to = (_rigidbody.velocity.x > 2f || _rigidbody.velocity.x < -2f) || _isDashing || _isPullingBlock || _isHooking ?
-                    Quaternion.Lerp(isFacingRight ? RightRotation : LeftRotationRunning, isFacingRight ? RightRotation : LeftRotationIdle, 0f)
-                    : Quaternion.Lerp(isFacingRight ? RightRotation : LeftRotationIdle, isFacingRight ? RightRotation : LeftRotationRunning, 0f);
+                    Quaternion.Lerp(_isFacingRight ? RightRotation : LeftRotationRunning, _isFacingRight ? RightRotation : LeftRotationIdle, 0f)
+                    : Quaternion.Lerp(_isFacingRight ? RightRotation : LeftRotationIdle, _isFacingRight ? RightRotation : LeftRotationRunning, 0f);
             _rotation = Quaternion.Lerp(from, to, Time.deltaTime * _turnSpeed);
 
             // The previously computed rotation is used only when the player isn't hooked, when he is the animator turns it himself
@@ -535,8 +562,8 @@ namespace Pharaoh.Gameplay.Components.Movement
             Handles.Label(_rigidbody.position + Vector2.up * 3.4f, "IsDashing : " + _isDashing, _isDashing ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 3.2f, "HasDashedInAir : " + _hasDashedInAir, _hasDashedInAir ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.8f, "IsRunning : " + _isRunning, _isRunning ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsFacingRight : " + isFacingRight, isFacingRight ? greenStyle : redStyle);
-            Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "isFalling : " + isGrounded, isGrounded ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 2.6f, "IsFacingRight : " + _isFacingRight, _isFacingRight ? greenStyle : redStyle);
+            Handles.Label(_rigidbody.position + Vector2.up * 2.4f, "isFalling : " + _isGrounded, _isGrounded ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2.2f, "Speed : " + _rigidbody?.velocity.magnitude + " m/s", _rigidbody.velocity.magnitude != 0f ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 2f, "NOCLIP (O) : " + _noclip, _noclip ? greenStyle : redStyle);
             Handles.Label(_rigidbody.position + Vector2.up * 1.8f, "" + inputReader);

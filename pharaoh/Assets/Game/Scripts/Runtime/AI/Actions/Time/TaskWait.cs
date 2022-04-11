@@ -7,7 +7,6 @@ namespace Pharaoh.AI.Actions
     public class TaskWait : ActionNode
     {
         [SerializeField] private float _startTime = 0f;
-        private float _waitTime = 0f;
 
         protected override void OnStart()
         {

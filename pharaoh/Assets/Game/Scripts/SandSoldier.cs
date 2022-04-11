@@ -109,7 +109,9 @@ public class SandSoldier : MonoBehaviour
         
         _longPress = true;
 
-        GameObject go = Instantiate(soldierPreview, transform.position, Quaternion.identity);
+        Vector3 spawnPos = transform.position;
+        spawnPos.y += soldierSize.y / 2f;
+        GameObject go = Instantiate(soldierPreview, spawnPos, Quaternion.identity);
         if (!go.TryGetComponent(out _soldierBehaviour))
         {
             Debug.Log("No Sand Soldier Behaviour");
@@ -261,7 +263,7 @@ public class SandSoldier : MonoBehaviour
 
         // Rotate the soldier based on player's facing side
         Vector3 scale = soldier.transform.localScale;
-        scale.x = _playerMovement.isFacingRight ? 1 : -1;
+        scale.x = _playerMovement.IsFacingRight ? 1 : -1;
         soldier.transform.localScale = scale;
         
         // Check if soldier has enough height space to spawn

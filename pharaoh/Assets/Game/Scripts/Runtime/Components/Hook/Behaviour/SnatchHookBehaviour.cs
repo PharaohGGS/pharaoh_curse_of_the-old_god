@@ -26,10 +26,10 @@ namespace Pharaoh.Gameplay
             get
             {
                 if (!_hook) return false;
-                float offset = _hook.snatchData.offset;
-                Vector2 position = transform.position;
-                Vector2 hookPosition = _hook.transform.position;
-                return position.x > (hookPosition.x + offset) || position.x < (hookPosition.x - offset);
+                float offset = _hook.pullData.offset;
+                float x = transform.position.x;
+                float hookX = _hook.transform.position.x;
+                return x > (hookX + offset) || x < (hookX - offset);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Pharaoh.Gameplay
                 if (!_hook) return false;
                 
                 Vector2 position = transform.position;
-                Vector2 hookPosition = _hook.transform.position;
+                Vector2 hookPosition = _hook.center;
                 Vector2 direction = hookPosition - position;
                 bool isFacingRight = Mathf.Sign(-direction.x) >= 1f;
 
@@ -132,12 +132,13 @@ namespace Pharaoh.Gameplay
             // can't be pull when player is in air
             // can't be pull if not the right input
             if (!canBePulled || !transform.parent || 
-                !_hook.TryGetComponent(out PlayerMovement movement) || !movement.isGrounded)
+                !_hook.TryGetComponent(out PlayerMovement movement) || !movement.IsGrounded)
             {
                 Release();
                 return;
             }
-
+            
+            Debug.Log($"{hook.name} hooking to {name}");
             _snatchCoroutine = StartCoroutine(Snatch());
             if (hookIndicator) hookIndicator.SetActive(false);
         }
@@ -151,13 +152,13 @@ namespace Pharaoh.Gameplay
             AnimationCurve curve = _hook.snatchData.curve;
             Vector2 startPosition = transform.position;
 
-            float maxDistance = Vector2.Distance(startPosition, _hook.transform.position);
+            float maxDistance = Vector2.Distance(startPosition, _hook.center);
             float timeToTravel = maxDistance / force;
             float currentTime = 0f;
 
             while (currentTime < timeToTravel)
             {
-                nextPosition = Vector2.Lerp(startPosition, _hook.transform.position, curve.Evaluate(currentTime / timeToTravel));
+                nextPosition = Vector2.Lerp(startPosition, _hook.center, curve.Evaluate(currentTime / timeToTravel));
                 currentTime = Mathf.MoveTowards(currentTime, timeToTravel, Time.fixedDeltaTime * force);
                 Perform();
 

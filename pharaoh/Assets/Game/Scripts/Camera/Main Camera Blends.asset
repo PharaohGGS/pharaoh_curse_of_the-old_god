@@ -13,66 +13,77 @@ MonoBehaviour:
   m_Name: Main Camera Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: LookUpDownCamera
-    m_To: '**ANY CAMERA**'
+  - m_From: cam transi start 3.7
+    m_To: cam transi end 3.7
     m_Blend:
       m_Style: 1
-      m_Time: 0.5
+      m_Time: 5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: '**ANY CAMERA**'
-    m_To: LookUpDownCamera
+  - m_From: cam transi end 3.7
+    m_To: cam transi start 3.7
     m_Blend:
       m_Style: 1
-      m_Time: 0.5
+      m_Time: 5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM vcam1
-    m_To: CM vcam1
+  - m_From: VirtualCamera (left_room3.11)
+    m_To: cam transi left 3.11
     m_Blend:
       m_Style: 1
-      m_Time: 2
+      m_Time: 4
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: SideCam
-    m_To: SideCam
+  - m_From: VirtualCamera(right_room3.11)
+    m_To: cam transi right 3.11
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 4
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: SideCam
-    m_To: CM vcam1
+  - m_From: VirtualCamera(room2.4.1)
+    m_To: cam transi 2.4.1
     m_Blend:
       m_Style: 1
-      m_Time: 0.4
+      m_Time: 4
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM vcam1
-    m_To: SideCam
+  - m_From: cam right couloir 1.1
+    m_To: cam transi start 1.1
     m_Blend:
       m_Style: 1
-      m_Time: 0.5
+      m_Time: 4
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: VirtualCamera(room2.6.2)
+    m_To: cam transi 2.6.2
+    m_Blend:
+      m_Style: 1
+      m_Time: 5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
