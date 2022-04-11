@@ -16,10 +16,8 @@ namespace Pharaoh.Gameplay.Components
             _pool = GetComponent<DamagerPool>();
         }
         
-        private void Shoot(Transform target)
+        public void Shoot(Transform target)
         {
-            if (!target) return;
-
             var damager = _pool.Get();
 
             if (damager.TryGetComponent(out Rigidbody2D rb2D))
@@ -31,7 +29,5 @@ namespace Pharaoh.Gameplay.Components
 
             LogHandler.SendMessage($"{name} shooting {damager.name}", MessageType.Warning);
         }
-
-        public void Attack(Transform target) => Shoot(target);
     }
 }

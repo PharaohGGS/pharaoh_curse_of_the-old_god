@@ -47,10 +47,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: Ambiance
-    clip: {fileID: 8300000, guid: 99a7861db7adaf84880f0240ccc2ba2f, type: 3}
+    clip: {fileID: 8300000, guid: 81f01cba8e23eec44ba50ef733061d9a, type: 3}
     volume: 0.5
     pitch: 1
     loop: 1
+    fadeIn: 0
+    fadeOut: 0
+    fadeDuration: 1
+    audioSource: {fileID: 0}
+  - name: LoreZone
+    clip: {fileID: 8300000, guid: 6acb10cf5cc765646871c89c5cd52c91, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    fadeIn: 0
+    fadeOut: 0
+    fadeDuration: 1
     audioSource: {fileID: 0}
 --- !u!81 &2199613194498635937
 AudioListener:

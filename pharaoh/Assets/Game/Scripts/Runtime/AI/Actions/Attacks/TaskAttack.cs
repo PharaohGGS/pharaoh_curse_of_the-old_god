@@ -24,10 +24,10 @@ namespace Pharaoh.AI.Actions
         protected override NodeState OnUpdate()
         {
             if (!_fight || !_fight.activeWeapon) return NodeState.Failure;
-
+            
             var target = blackboard.GetData<Transform>("target");
-            _fight.Attack(target);
-
+            if (!_fight.Attack(target)) return NodeState.Failure;
+            
             blackboard.SetData("isWaiting", true);
             blackboard.SetData("waitTime", _fight.activeWeapon.GetRate());
 

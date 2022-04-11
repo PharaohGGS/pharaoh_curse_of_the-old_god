@@ -262,6 +262,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Death
+          m_BoolArgument: 0
+        m_CallState: 2
   gears:
   - {fileID: 0}
 --- !u!114 &7079046523897001457
@@ -276,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c911a2dd3d349144aafa7d92db3a3d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 8776595742986578276}
   <moveSpeed>k__BackingField: 5
   <closeDistance>k__BackingField: 0.33
   <fleeDistance>k__BackingField: 2
@@ -293,10 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionCollider: {fileID: 1822449202396137966}
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 131072
-  detectionCollider: {fileID: 1822449202396137966}
   overlapCount: 8
 --- !u!114 &994795391430697508
 MonoBehaviour:
@@ -310,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce387f7352fbd47b59832029462f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 8776595742986578276}
   gears: []
 --- !u!114 &2816072151982639455
 MonoBehaviour:
@@ -437,8 +451,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+--- !u!1 &2623143562038356388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8039897303343400086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2623143562038356388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae1445a0a8f36a4fbb3a1555eba0a84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+    list: []
+    keyCollision: 0
 --- !u!4 &3399258426588951326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8776595742986578276 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
   m_PrefabInstance: {fileID: 2929080259299710197}
   m_PrefabAsset: {fileID: 0}
