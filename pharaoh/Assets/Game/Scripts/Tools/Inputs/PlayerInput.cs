@@ -330,7 +330,7 @@ namespace Pharaoh.Tools.Inputs
                 {
                     ""name"": ""negative"",
                     ""id"": ""74330f14-59dc-4a38-bc8f-864ac392d943"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -341,7 +341,7 @@ namespace Pharaoh.Tools.Inputs
                 {
                     ""name"": ""positive"",
                     ""id"": ""7615c81b-4555-43fc-bb92-897c20f2b0d3"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
