@@ -11,7 +11,7 @@ namespace Pharaoh.Gameplay.Components
     {
         [Header("Settings")]
 
-        [SerializeField] public Collider2D detectionCollider;
+        [SerializeField] private Collider2D detectionCollider;
         [SerializeField] private LayerMask whatIsTarget;
         [SerializeField, Range(1, 20)] private int overlapCount = 8;
         
