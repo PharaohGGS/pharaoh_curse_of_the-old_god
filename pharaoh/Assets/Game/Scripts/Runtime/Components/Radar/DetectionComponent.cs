@@ -11,7 +11,7 @@ namespace Pharaoh.Gameplay.Components
     {
         [Header("Settings")]
 
-        [SerializeField] public Collider2D detectionCollider;
+        [SerializeField] private Collider2D detectionCollider;
         [SerializeField] private LayerMask whatIsTarget;
         [SerializeField, Range(1, 20)] private int overlapCount = 8;
         
@@ -78,7 +78,7 @@ namespace Pharaoh.Gameplay.Components
             return obj != null;
         }
 
-        public GameObject GetByIndex(int index) => overlappedCount <= 0 ? null : _colliders[index].gameObject;
+        public GameObject GetByIndex(int index) => overlappedCount <= 0 ? null : _colliders[index]?.gameObject;
 
         public bool OverlapPoint(Vector2 point) => detectionCollider && detectionCollider.OverlapPoint(point);
     }
