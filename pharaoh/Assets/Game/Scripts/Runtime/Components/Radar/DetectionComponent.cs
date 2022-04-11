@@ -78,7 +78,7 @@ namespace Pharaoh.Gameplay.Components
             return obj != null;
         }
 
-        public GameObject GetByIndex(int index) => overlappedCount <= 0 ? null : _colliders[index].gameObject;
+        public GameObject GetByIndex(int index) => overlappedCount <= 0 ? null : _colliders[index]?.gameObject;
 
         public bool OverlapPoint(Vector2 point) => detectionCollider && detectionCollider.OverlapPoint(point);
     }
