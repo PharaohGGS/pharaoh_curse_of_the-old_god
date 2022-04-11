@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Pharaoh.Managers
@@ -38,6 +39,10 @@ namespace Pharaoh.Managers
             [Range(0f, 1f)] public float volume = 1f;
             [Range(.1f, 3f)] public float pitch = 1f;
             public bool loop = false;
+            public bool fadeIn = false;
+            public bool fadeOut = false;
+            public float fadeInDuration = 1f;
+            public float fadeOutDuration = 1f;
             [HideInInspector] public AudioSource audioSource;
         }
 
@@ -54,6 +59,10 @@ namespace Pharaoh.Managers
             }
 
             s.audioSource?.Play();
+            if (s.fadeIn)
+            {
+                StartCoroutine(StartFadeIn(s.audioSource, s.fadeInDuration, s.volume));
+            }
         }
 
         public void Pause(string name)
@@ -79,9 +88,44 @@ namespace Pharaoh.Managers
                 return;
             }
 
-            s.audioSource?.Stop();
+            
+            if (s.fadeOut)
+            {
+                StartCoroutine(StartFadeOut(s.audioSource, s.fadeOutDuration));
+            } 
+            else
+            {
+                s.audioSource?.Stop();
+            }
         }
 
+        public static IEnumerator StartFadeIn(AudioSource s, float duration, float targetVolume)
+        {
+            float currentTime = 0;
+            s.volume = 0;
+            float start = s.volume;
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                s.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+                yield return null;
+            }
+            yield break;
+        }
+
+        public static IEnumerator StartFadeOut(AudioSource s, float duration)
+        {
+            float currentTime = 0;
+            float start = s.volume;
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                s.volume = Mathf.Lerp(start, 0, currentTime / duration);
+                yield return null;
+            }
+            s.Stop();
+            yield break;
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,8 +9,7 @@ namespace Pharaoh.Gameplay.Components
 {
     public class FightComponent : MonoBehaviour
     {
-        [Header("Weapons")]
-
+        [SerializeField] private Animator animator;
         [SerializeField] private Gear[] gears;
 
         private int _weaponIndex = -1;
@@ -31,6 +31,11 @@ namespace Pharaoh.Gameplay.Components
             foreach (var gear in gears) if (gear is IWeapon) _weapons.Add(gear);
             if (_weapons.Count <= 0) return;
             _weaponIndex = 0;
+
+            if (!animator)
+            {
+                LogHandler.SendMessage("No animator on this ai", MessageType.Warning);
+            }
         }
 
         public void ChangeWeapon()
@@ -39,9 +44,9 @@ namespace Pharaoh.Gameplay.Components
             _weaponIndex = (_weaponIndex + 1) % _weapons.Count;
         } 
 
-        public void Attack(Transform target)
+        public bool Attack(Transform target)
         {
-            if (!activeWeapon || !target) return;
+            if (!activeWeapon || !target) return false;
 
             if (_currentTarget != target)
             { 
@@ -49,9 +54,16 @@ namespace Pharaoh.Gameplay.Components
                 SubscribeToTargetHealth();
             }
 
-            if (activeWeapon is IWeapon weapon)
+            if (activeWeapon is not IWeapon weapon) return false;
+
+            switch (activeWeapon)
             {
-                weapon.Attack(target);
+                case DistanceGear distanceGear:
+                    return DistanceAttack(distanceGear);
+                case MeleeGear meleeGear:
+                    return MeleeAttack(meleeGear);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(activeWeapon));
             }
         }
 
@@ -72,6 +84,73 @@ namespace Pharaoh.Gameplay.Components
             _targetHealth?.onDeath?.RemoveListener(OnTargetDeath);
             _currentTarget = null;
             _targetHealth = null;
+        }
+
+        private bool MeleeAttack(MeleeGear gear)
+        {
+            if (!_currentTarget)
+            {
+                LogHandler.SendMessage($"{name} can't attack nothing", MessageType.Warning);
+                return false;
+            }
+
+            var data = gear.GetData();
+            var distance = Mathf.Abs(_currentTarget.position.x - transform.position.x);
+
+            var canThrow = data.throwable;
+            var isThrowable = distance <= data.throwableRange;
+            var isStabbable = distance <= data.range;
+            
+            switch (canThrow)
+            {
+                case false when isStabbable:
+                    // do stabbing animation
+                    animator.ResetTrigger("Attacking");
+                    animator.SetTrigger("Attacking");
+                    LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
+                    return true;
+                case true when isStabbable && isThrowable:
+                    // do stabbing animation
+                    animator.ResetTrigger("Attacking");
+                    animator.SetTrigger("Attacking");
+                    LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
+                    return true;
+                case true when !isStabbable && isThrowable:
+                    // do throwing animation
+                    animator.ResetTrigger("Shooting");
+                    animator.SetTrigger("Shooting");
+                    LogHandler.SendMessage($"{name} shooting at {_currentTarget}", MessageType.Log);
+                    return true;
+                default:
+                    LogHandler.SendMessage($"{name} is too far from {_currentTarget.name}", MessageType.Warning);
+                    return false;
+            }
+        }
+        
+        private bool DistanceAttack(DistanceGear gear)
+        {
+            if (!_currentTarget)
+            {
+                LogHandler.SendMessage($"{name} can't attack nothing", MessageType.Warning);
+                return false;
+            }
+
+            return true;
+            // do something related to distance attack
+        }
+
+        public void Throw()
+        {
+            if (!_currentTarget) return;
+            if (activeWeapon is not MeleeGear melee || !melee.GetData().throwable) return;
+            melee.Throw(_currentTarget);
+        }
+
+        public void Shoot()
+        {
+            if (!_currentTarget) return;
+            if (activeWeapon is not DistanceGear distance) return;
+            distance.Shoot(_currentTarget);
         }
     }
 }

@@ -5,27 +5,29 @@ using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class AudioTrigger : MonoBehaviour
 {
-    [Header("Sounds to play or stop")]
+    [Header("Play a sound on trigger activation")]
     [Tooltip("Sound to play on trigger activation")]
     public string soundToPlay;
-    [Tooltip("Sound to stop on trigger activation")]
-    public string soundToStop;
-
-    [Space(10)]
-    [Header("When to play or stop")]
+    [Space(5)]
     [Tooltip("Play sound when the player enter the trigger")]
     public bool playOnEnter;
     [Tooltip("Play sound when the player exit the trigger")]
     public bool playOnExit;
+    [Space(5)]
+    [Tooltip("Play sound on each trigger activation")]
+    public bool Replay = false;
+
+    [Space(10)]
+
+    [Header("Stop a sound on trigger activation")]
+    [Tooltip("Sound to stop on trigger activation")]
+    public string soundToStop;
+    [Space(5)]
     [Tooltip("Stop sound when the player enter the trigger")]
     public bool stopOnEnter;
     [Tooltip("Stop sound when the player exit the trigger")]
     public bool stopOnExit;
-
-    [Space(10)]
-    [Header("Replay or Restop")]
-    [Tooltip("Play sound on each trigger activation")]
-    public bool Replay = false;
+    [Space(5)]
     [Tooltip("Stop sound on each trigger activation")]
     public bool Restop = false;
 
@@ -33,10 +35,10 @@ public class AudioTrigger : MonoBehaviour
     [Tooltip("Player layer number")]
     [SerializeField] private int playerLayer;
 
-    private bool playedOnEnter;
-    private bool playedOnExit;
-    private bool stoppedOnEnter;
-    private bool stoppedOnExit;
+    private bool playedOnEnter = false;
+    private bool playedOnExit = false;
+    private bool stoppedOnEnter = false;
+    private bool stoppedOnExit = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -56,10 +58,6 @@ public class AudioTrigger : MonoBehaviour
                 stoppedOnEnter = !Restop;
             }
         }
-        else
-        {
-            Debug.Log("-- Not player");
-        }
     }
 
 
@@ -78,14 +76,8 @@ public class AudioTrigger : MonoBehaviour
             {
                 AudioManager.Instance.Stop(soundToStop);
                 Debug.Log("--Stoping " + soundToStop + " on exit");
-                stoppedOnExit = !Replay;
+                stoppedOnExit = !Restop;
             }
         }
-        else
-        {
-            Debug.Log("-- Not player");
-        }
-        Debug.Log("param : " + playerLayer);
-        Debug.Log(collision.gameObject.layer);
     }
 }
