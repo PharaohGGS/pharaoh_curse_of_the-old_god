@@ -26,7 +26,7 @@ namespace Pharaoh.Gameplay
         public override void Activate(GameObject target)
         {
             // don't start trap when there isn't any target or already processing
-            if (isStarted || (!data.oneTimeDelay && !target)) return;
+            if (!data.oneTimeDelay && !target) return;
             // check if the current target is different (I mean null here)
             bool isSameTarget = _currentTarget == target;
             if (!isSameTarget) _currentTarget = target;

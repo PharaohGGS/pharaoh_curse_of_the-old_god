@@ -19,6 +19,7 @@ namespace Pharaoh.Gameplay
 
         protected virtual void Update()
         {
+            if (!_behaviour || _behaviour.isStarted) return;
             _behaviour.Activate(_detection.GetByIndex(0));
         }
     }
