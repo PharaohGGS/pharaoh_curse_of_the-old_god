@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 7079046523897001359}
   - component: {fileID: 7079046523897001458}
   - component: {fileID: 7079046523897001457}
-  - component: {fileID: 7079046523897001456}
+  - component: {fileID: 22069959824613237}
   - component: {fileID: 994795391430697508}
   - component: {fileID: 2816072151982639455}
   - component: {fileID: 42543094342105160}
@@ -294,7 +294,7 @@ MonoBehaviour:
   <fleeDistance>k__BackingField: 2
   <timeBetweenWaypoints>k__BackingField: 2
   <waypointHolder>k__BackingField: {fileID: 0}
---- !u!114 &7079046523897001456
+--- !u!114 &22069959824613237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,14 +303,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7079046523897001347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Script: {fileID: 11500000, guid: bde301646c38d3c498c28193550e299f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   detectionCollider: {fileID: 1822449202396137966}
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 131072
-  overlapCount: 8
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 66560
+  overlapCount: 3
 --- !u!114 &994795391430697508
 MonoBehaviour:
   m_ObjectHideFlags: 0

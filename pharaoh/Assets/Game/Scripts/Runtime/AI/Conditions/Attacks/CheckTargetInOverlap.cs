@@ -11,7 +11,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInOverlap : ActionNode
     {
-        private DetectionComponent _detection = null;
+        private AiDetection _detection = null;
         [SerializeField] private LayerMask mask;
 
         protected override void OnStart()
