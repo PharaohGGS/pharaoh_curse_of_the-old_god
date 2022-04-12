@@ -22,6 +22,7 @@ namespace Pharaoh.Gameplay.Components
         public UnityEvent<HealthComponent, float> onHealthChange;
         public UnityEvent<HealthComponent> onDeath;
 
+        public bool isDead { get; private set; }
         public float max { get; private set; }
         public float current { get; private set; }
         public float percent => current / max;
@@ -59,11 +60,11 @@ namespace Pharaoh.Gameplay.Components
             };
 
             onHealthChange?.Invoke(this, current);
-
             if (current <= 0.0f)
             {
+                isDead = true;
                 onDeath?.Invoke(this);
-            } 
+            }
         }
         
         public void Decrease(float value) => ApplyChange(value, FloatOperation.Decrease);
