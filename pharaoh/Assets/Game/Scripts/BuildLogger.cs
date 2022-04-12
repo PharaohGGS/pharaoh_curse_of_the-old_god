@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class MyLog : MonoBehaviour
+public class BuildLogger : MonoBehaviour
 {
-    public static MyLog Instance { get; private set; }
+    public static BuildLogger Instance { get; private set; }
 
     private void Awake()
     {
@@ -18,12 +18,13 @@ public class MyLog : MonoBehaviour
         }
     }
 
+    public int queueLimit = 25;
     string myLog;
     Queue myLogQueue = new Queue();
 
     void Start()
     {
-        Debug.Log("MyLog started.");
+        Debug.Log("BuildLogger started.");
     }
 
     void OnEnable()
@@ -39,13 +40,19 @@ public class MyLog : MonoBehaviour
     void HandleLog(string logString, string stackTrace, LogType type)
     {
         myLog = logString;
-        string newString = "\n [" + type + "] : " + myLog;
+        string newString = "\n [" + type + "]@" + System.DateTime.Now.ToLongTimeString() + " : " + myLog;
         myLogQueue.Enqueue(newString);
+
+        if (myLogQueue.Count > queueLimit)
+            myLogQueue.Dequeue();
+
         if (type == LogType.Exception)
         {
             newString = "\n" + stackTrace;
             myLogQueue.Enqueue(newString);
         }
+
+
         myLog = string.Empty;
         foreach (string mylog in myLogQueue)
         {
