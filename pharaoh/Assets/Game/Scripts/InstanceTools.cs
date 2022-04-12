@@ -38,16 +38,6 @@ public class InstanceTools
             go.name = "Enemy_" + id++;
         }
 
-        if (Object.FindObjectOfType<SaveDataManager>().TryGetComponent(out SaveDataManager sdm))
-        {
-            // Changes the moving blocks count and force save the variable
-            sdm.ENEMIES_COUNT = (uint)id;
-            EditorUtility.SetDirty(sdm);
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        }
-        else
-            Debug.LogWarning("Could not find any SaveDataManager in the current scene.");
-
         foreach (string s in GetAllBuildScenes())
         {
             EditorSceneManager.SaveScene(SceneManager.GetSceneByPath(s));
@@ -64,16 +54,6 @@ public class InstanceTools
         {
             go.name = "MovingBlock_" + id++;
         }
-
-        if (Object.FindObjectOfType<SaveDataManager>().TryGetComponent(out SaveDataManager sdm))
-        {
-            // Changes the moving blocks count and force save the variable
-            sdm.MOVING_BLOCKS_COUNT = (uint)id;
-            EditorUtility.SetDirty(sdm);
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        }
-        else
-            Debug.LogWarning("Could not find any SaveDataManager in the current scene.");
 
         foreach (string s in GetAllBuildScenes())
         {
