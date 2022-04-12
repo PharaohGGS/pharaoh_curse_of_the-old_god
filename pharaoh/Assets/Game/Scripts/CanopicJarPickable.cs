@@ -40,16 +40,24 @@ public class CanopicJarPickable : MonoBehaviour
         //Grant the player the given power
         switch (jar)
         {
-            case CanopicJar.Bird:
-                playerSkills.hasSwarmDash = true;
-                break;
-
             case CanopicJar.Monkey:
-                playerSkills.hasSandSoldier = true;
+            case CanopicJar.Crocodile:
+                AudioManager.Instance.Play("LoreShort");
                 break;
 
-            case CanopicJar.Crocodile:
-                playerSkills.hasGrapplingHook = true;
+            case CanopicJar.Bird:
+                playerSkills.hasGrapplingHook= true;
+                AudioManager.Instance.Play("LoreShort");
+                break;
+
+            case CanopicJar.Dog:
+                playerSkills.hasSandSoldier = true;
+                AudioManager.Instance.Play("LoreShort");
+                break;
+
+            case CanopicJar.Human:
+                playerSkills.hasSwarmDash = true;
+                AudioManager.Instance.Play("LoreShort");
                 break;
 
             default:
@@ -87,7 +95,9 @@ public class CanopicJarPickable : MonoBehaviour
     private void OnValidate()
     {
         if (!EditorApplication.isPlayingOrWillChangePlaymode)
+        {
             ChangeSkin();
+        }
     }
 #endif
 
