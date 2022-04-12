@@ -5,6 +5,7 @@ using Pharaoh.Gameplay.Components.Movement;
 using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class SandSoldierBehaviour : MonoBehaviour
 {
@@ -24,13 +25,23 @@ public class SandSoldierBehaviour : MonoBehaviour
     private float endX; // Stores x value at max range
     private float elapsed; // Stores elapsed time since Start()
 
-
+    public VisualEffect visualEffect;
+        
     private void Start()
     {
         if (!CameraManager.Instance.player.TryGetComponent(out _playerMovement))
         {
             Debug.Log("Player from CameraManager has no PlayerMovement");
             Destroy(gameObject);
+        }
+
+        if (!TryGetComponent(out visualEffect))
+        {
+            Debug.Log("Preview has no visual effect component.");
+        }
+        else
+        {
+            visualEffect.SendEvent("StartPreview");
         }
 
         // Calculate start position based on minimum range, y offset and player's facing side
