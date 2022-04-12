@@ -58,9 +58,14 @@ namespace Pharaoh.Gameplay.Components
         public void Move(Vector3 target)
         {
             if (!_rigidbody) return;
+
             var direction = (Vector2)target - _rigidbody.position;
-            _rigidbody.AddForce(direction.normalized * moveSpeed, ForceMode2D.Force);
-            animator.SetFloat("Horizontal Speed", _rigidbody.velocity.x);
+            if (direction.magnitude > closeDistance)
+            {
+                _rigidbody.AddForce(direction.normalized * moveSpeed, ForceMode2D.Force);
+            }
+
+            SetMovementAnimation(_rigidbody.velocity.x);
         }
 
         public void LookAt(Vector3 target)
@@ -76,12 +81,18 @@ namespace Pharaoh.Gameplay.Components
 
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-            animator.SetFloat("Horizontal Speed", _rigidbody.velocity.x);
+            SetMovementAnimation(_rigidbody.velocity.x);
 
             yield return new WaitForSeconds(time);
             
             isStunned = false;
             _rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        private void SetMovementAnimation(float horizontalVelocity)
+        {
+            if (!animator.runtimeAnimatorController) return;
+            animator.SetFloat("Horizontal Speed", horizontalVelocity);
         }
     }
 }
