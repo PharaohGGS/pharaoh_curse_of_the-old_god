@@ -6,6 +6,7 @@ using Pharaoh.Gameplay.Components.Movement;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 public class SandSoldier : MonoBehaviour
@@ -30,6 +31,8 @@ public class SandSoldier : MonoBehaviour
     public int maxSoldiers = 2;
     [Tooltip("Soldier width and height (Ref: x:1.5, y:2.1")]
     public Vector2 soldierSize = new Vector2(1.5f, 2.1f);
+    [Tooltip("Particles force to reach soldier shape")]
+    public float particleForce = 10f;
 
     [Header("Preview parameters")]
     [Tooltip("Small Y offset to avoid the preview getting blocked by small steps")]
@@ -159,18 +162,17 @@ public class SandSoldier : MonoBehaviour
             Vector2.zero,
             0f,
             soldierLayer);
-        
-        Destroy(_soldierBehaviour.gameObject); // Destroy the preview
-        
+        Destroy(_soldierBehaviour.gameObject);
         // Kill every overlapping soldiers detected above
         foreach (var hit in hits)
         {
             KillSoldier(hit.collider.gameObject);
         }
-        
+
         HandleSoldiers(); // Remove extra soldiers and reduce timer of the others
 
         GameObject soldier = Instantiate(sandSoldier, position, Quaternion.identity); // Instantiate the true soldier
+        
         _soldiers.Add(soldier); // Store the soldier to keep a track
         _soldiersLifetime.Add(soldier.GetInstanceID(), timeToExpire); // Add soldier timer to the list
         StartCoroutine(SoldierSpawning(soldier)); // Start spawning coroutine
@@ -254,17 +256,20 @@ public class SandSoldier : MonoBehaviour
     // Used to lift object
     private IEnumerator SoldierSpawning(GameObject soldier)
     {
-        if (!soldier.TryGetComponent(out BoxCollider2D col))
-            yield break;
-        if (!soldier.transform.GetChild(0).TryGetComponent(out MeshRenderer meshRenderer))
-            yield break;
+        if (!soldier.TryGetComponent(out BoxCollider2D col)) yield break;
+        if (!soldier.transform.GetChild(0).TryGetComponent(out MeshRenderer meshRenderer)) yield break;
+        if (!soldier.TryGetComponent(out VisualEffect vfx)) yield break;
 
         meshRenderer.enabled = false; // Hide the mesh
+        vfx.SetFloat("Force", particleForce);
+        vfx.SetFloat("RotateAngle", _playerMovement.IsFacingRight ? -90 : 90);
+        vfx.SetFloat("TimeToAppear", timeToAppearFromGround);
+        vfx.SendEvent("Spawn");
 
         // Rotate the soldier based on player's facing side
-        Vector3 scale = soldier.transform.localScale;
-        scale.x = _playerMovement.IsFacingRight ? 1 : -1;
-        soldier.transform.localScale = scale;
+        Vector3 scale = soldier.transform.GetChild(0).localScale;
+        scale.z = _playerMovement.IsFacingRight ? 1 : -1;
+        soldier.transform.GetChild(0).localScale = scale;
         
         // Check if soldier has enough height space to spawn
         RaycastHit2D roomCheck = Physics2D.BoxCast(
