@@ -72,15 +72,15 @@ public class PauseMenu: MonoBehaviour
         Debug.Log("Displaying skills");
         GameObject unlocked0 = displayedSkills[0];
         GameObject unlocked1 = displayedSkills[1];
-       /* GameObject unlocked2 = displayedSkills[2];
+        GameObject unlocked2 = displayedSkills[2];
         GameObject unlocked3 = displayedSkills[3];
-        GameObject unlocked4 = displayedSkills[4];*/
+        GameObject unlocked4 = displayedSkills[4];
 
         unlocked0.SetActive(playerSkills.hasCanopicJar1);
-        unlocked1.SetActive(playerSkills.hasCanopicJar2);
-        /*unlocked2.SetActive(playerSkills.hasCanopicJar2);
-        unlocked2.SetActive(playerSkills.hasCanopicJar2);
-        unlocked2.SetActive(playerSkills.hasCanopicJar2);*/
+        unlocked1.SetActive(playerSkills.hasGrapplingHook);
+        unlocked2.SetActive(playerSkills.hasSwarmDash);
+        unlocked3.SetActive(playerSkills.hasSandSoldier);
+        unlocked4.SetActive(playerSkills.hasCanopicJar2);
     }
 
 }
