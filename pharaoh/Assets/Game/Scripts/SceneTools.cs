@@ -19,7 +19,7 @@ public class SceneTools
     {
         var allScenes = new DirectoryInfo(SCENE_PATH).GetFiles("*.unity", SearchOption.AllDirectories);
 
-        EditorSceneManager.OpenScene(SCENE_PATH + "SceneMerged.unity", OpenSceneMode.Single);
+        EditorSceneManager.OpenScene(SCENE_PATH + "/SceneMerged/SceneMerged.unity", OpenSceneMode.Single);
 
         foreach (var file in allScenes)
         {
