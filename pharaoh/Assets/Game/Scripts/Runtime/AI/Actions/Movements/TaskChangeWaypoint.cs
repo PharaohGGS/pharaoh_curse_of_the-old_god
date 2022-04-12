@@ -27,7 +27,7 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_aiMovement || _aiMovement.waypointHolder.childCount <= 0)
+            if (!_aiMovement || !_aiMovement.waypointHolder || _aiMovement.waypointHolder.childCount <= 0)
             {
                 return NodeState.Failure;
             }
