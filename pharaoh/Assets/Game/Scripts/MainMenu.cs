@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
     
     private void Start()
     {
-        AudioManager.Instance.Play("ambiance");
+        AudioManager.Instance.Play("Ambiance");
 
         _mainMenu = transform.Find("Main Menu").gameObject;
         _settingsMenu = transform.Find("Settings Menu").gameObject;
