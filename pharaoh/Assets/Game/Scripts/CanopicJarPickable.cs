@@ -51,12 +51,12 @@ public class CanopicJarPickable : MonoBehaviour
                 break;
 
             case CanopicJar.Dog:
-                playerSkills.hasSandSoldier = true;
+                playerSkills.hasSwarmDash = true;
                 AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Human:
-                playerSkills.hasSwarmDash = true;
+                playerSkills.hasSandSoldier= true;
                 AudioManager.Instance.Play("LoreShort");
                 break;
 
