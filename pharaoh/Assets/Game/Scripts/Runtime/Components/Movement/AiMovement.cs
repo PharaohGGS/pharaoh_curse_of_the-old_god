@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviourTree.Tools;
@@ -24,6 +25,9 @@ namespace Pharaoh.Gameplay.Components
         private Collider2D[] _colliders;
         private Rigidbody2D _rigidbody;
 
+        private Vector2 _smoothMovement;
+        private Vector2 _smoothVelocity;
+
         private void Awake()
         {
             _colliders = GetComponents<Collider2D>();
@@ -35,6 +39,14 @@ namespace Pharaoh.Gameplay.Components
             if (!animator)
             {
                 LogHandler.SendMessage("No animator on this ai", MessageType.Warning);
+            }
+        }
+
+        private void Update()
+        {   
+            if (animator?.runtimeAnimatorController != null)
+            {
+                animator?.SetFloat("Horizontal Speed", _rigidbody.velocity.x);
             }
         }
 
@@ -59,13 +71,11 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!_rigidbody) return;
 
-            var direction = (Vector2)target - _rigidbody.position;
-            if (direction.magnitude > closeDistance)
-            {
-                _rigidbody.AddForce(direction.normalized * moveSpeed, ForceMode2D.Force);
-            }
+            var direction = ((Vector2)target - _rigidbody.position).normalized;
 
-            SetMovementAnimation(_rigidbody.velocity.x);
+            _smoothVelocity = Vector2.zero;
+            _smoothMovement = Vector2.SmoothDamp(_smoothMovement, direction, ref _smoothVelocity, 0.03f);
+            _rigidbody.velocity = new Vector2(_smoothMovement.x * moveSpeed,  _rigidbody.velocity.y);
         }
 
         public void LookAt(Vector3 target)
@@ -81,18 +91,11 @@ namespace Pharaoh.Gameplay.Components
 
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-            SetMovementAnimation(_rigidbody.velocity.x);
 
             yield return new WaitForSeconds(time);
             
             isStunned = false;
             _rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
-
-        private void SetMovementAnimation(float horizontalVelocity)
-        {
-            if (!animator.runtimeAnimatorController) return;
-            animator.SetFloat("Horizontal Speed", horizontalVelocity);
         }
     }
 }
