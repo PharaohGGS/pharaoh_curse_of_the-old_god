@@ -98,6 +98,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    ShootRope(behaviour.transform);
                     break;
                 case PullHookBehaviour pull:
                     ShootRope(behaviour.transform);
@@ -117,6 +118,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    RetrieveRope();
                     break;
                 case PullHookBehaviour pull:
                     RetrieveRope();
@@ -136,6 +138,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    RetrieveRope();
                     break;
                 case PullHookBehaviour pull:
                     RetrieveRope();
