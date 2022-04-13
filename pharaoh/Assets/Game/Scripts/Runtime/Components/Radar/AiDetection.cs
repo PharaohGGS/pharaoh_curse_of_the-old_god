@@ -10,7 +10,6 @@ namespace Pharaoh.Gameplay.Components
         private float overlappingFov = 270f;
 
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[3];
-        private bool _isFacingRight;
         private float _angleToTarget;
         private int _hitSize;
 
@@ -19,8 +18,6 @@ namespace Pharaoh.Gameplay.Components
             if (!canDetect) return;
             base.FixedUpdate();
             
-            _isFacingRight = Vector2.Dot(transform.right, Vector2.right) > 0.0f;
-
             // if colliders are behind an obstacle, clear it
             for (int i = 0; i < _colliders.Length; i++)
             {
