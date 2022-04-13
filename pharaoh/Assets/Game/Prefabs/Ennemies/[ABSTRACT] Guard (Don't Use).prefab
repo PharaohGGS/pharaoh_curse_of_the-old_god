@@ -129,9 +129,10 @@ GameObject:
   - component: {fileID: 994795391430697508}
   - component: {fileID: 2816072151982639455}
   - component: {fileID: 42543094342105160}
+  - component: {fileID: 3455565476555685913}
   m_Layer: 11
   m_Name: '[ABSTRACT] Guard (Don''t Use)'
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -314,6 +315,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 66560
   overlapCount: 3
+  overlappingFov: 270
 --- !u!114 &994795391430697508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +399,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3455565476555685913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b01d765426ce742928785d61bff40d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instanceID: 0
+  type: 1
 --- !u!1001 &2929080259299710197
 PrefabInstance:
   m_ObjectHideFlags: 0
