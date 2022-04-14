@@ -124,7 +124,7 @@ public class PlayerCombat : MonoBehaviour
     {
         inputReader.DisableMove();
         inputReader.DisableJump();
-        inputReader.DisableDash();
+        //inputReader.DisableDash();
         inputReader.DisableAttack();
         inputReader.DisableSandSoldier();
         inputReader.DisableHookInteract();
@@ -140,7 +140,7 @@ public class PlayerCombat : MonoBehaviour
 
         inputReader.EnableMove();
         inputReader.EnableJump();
-        inputReader.EnableDash();
+        //inputReader.EnableDash();
         inputReader.EnableAttack();
         inputReader.EnableSandSoldier();
         inputReader.EnableHookInteract();
