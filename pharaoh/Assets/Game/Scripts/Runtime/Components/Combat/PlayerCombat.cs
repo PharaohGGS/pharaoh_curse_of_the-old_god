@@ -14,7 +14,6 @@ public struct Sockets
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerCombat : MonoBehaviour
 {
-
     private PlayerMovement _playerMovement;
     private short _combatPhase = 0;
     private bool _sheathed = true;
@@ -125,7 +124,7 @@ public class PlayerCombat : MonoBehaviour
     {
         inputReader.DisableMove();
         inputReader.DisableJump();
-        inputReader.DisableDash();
+        //inputReader.DisableDash();
         inputReader.DisableAttack();
         inputReader.DisableSandSoldier();
         inputReader.DisableHookInteract();
@@ -141,7 +140,7 @@ public class PlayerCombat : MonoBehaviour
 
         inputReader.EnableMove();
         inputReader.EnableJump();
-        inputReader.EnableDash();
+        //inputReader.EnableDash();
         inputReader.EnableAttack();
         inputReader.EnableSandSoldier();
         inputReader.EnableHookInteract();

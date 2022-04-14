@@ -94,7 +94,7 @@ VisualEffect:
       m_Array: []
     m_NamedObject:
       m_Array:
-      - m_Value: {fileID: 2800000, guid: 4cd7628d8595c814cb475857bf64e383, type: 3}
+      - m_Value: {fileID: 0}
         m_Name: FireTexture
         m_Overridden: 1
       - m_Value: {fileID: 6746618585743264580}
@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 7790090175714034903}
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
+  - component: {fileID: 6706840792975061483}
   - component: {fileID: 2089584490314425185}
   - component: {fileID: 1873792441378832283}
   - component: {fileID: 1056721239}
@@ -646,7 +647,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 3
@@ -892,7 +893,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMax: 100
-  onHealthChange:
+  onHealthSet:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthDecrease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
+        m_MethodName: Blink
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
@@ -937,6 +982,27 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   gears: []
+--- !u!114 &6706840792975061483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 6746618585743264580}
+  - {fileID: 6663196720754654003}
+  - {fileID: 825942944272443920}
+  - {fileID: 2057839720442153237}
+  - {fileID: 745411847284014960}
+  duration: 0.1
+  intensity: 100
+  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2089584490314425185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,6 +1539,16 @@ CapsuleCollider:
   m_Height: 0.26730284
   m_Direction: 2
   m_Center: {x: 0.0013075935, y: 0.005178914, z: -0.002254515}
+--- !u!137 &745411847284014960 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7891524183992325504, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &825942944272443920 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1505039420503206049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -1490,6 +1566,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f603a65d4c77c4b8fc58b595eb2640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!137 &2057839720442153237 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2281400649281040923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -2467,6 +2548,11 @@ Animator:
 --- !u!4 &6197838945859501086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3593673354083964434, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6663196720754654003 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4925810639347150531, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
   m_PrefabInstance: {fileID: 1739392970509030896}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6746618585743264580 stripped
