@@ -58,6 +58,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 16, y: 7}
   m_EdgeRadius: 0
+--- !u!1 &857960332386616384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 555954166684034200}
+  m_Layer: 11
+  m_Name: Waypoint A
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &555954166684034200
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857960332386616384}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1052786810798133472}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1087754420319241031
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,8 +650,41 @@ Transform:
   - {fileID: 8844296953515929809}
   - {fileID: 1583204992}
   - {fileID: 4539701662878533192}
+  - {fileID: 1052786810798133472}
   m_Father: {fileID: 2471758264337772444}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6999837478784402641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1052786810798133472}
+  m_Layer: 11
+  m_Name: WaypointHolder Elite Guard (3-10.2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1052786810798133472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6999837478784402641}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9, y: -55, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 555954166684034200}
+  m_Father: {fileID: 8128154021039506293}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5754057095154764521
 PrefabInstance:
@@ -677,6 +741,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elite Guard (3-10.2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396180, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: <waypointHolder>k__BackingField
+      value: 
+      objectReference: {fileID: 1052786810798133472}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
 --- !u!4 &4539701662878533192 stripped
