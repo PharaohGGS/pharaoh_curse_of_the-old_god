@@ -37,6 +37,7 @@ Transform:
   - {fileID: 824874941460567822}
   - {fileID: 5814402159166890752}
   - {fileID: 6299266415258470625}
+  - {fileID: 4190255289367083837}
   m_Father: {fileID: 2471758264337772444}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1888,6 +1889,69 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &879663682840642912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8474223680591729879}
+  m_Layer: 11
+  m_Name: Waypoint A
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8474223680591729879
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879663682840642912}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4190255289367083837}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1648393951617923617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4190255289367083837}
+  m_Layer: 11
+  m_Name: WaypointHoder Elite Guard (1-4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4190255289367083837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648393951617923617}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15, y: 18, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8474223680591729879}
+  m_Father: {fileID: 242490766}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2471758264337772447
 GameObject:
   m_ObjectHideFlags: 0
@@ -2483,6 +2547,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elite Guard (1-4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396180, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: <waypointHolder>k__BackingField
+      value: 
+      objectReference: {fileID: 4190255289367083837}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 5814402159166890753}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: Door, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132030799389396183, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d49a2bcac3c0c6449bb0a3031f20fd91, type: 3}
 --- !u!4 &6299266415258470625 stripped
@@ -2774,6 +2870,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 294904622872099240, guid: 540a2f924f0545f4dbfab1be5fb9bf6e, type: 3}
   m_PrefabInstance: {fileID: 6099934122661206696}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5814402159166890753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 294904622872099241, guid: 540a2f924f0545f4dbfab1be5fb9bf6e, type: 3}
+  m_PrefabInstance: {fileID: 6099934122661206696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed93a616c4f09684bb71932f28270891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7103444337706577190
 PrefabInstance:
   m_ObjectHideFlags: 0
