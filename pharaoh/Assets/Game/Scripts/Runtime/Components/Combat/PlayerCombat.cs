@@ -14,7 +14,6 @@ public struct Sockets
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerCombat : MonoBehaviour
 {
-
     private PlayerMovement _playerMovement;
     private short _combatPhase = 0;
     private bool _sheathed = true;
