@@ -18,17 +18,14 @@ namespace Pharaoh.AI.Actions
 
         protected override NodeState OnUpdate()
         {
-            if (!_aiMovement) return NodeState.Failure;
+            if (!_aiMovement || !blackboard.TryGetData("target", out Transform target)) return NodeState.Failure;
             
-            var target = blackboard.GetData<Transform>("target").position;
-            var position = agent.transform.position;
-            var closeDistance = _aiMovement.closeDistance;
+            var distance = ignoreHeight
+                ? Mathf.Abs(agent.transform.position.x - target.position.x)
+                : Vector2.Distance(agent.transform.position, target.position);
 
-            var distance = ignoreHeight 
-                ? Mathf.Abs(position.x - target.x) 
-                : Vector2.Distance(position, target);
+            return distance <= _aiMovement.closeDistance ? NodeState.Success : NodeState.Failure;
 
-            return distance <= closeDistance ? NodeState.Success : NodeState.Failure;
         }
     }
 }

@@ -18,8 +18,10 @@ namespace Pharaoh.Gameplay.Components
     {
         [Header("Health")] 
         public float startMax = 100;
-
-        public UnityEvent<HealthComponent, float> onHealthChange;
+        
+        public UnityEvent<HealthComponent, float> onHealthSet;
+        public UnityEvent<HealthComponent, float> onHealthDecrease;
+        public UnityEvent<HealthComponent, float> onHealthIncrease;
         public UnityEvent<HealthComponent> onDeath;
 
         public bool isDead { get; private set; }
@@ -51,15 +53,24 @@ namespace Pharaoh.Gameplay.Components
 
         private void ApplyChange(float value, FloatOperation operation)
         {
-            current = operation switch
+            switch (operation)
             {
-                FloatOperation.Set => Mathf.Min(value, max),
-                FloatOperation.Increase => Mathf.Min(current + value, max),
-                FloatOperation.Decrease => Mathf.Max(current - value, 0.0f),
-                _ => throw new ArgumentOutOfRangeException(nameof(operation), operation, null)
-            };
+                case FloatOperation.Set:
+                    current = Mathf.Min(value, max);
+                    onHealthSet?.Invoke(this, current);
+                    break;
+                case FloatOperation.Increase:
+                    current = Mathf.Min(current + value, max);
+                    onHealthIncrease?.Invoke(this, current);
+                    break;
+                case FloatOperation.Decrease:
+                    current = Mathf.Max(current - value, 0.0f);
+                    onHealthDecrease?.Invoke(this, current);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
+            }
 
-            onHealthChange?.Invoke(this, current);
             if (current <= 0.0f)
             {
                 isDead = true;
@@ -90,7 +101,9 @@ namespace Pharaoh.Gameplay.Components
 
         private void OnDisable()
         {
-            onHealthChange.RemoveAllListeners();
+            onHealthSet.RemoveAllListeners();
+            onHealthIncrease.RemoveAllListeners();
+            onHealthDecrease.RemoveAllListeners();
             onDeath.RemoveAllListeners();
         }
 
