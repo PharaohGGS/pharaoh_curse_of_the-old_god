@@ -29,7 +29,7 @@ namespace Pharaoh.AI.Actions
                 !_detection.TryGetByLayerMask(mask, out GameObject target))
             {
                 // clear mask target when not found in the detection component
-                if (blackboard.TryGetData("target", out Transform tr) && tr.gameObject.HasLayer(mask))
+                if (blackboard.TryGetData("target", out Transform tr) && tr.gameObject.HasLayer(mask) && _detection.HasLostTarget())
                 {
                     blackboard.ClearData("target");
                 }

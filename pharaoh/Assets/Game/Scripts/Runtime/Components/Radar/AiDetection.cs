@@ -1,4 +1,5 @@
-﻿using Pharaoh.Tools;
+﻿using System.Collections;
+using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 
@@ -8,10 +9,16 @@ namespace Pharaoh.Gameplay.Components
     {
         [SerializeField, Tooltip("TargetFinder FOV"), Range(1f, 360f)]
         private float overlappingFov = 270f;
+        
+        [SerializeField, Tooltip("Target loosing time"), Range(1f, 20f)]
+        private float loosingTime = 2f;
 
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[3];
         private float _angleToTarget;
         private int _hitSize;
+
+        private bool _searchingTarget;
+        private bool _hasLostTarget;
 
         protected override void FixedUpdate()
         {
@@ -35,6 +42,25 @@ namespace Pharaoh.Gameplay.Components
                     _colliders[i] = null;
                 }
             }
+        }
+
+        public bool HasLostTarget()
+        {
+            if (_searchingTarget == false)
+            {
+                StartCoroutine(LostTarget());
+                _hasLostTarget = false;
+                _searchingTarget = true;
+            }
+
+            return _hasLostTarget;
+        }
+
+        private IEnumerator LostTarget()
+        {
+            yield return new WaitForSeconds(loosingTime);
+            _hasLostTarget = true;
+            _searchingTarget = false;
         }
 
         public bool TryGetByLayerMask(LayerMask layer, out GameObject obj)
