@@ -24,17 +24,14 @@ public class PlayerCombat : MonoBehaviour
 
     public InputReader inputReader;
     public Animator animator;
-    public AnimationEventsReceiver animationEventsReceiver;
 
     [Header("Sockets")]
     
     public Transform rightSword;
     public Sockets rightSocket;
-    private Collider2D _rightCollider;
 
     public Transform leftSword;
     public Sockets leftSocket;
-    private Collider2D _leftCollider;
     
     [Header("Variables")]
 
@@ -44,30 +41,16 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
-        
-        if (leftSword?.TryGetComponent(out _leftCollider) == false)
-        {
-            LogHandler.SendMessage($"[{name}] can't found Collider2D on leftSword", MessageType.Warning);
-        }
-        
-        if (rightSword?.TryGetComponent(out _rightCollider) == false)
-        {
-            LogHandler.SendMessage($"[{name}] can't found Collider2D on rightSword", MessageType.Warning);
-        }
     }
 
     private void OnEnable()
     {
         inputReader.attackPerformedEvent += OnAttack;
-        animationEventsReceiver.drawSwords += DrawSwords;
-        animationEventsReceiver.sheatheSwords += SheatheSwords;
     }
 
     private void OnDisable()
     {
         inputReader.attackPerformedEvent -= OnAttack;
-        animationEventsReceiver.drawSwords -= DrawSwords;
-        animationEventsReceiver.sheatheSwords -= SheatheSwords;
     }
 
     // Called when the player attacks
@@ -124,7 +107,6 @@ public class PlayerCombat : MonoBehaviour
     {
         inputReader.DisableMove();
         inputReader.DisableJump();
-        //inputReader.DisableDash();
         inputReader.DisableAttack();
         inputReader.DisableSandSoldier();
         inputReader.DisableHookInteract();
@@ -140,7 +122,6 @@ public class PlayerCombat : MonoBehaviour
 
         inputReader.EnableMove();
         inputReader.EnableJump();
-        //inputReader.EnableDash();
         inputReader.EnableAttack();
         inputReader.EnableSandSoldier();
         inputReader.EnableHookInteract();
@@ -186,8 +167,6 @@ public class PlayerCombat : MonoBehaviour
     {
         SetupLocal(rightSword, rightSocket.hand, Vector3.zero, Quaternion.identity);
         SetupLocal(leftSword, leftSocket.hand, Vector3.zero, Quaternion.identity);
-        _rightCollider.enabled = true;
-        _leftCollider.enabled = true;
         
         _sheathed = false;
         animator.SetFloat("Sheathed", 0f);
@@ -198,8 +177,6 @@ public class PlayerCombat : MonoBehaviour
     {
         SetupLocal(rightSword, rightSocket.back, Vector3.zero, Quaternion.identity);
         SetupLocal(leftSword, leftSocket.back, Vector3.zero, Quaternion.identity);
-        _rightCollider.enabled = false;
-        _leftCollider.enabled = false;
 
         _sheathed = true;
         animator.SetFloat("Sheathed", 1f);

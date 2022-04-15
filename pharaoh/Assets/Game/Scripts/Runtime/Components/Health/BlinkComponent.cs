@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
@@ -18,14 +19,17 @@ namespace Pharaoh.Gameplay.Components
 
         private float _timer;
 
-        private Color[] _colors;
+        private readonly List<Color[]> _materialsColors = new List<Color[]>();
 
         private void Awake()
         {
-            _colors = new Color[renderers.Length];
-            for (int i = 0; i < renderers.Length; i++)
+            // copy base color in list
+            foreach (var r in renderers)
             {
-                _colors[i] = renderers[i].material.color;
+                var size = r.materials.Length;
+                var colors = new Color[size];
+                for (var i = 0; i < size; i++) colors[i] = r.materials[i].color;
+                _materialsColors.Add(colors);
             }
         }
 
@@ -40,9 +44,16 @@ namespace Pharaoh.Gameplay.Components
             float lerp = Mathf.Clamp01(_timer / duration);
             float lerpIntensity = (lerp * intensity) + 1.0f;
 
-            for (var i = 0; i < renderers.Length; i++)
+            for (var rIndex = 0; rIndex < renderers.Length; rIndex++)
             {
-                renderers[i].material.color = _timer <= 0.0f ? _colors[i] : color * lerpIntensity;
+                var r = renderers[rIndex];
+                var colors = _materialsColors[rIndex];
+
+                for (var mIndex = 0; mIndex < r.materials.Length; mIndex++)
+                {
+                    var material = r.materials[mIndex];
+                    material.color = _timer <= 0.0f ? colors[mIndex] : color * lerpIntensity;
+                }
             }
         }
     }

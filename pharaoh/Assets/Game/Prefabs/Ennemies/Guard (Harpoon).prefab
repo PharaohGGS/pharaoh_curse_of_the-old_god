@@ -2003,6 +2003,34 @@ PrefabInstance:
       propertyPath: datas.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 7732b1aa4ba6c5c43a06ef0ff8f7caf4, type: 2}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 5372285138702421455}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: set_simulated
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: UnityEngine.Rigidbody2D, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079046523897001458, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7089882170566528875, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 10.714212
@@ -2687,6 +2715,11 @@ MonoBehaviour:
 --- !u!4 &5087613146430256037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6088233996702517888, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
+  m_PrefabInstance: {fileID: 1362081204835989797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &5372285138702421455 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 6370664367180739818, guid: 8a498130a1989024eb96100974f3df9c, type: 3}
   m_PrefabInstance: {fileID: 1362081204835989797}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8132030799389396129 stripped
