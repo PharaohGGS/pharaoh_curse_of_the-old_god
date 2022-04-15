@@ -18,7 +18,6 @@ namespace Pharaoh.Gameplay
         private HookBehaviourEvents hookEvents;
 
         [Header("Animation Event")]
-        public AnimationEventsReceiver animationEventsReceiver;
         public Transform pullingSocketRight;
         public Transform pullingSocketLeft;
 
@@ -27,8 +26,6 @@ namespace Pharaoh.Gameplay
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.positionCount = 3;
             _lineRenderer.enabled = false;
-
-            animationEventsReceiver.switchHands += SwitchHands;
         }
 
         private void OnEnable()

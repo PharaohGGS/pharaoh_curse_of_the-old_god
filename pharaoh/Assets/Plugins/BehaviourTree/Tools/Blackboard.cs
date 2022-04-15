@@ -17,7 +17,7 @@ namespace BehaviourTree.Tools
             public string value;
         }
 
-        private Dictionary<string, object> _data = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _data = new Dictionary<string, object>();
 
         #region Debug
 
@@ -89,6 +89,12 @@ namespace BehaviourTree.Tools
             SetupListDebug();
 
             return result;
+        }
+
+        public void ClearAllData()
+        {
+            _data.Clear();
+            debugData.Clear();
         }
 
         private void SetupListDebug()
