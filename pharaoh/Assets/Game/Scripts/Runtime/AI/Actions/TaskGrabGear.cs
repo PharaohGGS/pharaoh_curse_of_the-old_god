@@ -31,8 +31,9 @@ namespace Pharaoh.AI.Actions
             var weapon = _fight.activeWeapon;
             if (weapon && weapon.isActiveAndEnabled)
             {
-                blackboard.SetData("isWaiting", true);
-                blackboard.SetData("waitTime", weapon.GetBaseData().rate);
+                ((EnemyAgent)agent).StartWait(WaitType.Attack, weapon.GetBaseData().rate);
+                //blackboard.SetData("isWaiting", true);
+                //blackboard.SetData("waitTime", weapon.GetBaseData().rate);
             }   
             
             return NodeState.Success;
