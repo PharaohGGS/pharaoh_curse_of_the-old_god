@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using Pharaoh.Tools;
 
+using System.Collections;
+
 public class Door : MonoBehaviour
 {
 
@@ -12,6 +14,19 @@ public class Door : MonoBehaviour
     private Animator _animator;
     private int _closedDoorLayer;
     private int _openedDoorLayer;
+
+    [Header("Info")]
+    private Vector3 _startPos;
+    private float _timer;
+    private Vector3 _randomPos;
+
+    [Header("Settings")]
+    [Range(0f, 2f)]
+    public float _time = 0.2f;
+    [Range(0f, 2f)]
+    public float _distance = 0.1f;
+    [Range(0f, 0.1f)]
+    public float _delayBetweenShakes = 0f;
 
     [Header("Behavior")]
 
@@ -34,7 +49,7 @@ public class Door : MonoBehaviour
 
         _closedDoorLayer = LayerMask.NameToLayer("Ground");
         _openedDoorLayer = LayerMask.NameToLayer("Ignore Raycast");
-
+        _startPos = transform.position;
         Material mat = new Material(_material.shader);
         mat.CopyPropertiesFromMaterial(_material);
         mat.SetFloat("_Clip", transform.position.y - 1.5f);
@@ -43,12 +58,24 @@ public class Door : MonoBehaviour
 
         RefreshState();
     }
-    
+    private void OnValidate()
+    {
+        if (_delayBetweenShakes > _time)
+            _delayBetweenShakes = _time;
+    }
+
+    void Update()
+    {
+       
+    }
+
+
     // Called when a pressure plate is pressed
     public void Open()
     {
         _activePlates++;
-
+        StopAllCoroutines();
+        StartCoroutine(Shake());
         RefreshState();
     }
 
@@ -56,7 +83,8 @@ public class Door : MonoBehaviour
     public void Close()
     {
         _activePlates--;
-
+        StopAllCoroutines();
+        StartCoroutine(Shake());
         RefreshState();
     }
 
@@ -111,6 +139,31 @@ public class Door : MonoBehaviour
             RefreshState();
         }
     }
+    private IEnumerator Shake()
+    {
+        _timer = 0f;
+
+        while (_timer < _time)
+        {
+            _timer += Time.deltaTime;
+
+            _randomPos = _startPos + (Random.insideUnitSphere * _distance);
+
+            transform.position = _randomPos;
+
+            if (_delayBetweenShakes > 0f)
+            {
+                yield return new WaitForSeconds(_delayBetweenShakes);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+
+        transform.position = _startPos;
+    }
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

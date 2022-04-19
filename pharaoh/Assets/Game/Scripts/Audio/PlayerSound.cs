@@ -7,14 +7,35 @@ using AudioManager = Pharaoh.Managers.AudioManager;
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSound : MonoBehaviour
 {
+    [Header("Audio source parameters")]
     [SerializeField]
     private float audioSourceVolume;
+
+    [Space(10)]
+    [Header("Player sounds")]
     [SerializeField]
     private AudioClip[] footStepClips;
     [SerializeField]
-    private AudioClip[] khepeshSwingClips;
-    [SerializeField]
     private AudioClip[] jumpClips;
+
+    [Space(10)]
+    [Header("Khepesh sounds")]
+    [SerializeField]
+    private AudioClip[] khepeshDrawClips;
+    [SerializeField]
+    private AudioClip[] khepeshSwingClips;
+
+    [Space(10)]
+    [Header("Hook sound")]
+    [SerializeField]
+    private AudioClip[] hookThrowClips;
+
+    [Space(10)]
+    [Header("Doors and plates sound")]
+    [SerializeField]
+    private AudioClip[] doorOpensClips;
+    [SerializeField]
+    private AudioClip[] doorClosesClips;
 
 
     private PlayerMovement playerMovementData;
@@ -29,7 +50,7 @@ public class PlayerSound : MonoBehaviour
         audioSource.loop = false;
     }
 
-    public void PlayerStep()
+    public void PlayerStepSound()
     {
         if(playerMovementData.IsGrounded && playerMovementData.IsRunning)
         {
@@ -37,6 +58,31 @@ public class PlayerSound : MonoBehaviour
             audioSource.PlayOneShot(footStepClip);
         } 
     }
+
+    public void PlayerHookSound()
+    {
+        AudioClip hookThrowClip = GetRandomClip(hookThrowClips);
+        audioSource.PlayOneShot(hookThrowClip);
+    }
+
+    public void PlayerDrawsSound()
+    {
+        AudioClip khepeshDrawClip = GetRandomClip(khepeshDrawClips);
+        audioSource.PlayOneShot(khepeshDrawClip);
+    }
+
+    public void DoorOpens()
+    {
+        AudioClip doorOpensClip = GetRandomClip(doorOpensClips);
+        audioSource.PlayOneShot(doorOpensClip);
+    }
+
+    public void DoorCloses()
+    {
+        AudioClip doorClosesClip = GetRandomClip(doorClosesClips);
+        audioSource.PlayOneShot(doorClosesClip);
+    }
+
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {

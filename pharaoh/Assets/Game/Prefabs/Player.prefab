@@ -756,7 +756,7 @@ MonoBehaviour:
   leftSocket:
     hand: {fileID: 4716540348454035076}
     back: {fileID: 9029138249168344907}
-  timeBeforeSheathing: 5
+  timeBeforeSheathing: 20
 --- !u!114 &7790090175714034903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,6 +880,7 @@ MonoBehaviour:
   startColliderSize: {x: 1.65, y: 0}
   endColliderSize: {x: 1.65, y: 2.15}
   blockPlusSoldierThreshold: 0.7
+  animator: {fileID: 5280757643533625441}
 --- !u!114 &6215234791223536456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -982,6 +983,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
+        m_TargetAssemblyTypeName: Pharaoh.Managers.AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDeath
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &6706840792975061483
 MonoBehaviour:
@@ -1001,10 +1014,10 @@ MonoBehaviour:
   - {fileID: 825942944272443920}
   - {fileID: 2057839720442153237}
   - {fileID: 745411847284014960}
-  duration: 0.25
-  blinkCount: 2
+  duration: 0.75
+  blinkCount: 3
   intensity: 10
-  color: {r: 1, g: 0.93546027, b: 0.6179246, a: 1}
+  color: {r: 1, g: 0.3909033, b: 0.33490568, a: 1}
 --- !u!114 &2089584490314425185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1079,18 @@ MonoBehaviour:
           Pharaoh
         m_MethodName: Raise
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1079426416759742461}
+        m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+        m_MethodName: PlayerHookSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1154,6 +1179,27 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d948360a48ec9c742a596619ecda9873, type: 3}
   - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
   - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
+  jumpClips: []
+  khepeshDrawClips:
+  - {fileID: 8300000, guid: 6e145a40672182c43a3261911b94396f, type: 3}
+  - {fileID: 8300000, guid: 97b4ec0687fab6c4fbd5ceb3febc2d97, type: 3}
+  - {fileID: 8300000, guid: b2921d39eb145ff4fb1e88b3fa3f9f1f, type: 3}
+  khepeshSwingClips: []
+  hookThrowClips:
+  - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
+  - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
+  - {fileID: 8300000, guid: a9853a296dc19f84bb66787ea5de3dc7, type: 3}
+  - {fileID: 8300000, guid: 29f21652ab6037648a3dc9a8643c4188, type: 3}
+  doorOpensClips:
+  - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
+  - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
+  - {fileID: 8300000, guid: ac0837c967685964a9c5b5260247a9e1, type: 3}
+  - {fileID: 8300000, guid: 2f186fa701e8c5141bec6669adf31b83, type: 3}
+  doorClosesClips:
+  - {fileID: 8300000, guid: b63412288d25e2a4cacb821b2644e62b, type: 3}
+  - {fileID: 8300000, guid: 420ad194c1bff584daacced23b219fc2, type: 3}
+  - {fileID: 8300000, guid: 56df52e3d275a044d82ac19c7afbaddb, type: 3}
+  - {fileID: 8300000, guid: f32ba75365cd5a74abb7ae8ac49df858, type: 3}
 --- !u!82 &5542629325624734021
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1163,7 +1209,7 @@ AudioSource:
   m_GameObject: {fileID: 5732736215046696853}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1713,6 +1759,18 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - Key: DrawSwords
       Value:
         m_PersistentCalls:
@@ -1720,6 +1778,18 @@ MonoBehaviour:
           - m_Target: {fileID: 5397436550283630878}
             m_TargetAssemblyTypeName: PlayerCombat, Pharaoh
             m_MethodName: DrawSwords
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1807,7 +1877,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 1079426416759742461}
             m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
-            m_MethodName: PlayerStep
+            m_MethodName: PlayerStepSound
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}

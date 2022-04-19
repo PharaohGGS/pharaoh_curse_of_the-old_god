@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Pharaoh.Managers;
 using Pharaoh.Tools;
+using UnityEngine.VFX;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -23,8 +24,7 @@ public class CanopicJarPickable : MonoBehaviour
     public PlayerSkills playerSkills;
 
     public BoxCollider2D boxCollider;
-    public ParticleSystem psIdle;
-    public ParticleSystem psPickup;
+    public VisualEffect vfxIdle;
 
     public GameObject[] canopicJars;
 
@@ -32,11 +32,6 @@ public class CanopicJarPickable : MonoBehaviour
     public CanopicJar jar = CanopicJar.None;
 
     public UnityEvent<CanopicJarPickable> onPickUp;
-
-    private void Awake()
-    {
-        //ChangeSkin();
-    }
 
     public void OnInteract()
     {
@@ -64,11 +59,10 @@ public class CanopicJarPickable : MonoBehaviour
         }
 
         onPickUp?.Invoke(this);
-        AudioManager.Instance.Play("LoreShort");
+        AudioManager.Instance.Play("CanopPickup");
 
         boxCollider.enabled = false;
-        psIdle.Stop();
-        psPickup.Play();
+        vfxIdle.Stop();
 
         canopicJars[(int)jar * 2].SetActive(false);
         canopicJars[((int)jar * 2) + 1].SetActive(true);
