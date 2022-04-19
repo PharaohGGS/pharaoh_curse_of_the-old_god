@@ -120,7 +120,7 @@ namespace Pharaoh.Gameplay.Components
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             Decrease(damage);
 
-            if (!isInvincible && invincibilityTime <= Mathf.Epsilon)
+            if (!isInvincible && invincibilityTime > Mathf.Epsilon)
             {
                 StartCoroutine(Invincibility());
             }
