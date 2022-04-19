@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Pharaoh.Managers
 {
@@ -24,6 +25,7 @@ namespace Pharaoh.Managers
             foreach (Sound s in sounds)
             {
                 s.audioSource = gameObject.AddComponent<AudioSource>();
+                s.audioSource.outputAudioMixerGroup = s.audioMixerGroup;
                 s.audioSource.clip = s.clip;
                 s.audioSource.volume = s.volume;
                 s.audioSource.pitch = s.pitch;
@@ -38,6 +40,7 @@ namespace Pharaoh.Managers
             public AudioClip clip;
             [Range(0f, 1f)] public float volume = 1f;
             [Range(.1f, 3f)] public float pitch = 1f;
+            public AudioMixerGroup audioMixerGroup;
             public bool loop = false;
             public bool fadeIn = false;
             public bool fadeOut = false;
