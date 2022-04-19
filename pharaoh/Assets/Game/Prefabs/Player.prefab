@@ -756,7 +756,7 @@ MonoBehaviour:
   leftSocket:
     hand: {fileID: 4716540348454035076}
     back: {fileID: 9029138249168344907}
-  timeBeforeSheathing: 5
+  timeBeforeSheathing: 20
 --- !u!114 &7790090175714034903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1179,6 +1179,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d948360a48ec9c742a596619ecda9873, type: 3}
   - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
   - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
+  khepeshDrawClips:
+  - {fileID: 8300000, guid: 6e145a40672182c43a3261911b94396f, type: 3}
+  - {fileID: 8300000, guid: 97b4ec0687fab6c4fbd5ceb3febc2d97, type: 3}
+  - {fileID: 8300000, guid: b2921d39eb145ff4fb1e88b3fa3f9f1f, type: 3}
   khepeshSwingClips: []
   hookThrowClips:
   - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
@@ -1745,6 +1749,18 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - Key: DrawSwords
       Value:
         m_PersistentCalls:
@@ -1752,6 +1768,18 @@ MonoBehaviour:
           - m_Target: {fileID: 5397436550283630878}
             m_TargetAssemblyTypeName: PlayerCombat, Pharaoh
             m_MethodName: DrawSwords
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}

@@ -12,6 +12,8 @@ public class PlayerSound : MonoBehaviour
     [SerializeField]
     private AudioClip[] footStepClips;
     [SerializeField]
+    private AudioClip[] khepeshDrawClips;
+    [SerializeField]
     private AudioClip[] khepeshSwingClips;
     [SerializeField]
     private AudioClip[] hookThrowClips;
@@ -45,6 +47,13 @@ public class PlayerSound : MonoBehaviour
         AudioClip hookThrowClip = GetRandomClip(hookThrowClips);
         audioSource.PlayOneShot(hookThrowClip);
     }
+
+    public void PlayerDrawsSound()
+    {
+        AudioClip khepeshDrawClip = GetRandomClip(khepeshDrawClips);
+        audioSource.PlayOneShot(khepeshDrawClip);
+    }
+
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {
