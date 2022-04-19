@@ -66,8 +66,7 @@ public class Door : MonoBehaviour
 
     void Update()
     {
-        StopAllCoroutines();
-        StartCoroutine(Shake());
+       
     }
 
 
@@ -75,7 +74,8 @@ public class Door : MonoBehaviour
     public void Open()
     {
         _activePlates++;
-
+        StopAllCoroutines();
+        StartCoroutine(Shake());
         RefreshState();
     }
 
@@ -83,7 +83,8 @@ public class Door : MonoBehaviour
     public void Close()
     {
         _activePlates--;
-
+        StopAllCoroutines();
+        StartCoroutine(Shake());
         RefreshState();
     }
 
