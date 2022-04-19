@@ -64,7 +64,7 @@ public class CanopicJarPickable : MonoBehaviour
         }
 
         onPickUp?.Invoke(this);
-        AudioManager.Instance.Play("LoreShort");
+        AudioManager.Instance.Play("CanopPickup");
 
         boxCollider.enabled = false;
         psIdle.Stop();
