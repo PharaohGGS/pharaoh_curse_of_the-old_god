@@ -126,7 +126,7 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public System.Collections.IEnumerator Invincibility()
+        private System.Collections.IEnumerator Invincibility()
         {
             isInvincible = true;
             yield return new WaitForSeconds(invincibilityTime);
