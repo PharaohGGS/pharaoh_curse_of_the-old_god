@@ -18,12 +18,14 @@ namespace Pharaoh.Gameplay.Components
     {
         [Header("Health")] 
         public float startMax = 100;
+        public float invincibilityTime = 0f;
         
         public UnityEvent<HealthComponent, float> onHealthSet;
         public UnityEvent<HealthComponent, float> onHealthDecrease;
         public UnityEvent<HealthComponent, float> onHealthIncrease;
         public UnityEvent<HealthComponent> onDeath;
 
+        public bool isInvincible { get; private set; }
         public bool isDead { get; private set; }
         public float max { get; private set; }
         public float current { get; private set; }
@@ -84,6 +86,7 @@ namespace Pharaoh.Gameplay.Components
 
         private void Awake()
         {
+            isInvincible = false;
             _colliders = GetComponents<Collider2D>();
             if (gears.Length <= 0)
             {
@@ -109,13 +112,25 @@ namespace Pharaoh.Gameplay.Components
 
         public void TakeHit(Damager damager, Collider2D other)
         {
+            if (isInvincible) return;
             if (!damager || !damager.damagerData) return;
             if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
             var damage = damager.damagerData.damage - armorDeal;
-
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             Decrease(damage);
+
+            if (!isInvincible && invincibilityTime <= Mathf.Epsilon)
+            {
+                StartCoroutine(Invincibility());
+            }
+        }
+
+        public System.Collections.IEnumerator Invincibility()
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(invincibilityTime);
+            isInvincible = false;
         }
     }
 }
