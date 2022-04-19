@@ -982,6 +982,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
+        m_TargetAssemblyTypeName: Pharaoh.Managers.AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDeath
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &6706840792975061483
 MonoBehaviour:
@@ -1074,6 +1086,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1079426416759742461}
+        m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+        m_MethodName: PlayerHookSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
   pullHookData: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
@@ -1155,6 +1179,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
   - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
   khepeshSwingClips: []
+  hookThrowClips:
+  - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
+  - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
+  - {fileID: 8300000, guid: a9853a296dc19f84bb66787ea5de3dc7, type: 3}
+  - {fileID: 8300000, guid: 29f21652ab6037648a3dc9a8643c4188, type: 3}
   jumpClips: []
 --- !u!82 &5542629325624734021
 AudioSource:
@@ -1809,7 +1838,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 1079426416759742461}
             m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
-            m_MethodName: PlayerStep
+            m_MethodName: PlayerStepSound
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
