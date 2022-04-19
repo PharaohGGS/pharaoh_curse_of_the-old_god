@@ -61,6 +61,9 @@ public class SandSoldier : MonoBehaviour
     [Header("Tweaks")]
     [Range(0f, 1f)] public float blockPlusSoldierThreshold = 0.7f;
 
+    [Header("Animations")]
+    public Animator animator;
+
     private bool _longPress; // Bool to check if the input has been held or not
     private PlayerMovement _playerMovement;
 
@@ -110,6 +113,8 @@ public class SandSoldier : MonoBehaviour
     {
         if (_playerMovement.IsPullingBlock) return;
         
+        animator.SetTrigger("Summon");
+
         _longPress = true;
 
         Vector3 spawnPos = transform.position;
