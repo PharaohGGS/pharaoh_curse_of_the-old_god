@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using Pharaoh.Gameplay.Components;
 
 namespace Pharaoh.Managers
 {
@@ -169,7 +170,7 @@ namespace Pharaoh.Managers
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
             {
-                _saveData.enemiesStates[go.GetComponent<SaveInstance>().instanceID] = go.activeInHierarchy;
+                _saveData.enemiesStates[go.GetComponent<SaveInstance>().instanceID] = !go.GetComponent<HealthComponent>().isDead;
             }
         }
 

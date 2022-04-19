@@ -153,7 +153,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             if ((_isGrounded || _isHooked || _canJumpHook) && !_isDashing && !_isPullingBlock)
             {
                 // The player jumps using an impulse force
-                _rigidbody.AddForce(Vector2.up * metrics.initialJumpForce, ForceMode2D.Impulse);
+                _rigidbody.AddForce(Vector2.up * (metrics.initialJumpForce * _rigidbody.mass), ForceMode2D.Impulse);
                 _rigidbody.gravityScale = metrics.gravityScale;
                 _jumpClock = Time.time;
                 _isJumping = true;
@@ -384,7 +384,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             // Moves the player upward while holding the jump button
             if (_isJumping)
-                _rigidbody.AddForce(Vector2.up * metrics.heldJumpForce, ForceMode2D.Force);
+                _rigidbody.AddForce(Vector2.up * (metrics.heldJumpForce * _rigidbody.mass), ForceMode2D.Force);
 
             if (_isDashing)
                 _rigidbody.velocity = (_isFacingRight ? Vector2.right : Vector2.left) * metrics.dashForce;

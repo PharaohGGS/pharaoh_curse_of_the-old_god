@@ -1,3 +1,4 @@
+using Pharaoh.Gameplay.Components;
 using UnityEngine;
 using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 
@@ -72,7 +73,7 @@ public class SaveInstance : MonoBehaviour
         {
             case Type.Enemy:
                 // Save this enemy state
-                SaveDataManager.Instance.SaveEnemyState(instanceID, gameObject.activeInHierarchy);
+                SaveDataManager.Instance.SaveEnemyState(instanceID, !GetComponent<HealthComponent>().isDead);
                 break;
 
             case Type.MovingBlock:

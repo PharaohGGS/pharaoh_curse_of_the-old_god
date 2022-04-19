@@ -18,10 +18,15 @@ namespace Pharaoh.Gameplay.Components
     {
         [Header("Health")] 
         public float startMax = 100;
-
-        public UnityEvent<HealthComponent, float> onHealthChange;
+        public float invincibilityTime = 0f;
+        
+        public UnityEvent<HealthComponent, float> onHealthSet;
+        public UnityEvent<HealthComponent, float> onHealthDecrease;
+        public UnityEvent<HealthComponent, float> onHealthIncrease;
         public UnityEvent<HealthComponent> onDeath;
 
+        public bool isInvincible { get; private set; }
+        public bool isDead { get; private set; }
         public float max { get; private set; }
         public float current { get; private set; }
         public float percent => current / max;
@@ -50,20 +55,29 @@ namespace Pharaoh.Gameplay.Components
 
         private void ApplyChange(float value, FloatOperation operation)
         {
-            current = operation switch
+            switch (operation)
             {
-                FloatOperation.Set => Mathf.Min(value, max),
-                FloatOperation.Increase => Mathf.Min(current + value, max),
-                FloatOperation.Decrease => Mathf.Max(current - value, 0.0f),
-                _ => throw new ArgumentOutOfRangeException(nameof(operation), operation, null)
-            };
-
-            onHealthChange?.Invoke(this, current);
+                case FloatOperation.Set:
+                    current = Mathf.Min(value, max);
+                    onHealthSet?.Invoke(this, current);
+                    break;
+                case FloatOperation.Increase:
+                    current = Mathf.Min(current + value, max);
+                    onHealthIncrease?.Invoke(this, current);
+                    break;
+                case FloatOperation.Decrease:
+                    current = Mathf.Max(current - value, 0.0f);
+                    onHealthDecrease?.Invoke(this, current);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
+            }
 
             if (current <= 0.0f)
             {
+                isDead = true;
                 onDeath?.Invoke(this);
-            } 
+            }
         }
         
         public void Decrease(float value) => ApplyChange(value, FloatOperation.Decrease);
@@ -72,6 +86,7 @@ namespace Pharaoh.Gameplay.Components
 
         private void Awake()
         {
+            isInvincible = false;
             _colliders = GetComponents<Collider2D>();
             if (gears.Length <= 0)
             {
@@ -89,19 +104,33 @@ namespace Pharaoh.Gameplay.Components
 
         private void OnDisable()
         {
-            onHealthChange.RemoveAllListeners();
+            onHealthSet.RemoveAllListeners();
+            onHealthIncrease.RemoveAllListeners();
+            onHealthDecrease.RemoveAllListeners();
             onDeath.RemoveAllListeners();
         }
 
         public void TakeHit(Damager damager, Collider2D other)
         {
+            if (isInvincible) return;
             if (!damager || !damager.damagerData) return;
             if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
             var damage = damager.damagerData.damage - armorDeal;
-
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             Decrease(damage);
+
+            if (!isInvincible && invincibilityTime > Mathf.Epsilon)
+            {
+                StartCoroutine(Invincibility());
+            }
+        }
+
+        private System.Collections.IEnumerator Invincibility()
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(invincibilityTime);
+            isInvincible = false;
         }
     }
 }

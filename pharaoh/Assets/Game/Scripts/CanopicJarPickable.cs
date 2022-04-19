@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Pharaoh.Managers;
 using Pharaoh.Tools;
 #if UNITY_EDITOR
@@ -30,6 +31,8 @@ public class CanopicJarPickable : MonoBehaviour
     public LayerMask whatIsPlayer;
     public CanopicJar jar = CanopicJar.None;
 
+    public UnityEvent<CanopicJarPickable> onPickUp;
+
     private void Awake()
     {
         //ChangeSkin();
@@ -42,27 +45,26 @@ public class CanopicJarPickable : MonoBehaviour
         {
             case CanopicJar.Monkey:
             case CanopicJar.Crocodile:
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Bird:
                 playerSkills.hasGrapplingHook= true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Dog:
                 playerSkills.hasSwarmDash = true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Human:
                 playerSkills.hasSandSoldier= true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             default:
                 break;
         }
+
+        onPickUp?.Invoke(this);
+        AudioManager.Instance.Play("LoreShort");
 
         boxCollider.enabled = false;
         psIdle.Stop();

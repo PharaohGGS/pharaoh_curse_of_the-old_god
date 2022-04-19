@@ -124,14 +124,16 @@ GameObject:
   - component: {fileID: 7079046523897001355}
   - component: {fileID: 7079046523897001359}
   - component: {fileID: 7079046523897001458}
+  - component: {fileID: 5468302792086366486}
   - component: {fileID: 7079046523897001457}
-  - component: {fileID: 7079046523897001456}
+  - component: {fileID: 22069959824613237}
   - component: {fileID: 994795391430697508}
   - component: {fileID: 2816072151982639455}
   - component: {fileID: 42543094342105160}
+  - component: {fileID: 3455565476555685913}
   m_Layer: 11
   m_Name: '[ABSTRACT] Guard (Don''t Use)'
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,7 +185,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -230,7 +232,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMax: 100
-  onHealthChange:
+  invincibilityTime: 0
+  onHealthSet:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthDecrease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5468302792086366486}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
+        m_MethodName: Blink
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
@@ -262,7 +309,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 8776595742986578276}
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: SetTrigger
         m_Mode: 5
@@ -274,8 +321,55 @@ MonoBehaviour:
           m_StringArgument: Death
           m_BoolArgument: 0
         m_CallState: 2
-  gears:
-  - {fileID: 0}
+      - m_Target: {fileID: 2816072151982639455}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6370664367180739818}
+        m_TargetAssemblyTypeName: UnityEngine.Rigidbody2D, UnityEngine
+        m_MethodName: Sleep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  gears: []
+--- !u!114 &5468302792086366486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 7941978145691822525}
+  - {fileID: 1121913159883988167}
+  - {fileID: 5588991098258483722}
+  - {fileID: 3936549112377583860}
+  - {fileID: 1054256621001543935}
+  - {fileID: 765070165906068094}
+  - {fileID: 2715754602775822491}
+  duration: 0.1
+  blinkCount: 1
+  intensity: 10
+  color: {r: 1, g: 0.52211887, b: 0.3066038, a: 1}
 --- !u!114 &7079046523897001457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,12 +383,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8776595742986578276}
-  <moveSpeed>k__BackingField: 5
-  <closeDistance>k__BackingField: 0.33
+  <moveSpeed>k__BackingField: 4
+  <closeDistance>k__BackingField: 1
   <fleeDistance>k__BackingField: 2
   <timeBetweenWaypoints>k__BackingField: 2
   <waypointHolder>k__BackingField: {fileID: 0}
---- !u!114 &7079046523897001456
+--- !u!114 &22069959824613237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,14 +397,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7079046523897001347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
+  m_Script: {fileID: 11500000, guid: bde301646c38d3c498c28193550e299f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   detectionCollider: {fileID: 1822449202396137966}
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 131072
-  overlapCount: 8
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 66560
+  overlapCount: 3
+  overlappingFov: 270
+  loosingTime: 5
 --- !u!114 &994795391430697508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +493,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3455565476555685913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079046523897001347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b01d765426ce742928785d61bff40d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instanceID: 0
+  type: 1
 --- !u!1001 &2929080259299710197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -451,6 +564,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+--- !u!137 &765070165906068094 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2465788661791164043, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1054256621001543935 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6483118349943471094, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1121913159883988167 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2826000971708205106, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2623143562038356388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
@@ -469,11 +597,132 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-    list: []
+    list:
+    - Key: StartDeath
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: 
+            m_MethodName: 
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: 
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: EndDeath
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 7079046523897001347}
+            m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: StartStab
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+    - Key: EndStab
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 994795391430697508}
+            m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.FightComponent,
+              Pharaoh
+            m_MethodName: ChangeWeapon
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     keyCollision: 0
+--- !u!137 &2715754602775822491 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8280322467453545362, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3399258426588951326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3936549112377583860 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7059603017308423167, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5588991098258483722 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1930290309201166593, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
+  m_PrefabInstance: {fileID: 2929080259299710197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7941978145691822525 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5085054299710127432, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
   m_PrefabInstance: {fileID: 2929080259299710197}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8776595742986578276 stripped

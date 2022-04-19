@@ -4,23 +4,23 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay
 {
-    [RequireComponent(typeof(DetectionComponent))]
+    [RequireComponent(typeof(TrapDetection))]
     public class TrapCapacity : MonoBehaviour
     {
         [SerializeField] private TrapBehaviour _behaviour;
 
-        private DetectionComponent _detection;
+        private TrapDetection _trapDetection;
 
         protected virtual void Awake()
         {
-            _detection = GetComponent<DetectionComponent>();
+            _trapDetection = GetComponent<TrapDetection>();
             if (!_behaviour) _behaviour = GetComponentInChildren<TrapBehaviour>();
         }
 
         protected virtual void Update()
         {
             if (!_behaviour || _behaviour.isStarted) return;
-            _behaviour.Activate(_detection.GetByIndex(0));
+            _behaviour.Activate(_trapDetection.GetByIndex(0));
         }
     }
 }

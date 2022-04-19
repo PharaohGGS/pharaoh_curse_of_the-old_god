@@ -94,7 +94,7 @@ VisualEffect:
       m_Array: []
     m_NamedObject:
       m_Array:
-      - m_Value: {fileID: 2800000, guid: 4cd7628d8595c814cb475857bf64e383, type: 3}
+      - m_Value: {fileID: 0}
         m_Name: FireTexture
         m_Overridden: 1
       - m_Value: {fileID: 6746618585743264580}
@@ -423,7 +423,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookEvents: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
-  animationEventsReceiver: {fileID: 3707285322232323955}
   pullingSocketRight: {fileID: 5261378446552579591}
   pullingSocketLeft: {fileID: 6197838945859501086}
 --- !u!120 &7224066602173024941
@@ -601,9 +600,12 @@ GameObject:
   - component: {fileID: 7790090175714034903}
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
+  - component: {fileID: 6706840792975061483}
   - component: {fileID: 2089584490314425185}
   - component: {fileID: 1873792441378832283}
   - component: {fileID: 1056721239}
+  - component: {fileID: 1079426416759742461}
+  - component: {fileID: 5542629325624734021}
   m_Layer: 17
   m_Name: Player
   m_TagString: Player
@@ -646,7 +648,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 3
@@ -746,7 +748,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   animator: {fileID: 5280757643533625441}
-  animationEventsReceiver: {fileID: 3707285322232323955}
   rightSword: {fileID: 1056674046930762498}
   rightSocket:
     hand: {fileID: 8613937999053526085}
@@ -892,7 +893,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMax: 100
-  onHealthChange:
+  invincibilityTime: 0.75
+  onHealthSet:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthDecrease:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.HealthComponent,
+          Pharaoh
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
+        m_MethodName: Blink
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 5456d6bafc8ca7843b4fdf90cad73501, type: 2}
@@ -937,6 +983,28 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   gears: []
+--- !u!114 &6706840792975061483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 6746618585743264580}
+  - {fileID: 6663196720754654003}
+  - {fileID: 825942944272443920}
+  - {fileID: 2057839720442153237}
+  - {fileID: 745411847284014960}
+  duration: 0.25
+  blinkCount: 2
+  intensity: 10
+  color: {r: 1, g: 0.93546027, b: 0.6179246, a: 1}
 --- !u!114 &2089584490314425185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,6 +1123,133 @@ MonoBehaviour:
   virtualCamera: {fileID: 1377715777}
   upValue: 2
   downValue: 2
+--- !u!114 &1079426416759742461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c88afa763fd9164ebd81e134b1e2a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceVolume: 0.2
+  footStepClips:
+  - {fileID: 8300000, guid: 3b87dad72fcdba04ba9bd22ba59251cc, type: 3}
+  - {fileID: 8300000, guid: 5db9a220e4ab1c841a9cb17788330b71, type: 3}
+  - {fileID: 8300000, guid: 3e89aecdf76551440a1afd6476c0743e, type: 3}
+  - {fileID: 8300000, guid: c5c29f43d259f9b41a3e852d214ebf2a, type: 3}
+  - {fileID: 8300000, guid: 463aa266da3e4e04198455f91574a7f2, type: 3}
+  - {fileID: 8300000, guid: 6a6c531172b6ff149aa397cfeb6ba63a, type: 3}
+  - {fileID: 8300000, guid: 441289ac638fd9f45939ea55a702aa30, type: 3}
+  - {fileID: 8300000, guid: 9998fdecd56ba0e44b9a1546272053de, type: 3}
+  - {fileID: 8300000, guid: e94bb2aaa0c57eb4cb4c771f1c821225, type: 3}
+  - {fileID: 8300000, guid: f5463d7ee85126d408115d1f168603eb, type: 3}
+  - {fileID: 8300000, guid: a75cf319e31cd994a90fc63bf512f191, type: 3}
+  - {fileID: 8300000, guid: 56071c74c2abaa844ae604fd1fd0b130, type: 3}
+  - {fileID: 8300000, guid: a80b4439d1b44b2448d64f7f19e17901, type: 3}
+  - {fileID: 8300000, guid: 007b9610d41c5574488502251107fef6, type: 3}
+  - {fileID: 8300000, guid: d948360a48ec9c742a596619ecda9873, type: 3}
+  - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
+  - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
+--- !u!82 &5542629325624734021
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,12 +1668,22 @@ CapsuleCollider:
   m_Height: 0.26730284
   m_Direction: 2
   m_Center: {x: 0.0013075935, y: 0.005178914, z: -0.002254515}
+--- !u!137 &745411847284014960 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7891524183992325504, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &825942944272443920 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1505039420503206049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
   m_PrefabInstance: {fileID: 1739392970509030896}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3707285322232323955
+--- !u!114 &9200539039483737816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1487,9 +1692,137 @@ MonoBehaviour:
   m_GameObject: {fileID: 1505039420503206049}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49f603a65d4c77c4b8fc58b595eb2640, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ae1445a0a8f36a4fbb3a1555eba0a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  events:
+    list:
+    - Key: SheatheSwords
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5397436550283630878}
+            m_TargetAssemblyTypeName: PlayerCombat, Pharaoh
+            m_MethodName: SheatheSwords
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: DrawSwords
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5397436550283630878}
+            m_TargetAssemblyTypeName: PlayerCombat, Pharaoh
+            m_MethodName: DrawSwords
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: SwitchHands
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8469386647090063590}
+            m_TargetAssemblyTypeName: Pharaoh.Gameplay.RopeRenderer, Pharaoh
+            m_MethodName: SwitchHands
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: StartAttack
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 303100745142582095}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 7044166387561328408}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+    - Key: EndAttack
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 303100745142582095}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 7044166387561328408}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: PlayerStep
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerStep
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    keyCollision: 0
+--- !u!137 &2057839720442153237 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2281400649281040923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -2467,6 +2800,11 @@ Animator:
 --- !u!4 &6197838945859501086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3593673354083964434, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+  m_PrefabInstance: {fileID: 1739392970509030896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6663196720754654003 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4925810639347150531, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
   m_PrefabInstance: {fileID: 1739392970509030896}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6746618585743264580 stripped
@@ -49554,6 +49892,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+--- !u!60 &303100745142582095 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3656568857706286206, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+  m_PrefabInstance: {fileID: 3930070744854689585}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7736959816141729621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
@@ -49631,5 +49974,10 @@ PrefabInstance:
 --- !u!4 &1056674046930762498 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+  m_PrefabInstance: {fileID: 6016622196749771622}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &7044166387561328408 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3656568857706286206, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
   m_PrefabInstance: {fileID: 6016622196749771622}
   m_PrefabAsset: {fileID: 0}

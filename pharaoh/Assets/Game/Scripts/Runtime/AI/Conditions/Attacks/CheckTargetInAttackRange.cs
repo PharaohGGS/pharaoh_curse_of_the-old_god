@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckTargetInAttackRange : ActionNode
     {
-        private DetectionComponent _detection;
+        private AiDetection _detection;
 
         protected override void OnStart()
         {

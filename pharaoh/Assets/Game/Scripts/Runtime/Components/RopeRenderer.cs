@@ -18,7 +18,6 @@ namespace Pharaoh.Gameplay
         private HookBehaviourEvents hookEvents;
 
         [Header("Animation Event")]
-        public AnimationEventsReceiver animationEventsReceiver;
         public Transform pullingSocketRight;
         public Transform pullingSocketLeft;
 
@@ -27,8 +26,6 @@ namespace Pharaoh.Gameplay
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.positionCount = 3;
             _lineRenderer.enabled = false;
-
-            animationEventsReceiver.switchHands += SwitchHands;
         }
 
         private void OnEnable()
@@ -98,6 +95,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    ShootRope(behaviour.transform);
                     break;
                 case PullHookBehaviour pull:
                     ShootRope(behaviour.transform);
@@ -117,6 +115,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    RetrieveRope();
                     break;
                 case PullHookBehaviour pull:
                     RetrieveRope();
@@ -136,6 +135,7 @@ namespace Pharaoh.Gameplay
             switch (behaviour)
             {
                 case GrappleHookBehaviour grapple:
+                    RetrieveRope();
                     break;
                 case PullHookBehaviour pull:
                     RetrieveRope();

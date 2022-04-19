@@ -5,11 +5,9 @@ using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class SceneLoader : MonoBehaviour
 {
-    public UnityEngine.Object scene;
-    public List<UnityEngine.Object> neighbours; // List of room's neighbours
+    public List<string> neighbours; // List of room's neighbours
 
     private bool _isLoaded; // Is this room loaded or not
 
@@ -45,13 +43,13 @@ public class SceneLoader : MonoBehaviour
         if (!currentRoom.TryGetComponent(out SceneLoader sceneLoader)) return; // If it has no SceneLoader, return
 
         // If this room is in CurrentRoom's neighbours or is the CurrentRoom, load it
-        if (scene.name == currentRoom.name)
+        if (gameObject.name == currentRoom.name)
         {
             if (_isLoaded) return;
             _isLoaded = true;
-            SceneManager.LoadScene(scene.name, LoadSceneMode.Additive);
+            SceneManager.LoadScene(gameObject.name, LoadSceneMode.Additive);
         }
-        else if (sceneLoader.neighbours.Contains(scene))
+        else if (sceneLoader.neighbours.Contains(gameObject.name))
         {
             if (_isLoaded) return;
             _isLoaded = true;
@@ -67,16 +65,16 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadScene()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Additive);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
         while (!operation.isDone)
         {
             yield return null;
         }
     }
-    
+
     private IEnumerator UnloadScene()
     {
-        AsyncOperation operation = SceneManager.UnloadSceneAsync(scene.name);
+        AsyncOperation operation = SceneManager.UnloadSceneAsync(gameObject.name);
         while (!operation.isDone)
         {
             yield return null;
