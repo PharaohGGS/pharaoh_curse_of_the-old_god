@@ -93,14 +93,16 @@ public class PlayerSound : MonoBehaviour
         audioSource.PlayOneShot(khepeshHitClip);
     }
 
-    public void DoorOpens()
+    public void DoorOpensSound()
     {
+        Debug.Log("Door opens");
         AudioClip doorOpensClip = GetRandomClip(doorOpensClips);
         audioSource.PlayOneShot(doorOpensClip);
     }
 
-    public void DoorCloses()
+    public void DoorClosesSound()
     {
+        Debug.Log("Door closes");
         AudioClip doorClosesClip = GetRandomClip(doorClosesClips);
         audioSource.PlayOneShot(doorClosesClip);
     }
