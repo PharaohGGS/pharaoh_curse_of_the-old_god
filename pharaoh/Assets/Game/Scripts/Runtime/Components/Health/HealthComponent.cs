@@ -59,7 +59,7 @@ namespace Pharaoh.Gameplay.Components
             switch (operation)
             {
                 case FloatOperation.Set:
-                    current = Mathf.Min(value, max);
+                    current = value;
                     onHealthSet?.Invoke(this, current);
                     break;
                 case FloatOperation.Increase:
@@ -99,8 +99,8 @@ namespace Pharaoh.Gameplay.Components
 
         private void Start()
         {
-            max = startMax;
             Set(startMax);
+            max = startMax;
         }
 
         private void OnDisable()
