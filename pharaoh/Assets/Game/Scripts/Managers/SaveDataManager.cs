@@ -64,7 +64,6 @@ namespace Pharaoh.Managers
         // Creates a new save file
         public void NewSave()
         {
-            Debug.Log("New Game started.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             lastCheckpoint.position = new Vector3(-2.5f, 2f, 1f); //need because ScriptableObjects are saved in editor
             Save();
@@ -74,7 +73,6 @@ namespace Pharaoh.Managers
         // Loads the save file
         public void LoadSave()
         {
-            Debug.Log("Loading game.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             if (SaveFileExists())
                 Load();
