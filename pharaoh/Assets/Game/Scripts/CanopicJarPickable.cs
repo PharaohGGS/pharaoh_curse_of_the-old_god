@@ -12,11 +12,11 @@ public class CanopicJarPickable : MonoBehaviour
 
     public enum CanopicJar : int
     {
-        Bird,
-        Monkey,
-        Dog,
-        Crocodile,
-        Human
+        Monkey,     // Dash
+        Bird,       // Bandelettes
+        Dog,        // Dash Nuée
+        Human,      // Soldat de sable
+        Crocodile   // Rien (coeur)
     };
 
     public InputReader inputReader;
@@ -29,7 +29,7 @@ public class CanopicJarPickable : MonoBehaviour
     public Mesh openedMesh;
 
     public LayerMask whatIsPlayer;
-    public CanopicJar jar = CanopicJar.Bird;
+    public CanopicJar jar = CanopicJar.Monkey;
 
     public UnityEvent<CanopicJarPickable> onPickUp;
 
@@ -39,7 +39,7 @@ public class CanopicJarPickable : MonoBehaviour
         switch (jar)
         {
             case CanopicJar.Monkey:
-            case CanopicJar.Crocodile:
+                playerSkills.hasDash = true;
                 break;
 
             case CanopicJar.Bird:
@@ -54,16 +54,25 @@ public class CanopicJarPickable : MonoBehaviour
                 playerSkills.hasSandSoldier = true;
                 break;
 
+            case CanopicJar.Crocodile:
+                playerSkills.hasHeart = true;
+                break;
+
             default:
                 break;
         }
 
-        onPickUp?.Invoke(this);
         AudioManager.Instance.Play("CanopPickup");
+
+        Open();
+    }
+
+    public void Open()
+    {
+        onPickUp?.Invoke(this);
 
         boxCollider.enabled = false;
         vfxIdle.Stop();
-
         meshFilter.mesh = openedMesh;
     }
 
