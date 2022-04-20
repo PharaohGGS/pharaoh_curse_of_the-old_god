@@ -11,7 +11,7 @@ namespace Pharaoh.Managers
         public static AudioManager Instance { get; private set; }
 
         [Space(10)]
-        [Header("Doors and plates sound")]
+        [Header("Doors and crates and plates sound")]
         [SerializeField]
         private AudioClip[] doorOpensClips;
         [SerializeField]
@@ -20,6 +20,8 @@ namespace Pharaoh.Managers
         private AudioClip[] plateOnClips;
         [SerializeField]
         private AudioClip[] plateOffClips;
+        [SerializeField]
+        private AudioClip[] cratePullClips;
 
         private void Awake()
         {
@@ -88,6 +90,9 @@ namespace Pharaoh.Managers
                         break;
                     case "PlateOff":
                         s.audioSource.clip = GetRandomClip(plateOffClips);
+                        break;
+                    case "cratePull":
+                        s.audioSource.clip = GetRandomClip(cratePullClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");

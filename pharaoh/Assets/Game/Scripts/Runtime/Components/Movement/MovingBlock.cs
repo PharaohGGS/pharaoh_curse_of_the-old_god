@@ -84,7 +84,7 @@ public class MovingBlock : MonoBehaviour
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
         if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
-
+        Debug.Log("----OnHookPerformed");
         isPulled = true;
         _rigidbody2D.MovePosition(behaviour.nextPosition);
     }
