@@ -819,7 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   metrics: {fileID: 11400000, guid: 83a72e685650a134a99ef168758f61e2, type: 2}
-  skills: {fileID: 11400000, guid: 1ad9651cf68982540aa0c783d52576a3, type: 2}
+  skills: {fileID: 11400000, guid: d19f41ab96b1c0f439e198cd0efd3e92, type: 2}
   hookEvents: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
   rightGroundCheck: {fileID: 5732736214096156555}
   leftGroundCheck: {fileID: 8898427098348061736}
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   endColliderOffset: {x: 0.1, y: 0}
   startColliderSize: {x: 1.65, y: 0}
   endColliderSize: {x: 1.65, y: 2.15}
-  blockPlusSoldierThreshold: 0.7
+  blockPlusSoldierThreshold: 0.85
   animator: {fileID: 5280757643533625441}
 --- !u!114 &6215234791223536456
 MonoBehaviour:
@@ -1207,7 +1207,7 @@ MonoBehaviour:
         m_CallState: 2
   useScreenShake: 1
   ssDampingSpeed: 1
-  ssMagnitude: 0.15
+  ssMagnitude: 2
   ssDuration: 0.2
   onScreenShake:
     m_PersistentCalls:
