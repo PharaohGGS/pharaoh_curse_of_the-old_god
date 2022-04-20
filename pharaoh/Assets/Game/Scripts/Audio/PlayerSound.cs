@@ -26,6 +26,8 @@ public class PlayerSound : MonoBehaviour
     private AudioClip[] khepeshSwingClips;
     [SerializeField]
     private AudioClip[] khepeshDoubleSwingClips;
+    [SerializeField]
+    private AudioClip[] khepeshHitClips;
 
     [Space(10)]
     [Header("Hook sound")]
@@ -83,6 +85,12 @@ public class PlayerSound : MonoBehaviour
     {
         AudioClip khepeshDoubleSwingClip = GetRandomClip(khepeshDoubleSwingClips);
         audioSource.PlayOneShot(khepeshDoubleSwingClip);
+    }
+
+    public void PlayerHitSound()
+    {
+        AudioClip khepeshHitClip = GetRandomClip(khepeshHitClips);
+        audioSource.PlayOneShot(khepeshHitClip);
     }
 
     public void DoorOpens()
