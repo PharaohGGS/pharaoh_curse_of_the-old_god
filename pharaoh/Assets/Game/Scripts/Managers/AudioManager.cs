@@ -10,6 +10,17 @@ namespace Pharaoh.Managers
 
         public static AudioManager Instance { get; private set; }
 
+        [Space(10)]
+        [Header("Doors and plates sound")]
+        [SerializeField]
+        private AudioClip[] doorOpensClips;
+        [SerializeField]
+        private AudioClip[] doorClosesClips;
+        [SerializeField]
+        private AudioClip[] plateOnClips;
+        [SerializeField]
+        private AudioClip[] plateOffClips;
+
         private void Awake()
         {
             if (Instance == null)
@@ -46,6 +57,7 @@ namespace Pharaoh.Managers
             public bool fadeOut = false;
             public float fadeInDuration = 1f;
             public float fadeOutDuration = 1f;
+            public bool randomized = false;
             [HideInInspector] public AudioSource audioSource;
         }
 
@@ -59,6 +71,28 @@ namespace Pharaoh.Managers
             {
                 Debug.LogWarning("Sound " + name + " not found !");
                 return;
+            }
+
+            if(s.randomized)
+            {
+                switch (name)
+                {
+                    case "DoorOpens":
+                        s.audioSource.clip = GetRandomClip(doorOpensClips);
+                        break;
+                    case "DoorCloses":
+                        s.audioSource.clip = GetRandomClip(doorClosesClips);
+                        break;
+                    case "PlateOn":
+                        s.audioSource.clip = GetRandomClip(plateOnClips);
+                        break;
+                    case "PlateOff":
+                        s.audioSource.clip = GetRandomClip(plateOffClips);
+                        break;
+                    default :
+                        Debug.LogWarning("Random sound " + name + " not found !");
+                        break;
+                }
             }
 
             s.audioSource?.Play();
@@ -128,6 +162,12 @@ namespace Pharaoh.Managers
             }
             s.Stop();
             yield break;
+        }
+
+        private AudioClip GetRandomClip(AudioClip[] audioClips)
+        {
+            Debug.Log("----Sound is randomized");
+            return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
         }
     }
 }

@@ -30,17 +30,9 @@ public class PlayerSound : MonoBehaviour
     private AudioClip[] khepeshHitClips;
 
     [Space(10)]
-    [Header("Hook sound")]
+    [Header("Hook sounds")]
     [SerializeField]
     private AudioClip[] hookThrowClips;
-
-    [Space(10)]
-    [Header("Doors and plates sound")]
-    [SerializeField]
-    private AudioClip[] doorOpensClips;
-    [SerializeField]
-    private AudioClip[] doorClosesClips;
-
 
     private PlayerMovement playerMovementData;
     private AudioSource audioSource;
@@ -92,19 +84,6 @@ public class PlayerSound : MonoBehaviour
         AudioClip khepeshHitClip = GetRandomClip(khepeshHitClips);
         audioSource.PlayOneShot(khepeshHitClip);
     }
-
-    public void DoorOpens()
-    {
-        AudioClip doorOpensClip = GetRandomClip(doorOpensClips);
-        audioSource.PlayOneShot(doorOpensClip);
-    }
-
-    public void DoorCloses()
-    {
-        AudioClip doorClosesClip = GetRandomClip(doorClosesClips);
-        audioSource.PlayOneShot(doorClosesClip);
-    }
-
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {

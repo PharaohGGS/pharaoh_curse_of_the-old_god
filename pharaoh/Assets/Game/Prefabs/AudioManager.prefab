@@ -45,6 +45,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46046172a1919294195c1c102e38e282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorOpensClips:
+  - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
+  - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
+  - {fileID: 8300000, guid: ac0837c967685964a9c5b5260247a9e1, type: 3}
+  - {fileID: 8300000, guid: 2f186fa701e8c5141bec6669adf31b83, type: 3}
+  doorClosesClips:
+  - {fileID: 8300000, guid: b63412288d25e2a4cacb821b2644e62b, type: 3}
+  - {fileID: 8300000, guid: 420ad194c1bff584daacced23b219fc2, type: 3}
+  - {fileID: 8300000, guid: 56df52e3d275a044d82ac19c7afbaddb, type: 3}
+  - {fileID: 8300000, guid: f32ba75365cd5a74abb7ae8ac49df858, type: 3}
+  plateOnClips:
+  - {fileID: 8300000, guid: 4173d002b6787634c8d5268525d582b1, type: 3}
+  - {fileID: 8300000, guid: dc4e982cd76d2d24bbeebfba2f4685c5, type: 3}
+  - {fileID: 8300000, guid: 8e42b9c4a382dd14cb4d9850942d4694, type: 3}
+  - {fileID: 8300000, guid: 1009cc2a754e74947b209acb5adb0dfb, type: 3}
+  plateOffClips:
+  - {fileID: 8300000, guid: 2cadf2737e216e341a25ec44dce39383, type: 3}
+  - {fileID: 8300000, guid: 7358149af20ba3448add9d9e92ee08ac, type: 3}
+  - {fileID: 8300000, guid: 686bd60315a29bd4ebc88b7b16eaf831, type: 3}
+  - {fileID: 8300000, guid: 6c19587505b4bbe4fafcbfdda13bed42, type: 3}
   sounds:
   - name: Ambiance
     clip: {fileID: 8300000, guid: 81f01cba8e23eec44ba50ef733061d9a, type: 3}
@@ -56,6 +76,7 @@ MonoBehaviour:
     fadeOut: 0
     fadeInDuration: 1
     fadeOutDuration: 1
+    randomized: 0
     audioSource: {fileID: 0}
   - name: LoreZone
     clip: {fileID: 8300000, guid: 6acb10cf5cc765646871c89c5cd52c91, type: 3}
@@ -67,6 +88,7 @@ MonoBehaviour:
     fadeOut: 0
     fadeInDuration: 1
     fadeOutDuration: 1
+    randomized: 0
     audioSource: {fileID: 0}
   - name: CanopPickup
     clip: {fileID: 8300000, guid: fbe1b9113774ea74dbd775bcae6d5f9d, type: 3}
@@ -78,6 +100,7 @@ MonoBehaviour:
     fadeOut: 0
     fadeInDuration: 1
     fadeOutDuration: 1
+    randomized: 0
     audioSource: {fileID: 0}
   - name: PlayerDeath
     clip: {fileID: 8300000, guid: f9d180b6250f3c6429516fd278b51f65, type: 3}
@@ -89,6 +112,55 @@ MonoBehaviour:
     fadeOut: 0
     fadeInDuration: 1
     fadeOutDuration: 1
+    randomized: 0
+    audioSource: {fileID: 0}
+  - name: DoorOpens
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    audioSource: {fileID: 0}
+  - name: DoorCloses
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    audioSource: {fileID: 0}
+  - name: PlateOn
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    audioSource: {fileID: 0}
+  - name: PlateOff
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
     audioSource: {fileID: 0}
 --- !u!81 &2199613194498635937
 AudioListener:

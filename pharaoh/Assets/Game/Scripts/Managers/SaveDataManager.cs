@@ -64,7 +64,6 @@ namespace Pharaoh.Managers
         // Creates a new save file
         public void NewSave()
         {
-            Debug.Log("New Game started.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             lastCheckpoint.position = new Vector3(-2.5f, 2f, 1f); //need because ScriptableObjects are saved in editor
             Save();
@@ -74,7 +73,6 @@ namespace Pharaoh.Managers
         // Loads the save file
         public void LoadSave()
         {
-            Debug.Log("Loading game.");
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
             if (SaveFileExists())
                 Load();
@@ -150,19 +148,19 @@ namespace Pharaoh.Managers
         }
 
         // Saves the states of the player skills to the save data object
-        private void SaveSkills()
+        public void SaveSkills()
         {
-            _saveData.skills = new bool[] { playerSkills.hasSwarmDash, playerSkills.hasSandSoldier, playerSkills.hasGrapplingHook, playerSkills.hasCanopicJar1, playerSkills.hasCanopicJar2 };
+            _saveData.skills = new bool[] { playerSkills.hasDash, playerSkills.hasGrapplingHook, playerSkills.hasSwarmDash, playerSkills.hasSandSoldier, playerSkills.hasHeart };
         }
 
         // Loads the states of skills from the save data object
         private void LoadSkills()
         {
-            playerSkills.hasSwarmDash = _saveData.skills[0];
-            playerSkills.hasSandSoldier = _saveData.skills[1];
-            playerSkills.hasGrapplingHook = _saveData.skills[2];
-            playerSkills.hasCanopicJar1 = _saveData.skills[3];
-            playerSkills.hasCanopicJar2 = _saveData.skills[4];
+            playerSkills.hasDash = _saveData.skills[0];
+            playerSkills.hasGrapplingHook = _saveData.skills[1];
+            playerSkills.hasSwarmDash = _saveData.skills[2];
+            playerSkills.hasSandSoldier = _saveData.skills[3];
+            playerSkills.hasHeart = _saveData.skills[4];
         }
 
         // Saves all the currently loaded enemies states

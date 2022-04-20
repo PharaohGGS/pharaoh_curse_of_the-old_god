@@ -33,6 +33,8 @@ public class SandSoldier : MonoBehaviour
     public Vector2 soldierSize = new Vector2(1.5f, 2.1f);
     [Tooltip("Particles force to reach soldier shape")]
     public float particleForce = 10f;
+    [Tooltip("Time for the soldier to collapse")]
+    public float timeToDie = 1f;
 
     [Header("Preview parameters")]
     [Tooltip("Small Y offset to avoid the preview getting blocked by small steps")]
@@ -171,7 +173,7 @@ public class SandSoldier : MonoBehaviour
         // Kill every overlapping soldiers detected above
         foreach (var hit in hits)
         {
-            KillSoldier(hit.collider.gameObject);
+            StartCoroutine(KillSoldier(hit.collider.gameObject));
         }
 
         HandleSoldiers(); // Remove extra soldiers and reduce timer of the others
@@ -231,7 +233,7 @@ public class SandSoldier : MonoBehaviour
         // Kill every overlapping soldiers detected above
         foreach (var hit in hits)
         {
-            KillSoldier(hit.collider.gameObject);
+            StartCoroutine(KillSoldier(hit.collider.gameObject));
         }
         
         HandleSoldiers(); // Remove extra soldiers and reduce timer of the others
@@ -246,7 +248,7 @@ public class SandSoldier : MonoBehaviour
     private void HandleSoldiers()
     {
         if (_soldiers.Count >= maxSoldiers) // Kill older soldier if max has been reached
-            KillSoldier(_soldiers[0]);
+            StartCoroutine(KillSoldier(_soldiers[0]));
 
         // Reduce all soldiers' timer
         List<int> ids = new List<int>(_soldiersLifetime.Keys);
@@ -344,34 +346,47 @@ public class SandSoldier : MonoBehaviour
     private IEnumerator SoldierExpiration(GameObject soldier)
     {
         int id = soldier.GetInstanceID();
+        if (!_soldiersLifetime.ContainsKey(id)) yield break;
+        
         while (_soldiersLifetime[id] > 0f)
         {
             _soldiersLifetime[id] -= Time.deltaTime;
             yield return null;
         }
-        KillSoldier(soldier);
+        StartCoroutine(KillSoldier(soldier));
         yield return null;
     }
 
     // Destroy a soldier and remove any data about it
-    private void KillSoldier(GameObject soldier)
+    private IEnumerator KillSoldier(GameObject soldier)
     {
-        if (soldier == null) return;
-        
+        if (soldier == null) yield break;
+
         int id = soldier.GetInstanceID();
         StopCoroutine(_soldiersExpireCoroutine[id]);
         _soldiers.Remove(soldier);
         _soldiersLifetime.Remove(id);
         _soldiersExpireCoroutine.Remove(id);
+
+        if (soldier.transform.GetChild(0).TryGetComponent(out MeshRenderer meshRenderer))
+            meshRenderer.enabled = false;
+        if (soldier.TryGetComponent(out Collider2D col))
+            col.enabled = false;
+        if (!soldier.TryGetComponent(out VisualEffect vfx))
+            Debug.Log("No Vfx on soldier");
+        vfx.SendEvent("Kill");
+        yield return new WaitForSeconds(timeToDie);
+        
         Destroy(soldier);
     }
     
     // Destroy all soldiers
     private void KillAllSoldiers()
     {
-        foreach (GameObject soldier in _soldiers)
+        List<GameObject> soldiers = new List<GameObject>(_soldiers);
+        foreach (GameObject soldier in soldiers)
         {
-            Destroy(soldier);
+            StartCoroutine(KillSoldier(soldier));
         }
         _soldiers.Clear();
         _soldiersLifetime.Clear();
