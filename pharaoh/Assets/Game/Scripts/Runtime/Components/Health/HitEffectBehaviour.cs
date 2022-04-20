@@ -23,6 +23,12 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] public UnityEvent onKnockBackStart;
         [SerializeField] public UnityEvent onKnockBackEnd;
 
+        [Header("ScreenShake")]
+        [SerializeField, Range(0.0f, 100.0f)] private float ssDampingSpeed;
+        [SerializeField, Range(0.0f, 10.0f)] private float ssMagnitude;
+        [SerializeField, Range(0.0f, 10.0f)] private float ssDuration;
+        public UnityEvent<float, float, float> onScreenShake;
+
         private void Awake()
         {
             // copy base blkColor in list
@@ -34,6 +40,15 @@ namespace Pharaoh.Gameplay.Components
                 _blkMaterialsColors.Add(colors);
             }
         }
+
+        #region ScreenShake
+
+        public void Shake()
+        {
+            onScreenShake?.Invoke(ssDuration, ssMagnitude, ssDampingSpeed);
+        }
+
+        #endregion
 
         #region KnockBack
         
