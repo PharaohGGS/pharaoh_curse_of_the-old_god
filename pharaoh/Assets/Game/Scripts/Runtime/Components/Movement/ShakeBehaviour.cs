@@ -17,7 +17,7 @@ namespace Pharaoh.Components.Movement
             _initialPosition = transform.localPosition;
         }
 
-        private void ChangeVirtualCamera(ICinemachineCamera incoming, ICinemachineCamera outgoing)
+        public void ChangeVirtualCamera(ICinemachineCamera incoming, ICinemachineCamera outgoing)
         {
             CinemachineVirtualCamera incomingCamera = incoming as CinemachineVirtualCamera;
             CinemachineVirtualCamera outgoingCamera = outgoing as CinemachineVirtualCamera;
