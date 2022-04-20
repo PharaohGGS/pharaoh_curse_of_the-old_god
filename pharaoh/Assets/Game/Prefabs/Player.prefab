@@ -601,8 +601,8 @@ GameObject:
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
   - component: {fileID: 6706840792975061483}
-  - component: {fileID: 2089584490314425185}
   - component: {fileID: 1873792441378832283}
+  - component: {fileID: 2089584490314425185}
   - component: {fileID: 1056721239}
   - component: {fileID: 1079426416759742461}
   - component: {fileID: 5542629325624734021}
@@ -927,18 +927,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6706840792975061483}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
-        m_MethodName: Blink
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
@@ -995,6 +983,35 @@ MonoBehaviour:
           m_StringArgument: PlayerDeath
           m_BoolArgument: 0
         m_CallState: 2
+  onTakeHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: KnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: Shake
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &6706840792975061483
 MonoBehaviour:
@@ -1008,16 +1025,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 6746618585743264580}
-  - {fileID: 6663196720754654003}
-  - {fileID: 825942944272443920}
-  - {fileID: 2057839720442153237}
-  - {fileID: 745411847284014960}
-  duration: 0.75
-  blinkCount: 3
-  intensity: 10
-  color: {r: 1, g: 0.3909033, b: 0.33490568, a: 1}
+  useBlink: 0
+  blkRenderers: []
+  blkDuration: 0
+  blkCount: 1
+  blkIntensity: 0
+  blkColor: {r: 1, g: 1, b: 1, a: 1}
+  useKnockBack: 1
+  kbForce: 5
+  kbDuration: 0.33
+  onKnockBackStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onKnockBackEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  useScreenShake: 1
+  ssDampingSpeed: 1
+  ssMagnitude: 0.15
+  ssDuration: 0.2
+  onScreenShake:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 60c93f959ba35334b9fc4b722b58f4bc, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`3[[System.Single,
+          mscorlib
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1873792441378832283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6215234791223536456}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
+        m_MethodName: TakeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2089584490314425185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1104,34 +1200,6 @@ MonoBehaviour:
   pullHookData: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
   snatchHookData: {fileID: 11400000, guid: 0ff790330caafd847b4303fdb2250f1f, type: 2}
   grappleHookData: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
---- !u!114 &1873792441378832283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6215234791223536456}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
-        m_MethodName: TakeHit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1056721239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1184,7 +1252,21 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6e145a40672182c43a3261911b94396f, type: 3}
   - {fileID: 8300000, guid: 97b4ec0687fab6c4fbd5ceb3febc2d97, type: 3}
   - {fileID: 8300000, guid: b2921d39eb145ff4fb1e88b3fa3f9f1f, type: 3}
-  khepeshSwingClips: []
+  khepeshSwingClips:
+  - {fileID: 8300000, guid: 67832f12d631aaa4286cdbe63b8b915d, type: 3}
+  - {fileID: 8300000, guid: 6f6cfafb1ffb3fc4980157cfe1a43238, type: 3}
+  - {fileID: 8300000, guid: cbd4f793f24cd5e4a9fa2e0a903735aa, type: 3}
+  - {fileID: 8300000, guid: 90fcad43814c94d4b8c01784fea9cb97, type: 3}
+  khepeshDoubleSwingClips:
+  - {fileID: 8300000, guid: 4838f529db520d9458517a70c000ef86, type: 3}
+  - {fileID: 8300000, guid: 938ef451de31b7b459c9c2bcd734afcf, type: 3}
+  - {fileID: 8300000, guid: 40c5a2dbadcaa3b40b12b0d7a4c74de9, type: 3}
+  - {fileID: 8300000, guid: 43d64b957f31b854387899254835e658, type: 3}
+  khepeshHitClips:
+  - {fileID: 8300000, guid: 1f8cf1c7ff07ad64190c71e6a36af041, type: 3}
+  - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
+  - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
+  - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
   hookThrowClips:
   - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
   - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
@@ -1714,16 +1796,6 @@ CapsuleCollider:
   m_Height: 0.26730284
   m_Direction: 2
   m_Center: {x: 0.0013075935, y: 0.005178914, z: -0.002254515}
---- !u!137 &745411847284014960 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7891524183992325504, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &825942944272443920 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1505039420503206049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -1819,7 +1891,7 @@ MonoBehaviour:
       Value:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 303100745142582095}
+          - m_Target: {fileID: 7044166387561328408}
             m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
             m_MethodName: set_enabled
             m_Mode: 6
@@ -1831,10 +1903,10 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 1
             m_CallState: 2
-          - m_Target: {fileID: 7044166387561328408}
-            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-            m_MethodName: set_enabled
-            m_Mode: 6
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerSwingsSound
+            m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1887,12 +1959,39 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+    - Key: PlayerSwingSound
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerSwingSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: PlayerDoubleSwingSound
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDoubleSwingSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     keyCollision: 0
---- !u!137 &2057839720442153237 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2281400649281040923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -2870,11 +2969,6 @@ Animator:
 --- !u!4 &6197838945859501086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3593673354083964434, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &6663196720754654003 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4925810639347150531, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
   m_PrefabInstance: {fileID: 1739392970509030896}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6746618585743264580 stripped
@@ -49960,6 +50054,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1079426416759742461}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayerHitSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerSound, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
 --- !u!60 &303100745142582095 stripped
@@ -50038,6 +50160,34 @@ PrefabInstance:
     - target: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1079426416759742461}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayerHitSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerSound, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}

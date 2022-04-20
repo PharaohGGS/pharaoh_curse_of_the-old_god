@@ -22,11 +22,6 @@ public class BuildLogger : MonoBehaviour
     string myLog;
     Queue myLogQueue = new Queue();
 
-    void Start()
-    {
-        Debug.Log("BuildLogger started.");
-    }
-
     void OnEnable()
     {
         Application.logMessageReceived += HandleLog;

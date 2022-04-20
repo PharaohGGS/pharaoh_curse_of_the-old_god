@@ -265,18 +265,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5468302792086366486}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
-        m_MethodName: Blink
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
@@ -345,6 +333,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTakeHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5468302792086366486}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: KnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &5468302792086366486
 MonoBehaviour:
@@ -358,18 +362,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 7941978145691822525}
-  - {fileID: 1121913159883988167}
-  - {fileID: 5588991098258483722}
-  - {fileID: 3936549112377583860}
-  - {fileID: 1054256621001543935}
-  - {fileID: 765070165906068094}
-  - {fileID: 2715754602775822491}
-  duration: 0.1
-  blinkCount: 1
-  intensity: 10
-  color: {r: 1, g: 0.52211887, b: 0.3066038, a: 1}
+  useBlink: 0
+  blkRenderers: []
+  blkDuration: 0
+  blkCount: 0
+  blkIntensity: 0
+  blkColor: {r: 1, g: 1, b: 1, a: 1}
+  useKnockBack: 1
+  kbForce: 5
+  kbDuration: 0.33
+  onKnockBackStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onKnockBackEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  useScreenShake: 0
+  ssDampingSpeed: 0
+  ssMagnitude: 0
+  ssDuration: 0
+  onScreenShake:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7079046523897001457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,21 +602,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
---- !u!137 &765070165906068094 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2465788661791164043, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &1054256621001543935 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -6483118349943471094, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &1121913159883988167 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2826000971708205106, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2623143562038356388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
@@ -700,29 +723,9 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
     keyCollision: 0
---- !u!137 &2715754602775822491 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -8280322467453545362, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3399258426588951326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &3936549112377583860 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7059603017308423167, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &5588991098258483722 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -1930290309201166593, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
-  m_PrefabInstance: {fileID: 2929080259299710197}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &7941978145691822525 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 5085054299710127432, guid: 51cab2eb3c4989a409b52b8436140f82, type: 3}
   m_PrefabInstance: {fileID: 2929080259299710197}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8776595742986578276 stripped

@@ -8,7 +8,8 @@ public class SaveInstance : MonoBehaviour
     {
         None,
         Enemy,
-        MovingBlock
+        MovingBlock,
+        CanopicJar
     };
 
     private readonly int ENEMY_PARSE_INDEX = 6;
@@ -16,6 +17,7 @@ public class SaveInstance : MonoBehaviour
 
     [HideInInspector] public ulong instanceID;
     public Type type = Type.None;
+    public PlayerSkills playerSkills;
 
     private void Awake()
     {
@@ -60,6 +62,36 @@ public class SaveInstance : MonoBehaviour
                     gameObject.transform.position = position;
                 break;
 
+            case Type.CanopicJar:
+                CanopicJarPickable pickable = GetComponent<CanopicJarPickable>();
+                CanopicJarPickable.CanopicJar type = pickable.jar;
+                switch (type)
+                {
+                    case CanopicJarPickable.CanopicJar.Monkey:
+                        if (playerSkills.hasDash) pickable.Open();
+                        break;
+
+                    case CanopicJarPickable.CanopicJar.Bird:
+                        if (playerSkills.hasGrapplingHook) pickable.Open();
+                        break;
+
+                    case CanopicJarPickable.CanopicJar.Dog:
+                        if (playerSkills.hasSwarmDash) pickable.Open();
+                        break;
+
+                    case CanopicJarPickable.CanopicJar.Human:
+                        if (playerSkills.hasSandSoldier) pickable.Open();
+                        break;
+
+                    case CanopicJarPickable.CanopicJar.Crocodile:
+                        if (playerSkills.hasHeart) pickable.Open();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
             case Type.None:
             default:
                 break;
@@ -79,6 +111,10 @@ public class SaveInstance : MonoBehaviour
             case Type.MovingBlock:
                 // Save this block position
                 SaveDataManager.Instance.SaveBlockPosition(instanceID, transform.position);
+                break;
+
+            case Type.CanopicJar:
+                SaveDataManager.Instance.SaveSkills();
                 break;
 
             case Type.None:

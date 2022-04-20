@@ -24,6 +24,7 @@ namespace Pharaoh.Gameplay.Components
         public UnityEvent<HealthComponent, float> onHealthDecrease;
         public UnityEvent<HealthComponent, float> onHealthIncrease;
         public UnityEvent<HealthComponent> onDeath;
+        public UnityEvent<Damager> onTakeHit;
 
         public bool isInvincible { get; private set; }
         public bool isDead { get; private set; }
@@ -118,6 +119,7 @@ namespace Pharaoh.Gameplay.Components
 
             var damage = damager.damagerData.damage - armorDeal;
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
+            onTakeHit?.Invoke(damager);
             Decrease(damage);
 
             if (!isInvincible && invincibilityTime > Mathf.Epsilon)

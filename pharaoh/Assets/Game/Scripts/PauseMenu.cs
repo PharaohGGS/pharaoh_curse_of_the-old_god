@@ -76,11 +76,11 @@ public class PauseMenu: MonoBehaviour
         GameObject unlocked3 = displayedSkills[3];
         GameObject unlocked4 = displayedSkills[4];
 
-        unlocked0.SetActive(playerSkills.hasCanopicJar1);
+        unlocked0.SetActive(playerSkills.hasDash);
         unlocked1.SetActive(playerSkills.hasGrapplingHook);
         unlocked2.SetActive(playerSkills.hasSwarmDash);
         unlocked3.SetActive(playerSkills.hasSandSoldier);
-        unlocked4.SetActive(playerSkills.hasCanopicJar2);
+        unlocked4.SetActive(playerSkills.hasHeart);
     }
 
 }
