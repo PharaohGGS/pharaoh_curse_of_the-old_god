@@ -16,6 +16,10 @@ namespace Pharaoh.Managers
         private AudioClip[] doorOpensClips;
         [SerializeField]
         private AudioClip[] doorClosesClips;
+        [SerializeField]
+        private AudioClip[] plateOnClips;
+        [SerializeField]
+        private AudioClip[] plateOffClips;
 
         private void Awake()
         {
@@ -78,6 +82,12 @@ namespace Pharaoh.Managers
                         break;
                     case "DoorCloses":
                         s.audioSource.clip = GetRandomClip(doorClosesClips);
+                        break;
+                    case "PlateOn":
+                        s.audioSource.clip = GetRandomClip(plateOnClips);
+                        break;
+                    case "PlateOff":
+                        s.audioSource.clip = GetRandomClip(plateOffClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
