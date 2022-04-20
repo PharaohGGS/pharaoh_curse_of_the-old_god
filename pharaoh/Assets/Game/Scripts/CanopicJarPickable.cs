@@ -12,7 +12,6 @@ public class CanopicJarPickable : MonoBehaviour
 
     public enum CanopicJar : int
     {
-        None,
         Bird,
         Monkey,
         Dog,
@@ -24,12 +23,13 @@ public class CanopicJarPickable : MonoBehaviour
     public PlayerSkills playerSkills;
 
     public BoxCollider2D boxCollider;
+    public MeshFilter meshFilter;
     public VisualEffect vfxIdle;
 
-    public GameObject[] canopicJars;
+    public Mesh openedMesh;
 
     public LayerMask whatIsPlayer;
-    public CanopicJar jar = CanopicJar.None;
+    public CanopicJar jar = CanopicJar.Bird;
 
     public UnityEvent<CanopicJarPickable> onPickUp;
 
@@ -43,7 +43,7 @@ public class CanopicJarPickable : MonoBehaviour
                 break;
 
             case CanopicJar.Bird:
-                playerSkills.hasGrapplingHook= true;
+                playerSkills.hasGrapplingHook = true;
                 break;
 
             case CanopicJar.Dog:
@@ -51,7 +51,7 @@ public class CanopicJarPickable : MonoBehaviour
                 break;
 
             case CanopicJar.Human:
-                playerSkills.hasSandSoldier= true;
+                playerSkills.hasSandSoldier = true;
                 break;
 
             default:
@@ -64,16 +64,7 @@ public class CanopicJarPickable : MonoBehaviour
         boxCollider.enabled = false;
         vfxIdle.Stop();
 
-        canopicJars[(int)jar * 2].SetActive(false);
-        canopicJars[((int)jar * 2) + 1].SetActive(true);
-    }
-
-    private void ChangeSkin()
-    {
-        foreach (GameObject go in canopicJars) go.SetActive(false);
-
-        int index = (int)jar * 2;
-        canopicJars[index].SetActive(true);
+        meshFilter.mesh = openedMesh;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -86,15 +77,5 @@ public class CanopicJarPickable : MonoBehaviour
     {
         inputReader.hookInteractPerformedEvent -= OnInteract;
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (!EditorApplication.isPlayingOrWillChangePlaymode)
-        {
-            ChangeSkin();
-        }
-    }
-#endif
 
 }
