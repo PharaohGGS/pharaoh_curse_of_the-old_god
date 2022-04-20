@@ -363,7 +363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1463119867
 Transform:
   m_ObjectHideFlags: 0
@@ -386,16 +386,22 @@ VisualEffect:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463119866}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Asset: {fileID: 8926484042661614526, guid: 428494a2767a7c94fb3b7362c04bc78a, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: Dash
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 30
+        m_Name: MinForce
+        m_Overridden: 1
+      - m_Value: 40
+        m_Name: MaxForce
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -828,6 +834,7 @@ MonoBehaviour:
     m_Bits: 2163712
   animator: {fileID: 5280757643533625441}
   modelTransform: {fileID: 2281400649281040923}
+  swarmDashVFX: {fileID: 1463119869}
   dashStunLayer:
     serializedVersion: 2
     m_Bits: 2048

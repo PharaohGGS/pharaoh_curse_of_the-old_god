@@ -3,6 +3,7 @@ using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
 
 #if UNITY_EDITOR
@@ -78,6 +79,10 @@ namespace Pharaoh.Gameplay.Components.Movement
         public Animator animator;
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
+
+        [Header("VFX")]
+        [Tooltip("VFX for the swarm dash")]
+        public VisualEffect swarmDashVFX;
 
         [Header("Dash Detection")]
         [SerializeField] private LayerMask dashStunLayer;
@@ -187,7 +192,10 @@ namespace Pharaoh.Gameplay.Components.Movement
                 if (skills.hasSwarmDash)
                 {
                     gameObject.layer = _swarmDashLayer;
-                    //pipicaca
+                    foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+                    swarmDashVFX.SetVector3("StartPosition", transform.position);
+                    swarmDashVFX.SetBool("IsFacingRight", _isFacingRight);
+                    swarmDashVFX.enabled = true;
                 }
 
                 animator.SetTrigger("Dashing");
@@ -355,7 +363,8 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 gameObject.layer = _defaultLayer;
 
-                //pipicaca
+                foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = true;
+                swarmDashVFX.enabled = false;
 
                 StartCoroutine(DashCooldown());
             }
