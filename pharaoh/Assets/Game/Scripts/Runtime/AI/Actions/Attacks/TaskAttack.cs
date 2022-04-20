@@ -28,8 +28,10 @@ namespace Pharaoh.AI.Actions
             var target = blackboard.GetData<Transform>("target");
             if (!_fight.Attack(target)) return NodeState.Failure;
             
-            blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", _fight.activeWeapon.GetRate());
+            //blackboard.SetData("isWaiting", true);
+            //blackboard.SetData("waitTime", _fight.activeWeapon.GetRate());
+            
+            ((EnemyAgent)agent).StartWait(WaitType.Attack, _fight.activeWeapon.GetRate());
 
             return NodeState.Success;
         }

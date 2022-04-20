@@ -17,10 +17,11 @@ namespace Pharaoh.AI.Actions
                 LogHandler.SendMessage($"Not a pawn !", MessageType.Error);
                 return;
             }
-
-            blackboard.SetData("waitTime", _aiMovement.timeBetweenWaypoints);
+            
+            //blackboard.SetData("waitTime", _aiMovement.timeBetweenWaypoints);
             if (!blackboard.ContainsData("currentWaypointIndex"))
             {
+                ((EnemyAgent)agent).StartWait(WaitType.Movement, _aiMovement.timeBetweenWaypoints);
                 blackboard.SetData("currentWaypointIndex", 0);
             }
         }
@@ -34,8 +35,11 @@ namespace Pharaoh.AI.Actions
 
             var index = blackboard.GetData<int>("currentWaypointIndex");
 
-            blackboard.SetData("isWaiting", true);
-            blackboard.SetData("waitTime", _aiMovement.timeBetweenWaypoints);
+            
+            ((EnemyAgent)agent).StartWait(WaitType.Movement, _aiMovement.timeBetweenWaypoints);
+
+            //blackboard.SetData("isWaiting", true);
+            //blackboard.SetData("waitTime", _aiMovement.timeBetweenWaypoints);
             
             var nextIndex = (index + 1) % _aiMovement.waypointHolder.childCount;
             blackboard.SetData("currentWaypointIndex", nextIndex);

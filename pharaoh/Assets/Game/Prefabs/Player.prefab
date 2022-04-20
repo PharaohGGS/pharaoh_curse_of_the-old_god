@@ -601,9 +601,11 @@ GameObject:
   - component: {fileID: 1694517701867188700}
   - component: {fileID: 6215234791223536456}
   - component: {fileID: 6706840792975061483}
-  - component: {fileID: 2089584490314425185}
   - component: {fileID: 1873792441378832283}
+  - component: {fileID: 2089584490314425185}
   - component: {fileID: 1056721239}
+  - component: {fileID: 1079426416759742461}
+  - component: {fileID: 5542629325624734021}
   m_Layer: 17
   m_Name: Player
   m_TagString: Player
@@ -754,7 +756,7 @@ MonoBehaviour:
   leftSocket:
     hand: {fileID: 4716540348454035076}
     back: {fileID: 9029138249168344907}
-  timeBeforeSheathing: 5
+  timeBeforeSheathing: 20
 --- !u!114 &7790090175714034903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +880,7 @@ MonoBehaviour:
   startColliderSize: {x: 1.65, y: 0}
   endColliderSize: {x: 1.65, y: 2.15}
   blockPlusSoldierThreshold: 0.7
+  animator: {fileID: 5280757643533625441}
 --- !u!114 &6215234791223536456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,6 +894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMax: 100
+  invincibilityTime: 0.75
   onHealthSet:
     m_PersistentCalls:
       m_Calls:
@@ -915,18 +919,6 @@ MonoBehaviour:
           Pharaoh
         m_MethodName: Raise
         m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6706840792975061483}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
-        m_MethodName: Blink
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -979,6 +971,47 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
+        m_TargetAssemblyTypeName: Pharaoh.Managers.AudioManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDeath
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTakeHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: KnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6706840792975061483}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: Shake
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &6706840792975061483
 MonoBehaviour:
@@ -992,15 +1025,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 6746618585743264580}
-  - {fileID: 6663196720754654003}
-  - {fileID: 825942944272443920}
-  - {fileID: 2057839720442153237}
-  - {fileID: 745411847284014960}
-  duration: 0.1
-  intensity: 100
-  color: {r: 1, g: 1, b: 1, a: 1}
+  blkRenderers: []
+  blkDuration: 0
+  blkCount: 1
+  blkIntensity: 0
+  blkColor: {r: 1, g: 1, b: 1, a: 1}
+  kbForce: 5
+  kbDuration: 0.33
+  onKnockBackStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onKnockBackEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5732736215046696851}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Movement.PlayerMovement,
+          Pharaoh
+        m_MethodName: LockMovement
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  ssDampingSpeed: 1
+  ssMagnitude: 0.15
+  ssDuration: 0.2
+  onScreenShake:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 60c93f959ba35334b9fc4b722b58f4bc, type: 2}
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`3[[System.Single,
+          mscorlib
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1873792441378832283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6215234791223536456}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
+        m_MethodName: TakeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2089584490314425185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,31 +1180,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
-  events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
-  pullHookData: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
-  snatchHookData: {fileID: 11400000, guid: 0ff790330caafd847b4303fdb2250f1f, type: 2}
-  grappleHookData: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
---- !u!114 &1873792441378832283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732736215046696853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e414836178a92eb4ba775060ef416023, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6215234791223536456}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
-        m_MethodName: TakeHit
-        m_Mode: 0
+      - m_Target: {fileID: 1079426416759742461}
+        m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+        m_MethodName: PlayerHookSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1103,6 +1192,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
+  events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
+  pullHookData: {fileID: 11400000, guid: 4a8ff6700c8cb7440a617818b276167e, type: 2}
+  snatchHookData: {fileID: 11400000, guid: 0ff790330caafd847b4303fdb2250f1f, type: 2}
+  grappleHookData: {fileID: 11400000, guid: 9ad574601a88c6948930f2b6f3312a3f, type: 2}
 --- !u!114 &1056721239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1119,6 +1213,169 @@ MonoBehaviour:
   virtualCamera: {fileID: 1377715777}
   upValue: 2
   downValue: 2
+--- !u!114 &1079426416759742461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c88afa763fd9164ebd81e134b1e2a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceVolume: 0.2
+  footStepClips:
+  - {fileID: 8300000, guid: 3b87dad72fcdba04ba9bd22ba59251cc, type: 3}
+  - {fileID: 8300000, guid: 5db9a220e4ab1c841a9cb17788330b71, type: 3}
+  - {fileID: 8300000, guid: 3e89aecdf76551440a1afd6476c0743e, type: 3}
+  - {fileID: 8300000, guid: c5c29f43d259f9b41a3e852d214ebf2a, type: 3}
+  - {fileID: 8300000, guid: 463aa266da3e4e04198455f91574a7f2, type: 3}
+  - {fileID: 8300000, guid: 6a6c531172b6ff149aa397cfeb6ba63a, type: 3}
+  - {fileID: 8300000, guid: 441289ac638fd9f45939ea55a702aa30, type: 3}
+  - {fileID: 8300000, guid: 9998fdecd56ba0e44b9a1546272053de, type: 3}
+  - {fileID: 8300000, guid: e94bb2aaa0c57eb4cb4c771f1c821225, type: 3}
+  - {fileID: 8300000, guid: f5463d7ee85126d408115d1f168603eb, type: 3}
+  - {fileID: 8300000, guid: a75cf319e31cd994a90fc63bf512f191, type: 3}
+  - {fileID: 8300000, guid: 56071c74c2abaa844ae604fd1fd0b130, type: 3}
+  - {fileID: 8300000, guid: a80b4439d1b44b2448d64f7f19e17901, type: 3}
+  - {fileID: 8300000, guid: 007b9610d41c5574488502251107fef6, type: 3}
+  - {fileID: 8300000, guid: d948360a48ec9c742a596619ecda9873, type: 3}
+  - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
+  - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
+  jumpClips: []
+  khepeshDrawClips:
+  - {fileID: 8300000, guid: 6e145a40672182c43a3261911b94396f, type: 3}
+  - {fileID: 8300000, guid: 97b4ec0687fab6c4fbd5ceb3febc2d97, type: 3}
+  - {fileID: 8300000, guid: b2921d39eb145ff4fb1e88b3fa3f9f1f, type: 3}
+  khepeshSwingClips:
+  - {fileID: 8300000, guid: 67832f12d631aaa4286cdbe63b8b915d, type: 3}
+  - {fileID: 8300000, guid: 6f6cfafb1ffb3fc4980157cfe1a43238, type: 3}
+  - {fileID: 8300000, guid: cbd4f793f24cd5e4a9fa2e0a903735aa, type: 3}
+  - {fileID: 8300000, guid: 90fcad43814c94d4b8c01784fea9cb97, type: 3}
+  khepeshDoubleSwingClips:
+  - {fileID: 8300000, guid: 4838f529db520d9458517a70c000ef86, type: 3}
+  - {fileID: 8300000, guid: 938ef451de31b7b459c9c2bcd734afcf, type: 3}
+  - {fileID: 8300000, guid: 40c5a2dbadcaa3b40b12b0d7a4c74de9, type: 3}
+  - {fileID: 8300000, guid: 43d64b957f31b854387899254835e658, type: 3}
+  khepeshHitClips:
+  - {fileID: 8300000, guid: 1f8cf1c7ff07ad64190c71e6a36af041, type: 3}
+  - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
+  - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
+  - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
+  khepeshDoubleHitClips: []
+  hookThrowClips:
+  - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
+  - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
+  - {fileID: 8300000, guid: a9853a296dc19f84bb66787ea5de3dc7, type: 3}
+  - {fileID: 8300000, guid: 29f21652ab6037648a3dc9a8643c4188, type: 3}
+  doorOpensClips:
+  - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
+  - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
+  - {fileID: 8300000, guid: ac0837c967685964a9c5b5260247a9e1, type: 3}
+  - {fileID: 8300000, guid: 2f186fa701e8c5141bec6669adf31b83, type: 3}
+  doorClosesClips:
+  - {fileID: 8300000, guid: b63412288d25e2a4cacb821b2644e62b, type: 3}
+  - {fileID: 8300000, guid: 420ad194c1bff584daacced23b219fc2, type: 3}
+  - {fileID: 8300000, guid: 56df52e3d275a044d82ac19c7afbaddb, type: 3}
+  - {fileID: 8300000, guid: f32ba75365cd5a74abb7ae8ac49df858, type: 3}
+--- !u!82 &5542629325624734021
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732736215046696853}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5732736215052742479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,16 +1794,6 @@ CapsuleCollider:
   m_Height: 0.26730284
   m_Direction: 2
   m_Center: {x: 0.0013075935, y: 0.005178914, z: -0.002254515}
---- !u!137 &745411847284014960 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7891524183992325504, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &825942944272443920 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7830134623578751008, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1505039420503206049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -1582,6 +1829,18 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - Key: DrawSwords
       Value:
         m_PersistentCalls:
@@ -1589,6 +1848,18 @@ MonoBehaviour:
           - m_Target: {fileID: 5397436550283630878}
             m_TargetAssemblyTypeName: PlayerCombat, Pharaoh
             m_MethodName: DrawSwords
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDrawsSound
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1618,7 +1889,7 @@ MonoBehaviour:
       Value:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 303100745142582095}
+          - m_Target: {fileID: 7044166387561328408}
             m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
             m_MethodName: set_enabled
             m_Mode: 6
@@ -1630,10 +1901,10 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 1
             m_CallState: 2
-          - m_Target: {fileID: 7044166387561328408}
-            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-            m_MethodName: set_enabled
-            m_Mode: 6
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerSwingsSound
+            m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1670,12 +1941,55 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+    - Key: PlayerStep
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerStepSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: PlayerSwingSound
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerSwingSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: PlayerDoubleSwingSound
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1079426416759742461}
+            m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
+            m_MethodName: PlayerDoubleSwingSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     keyCollision: 0
---- !u!137 &2057839720442153237 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 337060659305143525, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2281400649281040923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
@@ -2653,11 +2967,6 @@ Animator:
 --- !u!4 &6197838945859501086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3593673354083964434, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
-  m_PrefabInstance: {fileID: 1739392970509030896}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &6663196720754654003 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4925810639347150531, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
   m_PrefabInstance: {fileID: 1739392970509030896}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6746618585743264580 stripped
@@ -49743,6 +50052,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1079426416759742461}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayerHitSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerSound, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
 --- !u!60 &303100745142582095 stripped
@@ -49821,6 +50158,34 @@ PrefabInstance:
     - target: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1079426416759742461}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayerHitSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerSound, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+      propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}

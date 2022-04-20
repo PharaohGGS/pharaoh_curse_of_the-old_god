@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Pharaoh.Managers;
 using Pharaoh.Tools;
+using UnityEngine.VFX;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,18 +24,14 @@ public class CanopicJarPickable : MonoBehaviour
     public PlayerSkills playerSkills;
 
     public BoxCollider2D boxCollider;
-    public ParticleSystem psIdle;
-    public ParticleSystem psPickup;
+    public VisualEffect vfxIdle;
 
     public GameObject[] canopicJars;
 
     public LayerMask whatIsPlayer;
     public CanopicJar jar = CanopicJar.None;
 
-    private void Awake()
-    {
-        //ChangeSkin();
-    }
+    public UnityEvent<CanopicJarPickable> onPickUp;
 
     public void OnInteract()
     {
@@ -42,31 +40,29 @@ public class CanopicJarPickable : MonoBehaviour
         {
             case CanopicJar.Monkey:
             case CanopicJar.Crocodile:
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Bird:
                 playerSkills.hasGrapplingHook= true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Dog:
                 playerSkills.hasSwarmDash = true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             case CanopicJar.Human:
                 playerSkills.hasSandSoldier= true;
-                AudioManager.Instance.Play("LoreShort");
                 break;
 
             default:
                 break;
         }
 
+        onPickUp?.Invoke(this);
+        AudioManager.Instance.Play("CanopPickup");
+
         boxCollider.enabled = false;
-        psIdle.Stop();
-        psPickup.Play();
+        vfxIdle.Stop();
 
         canopicJars[(int)jar * 2].SetActive(false);
         canopicJars[((int)jar * 2) + 1].SetActive(true);
