@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3949869777856234503}
   - component: {fileID: 3949869777856234501}
   - component: {fileID: 319499940055004896}
+  - component: {fileID: 1374249766162127915}
+  - component: {fileID: -3479835960421249893}
   m_Layer: 0
   m_Name: VirtualCamera
   m_TagString: Untagged
@@ -107,6 +109,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8a65b6ec7ad42448138b8f8c9e7814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1374249766162127915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949869777856234496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23fcc6f454212a244a6faf5d248d03f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useCinemachineCamera: 1
+--- !u!114 &-3479835960421249893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949869777856234496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f854535c743b2364ba44fd52854e6dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 60c93f959ba35334b9fc4b722b58f4bc, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1374249766162127915}
+        m_TargetAssemblyTypeName: Pharaoh.Components.Movement.ShakeBehaviour, Pharaoh
+        m_MethodName: Shake
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3949869778792013574
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +162,7 @@ GameObject:
   - component: {fileID: 3949869778792013578}
   - component: {fileID: 3949869778792013579}
   - component: {fileID: 3949869778792013572}
+  - component: {fileID: 6570979816243446275}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -202,3 +246,20 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &6570979816243446275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949869778792013574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 5
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
