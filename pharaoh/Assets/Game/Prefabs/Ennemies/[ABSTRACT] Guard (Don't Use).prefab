@@ -265,18 +265,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5468302792086366486}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.BlinkComponent, Pharaoh
-        m_MethodName: Blink
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onHealthIncrease:
     m_PersistentCalls:
       m_Calls:
@@ -347,7 +335,20 @@ MonoBehaviour:
         m_CallState: 2
   onTakeHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5468302792086366486}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HitEffectBehaviour,
+          Pharaoh
+        m_MethodName: KnockBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &5468302792086366486
 MonoBehaviour:
@@ -361,11 +362,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useBlink: 0
   blkRenderers: []
   blkDuration: 0
   blkCount: 0
   blkIntensity: 0
   blkColor: {r: 1, g: 1, b: 1, a: 1}
+  useKnockBack: 1
   kbForce: 5
   kbDuration: 0.33
   onKnockBackStart:
@@ -398,6 +401,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  useScreenShake: 0
+  ssDampingSpeed: 0
+  ssMagnitude: 0
+  ssDuration: 0
+  onScreenShake:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7079046523897001457
 MonoBehaviour:
   m_ObjectHideFlags: 0

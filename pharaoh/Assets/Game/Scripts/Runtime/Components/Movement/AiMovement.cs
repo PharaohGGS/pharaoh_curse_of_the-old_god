@@ -33,6 +33,7 @@ namespace Pharaoh.Gameplay.Components
         private void Awake()
         {
             _canMove = true;
+            isStunned = false;
             _colliders = GetComponents<Collider2D>();
             if (!TryGetComponent(out _rigidbody))
             {

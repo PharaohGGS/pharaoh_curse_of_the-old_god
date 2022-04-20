@@ -1025,11 +1025,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d8d18d8c1464999cde99ae55ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useBlink: 0
   blkRenderers: []
   blkDuration: 0
   blkCount: 1
   blkIntensity: 0
   blkColor: {r: 1, g: 1, b: 1, a: 1}
+  useKnockBack: 1
   kbForce: 5
   kbDuration: 0.33
   onKnockBackStart:
@@ -1064,6 +1066,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  useScreenShake: 1
   ssDampingSpeed: 1
   ssMagnitude: 0.15
   ssDuration: 0.2
@@ -1264,7 +1267,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
   - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
   - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
-  khepeshDoubleHitClips: []
   hookThrowClips:
   - {fileID: 8300000, guid: c027320e2c648724ea43fc853387c92b, type: 3}
   - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
