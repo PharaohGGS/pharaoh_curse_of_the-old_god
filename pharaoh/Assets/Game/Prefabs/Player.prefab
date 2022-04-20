@@ -974,6 +974,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 860414869}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 860414869}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Reinit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1694517701867188700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,18 +1139,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 860414869}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
-        m_MethodName: Reinit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: OnPlay
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 860414869}
@@ -1442,16 +1454,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
   - {fileID: 8300000, guid: a9853a296dc19f84bb66787ea5de3dc7, type: 3}
   - {fileID: 8300000, guid: 29f21652ab6037648a3dc9a8643c4188, type: 3}
-  doorOpensClips:
-  - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
-  - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
-  - {fileID: 8300000, guid: ac0837c967685964a9c5b5260247a9e1, type: 3}
-  - {fileID: 8300000, guid: 2f186fa701e8c5141bec6669adf31b83, type: 3}
-  doorClosesClips:
-  - {fileID: 8300000, guid: b63412288d25e2a4cacb821b2644e62b, type: 3}
-  - {fileID: 8300000, guid: 420ad194c1bff584daacced23b219fc2, type: 3}
-  - {fileID: 8300000, guid: 56df52e3d275a044d82ac19c7afbaddb, type: 3}
-  - {fileID: 8300000, guid: f32ba75365cd5a74abb7ae8ac49df858, type: 3}
 --- !u!82 &5542629325624734021
 AudioSource:
   m_ObjectHideFlags: 0

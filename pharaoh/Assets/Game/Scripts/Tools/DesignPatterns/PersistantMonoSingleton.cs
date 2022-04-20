@@ -15,7 +15,7 @@ namespace DesignPatterns
                     var go = new GameObject
                     {
                         name = nameof(T),
-                        hideFlags = HideFlags.HideAndDontSave
+                        hideFlags = HideFlags.None
                     };
 
                     _instance = go.AddComponent<T>();
