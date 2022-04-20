@@ -8,13 +8,13 @@ namespace Pharaoh.Components.Movement
     {
         [SerializeField] private bool useCinemachineCamera;
         
-        private CinemachineVirtualCamera _virtualCamera;
+        private CinemachineBrain _cinemachineBrain;
         private Vector3 _initialPosition;
 
         private void Awake()
         {
-            if (!useCinemachineCamera || !TryGetComponent(out _virtualCamera))
-                Debug.LogWarning("No CinemachineVirtualCamera component found.");
+            if (!useCinemachineCamera || !TryGetComponent(out _cinemachineBrain))
+                Debug.LogWarning("No CinemachineBrain component found.");
         }
 
         private void OnEnable()
@@ -29,13 +29,13 @@ namespace Pharaoh.Components.Movement
 
         private IEnumerator Shaking(float duration, float magnitude, float dampingSpeed)
         {
-            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
-                _virtualCamera?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
             float totalDuration = duration;
 
             while (duration > 0.0f)
             {
+                CinemachineVirtualCamera virtualCamera = _cinemachineBrain?.ActiveVirtualCamera as CinemachineVirtualCamera;
+                CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = virtualCamera?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
                 var currentMagnitude = Mathf.Lerp(magnitude, 0f, 1 - (duration / totalDuration));
                 if (useCinemachineCamera && cinemachineBasicMultiChannelPerlin)
                 {
@@ -47,19 +47,24 @@ namespace Pharaoh.Components.Movement
                 }
 
                 duration = Mathf.Max(0.0f, duration - Time.deltaTime * dampingSpeed);
+
+                if (duration <= 0.0f)
+                {
+                    duration = 0f;
+
+                    if (useCinemachineCamera && cinemachineBasicMultiChannelPerlin)
+                    {
+                        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0.0f;
+                    }
+                    else
+                    {
+                        transform.localPosition = _initialPosition;
+                    }
+                }
+
                 yield return null;
             }
 
-            duration = 0f;
-
-            if (useCinemachineCamera && cinemachineBasicMultiChannelPerlin)
-            {
-                cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0.0f;
-            }
-            else
-            {
-                transform.localPosition = _initialPosition;
-            }
         }
     }
 }
