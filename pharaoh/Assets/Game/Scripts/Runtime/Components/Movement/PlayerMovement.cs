@@ -173,10 +173,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player dashes
         private void OnDashStarted()
         {
-            if (!skills.hasSwarmDash)
-                return;
-
-            if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
+            if (skills.hasDash && !_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
                 
@@ -187,7 +184,11 @@ namespace Pharaoh.Gameplay.Components.Movement
                 inputReader.DisableDash();
                 _isHooked = false;
 
-                gameObject.layer = _swarmDashLayer;
+                if (skills.hasSwarmDash)
+                {
+                    gameObject.layer = _swarmDashLayer;
+                    //pipicaca
+                }
 
                 animator.SetTrigger("Dashing");
 
@@ -353,6 +354,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _isDashing = false;
 
                 gameObject.layer = _defaultLayer;
+
+                //pipicaca
 
                 StartCoroutine(DashCooldown());
             }
