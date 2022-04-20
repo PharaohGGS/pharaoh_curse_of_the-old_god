@@ -85,6 +85,13 @@ namespace Pharaoh.Gameplay.Components
         public void Increase(float value) => ApplyChange(value, FloatOperation.Increase);
         public void Set(float value) => ApplyChange(value, FloatOperation.Set);
 
+        public void Respawn()
+        {
+            if (!isDead) return;
+            isDead = false;
+            Set(max);
+        }
+
         private void Awake()
         {
             isInvincible = false;

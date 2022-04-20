@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -7,7 +9,6 @@ namespace Pharaoh.Managers
 {
     public class AudioManager : MonoBehaviour
     {
-
         public static AudioManager Instance { get; private set; }
 
         [Space(10)]
@@ -21,6 +22,8 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] plateOffClips;
 
+        public readonly Dictionary<Sound, AudioSource> soundSources = new Dictionary<Sound, AudioSource>();
+
         private void Awake()
         {
             if (Instance == null)
@@ -32,15 +35,24 @@ namespace Pharaoh.Managers
             {
                 Destroy(gameObject);
             }
-
+            
             foreach (Sound s in sounds)
             {
-                s.audioSource = gameObject.AddComponent<AudioSource>();
-                s.audioSource.outputAudioMixerGroup = s.audioMixerGroup;
-                s.audioSource.clip = s.clip;
-                s.audioSource.volume = s.volume;
-                s.audioSource.pitch = s.pitch;
-                s.audioSource.loop = s.loop;
+                var go = new GameObject($"{s.name} source", typeof(AudioSource));
+                go.transform.SetParent(transform, false);
+                var source = go.GetComponent<AudioSource>();
+
+                source.outputAudioMixerGroup = s.audioMixerGroup;
+                source.clip = s.clip;
+                source.volume = s.volume;
+                source.pitch = s.pitch;
+                source.loop = s.loop;
+                s.audioSource = source;
+
+                if (!soundSources.TryAdd(s, source))
+                {
+                    Debug.LogError($"Can't add source to dico");
+                }
             }
         }
 
@@ -73,6 +85,11 @@ namespace Pharaoh.Managers
                 return;
             }
 
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
+            }
+
             if(s.randomized)
             {
                 switch (name)
@@ -98,7 +115,7 @@ namespace Pharaoh.Managers
             s.audioSource?.Play();
             if (s.fadeIn)
             {
-                StartCoroutine(StartFadeIn(s.audioSource, s.fadeInDuration, s.volume));
+                StartCoroutine(StartFadeIn(audioSource, s.fadeInDuration, s.volume));
             }
         }
 
@@ -110,6 +127,11 @@ namespace Pharaoh.Managers
             {
                 Debug.LogWarning("Sound " + name + " not found !");
                 return;
+            }
+
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
             }
 
             s.audioSource?.Pause();
@@ -124,7 +146,11 @@ namespace Pharaoh.Managers
                 Debug.LogWarning("Sound " + name + " not found !");
                 return;
             }
-
+            
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
+            }
             
             if (s.fadeOut)
             {
