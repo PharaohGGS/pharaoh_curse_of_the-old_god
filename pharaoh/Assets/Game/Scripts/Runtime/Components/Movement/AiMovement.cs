@@ -28,8 +28,11 @@ namespace Pharaoh.Gameplay.Components
         private Vector2 _smoothMovement;
         private Vector2 _smoothVelocity;
 
+        private bool _canMove;
+
         private void Awake()
         {
+            _canMove = true;
             _colliders = GetComponents<Collider2D>();
             if (!TryGetComponent(out _rigidbody))
             {
@@ -67,9 +70,14 @@ namespace Pharaoh.Gameplay.Components
             StartCoroutine(WaitStunTime(data.time));
         }
 
+        public void LockMovement(bool value)
+        {
+            _canMove = !value;
+        }
+
         public void Move(Vector3 target)
         {
-            if (!_rigidbody) return;
+            if (!_rigidbody || !_canMove) return;
 
             var direction = ((Vector2)target - _rigidbody.position).normalized;
 
