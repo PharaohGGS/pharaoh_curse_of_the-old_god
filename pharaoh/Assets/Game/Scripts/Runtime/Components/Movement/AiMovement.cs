@@ -54,7 +54,7 @@ namespace Pharaoh.Gameplay.Components
 
         public void HitStun(Damager damager)
         {
-            if (!damager || !_canMove) return;
+            if (!damager) return;
 
             var data = damager.stunData;
             isStunned = data != null;
@@ -96,12 +96,13 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!_rigidbody) yield break;
 
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            LockMovement(true);
+            //_rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
             yield return new WaitForSeconds(time);
             
             isStunned = false;
+            LockMovement(false);
             _rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
