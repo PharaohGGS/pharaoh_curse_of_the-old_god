@@ -14,9 +14,8 @@ namespace Pharaoh.Gameplay.Components
     {
         public DamagerData damagerData;
         public StunData stunData;
-
-        public Vector2 enterFirstContactPosition { get; private set; }
-
+        public LayerMask ownerMask;
+        
         [SerializeField] private LayerMask damagingLayers;
         [HideInInspector] public UnityEvent<Damager, Collider2D> onDamagingHit;
 
@@ -24,18 +23,28 @@ namespace Pharaoh.Gameplay.Components
         [HideInInspector] public UnityEvent<Damager, Collider2D> onCollisionHit;
 
         private Collider2D _collider;
+        public Transform owner { get; private set; }
 
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
+
+            if (ownerMask.value <= 0) return;
+            // get the owner by parent
+            Transform tr = transform.parent;
+            while (tr != transform.root)
+            {
+                if (tr.gameObject.HasLayer(ownerMask)) break;
+                tr = tr.parent;
+            }
+
+            owner = tr;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (gameObject.IsCollidingHimself(other, true)) return;
-
-            enterFirstContactPosition = _collider.ClosestPoint(transform.TransformPoint(other.offset));
-
+            
             if (other.gameObject.HasLayer(damagingLayers))
             {
                 onDamagingHit?.Invoke(this, other);

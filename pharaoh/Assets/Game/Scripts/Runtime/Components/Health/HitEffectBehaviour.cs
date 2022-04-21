@@ -64,15 +64,10 @@ namespace Pharaoh.Gameplay.Components
 
         private IEnumerator KnockBacking(Damager damager)
         {
-            if (!TryGetComponent(out Rigidbody2D rb) || !TryGetComponent(out Collider2D col) || !damager) yield break;
+            if (!TryGetComponent(out Rigidbody2D rb) || !TryGetComponent(out Collider2D col) || !damager || !damager.owner) yield break;
             
             onKnockBackStart?.Invoke();
-            Vector2 closestPoint = damager.enterFirstContactPosition;
-            Vector2 colliderOffset = transform.TransformPoint(col.offset);
-            bool enterOnRight = colliderOffset.x - closestPoint.x > 0.0f;
-            Vector2 colliderSize = new Vector2((enterOnRight ? 1 : -1) * col.bounds.extents.x, 0);
-            Vector2 colliderPoint = colliderOffset + colliderSize;
-            Vector2 direction = (closestPoint - colliderPoint).normalized;
+            Vector2 direction = (transform.position - damager.owner.position).normalized;
             rb.AddForce(rb.mass * kbForce * direction, ForceMode2D.Impulse);
             
             yield return new WaitForSeconds(kbDuration);
