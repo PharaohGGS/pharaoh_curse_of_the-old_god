@@ -118,12 +118,11 @@ namespace Pharaoh.Gameplay.Components
             onDeath.RemoveAllListeners();
         }
 
-        public void TakeHit(Damager damager, Collision2D other)
+        public void TakeHit(Damager damager, Collider2D other)
         {
             if (isInvincible) return;
             if (!damager || !damager.damagerData) return;
-            if (!TryGetComponent(out Rigidbody2D rb) || other.rigidbody != rb) return;
-            //if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
+            if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
             var damage = damager.damagerData.damage - armorDeal;
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
