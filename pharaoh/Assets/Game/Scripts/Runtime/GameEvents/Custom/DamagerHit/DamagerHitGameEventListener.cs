@@ -4,5 +4,5 @@ using UnityEngine.Events;
 
 namespace Pharaoh.GameEvents
 {
-    public class DamagerHitGameEventListener : AbstractGameEventListener<Damager, Collision2D, DamagerHitGameEvent, UnityEvent<Damager, Collision2D>> { }
+    public class DamagerHitGameEventListener : AbstractGameEventListener<Damager, Collider2D, DamagerHitGameEvent, UnityEvent<Damager, Collider2D>> { }
 }

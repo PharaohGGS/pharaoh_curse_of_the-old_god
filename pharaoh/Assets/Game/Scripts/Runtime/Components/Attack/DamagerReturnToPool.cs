@@ -31,8 +31,8 @@ namespace Pharaoh.Gameplay.Components
             StopAllCoroutines();
         }
         
-        private void TriggerHit(Damager damager, Collision2D collision) => Release(damager);
-        private void CollisionHit(Damager damager, Collision2D collision) => Release(damager);
+        private void TriggerHit(Damager damager, Collider2D other) => Release(damager);
+        private void CollisionHit(Damager damager, Collider2D other) => Release(damager);
 
         public void StartLifeTimeCountDown(float lifeTime)
         {
