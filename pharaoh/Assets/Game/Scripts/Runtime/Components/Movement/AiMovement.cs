@@ -21,8 +21,6 @@ namespace Pharaoh.Gameplay.Components
         [field: SerializeField] public Transform waypointHolder { get; private set; }
 
         public bool isStunned { get; private set; }
-
-        private Collider2D[] _colliders;
         private Rigidbody2D _rigidbody;
 
         private Vector2 _smoothMovement;
@@ -34,7 +32,7 @@ namespace Pharaoh.Gameplay.Components
         {
             _canMove = true;
             isStunned = false;
-            _colliders = GetComponents<Collider2D>();
+            
             if (!TryGetComponent(out _rigidbody))
             {
                 LogHandler.SendMessage("No rigidbody on this ai", MessageType.Warning);
@@ -54,9 +52,9 @@ namespace Pharaoh.Gameplay.Components
             }
         }
 
-        public void HitStun(Damager damager, Collider2D other)
+        public void HitStun(Damager damager)
         {
-            if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
+            if (!damager || !_canMove) return;
 
             var data = damager.stunData;
             isStunned = data != null;
