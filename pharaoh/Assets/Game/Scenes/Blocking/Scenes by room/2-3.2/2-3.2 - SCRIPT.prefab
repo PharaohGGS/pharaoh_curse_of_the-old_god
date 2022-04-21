@@ -2719,12 +2719,51 @@ PrefabInstance:
       propertyPath: openedMesh
       value: 
       objectReference: {fileID: -968020168106551049, guid: d3212f0b40fdaca4b82aec425affc383, type: 3}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1346689208408060573}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayCredits
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CanopicJarPickable, Pharaoh
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8503782463928635034, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+--- !u!114 &1346689208408060573 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
+  m_PrefabInstance: {fileID: 8554414996894403744}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7a1db263b48b442af652c8dfe11b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3278678152317507336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6572818342377315240, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}

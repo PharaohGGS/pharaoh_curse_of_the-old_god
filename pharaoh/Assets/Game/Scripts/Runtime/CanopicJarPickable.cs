@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using Pharaoh.Managers;
 using Pharaoh.Tools;
 using UnityEngine.VFX;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -85,6 +86,11 @@ public class CanopicJarPickable : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         inputReader.hookInteractPerformedEvent -= OnInteract;
+    }
+
+    public void PlayCredits()
+    {
+        SceneManager.LoadScene("Credits");
     }
 
 }
