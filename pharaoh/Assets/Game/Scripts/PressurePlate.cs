@@ -2,6 +2,7 @@ using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEditor;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class PressurePlate : MonoBehaviour
             {
                 // Invoke the event while the first body triggers the plate
                 OnPress.Invoke();
+                AudioManager.Instance.Play("PlateOn");
 
                 _mesh.localScale = new Vector3(0.66f, 0.125f, 0.66f); //squish the plate to make it easier to see
             }
@@ -41,6 +43,7 @@ public class PressurePlate : MonoBehaviour
             {
                 // Invoke the event while the last body leaves the plate
                 OnRelease.Invoke();
+                AudioManager.Instance.Play("PlateOff");
 
                 _mesh.localScale = new Vector3(0.66f, 0.25f, 0.66f); //unsquish the plate
             }

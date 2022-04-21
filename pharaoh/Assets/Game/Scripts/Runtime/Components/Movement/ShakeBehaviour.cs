@@ -73,7 +73,6 @@ namespace Pharaoh.Components.Movement
 
                 yield return null;
             }
-
         }
     }
 }

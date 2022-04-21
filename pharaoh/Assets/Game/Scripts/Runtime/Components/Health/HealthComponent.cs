@@ -59,7 +59,7 @@ namespace Pharaoh.Gameplay.Components
             switch (operation)
             {
                 case FloatOperation.Set:
-                    current = Mathf.Min(value, max);
+                    current = value;
                     onHealthSet?.Invoke(this, current);
                     break;
                 case FloatOperation.Increase:
@@ -85,6 +85,13 @@ namespace Pharaoh.Gameplay.Components
         public void Increase(float value) => ApplyChange(value, FloatOperation.Increase);
         public void Set(float value) => ApplyChange(value, FloatOperation.Set);
 
+        public void Respawn()
+        {
+            if (!isDead) return;
+            isDead = false;
+            Set(max);
+        }
+
         private void Awake()
         {
             isInvincible = false;
@@ -99,8 +106,8 @@ namespace Pharaoh.Gameplay.Components
 
         private void Start()
         {
-            max = startMax;
             Set(startMax);
+            max = startMax;
         }
 
         private void OnDisable()

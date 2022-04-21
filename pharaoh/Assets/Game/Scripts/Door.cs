@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using Pharaoh.Tools;
-
+using AudioManager = Pharaoh.Managers.AudioManager;
 using System.Collections;
 
 public class Door : MonoBehaviour
@@ -76,6 +76,7 @@ public class Door : MonoBehaviour
         _activePlates++;
         StopAllCoroutines();
         StartCoroutine(Shake());
+        AudioManager.Instance.Play("DoorOpens");
         RefreshState();
     }
 
@@ -85,6 +86,7 @@ public class Door : MonoBehaviour
         _activePlates--;
         StopAllCoroutines();
         StartCoroutine(Shake());
+        AudioManager.Instance.Play("DoorCloses");
         RefreshState();
     }
 
