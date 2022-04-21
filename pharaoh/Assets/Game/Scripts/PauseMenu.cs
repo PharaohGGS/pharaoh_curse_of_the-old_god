@@ -10,10 +10,12 @@ public class PauseMenu: MonoBehaviour
     public static bool isGamePaused = false;
     public InputReader inputReader;
     public GameObject pausePanel;
-    [Space(10)]
-    [Header("Skills displaying")]
+
+    [Header("Canopic Jars")]
+    public MeshFilter[] jars;
+    public Mesh[] openedMeshes;
+    public GameObject[] labels;
     public PlayerSkills playerSkills;
-    public List<GameObject> displayedSkills;
 
     private void OnEnable()
     {
@@ -38,9 +40,9 @@ public class PauseMenu: MonoBehaviour
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
 
-        isGamePaused = true;
-
         DisplaySkills();
+
+        isGamePaused = true;
     }
 
     private void UnpauseGame()
@@ -67,20 +69,33 @@ public class PauseMenu: MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void DisplaySkills()
+    private void DisplaySkills()
     {
-        Debug.Log("Displaying skills");
-        GameObject unlocked0 = displayedSkills[0];
-        GameObject unlocked1 = displayedSkills[1];
-        GameObject unlocked2 = displayedSkills[2];
-        GameObject unlocked3 = displayedSkills[3];
-        GameObject unlocked4 = displayedSkills[4];
-
-        unlocked0.SetActive(playerSkills.hasDash);
-        unlocked1.SetActive(playerSkills.hasGrapplingHook);
-        unlocked2.SetActive(playerSkills.hasSwarmDash);
-        unlocked3.SetActive(playerSkills.hasSandSoldier);
-        unlocked4.SetActive(playerSkills.hasHeart);
+        if (playerSkills.hasDash)
+        {
+            jars[0].mesh = openedMeshes[0];
+            labels[0].SetActive(true);
+        }
+        if (playerSkills.hasGrapplingHook)
+        {
+            jars[1].mesh = openedMeshes[1];
+            labels[1].SetActive(true);
+        }
+        if (playerSkills.hasSwarmDash)
+        {
+            jars[2].mesh = openedMeshes[2];
+            labels[2].SetActive(true);
+        }
+        if (playerSkills.hasSandSoldier)
+        {
+            jars[3].mesh = openedMeshes[3];
+            labels[3].SetActive(true);
+        }
+        if (playerSkills.hasHeart)
+        {
+            jars[4].mesh = openedMeshes[4];
+            labels[4].SetActive(true);
+        }
     }
 
 }
