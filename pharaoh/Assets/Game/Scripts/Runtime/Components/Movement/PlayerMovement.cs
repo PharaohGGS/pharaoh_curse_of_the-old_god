@@ -31,6 +31,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         private float _smoothInput = 0.03f;
         private float _turnSpeed = 7f; //value defined with Cl?mence
         private int _defaultLayer;
+        private int _dashLayer;
         private int _swarmDashLayer;
         private bool _isRunning = false;
         private bool _isDashing = false;
@@ -88,12 +89,14 @@ namespace Pharaoh.Gameplay.Components.Movement
         [SerializeField] private LayerMask dashStunLayer;
         [SerializeField] private StunData dashStunData;
         [SerializeField] private UnityEvent<GameObject, StunData> onDashStun;
+        [SerializeField] private UnityEvent onDashEnd;
 
         private bool _canJumpHook;
 
         private void Awake()
         {
             _defaultLayer = LayerMask.NameToLayer("Player");
+            _dashLayer = LayerMask.NameToLayer("Player - Dash");
             _swarmDashLayer = LayerMask.NameToLayer("Player - Swarm");
             _rigidbody = GetComponent<Rigidbody2D>();
             inputReader.Initialize(); //need to manually initialize
@@ -188,6 +191,8 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _isDashing = true;
                 inputReader.DisableDash();
                 _isHooked = false;
+
+                gameObject.layer = _dashLayer;
 
                 if (skills.hasSwarmDash)
                 {
