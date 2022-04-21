@@ -64,9 +64,7 @@ namespace Pharaoh.Gameplay
 
         public void SwitchHands()
         {
-            Transform temp = _rightHand;
-            _rightHand = _leftHand;
-            _leftHand = temp;
+            (_rightHand, _leftHand) = (_leftHand, _rightHand);
         }
 
 
