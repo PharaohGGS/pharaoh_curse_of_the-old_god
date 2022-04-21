@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
     
     private void Start()
     {
-        AudioManager.Instance.Play("Ambiance");
+        AudioManager.Instance.Play("Menu");
 
         _mainMenu = transform.Find("Main Menu").gameObject;
         _settingsMenu = transform.Find("Settings Menu").gameObject;
@@ -46,6 +46,7 @@ public class MainMenu : MonoBehaviour
 
     private void LoadGameScene()
     {
+        AudioManager.Instance.Stop("Menu");
         Debug.Log("Loading Game Scene");
         SceneManager.LoadScene(1);
     }

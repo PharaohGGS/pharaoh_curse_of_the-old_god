@@ -349,6 +349,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7079046523897001457}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
+        m_MethodName: HitStun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gears: []
 --- !u!114 &5468302792086366486
 MonoBehaviour:
@@ -490,18 +502,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7079046523897001457}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.AiMovement, Pharaoh
-        m_MethodName: HitStun
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &42543094342105160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instanceID: 0
   type: 1
+  playerSkills: {fileID: 0}
 --- !u!1001 &2929080259299710197
 PrefabInstance:
   m_ObjectHideFlags: 0
