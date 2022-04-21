@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -201,6 +202,11 @@ namespace Pharaoh.Gameplay.Components.Movement
                     swarmDashVFX.SetVector3("StartPosition", transform.position);
                     swarmDashVFX.SetBool("IsFacingRight", _isFacingRight);
                     swarmDashVFX.enabled = true;
+                    AudioManager.Instance.Play("DashSwarm");
+                } 
+                else
+                {
+                    AudioManager.Instance.Play("DashNormal");
                 }
 
                 animator.SetTrigger("Dashing");
