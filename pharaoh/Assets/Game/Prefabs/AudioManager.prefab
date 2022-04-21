@@ -45,6 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46046172a1919294195c1c102e38e282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashNormalClips:
+  - {fileID: 8300000, guid: 33b792cf9e574a340a2ee685b387d671, type: 3}
+  - {fileID: 8300000, guid: 5a8a60a134434f44fb4a32908c331aff, type: 3}
+  - {fileID: 8300000, guid: 0d03f92244eb28a40b632e9b3b5f7f11, type: 3}
+  - {fileID: 8300000, guid: 87b347edfe7c1a8408b9995193a38ea9, type: 3}
+  dashSwarmClips: []
   doorOpensClips:
   - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
   - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
@@ -74,6 +80,18 @@ MonoBehaviour:
     list: []
     keyCollision: 0
   sounds:
+  - name: Menu
+    clip: {fileID: 8300000, guid: 70a5d57c36daaa74aac6f93fc38e487e, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 0
+    fadeOut: 1
+    fadeInDuration: 1
+    fadeOutDuration: 3
+    randomized: 0
+    canOverride: 0
   - name: Ambiance
     clip: {fileID: 8300000, guid: 81f01cba8e23eec44ba50ef733061d9a, type: 3}
     volume: 0.5
@@ -85,6 +103,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
+    canOverride: 1
   - name: LoreZone
     clip: {fileID: 8300000, guid: 6acb10cf5cc765646871c89c5cd52c91, type: 3}
     volume: 0.5
@@ -96,17 +115,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-  - name: CanopPickup
-    clip: {fileID: 8300000, guid: fbe1b9113774ea74dbd775bcae6d5f9d, type: 3}
-    volume: 0.5
-    pitch: 1
-    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
-    loop: 0
-    fadeIn: 0
-    fadeOut: 0
-    fadeInDuration: 1
-    fadeOutDuration: 1
-    randomized: 0
+    canOverride: 1
   - name: PlayerDeath
     clip: {fileID: 8300000, guid: f9d180b6250f3c6429516fd278b51f65, type: 3}
     volume: 0.5
@@ -118,6 +127,31 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
+    canOverride: 0
+  - name: DashSwarm
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 0
+  - name: DashNormal
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 0
   - name: DoorOpens
     clip: {fileID: 0}
     volume: 0.2
@@ -129,6 +163,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
+    canOverride: 1
   - name: DoorCloses
     clip: {fileID: 0}
     volume: 0.2
@@ -140,6 +175,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
+    canOverride: 1
   - name: PlateOn
     clip: {fileID: 0}
     volume: 0.2
@@ -151,6 +187,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
+    canOverride: 1
   - name: PlateOff
     clip: {fileID: 0}
     volume: 0.2
@@ -162,6 +199,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
+    canOverride: 1
   - name: CratePull
     clip: {fileID: 0}
     volume: 0.2
@@ -173,6 +211,19 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
+    canOverride: 0
+  - name: CanopPickup
+    clip: {fileID: 8300000, guid: fbe1b9113774ea74dbd775bcae6d5f9d, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 0
+    canOverride: 0
 --- !u!81 &2199613194498635937
 AudioListener:
   m_ObjectHideFlags: 0

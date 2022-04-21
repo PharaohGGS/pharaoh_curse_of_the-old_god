@@ -11,6 +11,13 @@ namespace Pharaoh.Managers
     public class AudioManager : PersistantMonoSingleton<AudioManager>
     {
         [Space(10)]
+        [Header("Player and enemies")]
+        [SerializeField]
+        private AudioClip[] dashNormalClips;
+        [SerializeField]
+        private AudioClip[] dashSwarmClips;
+
+        [Space(10)]
         [Header("Doors and crates and plates sound")]
         [SerializeField]
         private AudioClip[] doorOpensClips;
@@ -108,6 +115,12 @@ namespace Pharaoh.Managers
                         break;
                     case "CratePull":
                         audioSource.clip = GetRandomClip(cratePullClips);
+                        break;
+                    case "DashNormal":
+                        audioSource.clip = GetRandomClip(dashNormalClips);
+                        break;
+                    case "DashSwarm":
+                        audioSource.clip = GetRandomClip(dashSwarmClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
