@@ -10,10 +10,6 @@ public class PauseMenu: MonoBehaviour
     public static bool isGamePaused = false;
     public InputReader inputReader;
     public GameObject pausePanel;
-    [Space(10)]
-    [Header("Skills displaying")]
-    public PlayerSkills playerSkills;
-    public List<GameObject> displayedSkills;
 
     private void OnEnable()
     {
@@ -39,8 +35,6 @@ public class PauseMenu: MonoBehaviour
         pausePanel.SetActive(true);
 
         isGamePaused = true;
-
-        DisplaySkills();
     }
 
     private void UnpauseGame()
@@ -65,22 +59,6 @@ public class PauseMenu: MonoBehaviour
     {
         UnpauseGame();
         SceneManager.LoadScene(0);
-    }
-
-    public void DisplaySkills()
-    {
-        Debug.Log("Displaying skills");
-        GameObject unlocked0 = displayedSkills[0];
-        GameObject unlocked1 = displayedSkills[1];
-        GameObject unlocked2 = displayedSkills[2];
-        GameObject unlocked3 = displayedSkills[3];
-        GameObject unlocked4 = displayedSkills[4];
-
-        unlocked0.SetActive(playerSkills.hasDash);
-        unlocked1.SetActive(playerSkills.hasGrapplingHook);
-        unlocked2.SetActive(playerSkills.hasSwarmDash);
-        unlocked3.SetActive(playerSkills.hasSandSoldier);
-        unlocked4.SetActive(playerSkills.hasHeart);
     }
 
 }
