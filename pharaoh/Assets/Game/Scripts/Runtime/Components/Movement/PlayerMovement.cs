@@ -3,6 +3,7 @@ using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
 
 #if UNITY_EDITOR
@@ -78,6 +79,10 @@ namespace Pharaoh.Gameplay.Components.Movement
         public Animator animator;
         [Tooltip("Model transform to turn the player around")]
         public Transform modelTransform;
+
+        [Header("VFX")]
+        [Tooltip("VFX for the swarm dash")]
+        public VisualEffect swarmDashVFX;
 
         [Header("Dash Detection")]
         [SerializeField] private LayerMask dashStunLayer;
@@ -173,10 +178,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player dashes
         private void OnDashStarted()
         {
-            if (!skills.hasSwarmDash)
-                return;
-
-            if (!_isDashing && !_hasDashedInAir && !_isPullingBlock)
+            if (skills.hasDash && !_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
                 
@@ -187,7 +189,14 @@ namespace Pharaoh.Gameplay.Components.Movement
                 inputReader.DisableDash();
                 _isHooked = false;
 
-                gameObject.layer = _swarmDashLayer;
+                if (skills.hasSwarmDash)
+                {
+                    gameObject.layer = _swarmDashLayer;
+                    foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+                    swarmDashVFX.SetVector3("StartPosition", transform.position);
+                    swarmDashVFX.SetBool("IsFacingRight", _isFacingRight);
+                    swarmDashVFX.enabled = true;
+                }
 
                 animator.SetTrigger("Dashing");
 
@@ -353,6 +362,9 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _isDashing = false;
 
                 gameObject.layer = _defaultLayer;
+
+                foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = true;
+                swarmDashVFX.enabled = false;
 
                 StartCoroutine(DashCooldown());
             }
