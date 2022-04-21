@@ -4,6 +4,7 @@ using Pharaoh.Gameplay;
 using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class MovingBlock : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class MovingBlock : MonoBehaviour
     public UnityEvent onTriggerSpike;
     private Rigidbody2D _rigidbody2D;
     private Collider2D _collider2D;
+
+    private int _pullCountSave;
 
     public bool isPulled { get; private set; }
     public bool isHooked { get; private set; }
@@ -84,7 +87,15 @@ public class MovingBlock : MonoBehaviour
     {
         if (!behaviour.isCurrentTarget || behaviour is not PullHookBehaviour pull) return;
         if (behaviour.gameObject != _rightHandle.gameObject && behaviour.gameObject != _leftHandle.gameObject) return;
-        Debug.Log("----OnHookPerformed");
+
+        if (_pullCountSave != pull.pullCount)
+        {
+            _pullCountSave = pull.pullCount;
+            AudioManager.Instance.Stop("CratePull");
+        }
+
+        AudioManager.Instance.Play("CratePull");
+        
         isPulled = true;
         _rigidbody2D.MovePosition(behaviour.nextPosition);
     }

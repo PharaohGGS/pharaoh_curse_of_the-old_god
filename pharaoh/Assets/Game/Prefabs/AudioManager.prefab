@@ -70,6 +70,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: df5a091bab1cd3746a762514a0344b06, type: 3}
   - {fileID: 8300000, guid: 1a50a5baa8ccdef40acf58b68a05028d, type: 3}
   - {fileID: 8300000, guid: 7c31a945af023344ab4b15746406d1ba, type: 3}
+  soundSources:
+    list: []
+    keyCollision: 0
   sounds:
   - name: Ambiance
     clip: {fileID: 8300000, guid: 81f01cba8e23eec44ba50ef733061d9a, type: 3}
@@ -82,7 +85,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    audioSource: {fileID: 0}
   - name: LoreZone
     clip: {fileID: 8300000, guid: 6acb10cf5cc765646871c89c5cd52c91, type: 3}
     volume: 0.5
@@ -94,7 +96,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    audioSource: {fileID: 0}
   - name: CanopPickup
     clip: {fileID: 8300000, guid: fbe1b9113774ea74dbd775bcae6d5f9d, type: 3}
     volume: 0.5
@@ -106,7 +107,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    audioSource: {fileID: 0}
   - name: PlayerDeath
     clip: {fileID: 8300000, guid: f9d180b6250f3c6429516fd278b51f65, type: 3}
     volume: 0.5
@@ -118,7 +118,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    audioSource: {fileID: 0}
   - name: DoorOpens
     clip: {fileID: 0}
     volume: 0.2
@@ -130,7 +129,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    audioSource: {fileID: 0}
   - name: DoorCloses
     clip: {fileID: 0}
     volume: 0.2
@@ -142,7 +140,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    audioSource: {fileID: 0}
   - name: PlateOn
     clip: {fileID: 0}
     volume: 0.2
@@ -154,7 +151,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    audioSource: {fileID: 0}
   - name: PlateOff
     clip: {fileID: 0}
     volume: 0.2
@@ -166,8 +162,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    audioSource: {fileID: 0}
-  - name: CratePiull
+  - name: CratePull
     clip: {fileID: 0}
     volume: 0.2
     pitch: 1
@@ -178,7 +173,6 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    audioSource: {fileID: 0}
 --- !u!81 &2199613194498635937
 AudioListener:
   m_ObjectHideFlags: 0
