@@ -67,7 +67,7 @@ namespace Pharaoh.Gameplay.Components
             if (!TryGetComponent(out Rigidbody2D rb) || !TryGetComponent(out Collider2D col) || !damager) yield break;
             
             onKnockBackStart?.Invoke();
-            Vector2 closestPoint = col.ClosestPoint(damager.enterOffsetPosition);
+            Vector2 closestPoint = damager.enterFirstContactPosition;
             Vector2 colliderOffset = transform.TransformPoint(col.offset);
             Vector2 direction = (closestPoint - colliderOffset).normalized;
             rb.AddForce(rb.mass * kbForce * direction, ForceMode2D.Impulse);
