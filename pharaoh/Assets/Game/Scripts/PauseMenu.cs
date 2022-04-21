@@ -94,7 +94,6 @@ public class PauseMenu: MonoBehaviour
         if (playerSkills.hasHeart)
         {
             jars[4].mesh = openedMeshes[4];
-            labels[4].SetActive(true);
         }
     }
 
