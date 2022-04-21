@@ -11,7 +11,7 @@ namespace Pharaoh.Managers
     public class AudioManager : PersistantMonoSingleton<AudioManager>
     {
         [Space(10)]
-        [Header("Doors and plates sound")]
+        [Header("Doors and crates and plates sound")]
         [SerializeField]
         private AudioClip[] doorOpensClips;
         [SerializeField]
@@ -20,6 +20,8 @@ namespace Pharaoh.Managers
         private AudioClip[] plateOnClips;
         [SerializeField]
         private AudioClip[] plateOffClips;
+        [SerializeField]
+        private AudioClip[] cratePullClips;
 
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
 
@@ -61,6 +63,7 @@ namespace Pharaoh.Managers
             public float fadeInDuration = 1f;
             public float fadeOutDuration = 1f;
             public bool randomized = false;
+            public bool canOverride = false;
         }
 
         public Sound[] sounds;
@@ -81,7 +84,13 @@ namespace Pharaoh.Managers
                 return;
             }
 
-            if(s.randomized)
+            if (audioSource.isPlaying && !s.canOverride)
+            {
+                Debug.LogWarning($"{s.name} audioSource is already playing and can't override.");
+                return;
+            }
+
+            if (s.randomized)
             {
                 switch (name)
                 {
@@ -96,6 +105,9 @@ namespace Pharaoh.Managers
                         break;
                     case "PlateOff":
                         audioSource.clip = GetRandomClip(plateOffClips);
+                        break;
+                    case "CratePull":
+                        audioSource.clip = GetRandomClip(cratePullClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
@@ -186,7 +198,6 @@ namespace Pharaoh.Managers
 
         private AudioClip GetRandomClip(AudioClip[] audioClips)
         {
-            Debug.Log("----Sound is randomized");
             return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
         }
     }

@@ -16,6 +16,8 @@ namespace Pharaoh.Gameplay
         private MovingBlock _movingBlock;
         
         private bool _hasBeenReleased;
+
+        public int pullCount { get; private set; }
         
         /// <summary>
         /// test if you can pull the block 
@@ -121,6 +123,7 @@ namespace Pharaoh.Gameplay
             base.Release();
             if (_pullCoroutine != null) StopCoroutine(_pullCoroutine);
             _hasBeenReleased = false;
+            pullCount = 0;
         }
 
         public override void Interact(HookCapacity hook, GameObject target)
@@ -169,6 +172,7 @@ namespace Pharaoh.Gameplay
                     currentTime = 0f;
                     startPosition = _movingBlock.transform.position;
                     endPosition = startPosition + velocityX;
+                    pullCount++;
                 }
 
                 yield return _waitForFixedUpdate;
