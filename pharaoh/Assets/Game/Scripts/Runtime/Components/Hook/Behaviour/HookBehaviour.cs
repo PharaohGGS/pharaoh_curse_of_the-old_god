@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Pharaoh.Tools.Inputs;
 using PlayerMovement = Pharaoh.Gameplay.Components.Movement.PlayerMovement;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using UnityEngine.VFX.Utility;
 
 namespace Pharaoh.Gameplay
 {
@@ -12,10 +17,10 @@ namespace Pharaoh.Gameplay
 
         [SerializeField, Tooltip("Events handler")]
         protected HookBehaviourEvents events;
-
-        [SerializeField, Tooltip("FX hookIndicator for the best target selected")] 
-        protected GameObject hookIndicator;
         
+        [SerializeField, Tooltip("wait time loosing target")]
+        protected float waitTimeLoosing;
+
         protected HookCapacity _hook;
         protected RaycastHit2D[] _hits;
 
@@ -23,25 +28,44 @@ namespace Pharaoh.Gameplay
 
         public bool isCurrentTarget { get; protected set; }
         public Vector2 nextPosition { get; protected set; }
+
+        public UnityEvent onFoundTarget;
+        public UnityEvent onLoosingTarget;
+        public UnityEvent onLostTarget;
+        public UnityEvent onInteract;
         
         protected virtual void Awake()
         {
             _hook = null;
             _hits = new RaycastHit2D[2];
-            if (hookIndicator) hookIndicator.SetActive(false);
 
             _playerMovement = FindObjectOfType<PlayerMovement>();
         }
 
         public virtual void FoundBestTarget(HookCapacity hook, GameObject target)
         {
-            if (hookIndicator) hookIndicator.SetActive(target == gameObject);
+            StartCoroutine(ActivateIndicator(target == gameObject));
+        }
+
+        protected IEnumerator ActivateIndicator(bool activate)
+        {
+            if (activate)
+            {
+                onFoundTarget?.Invoke();
+            }
+            else
+            {
+                onLoosingTarget?.Invoke();
+                yield return new WaitForSeconds(waitTimeLoosing);
+                onLostTarget?.Invoke();
+            }
         }
 
         public virtual void Interact(HookCapacity hook, GameObject target)
         {
             isCurrentTarget = target == gameObject;
             _hook = isCurrentTarget ? hook : null;
+            if (isCurrentTarget) onInteract?.Invoke();
             events?.Started(this);
         }
         

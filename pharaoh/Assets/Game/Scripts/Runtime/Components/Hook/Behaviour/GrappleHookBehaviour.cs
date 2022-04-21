@@ -78,7 +78,6 @@ namespace Pharaoh.Gameplay
             if (!isCurrentTarget) return;
             
             Debug.Log($"{hook.name} hooking to {name}");
-            if (hookIndicator) hookIndicator.SetActive(false);
             _moveToCoroutine = StartCoroutine(Grapple());
         }
 

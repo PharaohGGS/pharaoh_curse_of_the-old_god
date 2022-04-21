@@ -102,7 +102,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
-  hookIndicator: {fileID: 6794693977608121217}
+  waitTimeLoosing: 1
+  onFoundTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3681199949460597284}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
+        m_MethodName: FadeIn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onLoosingTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3681199949460597284}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
+        m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onLostTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3681199949460597284}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
+        m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3681199949460597284}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
+        m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   finalMoveTarget: {fileID: 4036576582580424355}
 --- !u!114 &3604755130658801948
 MonoBehaviour:
@@ -282,6 +342,7 @@ GameObject:
   - component: {fileID: 8020383876318410582}
   - component: {fileID: 4945760840928737585}
   - component: {fileID: 7912099857586648590}
+  - component: {fileID: 3681199949460597284}
   m_Layer: 0
   m_Name: HookPoint
   m_TagString: Untagged
@@ -320,7 +381,16 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0.03
+        m_Name: MaxSize
+        m_Overridden: 0
+      - m_Value: 0
+        m_Name: MaxLifetime
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: MinLifetime
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -381,6 +451,26 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3681199949460597284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794693977608121217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0187ae717251834b90b6a259d7688e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeIn:
+    minLifeTime: 1
+    maxLifeTime: 2
+    speed: 3
+  fadeOut:
+    minLifeTime: 0
+    maxLifeTime: 0
+    speed: 2
 --- !u!1001 &520383217203542739
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -140,7 +140,6 @@ namespace Pharaoh.Gameplay
             
             Debug.Log($"{hook.name} hooking to {name}");
             _snatchCoroutine = StartCoroutine(Snatch());
-            if (hookIndicator) hookIndicator.SetActive(false);
         }
 
         private System.Collections.IEnumerator Snatch()

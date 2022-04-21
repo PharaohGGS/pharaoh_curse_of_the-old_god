@@ -141,7 +141,6 @@ namespace Pharaoh.Gameplay
             
             Debug.Log($"{hook.name} hooking to {name}");
             _pullCoroutine = StartCoroutine(Pull());
-            if (hookIndicator) hookIndicator.SetActive(false);
         }
 
         private System.Collections.IEnumerator Pull()
