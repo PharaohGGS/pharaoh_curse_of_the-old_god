@@ -91,10 +91,10 @@ public class MovingBlock : MonoBehaviour
         if (_pullCountSave != pull.pullCount)
         {
             _pullCountSave = pull.pullCount;
-            AudioManager.Instance.Stop("CratePull");
+            AudioManager.Instance?.Stop("CratePull");
         }
 
-        AudioManager.Instance.Play("CratePull");
+        AudioManager.Instance?.Play("CratePull");
         
         isPulled = true;
         _rigidbody2D.MovePosition(behaviour.nextPosition);

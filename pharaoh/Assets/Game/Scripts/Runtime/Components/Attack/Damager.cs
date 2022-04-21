@@ -15,10 +15,10 @@ namespace Pharaoh.Gameplay.Components
         public DamagerData damagerData;
         public StunData stunData;
 
-        public Vector2 enterOffsetPosition { get; private set; }
+        public Vector2 enterFirstContactPosition { get; private set; }
 
         [SerializeField] private LayerMask damagingLayers;
-        [HideInInspector] public UnityEvent<Damager, Collider2D> onTriggerHit;
+        [HideInInspector] public UnityEvent<Damager, Collider2D> onDamagingHit;
 
         [SerializeField] private LayerMask collidingLayers;
         [HideInInspector] public UnityEvent<Damager, Collider2D> onCollisionHit;
@@ -34,11 +34,11 @@ namespace Pharaoh.Gameplay.Components
         {
             if (gameObject.IsCollidingHimself(other, true)) return;
 
-            enterOffsetPosition = transform.TransformPoint(_collider.offset);
+            enterFirstContactPosition = _collider.ClosestPoint(transform.TransformPoint(other.offset));
 
             if (other.gameObject.HasLayer(damagingLayers))
             {
-                onTriggerHit?.Invoke(this, other);
+                onDamagingHit?.Invoke(this, other);
             }
 
             if (other.gameObject.HasLayer(collidingLayers))

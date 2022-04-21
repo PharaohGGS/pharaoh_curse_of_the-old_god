@@ -20,19 +20,19 @@ namespace Pharaoh.Gameplay.Components
 
         private void OnEnable()
         {
-            _damager?.onTriggerHit?.AddListener(TriggerHit);
+            _damager?.onDamagingHit?.AddListener(TriggerHit);
             _damager?.onCollisionHit?.AddListener(CollisionHit);
         }
         
         private void OnDisable()
         {
-            _damager?.onTriggerHit?.RemoveListener(TriggerHit);
+            _damager?.onDamagingHit?.RemoveListener(TriggerHit);
             _damager?.onCollisionHit?.RemoveListener(CollisionHit);
             StopAllCoroutines();
         }
         
-        private void TriggerHit(Damager damager, Collider2D collider2D) => Release(damager);
-        private void CollisionHit(Damager damager, Collider2D collision2D) => Release(damager);
+        private void TriggerHit(Damager damager, Collider2D other) => Release(damager);
+        private void CollisionHit(Damager damager, Collider2D other) => Release(damager);
 
         public void StartLifeTimeCountDown(float lifeTime)
         {
