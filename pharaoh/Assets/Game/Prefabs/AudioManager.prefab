@@ -55,6 +55,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5a8a60a134434f44fb4a32908c331aff, type: 3}
   - {fileID: 8300000, guid: 0d03f92244eb28a40b632e9b3b5f7f11, type: 3}
   - {fileID: 8300000, guid: 87b347edfe7c1a8408b9995193a38ea9, type: 3}
+  enemyHitClips:
+  - {fileID: 8300000, guid: 1f8cf1c7ff07ad64190c71e6a36af041, type: 3}
+  - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
+  - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
+  - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
   doorOpensClips:
   - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
   - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
@@ -88,7 +93,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 70a5d57c36daaa74aac6f93fc38e487e, type: 3}
     volume: 0.5
     pitch: 1
-    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 1
     fadeIn: 0
     fadeOut: 1
@@ -97,17 +102,41 @@ MonoBehaviour:
     randomized: 0
     canOverride: 0
   - name: Ambiance
-    clip: {fileID: 8300000, guid: 81f01cba8e23eec44ba50ef733061d9a, type: 3}
+    clip: {fileID: 8300000, guid: 70a5d57c36daaa74aac6f93fc38e487e, type: 3}
     volume: 0.5
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 1
-    fadeIn: 0
-    fadeOut: 0
-    fadeInDuration: 1
-    fadeOutDuration: 1
+    fadeIn: 1
+    fadeOut: 1
+    fadeInDuration: 3
+    fadeOutDuration: 5
     randomized: 0
-    canOverride: 1
+    canOverride: 0
+  - name: Fight
+    clip: {fileID: 8300000, guid: 8ac4786225bb9f848acebec7306d498c, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 1
+    fadeOut: 1
+    fadeInDuration: 5
+    fadeOutDuration: 3
+    randomized: 0
+    canOverride: 0
+  - name: Enigme
+    clip: {fileID: 8300000, guid: d9396fc24bbe46c4eae275d4392e15cf, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 1
+    fadeOut: 1
+    fadeInDuration: 3
+    fadeOutDuration: 3
+    randomized: 0
+    canOverride: 0
   - name: LoreZone
     clip: {fileID: 8300000, guid: 6acb10cf5cc765646871c89c5cd52c91, type: 3}
     volume: 0.5
@@ -115,11 +144,23 @@ MonoBehaviour:
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 1
     fadeIn: 0
-    fadeOut: 0
+    fadeOut: 1
     fadeInDuration: 1
-    fadeOutDuration: 1
+    fadeOutDuration: 5
     randomized: 0
-    canOverride: 1
+    canOverride: 0
+  - name: LoreShort
+    clip: {fileID: 8300000, guid: 529a3b82904922c40b0ce5901c53e2ca, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 1
+    fadeInDuration: 1
+    fadeOutDuration: 5
+    randomized: 0
+    canOverride: 0
   - name: PlayerDeath
     clip: {fileID: 8300000, guid: f9d180b6250f3c6429516fd278b51f65, type: 3}
     volume: 0.5
@@ -131,7 +172,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    canOverride: 0
+    canOverride: 1
   - name: DashSwarm
     clip: {fileID: 0}
     volume: 0.2
@@ -143,7 +184,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    canOverride: 0
+    canOverride: 1
   - name: DashNormal
     clip: {fileID: 0}
     volume: 0.2
@@ -155,7 +196,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 1
-    canOverride: 0
+    canOverride: 1
   - name: DoorOpens
     clip: {fileID: 0}
     volume: 0.2
@@ -228,6 +269,18 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 0
     canOverride: 0
+  - name: EnemyHit
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
 --- !u!81 &2199613194498635937
 AudioListener:
   m_ObjectHideFlags: 0

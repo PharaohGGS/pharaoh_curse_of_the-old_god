@@ -16,6 +16,8 @@ namespace Pharaoh.Managers
         private AudioClip[] dashNormalClips;
         [SerializeField]
         private AudioClip[] dashSwarmClips;
+        [SerializeField]
+        private AudioClip[] enemyHitClips;
 
         [Space(10)]
         [Header("Doors and crates and plates sound")]
@@ -121,6 +123,9 @@ namespace Pharaoh.Managers
                         break;
                     case "DashSwarm":
                         audioSource.clip = GetRandomClip(dashSwarmClips);
+                        break;
+                    case "EnemyHit":
+                        audioSource.clip = GetRandomClip(enemyHitClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
