@@ -382,7 +382,19 @@ MonoBehaviour:
       m_Calls: []
   m_CameraActivatedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 985803411}
+        m_TargetAssemblyTypeName: Pharaoh.Components.Movement.ShakeBehaviour, Pharaoh
+        m_MethodName: ChangeVirtualCamera
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &985803406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,6 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useCinemachineCamera: 1
+  noiseSettings: {fileID: 11400000, guid: 28824a2a16a6b984999811851784ad58, type: 2}
 --- !u!1001 &1233934025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -707,18 +720,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1694517701867188700, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: endColliderOffset.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1694517701867188700, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: startColliderOffset.y
-      value: -1.075
-      objectReference: {fileID: 0}
-    - target: {fileID: 1694517701867188700, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: blockPlusSoldierThreshold
-      value: 0.85
-      objectReference: {fileID: 0}
     - target: {fileID: 5732736215046696848, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -766,42 +767,6 @@ PrefabInstance:
     - target: {fileID: 5732736215046696853, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706840792975061483, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: ssMagnitude
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
-      value: Fade
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
-      value: FadeToBlack, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7790090175714034903, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
-      propertyPath: onRespawn.m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66cc0fde38e54e148a129e80c56396b4, type: 3}
