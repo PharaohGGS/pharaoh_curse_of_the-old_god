@@ -3,6 +3,7 @@ using PlayerMovement = Pharaoh.Gameplay.Components.Movement.PlayerMovement;
 using System.Collections;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public struct Sockets
@@ -15,27 +16,32 @@ public struct Sockets
 public class PlayerCombat : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
-    private short _combatPhase = 0;
+    private int _combatPhase = 0;
     private bool _sheathed = true;
     private Coroutine _sheatheCoroutine;
     private Coroutine _combatPhaseReset;
 
     [Header("Components")]
+    [SerializeField] private InputReader inputReader;
+    [SerializeField] private Animator animator;
 
-    public InputReader inputReader;
-    public Animator animator;
+    [Header("Player Skills Unlocked")]
+    [SerializeField] private PlayerSkills skills;
 
     [Header("Sockets")]
-    
-    public Transform rightSword;
-    public Sockets rightSocket;
+    [SerializeField] private Transform rightSword;
+    [SerializeField] private Sockets rightSocket;
+    [SerializeField] private Transform leftSword;
+    [SerializeField] private Sockets leftSocket;
 
-    public Transform leftSword;
-    public Sockets leftSocket;
-    
     [Header("Variables")]
+    [SerializeField] private int totalCombatPhase = 3;
+    [SerializeField] private float timeBeforeSheathing = 5f;
 
-    public float timeBeforeSheathing = 5f;
+    [Header("Events")] 
+    [SerializeField] private UnityEvent onSwordDash;
+    [SerializeField] private UnityEvent onSwordSwarmDash;
+    [SerializeField] private UnityEvent onSwordDashEnd;
 
 
     private void Awake()
@@ -46,11 +52,26 @@ public class PlayerCombat : MonoBehaviour
     private void OnEnable()
     {
         inputReader.attackPerformedEvent += OnAttack;
+        inputReader.dashStartedEvent += OnDash;
     }
-
+    
     private void OnDisable()
     {
         inputReader.attackPerformedEvent -= OnAttack;
+        inputReader.dashStartedEvent -= OnDash;
+    }
+
+    private void OnDash()
+    {
+        if (!skills || _sheathed) return;
+        if (skills.hasDash && !skills.hasSwarmDash) onSwordDash?.Invoke();
+        if (skills.hasDash && skills.hasSwarmDash) onSwordSwarmDash?.Invoke();
+    }
+
+    public void OnDashEnd()
+    {
+        if (!skills || _sheathed) return;
+        onSwordDashEnd?.Invoke();
     }
 
     // Called when the player attacks
@@ -71,35 +92,32 @@ public class PlayerCombat : MonoBehaviour
         }
 
         // Triggers the corresponding animation based on current attack pattern
-        switch (_combatPhase)
+        _combatPhase = _combatPhase switch
         {
-            default:
-            case 0:
-                if (_combatPhaseReset != null)
-                    StopCoroutine(_combatPhaseReset);
-                animator.SetTrigger("Attack1");
-                _combatPhaseReset = StartCoroutine(ResetCombatPhase(1.5f));
-                LockMovement(1f);
-                _combatPhase = 1;
-                break;
+            0 => SetCombatPhase(1f, 1.5f),
+            1 => SetCombatPhase(1f, 1.5f),
+            2 => SetCombatPhase(1.5f, 0.0f),
+            _ => SetCombatPhase(1f, 1.5f)
+        };
+    }
 
-            case 1:
-                if (_combatPhaseReset != null)
-                    StopCoroutine(_combatPhaseReset);
-                animator.SetTrigger("Attack2");
-                _combatPhaseReset = StartCoroutine(ResetCombatPhase(1.5f));
-                LockMovement(1f);
-                _combatPhase = 2;
-                break;
-
-            case 2:
-                if (_combatPhaseReset != null)
-                    StopCoroutine(_combatPhaseReset);
-                animator.SetTrigger("Attack3");
-                LockMovement(1.5f);
-                _combatPhase = 0;
-                break;
+    private int SetCombatPhase(float lockMovementTime, float resetCombatPhaseTime)
+    {
+        if (_combatPhaseReset != null)
+        {
+            StopCoroutine(_combatPhaseReset);
         }
+
+        animator.SetTrigger($"Attack{_combatPhase + 1}");
+
+        if (resetCombatPhaseTime <= Mathf.Epsilon)
+        {
+            _combatPhaseReset = StartCoroutine(ResetCombatPhase(resetCombatPhaseTime));
+        }
+
+        LockMovement(lockMovementTime);
+
+        return (_combatPhase + 1) % totalCombatPhase;
     }
 
     // Locks all player inputs
