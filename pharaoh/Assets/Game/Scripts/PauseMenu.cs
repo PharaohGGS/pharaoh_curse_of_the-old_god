@@ -11,6 +11,12 @@ public class PauseMenu: MonoBehaviour
     public InputReader inputReader;
     public GameObject pausePanel;
 
+    [Header("Canopic Jars")]
+    public MeshFilter[] jars;
+    public Mesh[] openedMeshes;
+    public GameObject[] labels;
+    public PlayerSkills playerSkills;
+
     private void OnEnable()
     {
         inputReader.exitPerformedEvent += OnPauseMenu;
@@ -33,6 +39,8 @@ public class PauseMenu: MonoBehaviour
     {
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
+
+        DisplaySkills();
 
         isGamePaused = true;
     }
@@ -59,6 +67,35 @@ public class PauseMenu: MonoBehaviour
     {
         UnpauseGame();
         SceneManager.LoadScene(0);
+    }
+
+    private void DisplaySkills()
+    {
+        if (playerSkills.hasDash)
+        {
+            jars[0].mesh = openedMeshes[0];
+            labels[0].SetActive(true);
+        }
+        if (playerSkills.hasGrapplingHook)
+        {
+            jars[1].mesh = openedMeshes[1];
+            labels[1].SetActive(true);
+        }
+        if (playerSkills.hasSwarmDash)
+        {
+            jars[2].mesh = openedMeshes[2];
+            labels[2].SetActive(true);
+        }
+        if (playerSkills.hasSandSoldier)
+        {
+            jars[3].mesh = openedMeshes[3];
+            labels[3].SetActive(true);
+        }
+        if (playerSkills.hasHeart)
+        {
+            jars[4].mesh = openedMeshes[4];
+            labels[4].SetActive(true);
+        }
     }
 
 }
