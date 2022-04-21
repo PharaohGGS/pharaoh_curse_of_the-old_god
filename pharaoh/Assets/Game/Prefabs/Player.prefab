@@ -363,7 +363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1463119867
 Transform:
   m_ObjectHideFlags: 0
@@ -386,16 +386,22 @@ VisualEffect:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463119866}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Asset: {fileID: 8926484042661614526, guid: 428494a2767a7c94fb3b7362c04bc78a, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: Dash
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 30
+        m_Name: MinForce
+        m_Overridden: 1
+      - m_Value: 40
+        m_Name: MaxForce
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -828,6 +834,7 @@ MonoBehaviour:
     m_Bits: 2163712
   animator: {fileID: 5280757643533625441}
   modelTransform: {fileID: 2281400649281040923}
+  swarmDashVFX: {fileID: 1463119869}
   dashStunLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -921,8 +928,8 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 6215234791223536456}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.HealthComponent, Pharaoh
-        m_MethodName: Set
-        m_Mode: 4
+        m_MethodName: Respawn
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -959,6 +966,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 860414869}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 860414869}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Reinit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1110,6 +1141,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 860414869}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDeath
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
         m_TargetAssemblyTypeName: Pharaoh.Managers.AudioManager, Assembly-CSharp
         m_MethodName: Play
@@ -1206,9 +1249,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   useScreenShake: 1
-  ssDampingSpeed: 1
-  ssMagnitude: 2
-  ssDuration: 0.2
+  ssDampingSpeed: 2
+  ssMagnitude: 5
+  ssDuration: 0.5
   onScreenShake:
     m_PersistentCalls:
       m_Calls:
@@ -1411,16 +1454,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b43fe31d9fcd9864384f1c0d529e95dc, type: 3}
   - {fileID: 8300000, guid: a9853a296dc19f84bb66787ea5de3dc7, type: 3}
   - {fileID: 8300000, guid: 29f21652ab6037648a3dc9a8643c4188, type: 3}
-  doorOpensClips:
-  - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
-  - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
-  - {fileID: 8300000, guid: ac0837c967685964a9c5b5260247a9e1, type: 3}
-  - {fileID: 8300000, guid: 2f186fa701e8c5141bec6669adf31b83, type: 3}
-  doorClosesClips:
-  - {fileID: 8300000, guid: b63412288d25e2a4cacb821b2644e62b, type: 3}
-  - {fileID: 8300000, guid: 420ad194c1bff584daacced23b219fc2, type: 3}
-  - {fileID: 8300000, guid: 56df52e3d275a044d82ac19c7afbaddb, type: 3}
-  - {fileID: 8300000, guid: f32ba75365cd5a74abb7ae8ac49df858, type: 3}
 --- !u!82 &5542629325624734021
 AudioSource:
   m_ObjectHideFlags: 0

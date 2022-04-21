@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DesignPatterns;
+using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Pharaoh.Managers
 {
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : PersistantMonoSingleton<AudioManager>
     {
-
-        public static AudioManager Instance { get; private set; }
-
         [Space(10)]
         [Header("Doors and crates and plates sound")]
         [SerializeField]
@@ -23,27 +23,30 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] cratePullClips;
 
-        private void Awake()
+        public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
+
+        protected override void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
 
             foreach (Sound s in sounds)
             {
-                s.audioSource = gameObject.AddComponent<AudioSource>();
-                s.audioSource.outputAudioMixerGroup = s.audioMixerGroup;
-                s.audioSource.clip = s.clip;
-                s.audioSource.volume = s.volume;
-                s.audioSource.pitch = s.pitch;
-                s.audioSource.loop = s.loop;
+                var go = new GameObject($"{s.name} source");
+                go.transform.SetParent(transform);
+                var source = go.AddComponent<AudioSource>();
+
+                source.outputAudioMixerGroup = s.audioMixerGroup;
+                source.clip = s.clip;
+                source.volume = s.volume;
+                source.pitch = s.pitch;
+                source.loop = s.loop;
+
+                if (!soundSources.TryAdd(s, source))
+                {
+                    Debug.LogError($"Can't add source to dico");
+                }
             }
+
+            base.Awake();
         }
 
         [System.Serializable]
@@ -60,7 +63,6 @@ namespace Pharaoh.Managers
             public float fadeInDuration = 1f;
             public float fadeOutDuration = 1f;
             public bool randomized = false;
-            [HideInInspector] public AudioSource audioSource;
         }
 
         public Sound[] sounds;
@@ -68,10 +70,16 @@ namespace Pharaoh.Managers
         public void Play(string name)
         {
             Sound s = Array.Find(sounds, sound => sound.name == name);
-
+            
             if (s == null)
             {
                 Debug.LogWarning("Sound " + name + " not found !");
+                return;
+            }
+
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
                 return;
             }
 
@@ -80,16 +88,16 @@ namespace Pharaoh.Managers
                 switch (name)
                 {
                     case "DoorOpens":
-                        s.audioSource.clip = GetRandomClip(doorOpensClips);
+                        audioSource.clip = GetRandomClip(doorOpensClips);
                         break;
                     case "DoorCloses":
-                        s.audioSource.clip = GetRandomClip(doorClosesClips);
+                        audioSource.clip = GetRandomClip(doorClosesClips);
                         break;
                     case "PlateOn":
-                        s.audioSource.clip = GetRandomClip(plateOnClips);
+                        audioSource.clip = GetRandomClip(plateOnClips);
                         break;
                     case "PlateOff":
-                        s.audioSource.clip = GetRandomClip(plateOffClips);
+                        audioSource.clip = GetRandomClip(plateOffClips);
                         break;
                     case "cratePull":
                         s.audioSource.clip = GetRandomClip(cratePullClips);
@@ -100,10 +108,13 @@ namespace Pharaoh.Managers
                 }
             }
 
-            s.audioSource?.Play();
+            if (audioSource.clip) audioSource.Play();
+            else if (!audioSource.clip && s.clip) audioSource.PlayOneShot(s.clip);
+            else Debug.LogWarning($"{s.name} doesn't have audioClip");
+
             if (s.fadeIn)
             {
-                StartCoroutine(StartFadeIn(s.audioSource, s.fadeInDuration, s.volume));
+                StartCoroutine(StartFadeIn(audioSource, s.fadeInDuration, s.volume));
             }
         }
 
@@ -117,7 +128,12 @@ namespace Pharaoh.Managers
                 return;
             }
 
-            s.audioSource?.Pause();
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
+            }
+
+            audioSource?.Pause();
         }
 
         public void Stop(string name)
@@ -129,15 +145,19 @@ namespace Pharaoh.Managers
                 Debug.LogWarning("Sound " + name + " not found !");
                 return;
             }
-
+            
+            if (!soundSources.TryGetValue(s, out AudioSource audioSource))
+            {
+                Debug.LogWarning($"Sound {name} doesn't have audioSource !");
+            }
             
             if (s.fadeOut)
             {
-                StartCoroutine(StartFadeOut(s.audioSource, s.fadeOutDuration));
+                StartCoroutine(StartFadeOut(audioSource, s.fadeOutDuration));
             } 
             else
             {
-                s.audioSource?.Stop();
+                audioSource?.Stop();
             }
         }
 

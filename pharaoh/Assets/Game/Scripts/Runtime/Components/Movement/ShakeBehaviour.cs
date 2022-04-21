@@ -7,19 +7,28 @@ namespace Pharaoh.Components.Movement
     public class ShakeBehaviour : MonoBehaviour
     {
         [SerializeField] private bool useCinemachineCamera;
-        
-        private CinemachineBrain _cinemachineBrain;
+        [SerializeField] private NoiseSettings noiseSettings;
+
+        private CinemachineVirtualCamera _virtualCamera;
         private Vector3 _initialPosition;
-
-        private void Awake()
-        {
-            if (!useCinemachineCamera || !TryGetComponent(out _cinemachineBrain))
-                Debug.LogWarning("No CinemachineBrain component found.");
-        }
-
+        
         private void OnEnable()
         {
             _initialPosition = transform.localPosition;
+        }
+
+        public void ChangeVirtualCamera(ICinemachineCamera incoming, ICinemachineCamera outgoing)
+        {
+            CinemachineVirtualCamera incomingCamera = incoming as CinemachineVirtualCamera;
+            CinemachineVirtualCamera outgoingCamera = outgoing as CinemachineVirtualCamera;
+
+            outgoingCamera?.DestroyCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+            // add Perlin component & set the amplitude to 0 to avoid always shaking
+            var cinemachineBasicMultiChannelPerlin = incomingCamera?.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            cinemachineBasicMultiChannelPerlin.m_NoiseProfile = noiseSettings;
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0.0f;
+            _virtualCamera = incomingCamera;
         }
 
         public void Shake(float duration, float magnitude, float dampingSpeed)
@@ -33,8 +42,8 @@ namespace Pharaoh.Components.Movement
 
             while (duration > 0.0f)
             {
-                CinemachineVirtualCamera virtualCamera = _cinemachineBrain?.ActiveVirtualCamera as CinemachineVirtualCamera;
-                CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = virtualCamera?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = 
+                    _virtualCamera?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
                 var currentMagnitude = Mathf.Lerp(magnitude, 0f, 1 - (duration / totalDuration));
                 if (useCinemachineCamera && cinemachineBasicMultiChannelPerlin)
@@ -64,7 +73,6 @@ namespace Pharaoh.Components.Movement
 
                 yield return null;
             }
-
         }
     }
 }
