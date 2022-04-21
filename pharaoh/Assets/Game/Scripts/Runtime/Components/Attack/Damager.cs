@@ -15,13 +15,13 @@ namespace Pharaoh.Gameplay.Components
         public DamagerData damagerData;
         public StunData stunData;
 
-        public Vector2 enterOffsetPosition { get; private set; }
+        public Vector2 enterFirstContactPosition { get; private set; }
 
         [SerializeField] private LayerMask damagingLayers;
-        [HideInInspector] public UnityEvent<Damager, Collider2D> onTriggerHit;
+        [HideInInspector] public UnityEvent<Damager, Collision2D> onDamagingHit;
 
         [SerializeField] private LayerMask collidingLayers;
-        [HideInInspector] public UnityEvent<Damager, Collider2D> onCollisionHit;
+        [HideInInspector] public UnityEvent<Damager, Collision2D> onCollisionHit;
 
         private Collider2D _collider;
 
@@ -30,21 +30,22 @@ namespace Pharaoh.Gameplay.Components
             _collider = GetComponent<Collider2D>();
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (gameObject.IsCollidingHimself(other, true)) return;
+            Debug.Log($"{collision.collider}");
+            if (gameObject.IsCollidingHimself(collision.collider, true)) return;
 
-            enterOffsetPosition = transform.TransformPoint(_collider.offset);
+            enterFirstContactPosition = collision.GetContact(0).point;
 
-            if (other.gameObject.HasLayer(damagingLayers))
+            if (collision.collider.gameObject.HasLayer(damagingLayers))
             {
-                onTriggerHit?.Invoke(this, other);
+                onDamagingHit?.Invoke(this, collision);
             }
 
-            if (other.gameObject.HasLayer(collidingLayers))
+            if (collision.collider.gameObject.HasLayer(collidingLayers))
             {
                 // kinematic + sleep
-                onCollisionHit?.Invoke(this, other);
+                onCollisionHit?.Invoke(this, collision);
             } 
         }
     }

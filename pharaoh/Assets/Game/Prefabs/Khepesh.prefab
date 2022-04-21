@@ -149,7 +149,7 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -201,11 +201,11 @@ MonoBehaviour:
   damagingLayers:
     serializedVersion: 2
     m_Bits: 2048
-  onTriggerHit:
+  onDamagingHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Damager,
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Damager,
           Pharaoh
         m_MethodName: Raise
         m_Mode: 0
