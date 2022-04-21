@@ -33,6 +33,7 @@ namespace Pharaoh.Gameplay
 
             bool addDelay = !data.oneTimeDelay || !isSameTarget;
             if (_isFirstTime) _isFirstTime = false;
+            if (_currentTarget == null) return;
             StartCoroutine(Action(addDelay));
         }
 

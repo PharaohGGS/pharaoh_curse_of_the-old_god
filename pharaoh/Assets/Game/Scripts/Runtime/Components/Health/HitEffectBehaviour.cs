@@ -69,7 +69,10 @@ namespace Pharaoh.Gameplay.Components
             onKnockBackStart?.Invoke();
             Vector2 closestPoint = damager.enterFirstContactPosition;
             Vector2 colliderOffset = transform.TransformPoint(col.offset);
-            Vector2 direction = (closestPoint - colliderOffset).normalized;
+            bool enterOnRight = colliderOffset.x - closestPoint.x > 0.0f;
+            Vector2 colliderSize = new Vector2((enterOnRight ? 1 : -1) * col.bounds.extents.x, 0);
+            Vector2 colliderPoint = colliderOffset + colliderSize;
+            Vector2 direction = (closestPoint - colliderPoint).normalized;
             rb.AddForce(rb.mass * kbForce * direction, ForceMode2D.Impulse);
             
             yield return new WaitForSeconds(kbDuration);
