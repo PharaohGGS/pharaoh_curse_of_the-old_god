@@ -491,12 +491,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         {
             _rigidbody.velocity = Vector2.zero;
 
-            inputReader.DisableMove();
-            inputReader.DisableJump();
-            inputReader.DisableDash();
-            inputReader.DisableHookInteract();
-            inputReader.DisableHookGrapple();
-            inputReader.DisableSandSoldier();
+            inputReader.DisableAll();
 
             StartCoroutine(Stunned(duration));
             animator.SetTrigger("Stunned");
@@ -506,13 +501,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         System.Collections.IEnumerator Stunned(float duration)
         {
             yield return new WaitForSeconds(duration);
-
-            inputReader.EnableMove();
-            inputReader.EnableJump();
-            inputReader.EnableDash();
-            inputReader.EnableHookInteract();
-            inputReader.EnableHookGrapple();
-            inputReader.EnableSandSoldier();
+            inputReader.EnableAll();
         }
 
         public void Respawn()

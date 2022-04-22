@@ -220,6 +220,28 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         _playerInput.CharacterActions.SandSoldier.Enable();
     }
 
+    public void DisableAll()
+    {
+        DisableAttack();
+        DisableDash();
+        DisableJump();
+        DisableMove();
+        DisableHookGrapple();
+        DisableHookInteract();
+        DisableSandSoldier();
+    }
+
+    public void EnableAll()
+    {
+        EnableAttack();
+        EnableDash();
+        EnableJump();
+        EnableMove();
+        EnableHookGrapple();
+        EnableHookInteract();
+        EnableSandSoldier();
+    }
+
     public override string ToString()
     {
         return "Controls :\n" +
