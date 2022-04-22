@@ -17,6 +17,8 @@ public class PlayerSound : MonoBehaviour
     private AudioClip[] footStepClips;
     [SerializeField]
     private AudioClip[] jumpClips;
+    [SerializeField]
+    private AudioClip[] DeathClips;
 
     [Space(10)]
     [Header("Khepesh sounds")]
@@ -83,6 +85,11 @@ public class PlayerSound : MonoBehaviour
     {
         AudioClip khepeshHitClip = GetRandomClip(khepeshHitClips);
         audioSource.PlayOneShot(khepeshHitClip);
+    }
+    public void PlayerDeathSound()
+    {
+        AudioClip DeathClip = GetRandomClip(DeathClips);
+        audioSource.PlayOneShot(DeathClip);
     }
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
