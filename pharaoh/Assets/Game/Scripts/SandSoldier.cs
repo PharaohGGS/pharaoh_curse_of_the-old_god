@@ -396,7 +396,10 @@ public class SandSoldier : MonoBehaviour
     private void DisableActions()
     {
         inputReader.DisableAttack();
-        inputReader.DisableMove();
+        if(_playerMovement.IsGrounded)
+        {
+            inputReader.DisableMove();
+        }
         inputReader.DisableDash();
         inputReader.DisableJump();
         inputReader.DisableHookGrapple();

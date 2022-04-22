@@ -10,6 +10,8 @@ public class PlayerSound : MonoBehaviour
     [Header("Audio source parameters")]
     [SerializeField]
     private float audioSourceVolume;
+    [SerializeField]
+    private float audioSourceVolumeHigh;
 
     [Space(10)]
     [Header("Player sounds")]
@@ -38,6 +40,7 @@ public class PlayerSound : MonoBehaviour
 
     private PlayerMovement playerMovementData;
     private AudioSource audioSource;
+    private AudioSource audioSourceHigh;
 
     private void Awake()
     {
@@ -46,6 +49,14 @@ public class PlayerSound : MonoBehaviour
 
         audioSource.volume = audioSourceVolume;
         audioSource.loop = false;
+
+        // Creating second audioSource for high volume sounds
+        var go = new GameObject($"High audioSource");
+        go.transform.SetParent(transform);
+        audioSourceHigh = go.AddComponent<AudioSource>();
+
+        audioSourceHigh.volume = audioSourceVolumeHigh;
+        audioSourceHigh.loop = false;
     }
 
     public void PlayerStepSound()
@@ -89,7 +100,7 @@ public class PlayerSound : MonoBehaviour
     public void PlayerDeathSound()
     {
         AudioClip DeathClip = GetRandomClip(DeathClips);
-        audioSource.PlayOneShot(DeathClip);
+        audioSourceHigh.PlayOneShot(DeathClip);
     }
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
