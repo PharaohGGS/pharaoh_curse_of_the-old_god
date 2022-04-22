@@ -25,9 +25,9 @@ public class SaveInstance : MonoBehaviour
         if (SaveDataManager.Instance == null)
             return;
 
-        if (type == Type.Enemy)
+        if (type == Type.Enemy && gameObject.name.StartsWith("Enemy_"))
             instanceID = ulong.Parse(gameObject.name.Substring(ENEMY_PARSE_INDEX));
-        else if (type == Type.MovingBlock)
+        else if (type == Type.MovingBlock && gameObject.name.StartsWith("MovingBlock_"))
             instanceID = ulong.Parse(gameObject.name.Substring(MOVING_BLOCK_PARSE_INDEX));
 
         Load();

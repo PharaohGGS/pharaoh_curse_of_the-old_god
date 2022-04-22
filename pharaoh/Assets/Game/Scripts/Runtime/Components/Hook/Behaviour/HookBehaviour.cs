@@ -31,8 +31,6 @@ namespace Pharaoh.Gameplay
 
         public UnityEvent onFoundTarget;
         public UnityEvent onLoosingTarget;
-        public UnityEvent onLostTarget;
-        public UnityEvent onInteract;
         
         protected virtual void Awake()
         {
@@ -44,20 +42,13 @@ namespace Pharaoh.Gameplay
 
         public virtual void FoundBestTarget(HookCapacity hook, GameObject target)
         {
-            StartCoroutine(ActivateIndicator(target == gameObject));
-        }
-
-        protected IEnumerator ActivateIndicator(bool activate)
-        {
-            if (activate)
+            if (target == gameObject)
             {
                 onFoundTarget?.Invoke();
             }
             else
             {
                 onLoosingTarget?.Invoke();
-                yield return new WaitForSeconds(waitTimeLoosing);
-                onLostTarget?.Invoke();
             }
         }
 
@@ -65,7 +56,6 @@ namespace Pharaoh.Gameplay
         {
             isCurrentTarget = target == gameObject;
             _hook = isCurrentTarget ? hook : null;
-            if (isCurrentTarget) onInteract?.Invoke();
             events?.Started(this);
         }
         
