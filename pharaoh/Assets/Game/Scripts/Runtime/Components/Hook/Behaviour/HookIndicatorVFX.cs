@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.VFX.Utility;
 
 namespace Pharaoh.Gameplay
 {
@@ -8,58 +11,109 @@ namespace Pharaoh.Gameplay
     public class HookIndicatorVFX : MonoBehaviour
     {
         private VisualEffect _vfx;
+        [SerializeField] private Fade<float>[] floatProperties;
+        [SerializeField, Header("Hook Behaviour Events")] private HookBehaviourEvents events;
 
         [System.Serializable]
-        public struct FadeLifeTime {
-            public float minLifeTime;
-            public float maxLifeTime;
-            public float speed;
+        private enum FadeTransition
+        {
+            In,
+            Out,
         }
         
-        public FadeLifeTime fadeIn;
-        public FadeLifeTime fadeOut;
+        [System.Serializable]
+        private class Fade<T>
+        {
+            public string name;
+            
+            public T max;
+            public T min;
+            
+            public float speedIn;
+            public float speedOut;
+        }
 
-        public Coroutine _coroutine;
+        private Coroutine _coroutine;
+        private FadeTransition _lastTransition;
 
         private void Awake()
         {
             _vfx = GetComponent<VisualEffect>();
         }
+        
+        private void OnEnable()
+        {
+            // Hook bindings
+            if (events) events.started += OnHookStarted;
+        }
+
+        private void OnDisable()
+        {
+            // Hook bindings
+            if (events) events.started -= OnHookStarted;
+        }
+
+        private void OnHookStarted(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+            FadeOut();
+        }
 
         public void FadeIn()
         {
+            if (_lastTransition == FadeTransition.In) return;
             if (_coroutine != null) StopCoroutine(_coroutine);
-            _coroutine = StartCoroutine(Fading(fadeIn));
+            _coroutine = StartCoroutine(FloatFading(FadeTransition.In));
         }
 
         public void FadeOut()
         {
+            if (_lastTransition == FadeTransition.Out) return;
             if (_coroutine != null) StopCoroutine(_coroutine);
-            _coroutine = StartCoroutine(Fading(fadeOut));
+            _coroutine = StartCoroutine(FloatFading(FadeTransition.Out));
         }
 
-        private IEnumerator Fading(FadeLifeTime fade)
+        private IEnumerator FloatFading(FadeTransition transition)
         {
-            bool minEnded = false;
-            bool maxEnded = false;
+            Debug.Log($"{name} is Fading {transition}");
+            _lastTransition = transition;
+            bool[] ended = new bool[floatProperties.Length];
 
+            float maxDelta = 0.0f;
+            float current = 0.0f;
+            float lerp = 0.0f;
+            
             while (true)
             {
-                if (minEnded && maxEnded) break;
+                for (var i = 0; i < floatProperties.Length; i++)
+                {
+                    var property = floatProperties[i];
+                    if (ended[i]) continue;
 
-                float currentMin = _vfx.GetFloat("MinLifetime");
-                minEnded = Mathf.Abs(currentMin - fade.minLifeTime) <= Mathf.Epsilon;
-                if (!minEnded) _vfx.SetFloat("MinLifetime", Mathf.MoveTowards(currentMin, fade.minLifeTime, Time.deltaTime * fade.speed));
-                                
-                float currentMax = _vfx.GetFloat("MaxLifetime");
-                maxEnded = Mathf.Abs(currentMax - fade.maxLifeTime) <= Mathf.Epsilon;
-                if (!maxEnded) _vfx.SetFloat("MaxLifetime", Mathf.MoveTowards(currentMax, fade.maxLifeTime, Time.deltaTime * fade.speed));
+                    switch (transition)
+                    {
+                        case FadeTransition.In:
+                            maxDelta = Time.deltaTime * property.speedIn;
+                            current = _vfx.GetFloat(property.name);
+                            ended[i] = Mathf.Abs(current - property.max) <= Mathf.Epsilon;
+                            lerp = maxDelta <= Mathf.Epsilon ? property.max : Mathf.MoveTowards(current, property.max, maxDelta);
+                            if (!ended[i]) _vfx.SetFloat(property.name, lerp);
+                            break;
+                        case FadeTransition.Out:
+                            maxDelta = Time.deltaTime * property.speedOut;
+                            current = _vfx.GetFloat(property.name);
+                            ended[i] = Mathf.Abs(current - property.min) <= Mathf.Epsilon;
+                            lerp = maxDelta <= Mathf.Epsilon ? property.min : Mathf.MoveTowards(current, property.min, maxDelta);
+                            if (!ended[i]) _vfx.SetFloat(property.name, lerp);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(transition), transition, null);
+                    }               
+                }
                 
+                if (Array.TrueForAll(ended, b => b == true)) break;
                 yield return null;
             }
-
-            _vfx.SetFloat("MinLifetime", fade.minLifeTime);
-            _vfx.SetFloat("MaxLifetime", fade.maxLifeTime);
         }
     }
 }
