@@ -133,36 +133,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onLostTarget:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3681199949460597284}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
-        m_MethodName: FadeOut
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3681199949460597284}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.HookIndicatorVFX, Pharaoh
-        m_MethodName: FadeOut
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   finalMoveTarget: {fileID: 4036576582580424355}
 --- !u!114 &3604755130658801948
 MonoBehaviour:
@@ -463,14 +433,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0187ae717251834b90b6a259d7688e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeIn:
-    minLifeTime: 1
-    maxLifeTime: 2
-    speed: 3
-  fadeOut:
-    minLifeTime: 0
-    maxLifeTime: 0
-    speed: 2
+  floatProperties:
+  - name: MinLifetime
+    max: 1
+    min: 0
+    speedIn: 0
+    speedOut: 1
+  - name: MaxLifetime
+    max: 2
+    min: 0
+    speedIn: 0
+    speedOut: 1
+  events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
 --- !u!1001 &520383217203542739
 PrefabInstance:
   m_ObjectHideFlags: 0
