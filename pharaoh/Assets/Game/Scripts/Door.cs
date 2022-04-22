@@ -64,12 +64,6 @@ public class Door : MonoBehaviour
             _delayBetweenShakes = _time;
     }
 
-    void Update()
-    {
-       
-    }
-
-
     // Called when a pressure plate is pressed
     public void Open()
     {
@@ -151,7 +145,8 @@ public class Door : MonoBehaviour
 
             _randomPos = _startPos + (Random.insideUnitSphere * _distance);
 
-            transform.position = _randomPos;
+            //transform.position = _randomPos;
+            door.transform.position = _randomPos;
 
             if (_delayBetweenShakes > 0f)
             {
@@ -163,7 +158,8 @@ public class Door : MonoBehaviour
             }
         }
 
-        transform.position = _startPos;
+        //transform.position = _startPos;
+        door.transform.position = _startPos;
     }
 
 
