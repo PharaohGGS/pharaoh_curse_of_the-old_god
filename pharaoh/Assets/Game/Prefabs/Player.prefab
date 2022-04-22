@@ -1098,6 +1098,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1079426416759742461}
+        m_TargetAssemblyTypeName: PlayerSound, Pharaoh
+        m_MethodName: PlayerDeathSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1694517701867188700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,17 +1265,17 @@ MonoBehaviour:
           m_StringArgument: PlayerDeath
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
-        m_TargetAssemblyTypeName: Pharaoh.Managers.AudioManager, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 5
+      - m_Target: {fileID: 5732736215046696853}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: PlayerDeath
-          m_BoolArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
   onTakeHit:
     m_PersistentCalls:
@@ -1531,6 +1543,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 74c88fa9fe14d504cabf88e9415f7339, type: 3}
   - {fileID: 8300000, guid: 606858e8d36e5ed42b869e688682ce01, type: 3}
   jumpClips: []
+  DeathClips:
+  - {fileID: 8300000, guid: f9d180b6250f3c6429516fd278b51f65, type: 3}
   khepeshDrawClips:
   - {fileID: 8300000, guid: 6e145a40672182c43a3261911b94396f, type: 3}
   - {fileID: 8300000, guid: 97b4ec0687fab6c4fbd5ceb3febc2d97, type: 3}
@@ -1962,7 +1976,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 11.644417
+  m_Intensity: 2.4051018
   m_Range: 3.5
   m_SpotAngle: 96
   m_InnerSpotAngle: 21.80208
