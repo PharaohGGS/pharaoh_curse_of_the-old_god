@@ -36,7 +36,7 @@ namespace Pharaoh.Managers
 
         protected override void Awake()
         {
-
+            if (sounds == null) return;
             foreach (Sound s in sounds)
             {
                 var go = new GameObject($"{s.name} source");
@@ -79,6 +79,7 @@ namespace Pharaoh.Managers
 
         public void Play(string name)
         {
+            if (sounds == null) return;
             Sound s = Array.Find(sounds, sound => sound.name == name);
             
             if (s == null)
@@ -145,6 +146,7 @@ namespace Pharaoh.Managers
 
         public void Pause(string name)
         {
+            if (sounds == null) return;
             Sound s = Array.Find(sounds, sound => sound.name == name);
 
             if (s == null)
@@ -163,6 +165,7 @@ namespace Pharaoh.Managers
 
         public void Stop(string name)
         {
+            if (sounds == null) return;
             Sound s = Array.Find(sounds, sound => sound.name == name);
 
             if (s == null)

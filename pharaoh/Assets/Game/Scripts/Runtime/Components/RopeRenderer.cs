@@ -67,7 +67,6 @@ namespace Pharaoh.Gameplay
             (_rightHand, _leftHand) = (_leftHand, _rightHand);
         }
 
-
         #region Hook
 
         private void HookAddListener()
