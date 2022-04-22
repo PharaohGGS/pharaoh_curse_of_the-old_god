@@ -40,8 +40,7 @@ namespace Pharaoh.Gameplay
 
         private void Update()
         {
-            if (!_ropeShot || _target == null)
-                return;
+            if (!_ropeShot || _target == null || _lineRenderer.positionCount == 0) return;
 
             _lineRenderer.SetPositions(new Vector3[] { _leftHand.position, _rightHand.position, _target.position });
         }
@@ -52,14 +51,18 @@ namespace Pharaoh.Gameplay
             _leftHand = pullingSocketLeft;
             _target = target;
             _lineRenderer.enabled = true;
+            _lineRenderer.positionCount = 3;
             _ropeShot = true;
         }
 
         public void RetrieveRope()
         {
-            _lineRenderer.enabled = false;
-            _ropeShot = false;
+            _rightHand = null;
+            _leftHand = null;
             _target = null;
+            _lineRenderer.enabled = false;
+            _lineRenderer.positionCount = 0;
+            _ropeShot = false;
         }
 
         public void SwitchHands()
