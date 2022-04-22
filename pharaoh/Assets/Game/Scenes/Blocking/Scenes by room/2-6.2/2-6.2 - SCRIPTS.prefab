@@ -1,5 +1,85 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &772538710807043492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 161491734638600810}
+  - component: {fileID: 5432369664833407704}
+  - component: {fileID: 5660329441193964778}
+  m_Layer: 0
+  m_Name: SoundTrigger - Enigme
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &161491734638600810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772538710807043492}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 25.83, y: -18.57, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2067387065998036548}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5432369664833407704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772538710807043492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4edfe9315bffba44485964474c818fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundToPlay: 
+  playOnEnter: 0
+  playOnExit: 0
+  Replay: 0
+  soundToStop: Enigme
+  stopOnEnter: 1
+  stopOnExit: 0
+  Restop: 0
+  playerLayer: 17
+--- !u!61 &5660329441193964778
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772538710807043492}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.15226269, y: -0.0048696995}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.4584446, y: 3.4378352}
+  m_EdgeRadius: 0
 --- !u!1 &8720758825914385420
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +159,7 @@ Transform:
   - {fileID: 340260351659426539}
   - {fileID: 1816943829987391624}
   - {fileID: 4724229687530941803}
+  - {fileID: 161491734638600810}
   m_Father: {fileID: 4017226478422896445}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -92,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 1275027506277483645, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -5096487770347705462, guid: b69807009f4ed764391a7dc7e553d0ed, type: 3}
+      objectReference: {fileID: 7199281686662390646, guid: 63e013f5045e5a9429fcfc4e530e1774, type: 3}
     - target: {fileID: 3749343613406101149, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -159,12 +240,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: jar
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7207735977759604285, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: openedMesh
       value: 
-      objectReference: {fileID: -968020168106551049, guid: d3212f0b40fdaca4b82aec425affc383, type: 3}
+      objectReference: {fileID: -5457496426283694334, guid: 8efea66e96be9754cbdaa4537581a3f9, type: 3}
     - target: {fileID: 8503782463928635034, guid: abe6828387b899040beb2a3f8ee556a6, type: 3}
       propertyPath: m_IsActive
       value: 0
