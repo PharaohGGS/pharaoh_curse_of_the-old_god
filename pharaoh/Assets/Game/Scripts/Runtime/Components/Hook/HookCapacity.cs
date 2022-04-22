@@ -37,6 +37,7 @@ namespace Pharaoh.Gameplay
         private UnityEvent<HookCapacity, GameObject> onHookGrapple = new UnityEvent<HookCapacity, GameObject>();
         
         [SerializeField, Header("Input Reader")] private InputReader inputs;
+        [SerializeField, Header("Player Skills")] private PlayerSkills skills;
         [SerializeField, Header("Hook Behaviour Events")] private HookBehaviourEvents events;
 
         [Header("Actions Data")] 
@@ -111,6 +112,8 @@ namespace Pharaoh.Gameplay
         
         private void Update()
         {
+            if (!skills.hasGrapplingHook) return;
+
             SearchTargets();
 
             _potentialTarget = _movement.IsFacingRight switch
