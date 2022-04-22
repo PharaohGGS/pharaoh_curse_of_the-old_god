@@ -1,37 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.VFX;
 using UnityEngine.VFX.Utility;
 
 namespace Pharaoh.Gameplay
 {
+    [System.Serializable]
+    public enum FadeTransition
+    {
+        In,
+        Out,
+    }
+
     [RequireComponent(typeof(VisualEffect))]
     public class HookIndicatorVFX : MonoBehaviour
     {
         private VisualEffect _vfx;
-        [SerializeField] private Fade<float>[] floatProperties;
+        [SerializeField] private List<Fade> properties;
         [SerializeField, Header("Hook Behaviour Events")] private HookBehaviourEvents events;
-
-        [System.Serializable]
-        private enum FadeTransition
-        {
-            In,
-            Out,
-        }
-        
-        [System.Serializable]
-        private class Fade<T>
-        {
-            public string name;
-            
-            public T max;
-            public T min;
-            
-            public float speedIn;
-            public float speedOut;
-        }
 
         private Coroutine _coroutine;
         private FadeTransition _lastTransition;
@@ -77,38 +66,20 @@ namespace Pharaoh.Gameplay
         {
             Debug.Log($"{name} is Fading {transition}");
             _lastTransition = transition;
-            bool[] ended = new bool[floatProperties.Length];
+            bool[] ended = new bool[properties.Count];
 
+            float target = 0.0f;
             float maxDelta = 0.0f;
-            float current = 0.0f;
             float lerp = 0.0f;
             
             while (true)
             {
-                for (var i = 0; i < floatProperties.Length; i++)
+                for (var i = 0; i < properties.Count; i++)
                 {
-                    var property = floatProperties[i];
+                    var property = properties[i];
                     if (ended[i]) continue;
 
-                    switch (transition)
-                    {
-                        case FadeTransition.In:
-                            maxDelta = Time.deltaTime * property.speedIn;
-                            current = _vfx.GetFloat(property.name);
-                            ended[i] = Mathf.Abs(current - property.max) <= Mathf.Epsilon;
-                            lerp = maxDelta <= Mathf.Epsilon ? property.max : Mathf.MoveTowards(current, property.max, maxDelta);
-                            if (!ended[i]) _vfx.SetFloat(property.name, lerp);
-                            break;
-                        case FadeTransition.Out:
-                            maxDelta = Time.deltaTime * property.speedOut;
-                            current = _vfx.GetFloat(property.name);
-                            ended[i] = Mathf.Abs(current - property.min) <= Mathf.Epsilon;
-                            lerp = maxDelta <= Mathf.Epsilon ? property.min : Mathf.MoveTowards(current, property.min, maxDelta);
-                            if (!ended[i]) _vfx.SetFloat(property.name, lerp);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(transition), transition, null);
-                    }               
+                    property.DoFading(_vfx, transition);            
                 }
                 
                 if (Array.TrueForAll(ended, b => b == true)) break;
