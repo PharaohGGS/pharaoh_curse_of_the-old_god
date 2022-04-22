@@ -1962,7 +1962,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 11.644417
+  m_Intensity: 2.4051018
   m_Range: 3.5
   m_SpotAngle: 96
   m_InnerSpotAngle: 21.80208
@@ -2361,22 +2361,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-    - Key: SwitchHands
-      Value:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 8469386647090063590}
-            m_TargetAssemblyTypeName: Pharaoh.Gameplay.RopeRenderer, Pharaoh
-            m_MethodName: SwitchHands
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
     - Key: StartAttack
       Value:
         m_PersistentCalls:
@@ -2419,7 +2403,7 @@ MonoBehaviour:
               m_IntArgument: 0
               m_FloatArgument: 0
               m_StringArgument: 
-              m_BoolArgument: 0
+              m_BoolArgument: 1
             m_CallState: 2
     - Key: PlayerStep
       Value:
@@ -2460,6 +2444,22 @@ MonoBehaviour:
           - m_Target: {fileID: 1079426416759742461}
             m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
             m_MethodName: PlayerDoubleSwingSound
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Key: SwitchHands
+      Value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8469386647090063590}
+            m_TargetAssemblyTypeName: Pharaoh.Gameplay.RopeRenderer, Pharaoh
+            m_MethodName: SwitchHands
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
