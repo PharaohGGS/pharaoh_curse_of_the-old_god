@@ -10,6 +10,9 @@ public class PressurePlate : MonoBehaviour
     private Transform _mesh;
     private int _pressCount; //counts the amount of bodies pressing the trigger
 
+    public float offset;
+    public Transform model;
+    public ParticleSystem dustBurst;
     public LayerMask whatCanTrigger;
     public UnityEvent OnPress = new UnityEvent();
     public UnityEvent OnRelease = new UnityEvent();
@@ -25,8 +28,12 @@ public class PressurePlate : MonoBehaviour
         {
             if (_pressCount == 0)
             {
+                model.position -= Vector3.up * offset;
+
+                dustBurst.Play();
+
                 // Invoke the event while the first body triggers the plate
-                OnPress.Invoke();
+                OnPress?.Invoke();
                 AudioManager.Instance.Play("PlateOn");
 
                 _mesh.localScale = new Vector3(0.66f, 0.125f, 0.66f); //squish the plate to make it easier to see
@@ -41,8 +48,10 @@ public class PressurePlate : MonoBehaviour
         {
             if (_pressCount == 1)
             {
+                model.position += Vector3.up * offset;
+
                 // Invoke the event while the last body leaves the plate
-                OnRelease.Invoke();
+                OnRelease?.Invoke();
                 AudioManager.Instance.Play("PlateOff");
 
                 _mesh.localScale = new Vector3(0.66f, 0.25f, 0.66f); //unsquish the plate
