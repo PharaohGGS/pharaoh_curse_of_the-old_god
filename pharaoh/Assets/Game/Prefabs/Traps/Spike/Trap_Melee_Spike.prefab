@@ -3412,14 +3412,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagerData: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
   stunData: {fileID: 11400000, guid: 4d56be772b9ab9740b88e8499c566de0, type: 2}
+  ownerMask:
+    serializedVersion: 2
+    m_Bits: 0
   damagingLayers:
     serializedVersion: 2
     m_Bits: 133120
-  onTriggerHit:
+  onDamagingHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
-        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`1[[Pharaoh.Gameplay.Components.Damager,
+        m_TargetAssemblyTypeName: Pharaoh.GameEvents.AbstractGameEvent`2[[Pharaoh.Gameplay.Components.Damager,
           Pharaoh
         m_MethodName: Raise
         m_Mode: 0
