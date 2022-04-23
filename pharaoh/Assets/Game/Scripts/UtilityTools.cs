@@ -73,5 +73,49 @@ public class UtilityTools
         Debug.Log("Player Skills DEBUG Reset.");
     }
 
+    private static void SetAllBlockingMeshRenderers(bool enabled)
+    {
+        List<Scene> loadedScenes = new List<Scene>();
+
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            loadedScenes.Add(SceneManager.GetSceneAt(i));
+        }
+
+        foreach (Scene scene in loadedScenes)
+        {
+            GameObject[] gos = scene.GetRootGameObjects();
+            foreach (GameObject go in gos)
+            {
+                if (go.name.EndsWith(" - BLOCKING"))
+                {
+                    MeshRenderer[] mrs = go.GetComponentsInChildren<MeshRenderer>();
+                    foreach (MeshRenderer mr in mrs)
+                    {
+                        mr.enabled = enabled;
+                    }
+                }
+            }
+        }
+    }
+
+    // Disables all mesh renderers in BLOCKING objects in the loaded scenes
+    [MenuItem("Utility/Disable All Blocking Mesh Renderers")]
+    private static void DisableAllBlockingMeshes()
+    {
+        SetAllBlockingMeshRenderers(false);
+
+        Debug.Log("All blocking mesh renderers disabled.");
+    }
+
+    // Enables all mesh renderers in BLOCKING objects in the loaded scenes
+    [MenuItem("Utility/Enable All Blocking Mesh Renderers")]
+    private static void EnableAllBlockingMeshes()
+    {
+        SetAllBlockingMeshRenderers(true);
+
+        Debug.Log("All blocking mesh renderers enabled.");
+    }
+
 }
 #endif
