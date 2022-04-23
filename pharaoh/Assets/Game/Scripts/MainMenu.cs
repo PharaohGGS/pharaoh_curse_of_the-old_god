@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     private bool _isMainMenuDisplayed = true;
     private GameObject _mainMenu;
     private GameObject _settingsMenu;
-    private Button _continueButton;
+    private GameObject _continueButton;
 
     public TMPro.TMP_Dropdown windowModeDropdown;
     public TMPro.TMP_Dropdown resolutionDropdown;
@@ -26,21 +26,21 @@ public class MainMenu : MonoBehaviour
 
         _mainMenu = transform.Find("Main Menu").gameObject;
         _settingsMenu = transform.Find("Settings Menu").gameObject;
-        _continueButton = _mainMenu.transform.Find("Continue Button").GetComponent<Button>();
+        _continueButton = _mainMenu.transform.Find("Continue Button").gameObject;
 
         UpdateMenus();
         UpdateScreenSizeAndWindowMode();
     }
 
-    public void NewGame()
-    {
-        SaveDataManager.Instance.NewSave();
-        LoadGameScene();
-    }
-
     public void ContinueGame()
     {
         SaveDataManager.Instance.LoadSave();
+        LoadGameScene();
+    }
+
+    public void NewGame()
+    {
+        SaveDataManager.Instance.NewSave();
         LoadGameScene();
     }
 
@@ -82,7 +82,10 @@ public class MainMenu : MonoBehaviour
             _settingsMenu.SetActive(true);
         }
 
-        _continueButton.interactable = SaveDataManager.Instance.SaveFileExists();
+        bool interactable = SaveDataManager.Instance.SaveFileExists();
+        _continueButton.GetComponent<Button>().interactable = interactable;
+        _continueButton.GetComponent<HoverButton>().interactable = interactable;
+        _continueButton.GetComponent<HoverButton>().UpdateDisplay();
     }
 
     public void UpdateScreenSizeAndWindowMode()

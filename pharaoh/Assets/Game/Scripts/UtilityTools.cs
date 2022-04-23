@@ -13,6 +13,7 @@ public class UtilityTools
 
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
     private static readonly string PLAYERSKILLSDEBUG_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData_DEBUG.asset";
+    private static readonly string SAVEFILE_PATH = "/save.dat";
 
     // Loads the SceneMerged scene as well as all the game scenes
     [MenuItem("Utility/Load Game Scenes")]
@@ -71,6 +72,20 @@ public class UtilityTools
         playerSkills.hasHeart = true;
 
         Debug.Log("Player Skills DEBUG Reset.");
+    }
+
+    [MenuItem("Utility/Delete Save File")]
+    private static void EraseSaveFile()
+    {
+        string saveFile = Application.persistentDataPath + SAVEFILE_PATH;
+
+        if (File.Exists(saveFile))
+        {
+            File.Delete(saveFile);
+            Debug.Log("Save file deleted.");
+        }
+        else
+            Debug.Log("No save file found.");
     }
 
     private static void SetAllBlockingMeshRenderers(bool enabled)

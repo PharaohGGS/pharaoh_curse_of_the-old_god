@@ -124,19 +124,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1688495151009957517}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3430301249119737996}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2542410396984199104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,18 +142,6 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3430301249119737996}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
         - m_Target: {fileID: 6958278877148983161}
           m_TargetAssemblyTypeName: TextColorChanger, Assembly-CSharp
           m_MethodName: Hover
@@ -182,18 +158,6 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3430301249119737996}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 6958278877148983161}
           m_TargetAssemblyTypeName: TextColorChanger, Assembly-CSharp
           m_MethodName: Exit
@@ -218,11 +182,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab6c202a80163344ae6297acbf032f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: 1
   defaultColor: {r: 0.3529412, g: 0.27450982, b: 0.17254902, a: 1}
   hoverColor: {r: 0, g: 0, b: 0, a: 1}
+  disabledColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
   defaultSize: 35
   hoverSize: 40
   tmp: {fileID: 1688495151093806535}
+  hoverImage: {fileID: 3430301249119737996}
 --- !u!1 &1688495151093806533
 GameObject:
   m_ObjectHideFlags: 0
