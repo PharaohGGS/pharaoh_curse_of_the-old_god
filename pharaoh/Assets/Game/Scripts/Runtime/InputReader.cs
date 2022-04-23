@@ -11,6 +11,23 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
     private PlayerInput _playerInput;
 
+    // Flags enables the use of pipes, for example : Move | Jump
+    [Flags]
+    public enum InputFlags
+    {
+        Move = 1,
+        Jump = 2,
+        Dash = 4,
+        Attack = 8,
+        HookGrapple = 16,
+        HookInteract = 32,
+        SandSoldier = 64,
+
+        Controls = Move | Jump | Dash | Attack,
+        Actions = HookGrapple | HookInteract | SandSoldier,
+        All = Move | Jump | Dash | Attack | HookGrapple | HookInteract | SandSoldier
+    }
+
     public UnityAction<Vector2> movePerformedEvent;
     public UnityAction<Vector2> moveCanceledEvent;
 
@@ -240,6 +257,66 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         EnableHookGrapple();
         EnableHookInteract();
         EnableSandSoldier();
+    }
+
+    // Enables the given inputs as flags
+    // ie. EnableInputs(Move | Jump) enables the Move and Jump inputs
+    public void EnableInputs(InputFlags flags)
+    {
+        // Controls
+
+        if (flags.HasFlag(InputFlags.Move))
+            _playerInput.CharacterControls.Move.Enable();
+
+        if (flags.HasFlag(InputFlags.Jump))
+            _playerInput.CharacterControls.Jump.Enable();
+
+        if (flags.HasFlag(InputFlags.Dash))
+            _playerInput.CharacterControls.Dash.Enable();
+
+        if (flags.HasFlag(InputFlags.Attack))
+            _playerInput.CharacterControls.Attack.Enable();
+
+        // Actions
+
+        if (flags.HasFlag(InputFlags.HookGrapple))
+            _playerInput.CharacterActions.HookGrapple.Enable();
+
+        if (flags.HasFlag(InputFlags.HookInteract))
+            _playerInput.CharacterActions.HookInteract.Enable();
+
+        if (flags.HasFlag(InputFlags.SandSoldier))
+            _playerInput.CharacterActions.SandSoldier.Enable();
+    }
+
+    // Disables the given inputs as flags
+    // ie. DisableInputs(Move | Jump) disables the Move and Jump inputs
+    public void DisableInputs(InputFlags flags)
+    {
+        // Controls
+
+        if (flags.HasFlag(InputFlags.Move))
+            _playerInput.CharacterControls.Move.Disable();
+
+        if (flags.HasFlag(InputFlags.Jump))
+            _playerInput.CharacterControls.Jump.Disable();
+
+        if (flags.HasFlag(InputFlags.Dash))
+            _playerInput.CharacterControls.Dash.Disable();
+
+        if (flags.HasFlag(InputFlags.Attack))
+            _playerInput.CharacterControls.Attack.Disable();
+
+        // Actions
+
+        if (flags.HasFlag(InputFlags.HookGrapple))
+            _playerInput.CharacterActions.HookGrapple.Disable();
+
+        if (flags.HasFlag(InputFlags.HookInteract))
+            _playerInput.CharacterActions.HookInteract.Disable();
+
+        if (flags.HasFlag(InputFlags.SandSoldier))
+            _playerInput.CharacterActions.SandSoldier.Disable();
     }
 
     public override string ToString()

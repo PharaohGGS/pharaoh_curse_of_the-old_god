@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.VFX;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
 using AudioManager = Pharaoh.Managers.AudioManager;
+using InputFlags = InputReader.InputFlags;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -190,7 +191,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 _dashClock = Time.time;
                 _isDashing = true;
-                inputReader.DisableDash();
+                inputReader.DisableInputs(InputFlags.Dash);
                 _isHooked = false;
 
                 gameObject.layer = _dashLayer;
@@ -305,7 +306,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 case GrappleHookBehaviour grapple:
                     _willBeHooked = false; //reuse this variable each time we grapple
                     _isHooking = false; //tells the PlayerMovement that the player finished hooking
-                    inputReader.EnableJump();
+                    inputReader.EnableInputs(InputFlags.Jump);
                     _isHooked = true;
                     _canJumpHook = true;
                     _hasDashedInAir = false;
@@ -459,7 +460,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
             yield return new WaitForSeconds(metrics.dashCooldown);
 
-            inputReader.EnableDash();
+            inputReader.EnableInputs(InputFlags.Dash);
         }
 
         private System.Collections.IEnumerator OverlapStunable()
@@ -491,7 +492,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         {
             _rigidbody.velocity = Vector2.zero;
 
-            inputReader.DisableAll();
+            inputReader.DisableInputs(InputFlags.All);
 
             StartCoroutine(Stunned(duration));
             animator.SetTrigger("Stunned");
@@ -501,7 +502,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         System.Collections.IEnumerator Stunned(float duration)
         {
             yield return new WaitForSeconds(duration);
-            inputReader.EnableAll();
+            inputReader.EnableInputs(InputFlags.All);
         }
 
         public void Respawn()
