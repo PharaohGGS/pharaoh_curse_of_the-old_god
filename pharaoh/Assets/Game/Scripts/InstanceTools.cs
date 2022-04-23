@@ -8,6 +8,10 @@ using System.Collections.Generic;
 
 public class InstanceTools
 {
+    private const int MAINMENU_INDEX = 0;
+    private const string PLAYERSKILLS_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData.asset";
+
+    // Returns all the build scenes as their paths
     private static List<string> GetAllBuildScenes()
     {
         List<string> scenes = new List<string>();
@@ -16,6 +20,18 @@ public class InstanceTools
             scenes.Add(SceneUtility.GetScenePathByBuildIndex(i));
         }
         return scenes;
+    }
+
+    // Returns whether all build scenes are loaded or not
+    static private bool AreAllBuildScenesLoaded()
+    {
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            if (!SceneManager.GetSceneByBuildIndex(i).isLoaded)
+                return false;
+        }
+
+        return true;
     }
 
     [MenuItem("Instances/Load Build Scenes")]
@@ -32,7 +48,13 @@ public class InstanceTools
     [MenuItem("Instances/Generate Enemies Instance IDs")]
     private static void GenerateEnemiesInstanceIDs()
     {
-        ulong id = 0;
+        if (!AreAllBuildScenesLoaded())
+        {
+            Debug.LogWarning("Not all build scenes loaded.");
+            return;
+        }
+
+        uint id = 0;
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
         {
             go.name = "Enemy_" + id++;
@@ -44,12 +66,32 @@ public class InstanceTools
         }
 
         Debug.Log("Counted " + id + " enemies.");
+
+        GameObject[] gos = SceneManager.GetSceneByBuildIndex(MAINMENU_INDEX).GetRootGameObjects();
+        foreach (GameObject go in gos)
+        {
+            if (go.name == "SaveDataManager")
+            {
+                go.GetComponent<SaveDataManager>().ENEMIES_COUNT = id;
+                EditorSceneManager.SaveScene(SceneManager.GetSceneByBuildIndex(MAINMENU_INDEX));
+                Debug.Log("SaveDataManager's enemies count updated.");
+                return;
+            }
+        }
+
+        Debug.LogWarning("No SaveDataManager found.");
     }
 
     [MenuItem("Instances/Generate Blocks Instance IDs")]
     private static void GenerateBlocksInstanceIDs()
     {
-        ulong id = 0;
+        if (!AreAllBuildScenesLoaded())
+        {
+            Debug.LogWarning("Not all build scenes loaded.");
+            return;
+        }
+
+        uint id = 0;
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("MovingBlock"))
         {
             go.name = "MovingBlock_" + id++;
@@ -61,6 +103,40 @@ public class InstanceTools
         }
 
         Debug.Log("Counted " + id + " moving blocks.");
+
+        GameObject[] gos = SceneManager.GetSceneByBuildIndex(MAINMENU_INDEX).GetRootGameObjects();
+        foreach (GameObject go in gos)
+        {
+            if (go.name == "SaveDataManager")
+            {
+                go.GetComponent<SaveDataManager>().MOVING_BLOCKS_COUNT = id;
+                EditorSceneManager.SaveScene(SceneManager.GetSceneByBuildIndex(MAINMENU_INDEX));
+                Debug.Log("SaveDataManager's moving blocks count updated.");
+                return;
+            }
+        }
+
+        Debug.LogWarning("No SaveDataManager found.");
+    }
+
+    [MenuItem("Instances/Reset Player Skills")]
+    private static void ResetPlayerSkills()
+    {
+        PlayerSkills playerSkills = (PlayerSkills)AssetDatabase.LoadAssetAtPath(PLAYERSKILLS_PATH, typeof(PlayerSkills));
+
+        if (playerSkills == null)
+        {
+            Debug.LogWarning("PlayerSkills at path " + PLAYERSKILLS_PATH + " not found.");
+            return;
+        }
+
+        playerSkills.hasDash = false;
+        playerSkills.hasGrapplingHook = false;
+        playerSkills.hasSwarmDash = false;
+        playerSkills.hasSandSoldier = false;
+        playerSkills.hasHeart = false;
+
+        Debug.Log("Player Skills Reset.");
     }
 
     [MenuItem("Instances/Unload Build Scenes")]
