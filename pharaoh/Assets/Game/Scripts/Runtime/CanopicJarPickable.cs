@@ -80,12 +80,12 @@ public class CanopicJarPickable : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.HasLayer(whatIsPlayer))
-            inputReader.hookInteractPerformedEvent += OnInteract;
+            inputReader.interactPerformedEvent += OnInteract;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        inputReader.hookInteractPerformedEvent -= OnInteract;
+        inputReader.interactPerformedEvent -= OnInteract;
     }
 
     public void PlayCredits()

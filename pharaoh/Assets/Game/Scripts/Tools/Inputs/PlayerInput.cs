@@ -82,6 +82,15 @@ namespace Pharaoh.Tools.Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""3a65d74f-251e-4298-bd44-0957595e2543"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -359,6 +368,28 @@ namespace Pharaoh.Tools.Inputs
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d97de1b6-d2df-41a0-a241-9c6d80c6282a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf8bb1cd-aa32-433d-8044-213201c12320"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -533,6 +564,7 @@ namespace Pharaoh.Tools.Inputs
             m_CharacterControls_NOCLIP = m_CharacterControls.FindAction("NOCLIP", throwIfNotFound: true);
             m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
             m_CharacterControls_Look = m_CharacterControls.FindAction("Look", throwIfNotFound: true);
+            m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
             // CharacterActions
             m_CharacterActions = asset.FindActionMap("CharacterActions", throwIfNotFound: true);
             m_CharacterActions_HookGrapple = m_CharacterActions.FindAction("HookGrapple", throwIfNotFound: true);
@@ -607,6 +639,7 @@ namespace Pharaoh.Tools.Inputs
         private readonly InputAction m_CharacterControls_NOCLIP;
         private readonly InputAction m_CharacterControls_Attack;
         private readonly InputAction m_CharacterControls_Look;
+        private readonly InputAction m_CharacterControls_Interact;
         public struct CharacterControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -617,6 +650,7 @@ namespace Pharaoh.Tools.Inputs
             public InputAction @NOCLIP => m_Wrapper.m_CharacterControls_NOCLIP;
             public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
             public InputAction @Look => m_Wrapper.m_CharacterControls_Look;
+            public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
             public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -644,6 +678,9 @@ namespace Pharaoh.Tools.Inputs
                     @Look.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
                     @Look.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
                     @Look.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLook;
+                    @Interact.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
                 }
                 m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -666,6 +703,9 @@ namespace Pharaoh.Tools.Inputs
                     @Look.started += instance.OnLook;
                     @Look.performed += instance.OnLook;
                     @Look.canceled += instance.OnLook;
+                    @Interact.started += instance.OnInteract;
+                    @Interact.performed += instance.OnInteract;
+                    @Interact.canceled += instance.OnInteract;
                 }
             }
         }
@@ -768,6 +808,7 @@ namespace Pharaoh.Tools.Inputs
             void OnNOCLIP(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
         public interface ICharacterActionsActions
         {

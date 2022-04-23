@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "InputReader")]
@@ -19,13 +18,14 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
         Jump = 2,
         Dash = 4,
         Attack = 8,
-        HookGrapple = 16,
-        HookInteract = 32,
-        SandSoldier = 64,
+        Interact = 16,
+        HookGrapple = 32,
+        HookInteract = 64,
+        SandSoldier = 128,
 
-        Controls = Move | Jump | Dash | Attack,
+        Controls = Move | Jump | Dash | Attack | Interact,
         Actions = HookGrapple | HookInteract | SandSoldier,
-        All = Move | Jump | Dash | Attack | HookGrapple | HookInteract | SandSoldier
+        All = Move | Jump | Dash | Attack | Interact | HookGrapple | HookInteract | SandSoldier
     }
 
     public UnityAction<Vector2> movePerformedEvent;
@@ -37,14 +37,16 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public UnityAction dashStartedEvent;
 
     public UnityAction noclipPerformedEvent;
-    
+
+    public UnityAction attackPerformedEvent;
+
+    public UnityAction interactPerformedEvent;
+
     public UnityAction hookGrappleStartedEvent;
     public UnityAction hookGrapplePerformedEvent;
 
     public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
-
-    public UnityAction attackPerformedEvent;
 
     public UnityAction<float> lookPerformedEvent;
 
@@ -75,6 +77,61 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
 
         hookGrapple = _playerInput.CharacterActions.HookGrapple;
         hookInteract = _playerInput.CharacterActions.HookInteract;
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        var axis = context.ReadValue<Vector2>();
+
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                isFacingRight = axis.x >= 0;
+                movePerformedEvent?.Invoke(axis);
+                break;
+            case InputActionPhase.Canceled:
+                moveCanceledEvent?.Invoke(axis);
+                break;
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && jumpStartedEvent != null)
+            jumpStartedEvent.Invoke();
+
+        if (context.phase == InputActionPhase.Canceled && jumpCanceledEvent != null)
+            jumpCanceledEvent.Invoke();
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && dashStartedEvent != null)
+            dashStartedEvent.Invoke();
+    }
+
+    public void OnNOCLIP(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && noclipPerformedEvent != null)
+            noclipPerformedEvent.Invoke();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && attackPerformedEvent != null)
+            attackPerformedEvent.Invoke();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        var value = context.ReadValue<float>();
+        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && interactPerformedEvent != null)
+            interactPerformedEvent.Invoke();
     }
 
     public void OnHookGrapple(InputAction.CallbackContext context)
@@ -110,55 +167,6 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void OnKillAllSoldiers(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) killAllSoldiersStartedEvent?.Invoke();
-    }
-    
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        var value = context.ReadValue<float>();
-        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        var axis = context.ReadValue<Vector2>();
-
-        switch (context.phase)
-        {
-            case InputActionPhase.Performed:
-                isFacingRight = axis.x >= 0;
-                movePerformedEvent?.Invoke(axis);
-                break;
-            case InputActionPhase.Canceled:
-                moveCanceledEvent?.Invoke(axis);
-                break;
-        }
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started && jumpStartedEvent != null)
-            jumpStartedEvent.Invoke();
-
-        if (context.phase == InputActionPhase.Canceled && jumpCanceledEvent != null)
-            jumpCanceledEvent.Invoke();
-    }
-
-    public void OnDash(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started && dashStartedEvent != null)
-            dashStartedEvent.Invoke();
-    }
-
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed && attackPerformedEvent != null)
-            attackPerformedEvent.Invoke();
-    }
-
-    public void OnNOCLIP(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed && noclipPerformedEvent != null)
-            noclipPerformedEvent.Invoke();
     }
 
     public void OnExit(InputAction.CallbackContext context)
