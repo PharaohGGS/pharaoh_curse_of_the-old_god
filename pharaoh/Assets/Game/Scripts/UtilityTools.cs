@@ -65,11 +65,11 @@ public class UtilityTools
             return;
         }
 
-        playerSkills.hasDash = true;
-        playerSkills.hasGrapplingHook = true;
-        playerSkills.hasSwarmDash = true;
-        playerSkills.hasSandSoldier = true;
-        playerSkills.hasHeart = true;
+        playerSkills.HasDash = true;
+        playerSkills.HasGrapplingHook = true;
+        playerSkills.HasSwarmDash = true;
+        playerSkills.HasSandSoldier = true;
+        playerSkills.HasHeart = true;
 
         Debug.Log("Player Skills DEBUG Reset.");
     }

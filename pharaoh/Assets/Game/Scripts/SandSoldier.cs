@@ -105,7 +105,7 @@ public class SandSoldier : MonoBehaviour
     private void ResetFlags()
     {
         _longPress = false;
-        if (_playerMovement.skills.hasSandSoldier)
+        if (_playerMovement.skills.HasSandSoldier)
         {
             DisableActions();
         }
@@ -117,7 +117,7 @@ public class SandSoldier : MonoBehaviour
     private void InitiateSummon()
     {
         // checks if player has skill unlocked
-        if (!_playerMovement.skills.hasSandSoldier) return;
+        if (!_playerMovement.skills.HasSandSoldier) return;
         if (_playerMovement.IsPullingBlock) return;
         
         animator.SetTrigger("Summon");
@@ -151,7 +151,7 @@ public class SandSoldier : MonoBehaviour
         EnableActions(); // Re-enable player inputs
 
         // checks if player has skill unlocked
-        if (!_playerMovement.skills.hasSandSoldier) return;
+        if (!_playerMovement.skills.HasSandSoldier) return;
         if (_playerMovement.IsPullingBlock) return;
         
         // If it's a simple press, summon under player

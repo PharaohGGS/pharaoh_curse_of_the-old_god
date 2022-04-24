@@ -130,11 +130,11 @@ public class InstanceTools
             return;
         }
 
-        playerSkills.hasDash = false;
-        playerSkills.hasGrapplingHook = false;
-        playerSkills.hasSwarmDash = false;
-        playerSkills.hasSandSoldier = false;
-        playerSkills.hasHeart = false;
+        playerSkills.HasDash = false;
+        playerSkills.HasGrapplingHook = false;
+        playerSkills.HasSwarmDash = false;
+        playerSkills.HasSandSoldier = false;
+        playerSkills.HasHeart = false;
 
         Debug.Log("Player Skills Reset.");
     }

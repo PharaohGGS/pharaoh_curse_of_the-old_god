@@ -183,7 +183,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         // Triggers when the player dashes
         private void OnDashStarted()
         {
-            if (skills.hasDash && !_isDashing && !_hasDashedInAir && !_isPullingBlock)
+            if (skills.HasDash && !_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
                 _rigidbody.velocity = Vector2.zero;
                 
@@ -196,7 +196,7 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 gameObject.layer = _dashLayer;
 
-                if (skills.hasSwarmDash)
+                if (skills.HasSwarmDash)
                 {
                     gameObject.layer = _swarmDashLayer;
                     foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = false;

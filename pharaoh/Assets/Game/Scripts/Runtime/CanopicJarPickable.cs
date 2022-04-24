@@ -40,23 +40,23 @@ public class CanopicJarPickable : MonoBehaviour
         switch (jar)
         {
             case CanopicJar.Monkey:
-                playerSkills.hasDash = true;
+                playerSkills.HasDash = true;
                 break;
 
             case CanopicJar.Bird:
-                playerSkills.hasGrapplingHook = true;
+                playerSkills.HasGrapplingHook = true;
                 break;
 
             case CanopicJar.Dog:
-                playerSkills.hasSwarmDash = true;
+                playerSkills.HasSwarmDash = true;
                 break;
 
             case CanopicJar.Human:
-                playerSkills.hasSandSoldier = true;
+                playerSkills.HasSandSoldier = true;
                 break;
 
             case CanopicJar.Crocodile:
-                playerSkills.hasHeart = true;
+                playerSkills.HasHeart = true;
                 break;
 
             default:

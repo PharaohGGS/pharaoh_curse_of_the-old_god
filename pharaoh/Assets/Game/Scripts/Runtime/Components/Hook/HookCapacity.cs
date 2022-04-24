@@ -112,7 +112,7 @@ namespace Pharaoh.Gameplay
         
         private void Update()
         {
-            if (!skills.hasGrapplingHook) return;
+            if (!skills.HasGrapplingHook) return;
 
             SearchTargets();
 

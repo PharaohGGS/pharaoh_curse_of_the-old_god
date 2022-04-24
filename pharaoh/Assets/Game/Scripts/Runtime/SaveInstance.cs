@@ -1,5 +1,6 @@
 using Pharaoh.Gameplay.Components;
 using UnityEngine;
+using UnityEngine.VFX;
 using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 
 public class SaveInstance : MonoBehaviour
@@ -9,7 +10,8 @@ public class SaveInstance : MonoBehaviour
         None,
         Enemy,
         MovingBlock,
-        CanopicJar
+        CanopicJar,
+        CanopicFire
     };
 
     private readonly int ENEMY_PARSE_INDEX = 6;
@@ -29,6 +31,8 @@ public class SaveInstance : MonoBehaviour
             instanceID = ulong.Parse(gameObject.name.Substring(ENEMY_PARSE_INDEX));
         else if (type == Type.MovingBlock && gameObject.name.StartsWith("MovingBlock_"))
             instanceID = ulong.Parse(gameObject.name.Substring(MOVING_BLOCK_PARSE_INDEX));
+        else if (type == Type.CanopicFire)
+            playerSkills.onChange += OnSkillUnlocked;
 
         Load();
     }
@@ -68,27 +72,38 @@ public class SaveInstance : MonoBehaviour
                 switch (type)
                 {
                     case CanopicJarPickable.CanopicJar.Monkey:
-                        if (playerSkills.hasDash) pickable.Open();
+                        if (playerSkills.HasDash) pickable.Open();
                         break;
 
                     case CanopicJarPickable.CanopicJar.Bird:
-                        if (playerSkills.hasGrapplingHook) pickable.Open();
+                        if (playerSkills.HasGrapplingHook) pickable.Open();
                         break;
 
                     case CanopicJarPickable.CanopicJar.Dog:
-                        if (playerSkills.hasSwarmDash) pickable.Open();
+                        if (playerSkills.HasSwarmDash) pickable.Open();
                         break;
 
                     case CanopicJarPickable.CanopicJar.Human:
-                        if (playerSkills.hasSandSoldier) pickable.Open();
+                        if (playerSkills.HasSandSoldier) pickable.Open();
                         break;
 
                     case CanopicJarPickable.CanopicJar.Crocodile:
-                        if (playerSkills.hasHeart) pickable.Open();
+                        if (playerSkills.HasHeart) pickable.Open();
                         break;
 
                     default:
                         break;
+                }
+                break;
+
+            case Type.CanopicFire:
+                if (name.EndsWith(" - Dash") && playerSkills.HasDash
+                    || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
+                    || name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
+                    || name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
+                {
+                    GetComponent<VisualEffect>().enabled = true;
+                    //GetComponent<Light>().enabled = false; // currently no lights on the object
                 }
                 break;
 
@@ -120,6 +135,18 @@ public class SaveInstance : MonoBehaviour
             case Type.None:
             default:
                 break;
+        }
+    }
+
+    private void OnSkillUnlocked()
+    {
+        if (name.EndsWith(" - Dash") && playerSkills.HasDash
+                    || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
+                    || name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
+                    || name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
+        {
+            GetComponent<VisualEffect>().enabled = true;
+            //GetComponent<Light>().enabled = false; // currently no lights on the object
         }
     }
 

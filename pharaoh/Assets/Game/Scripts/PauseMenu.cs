@@ -72,27 +72,27 @@ public class PauseMenu: MonoBehaviour
 
     private void DisplaySkills()
     {
-        if (playerSkills.hasDash)
+        if (playerSkills.HasDash)
         {
             jars[0].mesh = openedMeshes[0];
             labels[0].SetActive(true);
         }
-        if (playerSkills.hasGrapplingHook)
+        if (playerSkills.HasGrapplingHook)
         {
             jars[1].mesh = openedMeshes[1];
             labels[1].SetActive(true);
         }
-        if (playerSkills.hasSwarmDash)
+        if (playerSkills.HasSwarmDash)
         {
             jars[2].mesh = openedMeshes[2];
             labels[2].SetActive(true);
         }
-        if (playerSkills.hasSandSoldier)
+        if (playerSkills.HasSandSoldier)
         {
             jars[3].mesh = openedMeshes[3];
             labels[3].SetActive(true);
         }
-        if (playerSkills.hasHeart)
+        if (playerSkills.HasHeart)
         {
             jars[4].mesh = openedMeshes[4];
         }

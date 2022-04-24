@@ -18,44 +18,54 @@ public class BuildLogger : MonoBehaviour
         }
     }
 
-    public int queueLimit = 25;
-    string myLog;
-    Queue myLogQueue = new Queue();
+    private string myLog;
+    private Queue myLogQueue = new Queue();
 
-    void OnEnable()
+    public int queueLimit = 25;
+    public bool defaultLog = true;
+    public bool warningLog = true;
+    public bool errorLog = true;
+
+    private void OnEnable()
     {
         Application.logMessageReceived += HandleLog;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Application.logMessageReceived -= HandleLog;
     }
 
-    void HandleLog(string logString, string stackTrace, LogType type)
+    private void HandleLog(string logString, string stackTrace, LogType type)
     {
-        myLog = logString;
-        string newString = "\n [" + type + "]@" + System.DateTime.Now.ToLongTimeString() + " : " + myLog;
-        myLogQueue.Enqueue(newString);
-
-        if (myLogQueue.Count > queueLimit)
-            myLogQueue.Dequeue();
-
-        if (type == LogType.Exception)
+        // Checks whether the log is wanted or not
+        if (type == LogType.Log && defaultLog
+            || type == LogType.Warning && warningLog
+            || (type == LogType.Error || type == LogType.Exception) && errorLog)
         {
-            newString = "\n" + stackTrace;
+            myLog = logString;
+            string newString = "\n [" + type + "]@" + System.DateTime.Now.ToLongTimeString() + " : " + myLog;
             myLogQueue.Enqueue(newString);
-        }
+
+            if (myLogQueue.Count > queueLimit)
+                myLogQueue.Dequeue();
+
+            if (type == LogType.Exception)
+            {
+                newString = "\n" + stackTrace;
+                myLogQueue.Enqueue(newString);
+            }
 
 
-        myLog = string.Empty;
-        foreach (string mylog in myLogQueue)
-        {
-            myLog += mylog;
+            myLog = string.Empty;
+            foreach (string mylog in myLogQueue)
+            {
+                myLog += mylog;
+            }
         }
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         GUILayout.Label(myLog);
     }

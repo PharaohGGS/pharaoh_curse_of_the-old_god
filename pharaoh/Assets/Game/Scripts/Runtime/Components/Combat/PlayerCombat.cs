@@ -64,8 +64,8 @@ public class PlayerCombat : MonoBehaviour
     private void OnDash()
     {
         if (!skills || _sheathed) return;
-        if (skills.hasDash && !skills.hasSwarmDash) onSwordDash?.Invoke();
-        if (skills.hasDash && skills.hasSwarmDash) onSwordSwarmDash?.Invoke();
+        if (skills.HasDash && !skills.HasSwarmDash) onSwordDash?.Invoke();
+        if (skills.HasDash && skills.HasSwarmDash) onSwordSwarmDash?.Invoke();
     }
 
     public void OnDashEnd()

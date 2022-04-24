@@ -150,17 +150,17 @@ namespace Pharaoh.Managers
         // Saves the states of the player skills to the save data object
         public void SaveSkills()
         {
-            _saveData.skills = new bool[] { playerSkills.hasDash, playerSkills.hasGrapplingHook, playerSkills.hasSwarmDash, playerSkills.hasSandSoldier, playerSkills.hasHeart };
+            _saveData.skills = new bool[] { playerSkills.HasDash, playerSkills.HasGrapplingHook, playerSkills.HasSwarmDash, playerSkills.HasSandSoldier, playerSkills.HasHeart };
         }
 
         // Loads the states of skills from the save data object
         private void LoadSkills()
         {
-            playerSkills.hasDash = _saveData.skills[0];
-            playerSkills.hasGrapplingHook = _saveData.skills[1];
-            playerSkills.hasSwarmDash = _saveData.skills[2];
-            playerSkills.hasSandSoldier = _saveData.skills[3];
-            playerSkills.hasHeart = _saveData.skills[4];
+            playerSkills.HasDash = _saveData.skills[0];
+            playerSkills.HasGrapplingHook = _saveData.skills[1];
+            playerSkills.HasSwarmDash = _saveData.skills[2];
+            playerSkills.HasSandSoldier = _saveData.skills[3];
+            playerSkills.HasHeart = _saveData.skills[4];
         }
 
         // Saves all the currently loaded enemies states
