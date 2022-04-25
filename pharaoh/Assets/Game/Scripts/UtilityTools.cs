@@ -14,6 +14,7 @@ public class UtilityTools
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
     private static readonly string PLAYERSKILLSDEBUG_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData_DEBUG.asset";
     private static readonly string SAVEFILE_PATH = "/save.dat";
+    private static readonly string PREFSFILE_PATH = "/prefs.dat";
 
     // Loads the SceneMerged scene as well as all the game scenes
     [MenuItem("Utility/Load Game Scenes")]
@@ -54,26 +55,6 @@ public class UtilityTools
         EditorSceneManager.OpenScene(secondScene[0].FullName, OpenSceneMode.Additive);
     }
 
-    [MenuItem("Utility/Reset Player Skills DEBUG")]
-    private static void ResetPlayerSkillsDEBUG()
-    {
-        PlayerSkills playerSkills = (PlayerSkills)AssetDatabase.LoadAssetAtPath(PLAYERSKILLSDEBUG_PATH, typeof(PlayerSkills));
-
-        if (playerSkills == null)
-        {
-            Debug.LogWarning("PlayerSkills_DEBUG at path " + PLAYERSKILLSDEBUG_PATH + " not found.");
-            return;
-        }
-
-        playerSkills.HasDash = true;
-        playerSkills.HasGrapplingHook = true;
-        playerSkills.HasSwarmDash = true;
-        playerSkills.HasSandSoldier = true;
-        playerSkills.HasHeart = true;
-
-        Debug.Log("Player Skills DEBUG Reset.");
-    }
-
     [MenuItem("Utility/Delete Save File")]
     private static void EraseSaveFile()
     {
@@ -88,6 +69,20 @@ public class UtilityTools
             Debug.Log("No save file found.");
     }
 
+    [MenuItem("Utility/Delete Prefs File")]
+    private static void ErasePrefsFile()
+    {
+        string prefsFile = Application.persistentDataPath + PREFSFILE_PATH;
+
+        if (File.Exists(prefsFile))
+        {
+            File.Delete(prefsFile);
+            Debug.Log("Prefs file deleted.");
+        }
+        else
+            Debug.Log("No prefs file found.");
+    }
+
     private static void SetAllBlockingMeshRenderers(bool enabled)
     {
         List<Scene> loadedScenes = new List<Scene>();
@@ -99,6 +94,9 @@ public class UtilityTools
 
         foreach (Scene scene in loadedScenes)
         {
+            if (!scene.isLoaded)
+                continue;
+
             GameObject[] gos = scene.GetRootGameObjects();
             foreach (GameObject go in gos)
             {

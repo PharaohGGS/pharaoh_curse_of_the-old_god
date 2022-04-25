@@ -21,6 +21,15 @@ namespace Pharaoh.Managers
             {
                 Destroy(gameObject);
             }
+
+            _prefsData = new PrefsData();
+        }
+
+        [System.Serializable]
+        private class PrefsData
+        {
+            public int windowMode = 0;
+            public int resolutionValue = 4;
         }
 
         [System.Serializable]
@@ -53,10 +62,12 @@ namespace Pharaoh.Managers
         }
 
         private readonly string SAVEFILE = "/save.dat";
+        private readonly string PREFSFILE = "/prefs.dat";
         public uint ENEMIES_COUNT;
         public uint MOVING_BLOCKS_COUNT;
 
         private SaveData _saveData;
+        private PrefsData _prefsData;
 
         public LastCheckpoint lastCheckpoint;
         public PlayerSkills playerSkills;
@@ -117,6 +128,12 @@ namespace Pharaoh.Managers
         public bool SaveFileExists()
         {
             return File.Exists(Application.persistentDataPath + SAVEFILE);
+        }
+
+        // Returns whether there is a prefs file present or not
+        public bool PrefsFileExists()
+        {
+            return File.Exists(Application.persistentDataPath + PREFSFILE);
         }
 
         // Writes the save data to a save file
@@ -210,6 +227,36 @@ namespace Pharaoh.Managers
         {
             position = new Vector3(_saveData.blocksPositions_x[instanceID], _saveData.blocksPositions_y[instanceID], _saveData.blocksPositions_z[instanceID]);
             return !(position.x == SaveData.DEFLOAT && position.y == SaveData.DEFLOAT && position.z == SaveData.DEFLOAT);
+        }
+
+        public void SavePrefs(int windowMode, int resolutionValue)
+        {
+            _prefsData.windowMode = windowMode;
+            _prefsData.resolutionValue = resolutionValue;
+
+            SavePrefsToJSON();
+        }
+
+        public int LoadWindowMode()
+        {
+            return _prefsData.windowMode;
+        }
+
+        public int LoadResolutionValue()
+        {
+            return _prefsData.resolutionValue;
+        }
+
+        private void SavePrefsToJSON()
+        {
+            File.WriteAllText(Application.persistentDataPath + PREFSFILE, JsonUtility.ToJson(_prefsData));
+            Debug.Log("Saved on file : " + Application.persistentDataPath + PREFSFILE);
+        }
+
+        public void LoadPrefsFromJSON()
+        {
+            _prefsData = JsonUtility.FromJson<PrefsData>(File.ReadAllText(Application.persistentDataPath + PREFSFILE));
+            Debug.Log("Loaded from file : " + Application.persistentDataPath + PREFSFILE);
         }
 
     }
