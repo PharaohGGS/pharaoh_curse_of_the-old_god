@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Pharaoh.Gameplay;
 using Pharaoh.Gameplay.Components.Movement;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,17 +38,18 @@ public class LookUpDown : MonoBehaviour
             return;
         }
             
+        TryGetComponent(out PlayerMovement playerMovement);
         switch (value)
         {
             case > 0f:
+                if (playerMovement.IsHooked || playerMovement.IsHooking) break;
                 DisableActions();
                 position.y += upValue;
                 virtualCamera.transform.position = position;
                 virtualCamera.SetActive(true);
                 break;
             case < 0f:
-                TryGetComponent(out PlayerMovement playerMovement);
-                if (playerMovement.IsHooking) break;
+                if (playerMovement.IsHooked || playerMovement.IsHooking) break;
                 DisableActions();
                 position.y -= downValue;
                 virtualCamera.transform.position = position;
