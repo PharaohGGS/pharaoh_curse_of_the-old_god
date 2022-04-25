@@ -1,6 +1,7 @@
 using System;
 using PlayerMovement = Pharaoh.Gameplay.Components.Movement.PlayerMovement;
 using System.Collections;
+using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +14,7 @@ public struct Sockets
 }
 
 [RequireComponent(typeof(PlayerMovement))]
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : Combat
 {
     private PlayerMovement _playerMovement;
     private int _combatPhase = 0;
@@ -64,8 +65,15 @@ public class PlayerCombat : MonoBehaviour
     private void OnDash()
     {
         if (!skills || _sheathed) return;
-        if (skills.HasDash && !skills.HasSwarmDash) onSwordDash?.Invoke();
-        if (skills.HasDash && skills.HasSwarmDash) onSwordSwarmDash?.Invoke();
+        if (skills.HasDash && !skills.HasSwarmDash)
+        {
+            onSwordDash?.Invoke();
+        }
+
+        if (skills.HasDash && skills.HasSwarmDash)
+        {
+            onSwordSwarmDash?.Invoke();
+        }
     }
 
     public void OnDashEnd()

@@ -267,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instanceID: 0
   type: 2
+  playerSkills: {fileID: 0}
 --- !u!1 &1315401329065130245
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,12 +339,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagerData: {fileID: 0}
+  damagerData: {fileID: 11400000, guid: 08161922adbc5f1479a8d34b85fc1b7e, type: 2}
   stunData: {fileID: 0}
+  ownerMask:
+    serializedVersion: 2
+    m_Bits: 65536
   damagingLayers:
     serializedVersion: 2
-    m_Bits: 131072
-  onTriggerHit:
+    m_Bits: 133120
+  onDamagingHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: a431e2a277add464ba023aa3f446e9c7, type: 2}
