@@ -7,7 +7,7 @@ public class AudioTrigger : MonoBehaviour
 {
     [Header("Play a sound on trigger activation")]
     [Tooltip("Sound to play on trigger activation")]
-    public string soundToPlay;
+    public List<string> soundsToPlay;
     [Space(5)]
     [Tooltip("Play sound when the player enter the trigger")]
     public bool playOnEnter;
@@ -21,7 +21,7 @@ public class AudioTrigger : MonoBehaviour
 
     [Header("Stop a sound on trigger activation")]
     [Tooltip("Sound to stop on trigger activation")]
-    public string soundToStop;
+    public List<string> soundsToStop;
     [Space(5)]
     [Tooltip("Stop sound when the player enter the trigger")]
     public bool stopOnEnter;
@@ -44,16 +44,22 @@ public class AudioTrigger : MonoBehaviour
     {
         if (playerLayer == collision.gameObject.layer)
         {
-            if (playOnEnter && soundToPlay != null && !playedOnEnter)
+            if (playOnEnter && soundsToPlay.Count > 0 && !playedOnEnter)
             {
-                AudioManager.Instance?.Play(soundToPlay);
-                playedOnEnter = !Replay;
+                foreach(string soundToPlay in soundsToPlay)
+                {
+                    AudioManager.Instance?.Play(soundToPlay);
+                    playedOnEnter = !Replay;
+                }
             }
 
-            if (stopOnEnter && soundToStop != null && !stoppedOnEnter)
+            if (stopOnEnter && soundsToStop.Count > 0 && !stoppedOnEnter)
             {
-                AudioManager.Instance?.Stop(soundToStop);
-                stoppedOnEnter = !Restop;
+                foreach (string soundToStop in soundsToStop)
+                {
+                    AudioManager.Instance?.Stop(soundToStop);
+                    stoppedOnEnter = !Restop;
+                }
             }
         }
     }
@@ -63,16 +69,22 @@ public class AudioTrigger : MonoBehaviour
     {
         if (playerLayer == collision.gameObject.layer)
         {
-            if (playOnExit && soundToPlay != null && !playedOnExit)
+            if (playOnExit && soundsToPlay.Count > 0 && !playedOnExit)
             {
-                AudioManager.Instance?.Play(soundToPlay);
-                playedOnExit = !Replay;
+                foreach (string soundToPlay in soundsToPlay)
+                {
+                    AudioManager.Instance?.Play(soundToPlay);
+                    playedOnExit = !Replay;
+                }
             }
 
-            if (stopOnExit && soundToStop != null && !stoppedOnExit)
+            if (stopOnExit && soundsToStop.Count > 0 && !stoppedOnExit)
             {
-                AudioManager.Instance?.Stop(soundToStop);
-                stoppedOnExit = !Restop;
+                foreach (string soundToStop in soundsToStop)
+                {
+                    AudioManager.Instance?.Stop(soundToStop);
+                    stoppedOnExit = !Restop;
+                }
             }
         }
     }
