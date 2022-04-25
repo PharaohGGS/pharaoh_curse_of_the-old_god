@@ -94,6 +94,9 @@ public class UtilityTools
 
         foreach (Scene scene in loadedScenes)
         {
+            if (!scene.isLoaded)
+                continue;
+
             GameObject[] gos = scene.GetRootGameObjects();
             foreach (GameObject go in gos)
             {
