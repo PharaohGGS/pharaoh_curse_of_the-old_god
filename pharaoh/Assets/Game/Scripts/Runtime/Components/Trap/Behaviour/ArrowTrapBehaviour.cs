@@ -18,32 +18,39 @@ namespace Pharaoh.Gameplay
         private void Awake()
         {
             _pool = GetComponent<DamagerPool>();
+            Reset();
         }
 
-        public override void Activate(GameObject target)
+        public override void Enable()
         {
-            bool isSameTarget = _currentTarget == target;
-            if (!isSameTarget) _currentTarget = target;
-            bool addDelay = !isSameTarget || !data.oneTimeDelay;
-            if (_currentTarget == null) return;
-            StartCoroutine(Action(addDelay));
+            // don't start trap when there isn't any target or already processing
+            if (_isStarted) return;
+            
+            _isStarted = true;
+            StartCoroutine(Action());
         }
 
-        public override void Respawn()
+        public override void Disable()
         {
-            // do nothing for now
+            if (!_isStarted) return;
+            Reset();
         }
 
-        private IEnumerator Action(bool addDelay)
+        public override void Reset()
+        {
+            StopAllCoroutines();
+            if (data.oneTimeDelay) _firstActivation = true;
+            _isStarted = false;
+        }
+
+        private IEnumerator Action()
         {
             var delay = new WaitForSeconds(data.delay);
             var timeOut = new WaitForSeconds(data.timeOut);
 
-            isStarted = true;
-
             // wait a delay before activate the trap
-            if (addDelay) yield return delay;
-            
+            if (!data.oneTimeDelay) yield return delay;
+
             // trap launch arrows
             var damager = _pool.Get();
 
@@ -56,14 +63,17 @@ namespace Pharaoh.Gameplay
             {
                 rb2D.bodyType = RigidbodyType2D.Dynamic;
                 rb2D.AddTorque(transform.rotation.z * Mathf.Deg2Rad * rb2D.inertia);
-                rb2D.AddForceAtPosition(transform.up * data.initialVelocity, transform.position, ForceMode2D.Impulse);
+                rb2D.AddForceAtPosition(transform.up * data.initialVelocity, transform.position,
+                    ForceMode2D.Impulse);
             }
 
             LogHandler.SendMessage($"{name} shooting {damager.name}", MessageType.Warning);
-            
+
             // timeOut after hiding
             yield return timeOut;
-            isStarted = false;
+                
+            if (!_isStarted) yield break;
+            StartCoroutine(Action());
         }
 
         private void OnDrawGizmos()
