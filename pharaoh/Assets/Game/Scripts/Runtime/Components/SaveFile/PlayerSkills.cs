@@ -22,4 +22,13 @@ public class PlayerSkills : ScriptableObject
     { get => hasSandSoldier; set { hasSandSoldier = value; onChange?.Invoke(); } }
     public bool HasHeart
     { get => hasHeart; set { hasHeart = value; onChange?.Invoke(); } }
+
+    public void Reset()
+    {
+        hasDash = false;
+        hasGrapplingHook = false;
+        hasSwarmDash = false;
+        hasSandSoldier = false;
+        hasHeart = false;
+    }
 }
