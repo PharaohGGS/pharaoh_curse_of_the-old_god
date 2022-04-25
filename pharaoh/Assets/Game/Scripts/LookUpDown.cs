@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Pharaoh.Gameplay.Components.Movement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -45,6 +46,8 @@ public class LookUpDown : MonoBehaviour
                 virtualCamera.SetActive(true);
                 break;
             case < 0f:
+                TryGetComponent(out PlayerMovement playerMovement);
+                if (playerMovement.IsHooking) break;
                 DisableActions();
                 position.y -= downValue;
                 virtualCamera.transform.position = position;
