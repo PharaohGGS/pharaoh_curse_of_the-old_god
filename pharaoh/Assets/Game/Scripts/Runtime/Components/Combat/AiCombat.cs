@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Pharaoh.Gameplay.Components
 {
-    public class FightComponent : MonoBehaviour
+    public class AiCombat : MonoBehaviour
     {
         [SerializeField] private Animator animator;
         [SerializeField] private Gear[] gears;

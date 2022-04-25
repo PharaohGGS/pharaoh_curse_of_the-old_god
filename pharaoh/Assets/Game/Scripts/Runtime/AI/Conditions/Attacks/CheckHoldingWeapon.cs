@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class CheckHoldingWeapon : ActionNode
     {
-        private FightComponent _fight;
+        private AiCombat _fight;
         [SerializeField] private bool holding;
 
         protected override void OnStart()

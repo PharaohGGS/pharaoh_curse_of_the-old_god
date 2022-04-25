@@ -8,7 +8,7 @@ namespace Pharaoh.AI.Actions
 {
     public class TaskGrabGear : ActionNode
     {
-        private FightComponent _fight = null;
+        private AiCombat _fight = null;
         
         protected override void OnStart()
         {
