@@ -47,14 +47,12 @@ public class AudioTrigger : MonoBehaviour
             if (playOnEnter && soundToPlay != null && !playedOnEnter)
             {
                 AudioManager.Instance?.Play(soundToPlay);
-                Debug.Log("--Playing " + soundToPlay + " on enter");
                 playedOnEnter = !Replay;
             }
 
             if (stopOnEnter && soundToStop != null && !stoppedOnEnter)
             {
                 AudioManager.Instance?.Stop(soundToStop);
-                Debug.Log("--Stoping " + soundToStop + " on enter");
                 stoppedOnEnter = !Restop;
             }
         }
@@ -68,14 +66,12 @@ public class AudioTrigger : MonoBehaviour
             if (playOnExit && soundToPlay != null && !playedOnExit)
             {
                 AudioManager.Instance?.Play(soundToPlay);
-                Debug.Log("--Playing " + soundToPlay + " on exit");
                 playedOnExit = !Replay;
             }
 
             if (stopOnExit && soundToStop != null && !stoppedOnExit)
             {
                 AudioManager.Instance?.Stop(soundToStop);
-                Debug.Log("--Stoping " + soundToStop + " on exit");
                 stoppedOnExit = !Restop;
             }
         }
