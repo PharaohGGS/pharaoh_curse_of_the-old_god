@@ -1,4 +1,6 @@
-﻿using Pharaoh.Gameplay.Components;
+﻿using System;
+using Pharaoh.Gameplay.Components;
+using Pharaoh.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +10,7 @@ namespace Pharaoh.Gameplay
     public class TrapCapacity : MonoBehaviour
     {
         [SerializeField] private TrapBehaviour _behaviour;
+        [SerializeField] private LayerMask whatIsTarget;
 
         private TrapDetection _trapDetection;
 
@@ -17,10 +20,29 @@ namespace Pharaoh.Gameplay
             if (!_behaviour) _behaviour = GetComponentInChildren<TrapBehaviour>();
         }
 
-        protected virtual void Update()
+        private void OnEnable()
         {
-            if (!_behaviour || _behaviour.isStarted) return;
-            _behaviour.Activate(_trapDetection.GetByIndex(0));
+            if (!_trapDetection) return;
+            _trapDetection.onOverlapEnter += OnOverlapEnter;
+            _trapDetection.onOverlapExit += OnOverlapExit;
+        }
+        private void OnDisable()
+        {
+            if (!_trapDetection) return;
+            _trapDetection.onOverlapEnter -= OnOverlapEnter;
+            _trapDetection.onOverlapExit -= OnOverlapExit;
+        }
+
+        private void OnOverlapEnter(Collider2D other)
+        {
+            if (!_behaviour || _trapDetection.overlappedCount <= 0) return;
+            _behaviour.Enable();
+        }
+
+        private void OnOverlapExit(Collider2D other)
+        {
+            if (!_behaviour || _trapDetection.overlappedCount > 0) return;
+            _behaviour.Disable();
         }
     }
 }

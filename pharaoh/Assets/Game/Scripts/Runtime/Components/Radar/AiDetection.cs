@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
@@ -26,21 +27,26 @@ namespace Pharaoh.Gameplay.Components
             base.FixedUpdate();
             
             // if colliders are behind an obstacle, clear it
-            for (int i = 0; i < _colliders.Length; i++)
+            var removables = new List<Collider2D>();
+            foreach (var coll in _colliders)
             {
-                if (!_colliders[i]) continue;
-
                 Vector2 center = transform.TransformPoint(detectionCollider.offset);
-                Vector2 direction = (_colliders[i].transform.position - transform.position).normalized;
-                float distance = Vector2.Distance(_colliders[i].transform.position, transform.position);
+                Vector2 direction = (coll.transform.position - transform.position).normalized;
+                float distance = Vector2.Distance(coll.transform.position, transform.position);
 
                 _angleToTarget = Vector2.Angle(transform.right, direction);
                 _hitSize = Physics2D.RaycastNonAlloc(center, direction, _hits, distance, whatIsObstacle);
                 // target is inside angle but raycast detect an obstacle, collider become null
                 if (_angleToTarget > overlappingFov / 2 || (_angleToTarget <= overlappingFov / 2 && _hitSize > 0))
                 {
-                    _colliders[i] = null;
+                    removables.Add(coll);
                 }
+            }
+
+            foreach (var removable in removables)
+            {
+                _colliders.Remove(removable);
+                onOverlapExit?.Invoke(removable);
             }
         }
 
@@ -81,7 +87,7 @@ namespace Pharaoh.Gameplay.Components
                 return null;
             }
 
-            foreach (var coll in _colliders)
+            foreach (var coll in _overlapColliders)
             {
                 if (!coll || !coll.gameObject.activeInHierarchy || !coll.gameObject.HasLayer(layer)) continue;
                 return coll.gameObject;
@@ -123,11 +129,11 @@ namespace Pharaoh.Gameplay.Components
             Gizmos.DrawLine(center, center + angle0 * detectionCollider.radius);
             Gizmos.DrawLine(center, center + angle1 * detectionCollider.radius);
 
-            if (_colliders is not { Length: > 0 }) return;
+            if (_overlapColliders is not { Length: > 0 }) return;
 
             Gizmos.color = Color.green;
 
-            foreach (var overlap in _colliders)
+            foreach (var overlap in _overlapColliders)
             {
                 if (overlap == null) continue;
                 Gizmos.DrawLine(transform.position, overlap.transform.position);

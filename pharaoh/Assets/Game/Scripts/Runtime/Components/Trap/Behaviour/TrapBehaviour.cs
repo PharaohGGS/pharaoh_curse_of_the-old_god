@@ -6,12 +6,12 @@ namespace Pharaoh.Gameplay
 {
     public abstract class TrapBehaviour : MonoBehaviour
     {
-        protected GameObject _currentTarget;
-
-        public bool isStarted { get; protected set; }
+        protected bool _isStarted;
+        protected bool _firstActivation;
         
-        public abstract void Activate(GameObject target);
-        public abstract void Respawn();
+        public abstract void Enable();
+        public abstract void Disable();
+        public abstract void Reset();
     }
 
     public abstract class TrapBehaviour<T> : TrapBehaviour
