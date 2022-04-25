@@ -12,7 +12,6 @@ public class UtilityTools
 {
 
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
-    private static readonly string PLAYERSKILLSDEBUG_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData_DEBUG.asset";
     private static readonly string SAVEFILE_PATH = "/save.dat";
     private static readonly string PREFSFILE_PATH = "/prefs.dat";
 
