@@ -372,6 +372,7 @@ namespace Pharaoh.Gameplay.Components.Movement
                 _rigidbody.velocity = Vector2.zero;
                 _rigidbody.gravityScale = metrics.gravityScale;
                 _isDashing = false;
+                onDashEnd?.Invoke();
 
                 gameObject.layer = _defaultLayer;
 
