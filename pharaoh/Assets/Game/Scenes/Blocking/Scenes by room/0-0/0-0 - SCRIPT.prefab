@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 163502543}
   - component: {fileID: 382856496}
   m_Layer: 0
-  m_Name: SoundTrigger - Ambiance
+  m_Name: SoundTrigger - LoreZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,11 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edfe9315bffba44485964474c818fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundToPlay: LoreZone
-  playOnEnter: 0
-  playOnExit: 1
+  soundsToPlay:
+  - LoreZone
+  - Roomtone High
+  playOnEnter: 1
+  playOnExit: 0
   Replay: 0
-  soundToStop: 
+  soundsToStop: []
   stopOnEnter: 0
   stopOnExit: 0
   Restop: 0
@@ -79,14 +81,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 4.5, y: 4.2}
-      - {x: 4.5, y: -1.5}
+    - - {x: 4.5, y: -1.5}
       - {x: 5.5, y: -1.5}
       - {x: 5.5, y: 4.5}
       - {x: -1.5, y: 4.5}
       - {x: -1.5, y: -1.5}
       - {x: -0.5, y: -1.5}
-      - {x: -0.5, y: 4.2}
 --- !u!1 &210184541
 GameObject:
   m_ObjectHideFlags: 0
