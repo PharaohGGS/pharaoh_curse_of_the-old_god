@@ -28,6 +28,13 @@ public class MainMenu : MonoBehaviour
         _settingsMenu = transform.Find("Settings Menu").gameObject;
         _continueButton = _mainMenu.transform.Find("Continue Button").gameObject;
 
+        if (SaveDataManager.Instance.PrefsFileExists())
+        {
+            SaveDataManager.Instance.LoadPrefsFromJSON();
+            windowModeDropdown.value = SaveDataManager.Instance.LoadWindowMode();
+            resolutionDropdown.value = SaveDataManager.Instance.LoadResolutionValue();
+        }
+
         UpdateMenus();
         UpdateScreenSizeAndWindowMode();
     }
@@ -91,6 +98,8 @@ public class MainMenu : MonoBehaviour
     public void UpdateScreenSizeAndWindowMode()
     {
         Screen.SetResolution(SCREEN_SIZES[resolutionDropdown.value * 2], SCREEN_SIZES[(resolutionDropdown.value * 2) + 1], windowModeDropdown.value == 0, PREFERRED_REFRESH_RATE);
+
+        SaveDataManager.Instance.SavePrefs(windowModeDropdown.value, resolutionDropdown.value);
     }
 
     public void ResetSettings()
