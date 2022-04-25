@@ -10,15 +10,18 @@ using UnityEngine;
 
 namespace Pharaoh.Gameplay.Components
 {
-    public class AiMovement : MonoBehaviour
+    public class AiMovement : CharacterMovement
     {
         [SerializeField] private Animator animator;
 
         [field: SerializeField, Range(1f, 100f)] public float moveSpeed { get; private set; } = 5;
-        [field: SerializeField, Range(0.01f, 100.0f)] public float closeDistance { get; private set; } = 0.01f;
+        [field: SerializeField, Range(0.01f, 100.0f)] public float closeDistance { get; private set; } = 1;
         [field: SerializeField, Range(1f, 100f)] public float fleeDistance { get; private set; } = 2;
         [field: SerializeField, Range(1f, 100f)] public float timeBetweenWaypoints { get; private set; } = 2;
         [field: SerializeField] public Transform waypointHolder { get; private set; }
+        [field: SerializeField] public LayerMask whatIsObstacle { get; private set; }
+        
+        
 
         public bool isStunned { get; private set; }
         private Rigidbody2D _rigidbody;
@@ -77,9 +80,9 @@ namespace Pharaoh.Gameplay.Components
         public void Move(Vector3 target)
         {
             if (!_rigidbody || !_canMove) return;
-
+            
             var direction = ((Vector2)target - _rigidbody.position).normalized;
-
+            
             _smoothVelocity = Vector2.zero;
             _smoothMovement = Vector2.SmoothDamp(_smoothMovement, direction, ref _smoothVelocity, 0.03f);
             _rigidbody.velocity = new Vector2(_smoothMovement.x * moveSpeed,  _rigidbody.velocity.y);
@@ -87,9 +90,9 @@ namespace Pharaoh.Gameplay.Components
 
         public void LookAt(Vector3 target)
         {
-            target.z = transform.position.z;
-            target.y = transform.position.y;
-            transform.LookAt2D(target);
+            Vector3 position = transform.position;
+            position.x = target.x;
+            transform.LookAt2D(position);
         }
 
         private IEnumerator WaitStunTime(float time)

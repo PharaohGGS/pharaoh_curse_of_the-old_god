@@ -15,14 +15,13 @@ using UnityEditor;
 namespace Pharaoh.Gameplay.Components.Movement
 {
     [RequireComponent(typeof(Rigidbody2D))] //auto creates a Rigidbody2D component when attaching this component
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : CharacterMovement
     {
         private readonly Quaternion RightRotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f));
         private readonly Quaternion LeftRotationIdle = Quaternion.Euler(new Vector3(0f, -135f, 0f));
         private readonly Quaternion LeftRotationRunning = Quaternion.Euler(new Vector3(0f, -90.1f, 0f));
 
         private Rigidbody2D _rigidbody;
-        private Collider2D _collider;
         private Vector2 _movementInput;
         private Vector2 _smoothMovement;
         private Quaternion _rotation = Quaternion.Euler(new Vector3(0f, 89.9f, 0f)); //used to compute the player model rotation
@@ -104,7 +103,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             inputReader.Initialize(); //need to manually initialize
             if (metrics) _rigidbody.gravityScale = metrics.gravityScale;
 
-            if (!TryGetComponent(out _collider))
+            if (!_collider && !TryGetComponent(out _collider))
             {
                 LogHandler.SendMessage($"No collider on the player", MessageType.Warning);
             }
