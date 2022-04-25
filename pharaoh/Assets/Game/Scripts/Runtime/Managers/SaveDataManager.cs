@@ -65,6 +65,7 @@ namespace Pharaoh.Managers
         public void NewSave()
         {
             _saveData = new SaveData(ENEMIES_COUNT, MOVING_BLOCKS_COUNT);
+            playerSkills.Reset();
             lastCheckpoint.position = new Vector3(-2.5f, 2f, 1f); //need because ScriptableObjects are saved in editor
             Save();
             LevelManager.Instance.ChangeRoom(_saveData.lastScene);
@@ -156,11 +157,11 @@ namespace Pharaoh.Managers
         // Loads the states of skills from the save data object
         private void LoadSkills()
         {
-            playerSkills.HasDash = _saveData.skills[0];
-            playerSkills.HasGrapplingHook = _saveData.skills[1];
-            playerSkills.HasSwarmDash = _saveData.skills[2];
-            playerSkills.HasSandSoldier = _saveData.skills[3];
-            playerSkills.HasHeart = _saveData.skills[4];
+            playerSkills.hasDash = _saveData.skills[0];
+            playerSkills.hasGrapplingHook = _saveData.skills[1];
+            playerSkills.hasSwarmDash = _saveData.skills[2];
+            playerSkills.hasSandSoldier = _saveData.skills[3];
+            playerSkills.hasHeart = _saveData.skills[4];
         }
 
         // Saves all the currently loaded enemies states
