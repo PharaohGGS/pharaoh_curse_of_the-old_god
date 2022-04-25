@@ -148,6 +148,9 @@ public class SaveInstance : MonoBehaviour
             GetComponent<VisualEffect>().enabled = true;
             //GetComponent<Light>().enabled = false; // currently no lights on the object
         }
+
+        if (name.EndsWith(" - Dash") && playerSkills.HasDash)
+            GameObject.Find("PauseMenu_v2").GetComponent<PauseMenu>().OnPauseMenu();
     }
 
 }

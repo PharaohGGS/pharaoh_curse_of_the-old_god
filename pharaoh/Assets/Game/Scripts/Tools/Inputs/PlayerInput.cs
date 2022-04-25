@@ -317,7 +317,7 @@ namespace Pharaoh.Tools.Inputs
                 {
                     ""name"": ""negative"",
                     ""id"": ""dffcfd9f-0c4e-4e81-8a8a-4fabd70088b2"",
-                    ""path"": ""<Keyboard>/h"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -328,7 +328,7 @@ namespace Pharaoh.Tools.Inputs
                 {
                     ""name"": ""positive"",
                     ""id"": ""028abe2d-6f63-4e61-ba5a-09553198cf80"",
-                    ""path"": ""<Keyboard>/y"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

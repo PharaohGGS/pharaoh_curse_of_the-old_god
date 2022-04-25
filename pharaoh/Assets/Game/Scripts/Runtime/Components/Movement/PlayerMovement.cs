@@ -56,6 +56,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         public bool IsJumping => _isJumping;
         public bool IsPullingBlock => _isPullingBlock;
         public bool IsHooking => _isHooking;
+        public bool IsHooked => _isHooked;
 
         [Header("Input Reader")]
         public InputReader inputReader;
