@@ -61,7 +61,7 @@ namespace Pharaoh.Gameplay
 
         private GameObject _bestTargetRight;
         private GameObject _bestTargetLeft;
-        private GameObject _currentTarget;
+        private HookBehaviour _currentBehaviour;
 
         private Rigidbody2D _rigidbody;
         private Collider2D _collider;
@@ -87,7 +87,11 @@ namespace Pharaoh.Gameplay
         private void OnEnable()
         {
             // Hook bindings
-            if (events) events.released += OnHookReleased;
+            if (events)
+            {
+                events.started += OnHookStarted;
+                events.released += OnHookReleased;
+            }
 
             // Movement's events binding
             if (inputs)
@@ -100,7 +104,11 @@ namespace Pharaoh.Gameplay
         private void OnDisable()
         {
             // Hook bindings
-            if (events) events.released -= OnHookReleased;
+            if (events)
+            {
+                events.started -= OnHookStarted;
+                events.released -= OnHookReleased;
+            }
 
             // Movement's events binding
             if (inputs)
@@ -136,7 +144,8 @@ namespace Pharaoh.Gameplay
         private void SearchTargets()
         {
             center = _rigidbody.position + _collider.offset;
-            int overlapCount = Physics2D.OverlapCircleNonAlloc(center, overlappingRadius, _overlaps, whatIsTarget);
+            for (int i = 0; i < overlapCount; i++) _overlaps[i] = null;
+            int size = Physics2D.OverlapCircleNonAlloc(center, overlappingRadius, _overlaps, whatIsTarget);
 
             float closestDistanceRight = Mathf.Infinity;
             float closestDistanceLeft = Mathf.Infinity;
@@ -146,11 +155,10 @@ namespace Pharaoh.Gameplay
 
             // Loops each target and remove those behind walls as well as selects the closest one
             // Selects the best target to the right of the player and to the left
-            for (int overlapIndex = 0; overlapIndex < overlapCount; overlapIndex++)
+            for (int overlapIndex = 0; overlapIndex < size; overlapIndex++)
             {
                 var overlap = _overlaps[overlapIndex];
-
-                //if (_currentTarget == overlap.gameObject) continue;
+                if (!overlap.gameObject || _currentBehaviour?.gameObject == overlap.gameObject) continue;
 
                 Vector2 direction = (Vector2)overlap.transform.position - center;
                 float distance = direction.magnitude;
@@ -158,7 +166,7 @@ namespace Pharaoh.Gameplay
                 if (Vector2.Angle(transform.right * (inputs.isFacingRight ? 1 : -1), direction.normalized) >= overlappingFov / 2) continue;
                 if (Physics2D.RaycastAll(center, direction.normalized, distance, whatIsObstacle).Length > 0) continue;
 
-                switch (overlap.transform.position.x > center.x)
+                switch (overlap.transform.position.x >= center.x)
                 {
                     case true when distance < closestDistanceRight:
                         bestOverlapRight = overlapIndex;
@@ -178,23 +186,18 @@ namespace Pharaoh.Gameplay
 
         public void Release()
         {
-            if (!_currentTarget) return;
-
-            Debug.Log($"release from {_currentTarget.name}");
-            _currentTarget = null;
+            if (!_currentBehaviour) return;
+            _currentBehaviour.Release();
         }
         
         private void OnHookInteract()
         {
             // unhook the current hooked object if there is one
-            if (_currentTarget) Release();
+            Release();
             // hook the nearest hookable objects if there is one
             if (!_potentialTarget) return;
-            
-            _currentTarget = _potentialTarget;
-            
             // select the target based on the direction the player's facing
-            onHookInteract?.Invoke(this, _currentTarget);
+            onHookInteract?.Invoke(this, _potentialTarget);
         }
 
         private void OnHookGrapple()
@@ -203,18 +206,21 @@ namespace Pharaoh.Gameplay
             //if (_currentTarget) Release();
             // hook the nearest hookable objects if there is one
             if (!_potentialTarget) return;
-            
-            _currentTarget = _potentialTarget;
-
             // select the target based on the direction the player's facing
-            onHookGrapple?.Invoke(this, _currentTarget);
+            onHookGrapple?.Invoke(this, _potentialTarget);
+        }
+
+        private void OnHookStarted(HookBehaviour behaviour)
+        {
+            if (!behaviour.isCurrentTarget) return;
+            _currentBehaviour = behaviour;
         }
         
         private void OnHookReleased(HookBehaviour behaviour)
         {
             if (!behaviour.isCurrentTarget) return;
-
-            Release();
+            Debug.Log($"release from {behaviour.name}");
+            _currentBehaviour = null;
         }
 
         #region Editor Debug
