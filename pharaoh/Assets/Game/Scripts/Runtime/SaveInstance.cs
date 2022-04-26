@@ -138,7 +138,7 @@ public class SaveInstance : MonoBehaviour
         }
     }
 
-    private void OnSkillUnlocked()
+    private void OnSkillUnlocked(bool dash)
     {
         if (name.EndsWith(" - Dash") && playerSkills.HasDash
                     || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
@@ -150,7 +150,7 @@ public class SaveInstance : MonoBehaviour
         }
 
         // Oui c'est sale mais plus le temps :sadge:
-        if (playerSkills.HasDash && !playerSkills.HasGrapplingHook && !playerSkills.HasSwarmDash && !playerSkills.HasSandSoldier && !playerSkills.HasHeart)
+        if (name.EndsWith(" - Dash") && dash)
             UIAccessor.pauseMenu.OnPauseMenu();
     }
 
