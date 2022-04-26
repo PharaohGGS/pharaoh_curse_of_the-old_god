@@ -85,6 +85,32 @@ MonoBehaviour:
   - {fileID: 8300000, guid: df5a091bab1cd3746a762514a0344b06, type: 3}
   - {fileID: 8300000, guid: 1a50a5baa8ccdef40acf58b68a05028d, type: 3}
   - {fileID: 8300000, guid: 7c31a945af023344ab4b15746406d1ba, type: 3}
+  RockFallClips:
+  - {fileID: 8300000, guid: e6acb4ee8594e7246b8d2494039962cb, type: 3}
+  - {fileID: 8300000, guid: e8543ff11e696ca40b1c3b5dcc389f5a, type: 3}
+  - {fileID: 8300000, guid: dcecab9ab86144e4d8096e9523981d18, type: 3}
+  - {fileID: 8300000, guid: a3890254db534f542b6146e1784257b4, type: 3}
+  - {fileID: 8300000, guid: 4cea98b7fc208e14886126ded09e4f18, type: 3}
+  - {fileID: 8300000, guid: c1325be1f712f2341a0b4ecb3cfefcd2, type: 3}
+  RockRumbleClips:
+  - {fileID: 8300000, guid: fa04c998d55087743a838b5aeee26d26, type: 3}
+  - {fileID: 8300000, guid: bf56a7912f0a50241aede6da24f43d73, type: 3}
+  - {fileID: 8300000, guid: 827d7c70f1202f34db2f679a4da08205, type: 3}
+  - {fileID: 8300000, guid: 19b889d2ffc66914aa47fc0d6dfbe589, type: 3}
+  - {fileID: 8300000, guid: 7184d9ff16aabfa4ea3c53ed4ac1b00b, type: 3}
+  - {fileID: 8300000, guid: 82aca597c5b1cb24ab8fb5309cdec092, type: 3}
+  - {fileID: 8300000, guid: bcf8ca628b2147845ad2e046fca6e9e4, type: 3}
+  - {fileID: 8300000, guid: c34fb0cace7859744ba6806627f0e83e, type: 3}
+  SandFallLongClips:
+  - {fileID: 8300000, guid: a8060c4b5b7252e419973ab65861510f, type: 3}
+  - {fileID: 8300000, guid: 2c2e427294fd74c48bffefe577f70d2d, type: 3}
+  - {fileID: 8300000, guid: 05f0c73739071fd4883152c263c3cb8a, type: 3}
+  - {fileID: 8300000, guid: ac7603874f5999b4bb4dc0b77aa0518c, type: 3}
+  SandFallShortClips:
+  - {fileID: 8300000, guid: 7795cd2611e21f24eac39b7077ddb29d, type: 3}
+  - {fileID: 8300000, guid: 5debc6336f4ca4e47850b657a243de2b, type: 3}
+  - {fileID: 8300000, guid: 623feea8e8841744aabc54b6cccdbea7, type: 3}
+  - {fileID: 8300000, guid: 7fb8967041984b54da170a665a40a6c2, type: 3}
   soundSources:
     list: []
     keyCollision: 0
@@ -225,7 +251,7 @@ MonoBehaviour:
     clip: {fileID: 0}
     volume: 0.2
     pitch: 1
-    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    audioMixerGroup: {fileID: -3680332749865611215, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 0
     fadeIn: 0
     fadeOut: 0
@@ -275,8 +301,8 @@ MonoBehaviour:
     pitch: 1
     audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 1
-    fadeIn: 1
-    fadeOut: 1
+    fadeIn: 0
+    fadeOut: 0
     fadeInDuration: 0.5
     fadeOutDuration: 0.5
     randomized: 0
@@ -304,6 +330,54 @@ MonoBehaviour:
     fadeInDuration: 0.5
     fadeOutDuration: 0.5
     randomized: 0
+    canOverride: 0
+  - name: RockFall
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 0
+  - name: RockRumble
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 0
+  - name: SandFallLong
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 0
+  - name: SandFallShort
+    clip: {fileID: 0}
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
     canOverride: 0
 --- !u!81 &2199613194498635937
 AudioListener:

@@ -32,6 +32,17 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] cratePullClips;
 
+        [Space(10)]
+        [Header("Environmental sounds")]
+        [SerializeField]
+        private AudioClip[] RockFallClips;
+        [SerializeField]
+        private AudioClip[] RockRumbleClips;
+        [SerializeField]
+        private AudioClip[] SandFallLongClips;
+        [SerializeField]
+        private AudioClip[] SandFallShortClips;
+
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
 
         protected override void Awake()
@@ -127,6 +138,18 @@ namespace Pharaoh.Managers
                         break;
                     case "EnemyHit":
                         audioSource.clip = GetRandomClip(enemyHitClips);
+                        break;
+                    case "RockFall":
+                        audioSource.clip = GetRandomClip(RockFallClips);
+                        break;
+                    case "RockRumble":
+                        audioSource.clip = GetRandomClip(RockRumbleClips);
+                        break;
+                    case "SandFallLong":
+                        audioSource.clip = GetRandomClip(SandFallLongClips);
+                        break;
+                    case "SandFallShort":
+                        audioSource.clip = GetRandomClip(SandFallShortClips);
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
