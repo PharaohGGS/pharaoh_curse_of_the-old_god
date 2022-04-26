@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4190411381284252976}
   - component: {fileID: 7433391133017172010}
   m_Layer: 0
-  m_Name: SoundTrigger - Ambiance
+  m_Name: SoundTrigger - Stop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,11 +49,11 @@ MonoBehaviour:
   playOnEnter: 0
   playOnExit: 0
   Replay: 0
-  soundsToStop:
-  - Ambiance
+  soundsToStop: []
   stopOnEnter: 1
   stopOnExit: 0
   Restop: 0
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &7433391133017172010
 BoxCollider2D:
@@ -132,9 +132,10 @@ MonoBehaviour:
   playOnExit: 0
   Replay: 0
   soundsToStop: []
-  stopOnEnter: 0
+  stopOnEnter: 1
   stopOnExit: 0
   Restop: 0
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &4331597433764775152
 BoxCollider2D:

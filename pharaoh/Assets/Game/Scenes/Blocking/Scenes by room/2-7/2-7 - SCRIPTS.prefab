@@ -85,14 +85,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundsToPlay:
   - Ambiance
-  playOnEnter: 0
-  playOnExit: 1
+  playOnEnter: 1
+  playOnExit: 0
   Replay: 0
   soundsToStop:
-  - Enigme
-  stopOnEnter: 0
-  stopOnExit: 1
+  - 
+  stopOnEnter: 1
+  stopOnExit: 0
   Restop: 0
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &6263801764462299298
 BoxCollider2D:
@@ -236,6 +237,10 @@ PrefabInstance:
     - target: {fileID: 898979599864047170, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: m_Offset.y
       value: 0.006453991
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
+      propertyPath: stopOnEnter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: soundsToPlay.Array.size
@@ -572,6 +577,10 @@ PrefabInstance:
     - target: {fileID: 3242361923854759779, guid: a23497ca8eb155e48bdc0a82c503e499, type: 3}
       propertyPath: playOnEnter
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3242361923854759779, guid: a23497ca8eb155e48bdc0a82c503e499, type: 3}
+      propertyPath: StopAllMusic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3242361923854759779, guid: a23497ca8eb155e48bdc0a82c503e499, type: 3}
       propertyPath: soundsToPlay.Array.size

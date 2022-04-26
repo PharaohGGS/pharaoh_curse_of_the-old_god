@@ -30,6 +30,8 @@ public class AudioTrigger : MonoBehaviour
     [Space(5)]
     [Tooltip("Stop sound on each trigger activation")]
     public bool Restop = false;
+    [Tooltip("Stop all other music than the one to play")]
+    public bool StopAllMusic = false;
 
     [Header("Player layer")]
     [Tooltip("Player layer number")]
@@ -39,6 +41,9 @@ public class AudioTrigger : MonoBehaviour
     private bool playedOnExit = false;
     private bool stoppedOnEnter = false;
     private bool stoppedOnExit = false;
+
+    private List<string> musicList = new List<string>
+        {"Ambiance", "LoreZone", "LoreShort", "Fight"};
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -55,10 +60,22 @@ public class AudioTrigger : MonoBehaviour
 
             if (stopOnEnter && soundsToStop.Count > 0 && !stoppedOnEnter)
             {
-                foreach (string soundToStop in soundsToStop)
+                if (StopAllMusic)
                 {
-                    AudioManager.Instance?.Stop(soundToStop);
-                    stoppedOnEnter = !Restop;
+                    var musicToStop = musicList;
+                    musicToStop.RemoveAll(IsMusicToPlay);
+                    Debug.Log(musicToStop);
+                    foreach (string music in musicToStop)
+                    {
+                        AudioManager.Instance?.Stop(music);
+                    }
+                } else
+                {
+                    foreach (string soundToStop in soundsToStop)
+                    {
+                        AudioManager.Instance?.Stop(soundToStop);
+                        stoppedOnEnter = !Restop;
+                    }
                 }
             }
         }
@@ -80,12 +97,40 @@ public class AudioTrigger : MonoBehaviour
 
             if (stopOnExit && soundsToStop.Count > 0 && !stoppedOnExit)
             {
-                foreach (string soundToStop in soundsToStop)
+                if (StopAllMusic)
                 {
-                    AudioManager.Instance?.Stop(soundToStop);
-                    stoppedOnExit = !Restop;
+                    var musicToStop = musicList;
+                    musicToStop.RemoveAll(IsMusicToPlay);
+                    Debug.Log(musicToStop);
+                    foreach (string music in musicToStop)
+                    {
+                        AudioManager.Instance?.Stop(music);
+                    }
+                } 
+                else
+                {
+                    foreach (string soundToStop in soundsToStop)
+                    {
+                        AudioManager.Instance?.Stop(soundToStop);
+                        
+                    }
                 }
+                stoppedOnExit = !Restop;
             }
         }
+    }
+
+    private bool IsMusicToPlay(string s)
+    {
+        var isMusicToPlay = true;
+        foreach(string music in soundsToPlay)
+        {
+            if(s == music)
+            {
+                return true;
+            }
+        }
+        Debug.Log(isMusicToPlay);
+        return false;
     }
 }
