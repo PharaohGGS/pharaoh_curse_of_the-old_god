@@ -176,7 +176,7 @@ namespace Pharaoh.Gameplay
             _bestTargetLeft = bestOverlapLeft == -1 ? null : _overlaps[bestOverlapLeft].gameObject;
         }
 
-        private void Release()
+        public void Release()
         {
             if (!_currentTarget) return;
 
