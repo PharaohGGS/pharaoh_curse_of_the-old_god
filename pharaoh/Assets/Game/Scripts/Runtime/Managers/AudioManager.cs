@@ -151,19 +151,15 @@ namespace Pharaoh.Managers
                         break;
                     case "RockFall":
                         audioSource.clip = GetRandomClip(RockFallClips);
-                        Debug.Log("--RockFall");
                         break;
                     case "RockRumble":
                         audioSource.clip = GetRandomClip(RockRumbleClips);
-                        Debug.Log("--RockRumble");
                         break;
                     case "SandFallLong":
                         audioSource.clip = GetRandomClip(SandFallLongClips);
-                        Debug.Log("--Sandfalllong");
                         break;
                     case "SandFallShort":
                         audioSource.clip = GetRandomClip(SandFallShortClips);
-                        Debug.Log("--SandfallShort");
                         break;
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
