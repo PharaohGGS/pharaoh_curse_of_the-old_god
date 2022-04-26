@@ -64,13 +64,8 @@ namespace Pharaoh.Gameplay
 
         private IEnumerator FloatFading(FadeTransition transition)
         {
-            Debug.Log($"{name} is Fading {transition}");
             _lastTransition = transition;
             bool[] ended = new bool[properties.Count];
-
-            float target = 0.0f;
-            float maxDelta = 0.0f;
-            float lerp = 0.0f;
             
             while (true)
             {
