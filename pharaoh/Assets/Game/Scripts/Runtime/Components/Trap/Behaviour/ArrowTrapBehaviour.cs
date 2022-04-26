@@ -39,7 +39,6 @@ namespace Pharaoh.Gameplay
         public override void Reset()
         {
             StopAllCoroutines();
-            if (data.oneTimeDelay) _firstActivation = true;
             _isStarted = false;
         }
 
