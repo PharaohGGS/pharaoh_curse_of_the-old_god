@@ -12,6 +12,7 @@ public class UtilityTools
 {
 
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
+    private const string PLAYERSKILLS_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData.asset";
     private static readonly string SAVEFILE_PATH = "/save.dat";
     private static readonly string PREFSFILE_PATH = "/prefs.dat";
 
@@ -52,6 +53,26 @@ public class UtilityTools
             return;
         }
         EditorSceneManager.OpenScene(secondScene[0].FullName, OpenSceneMode.Additive);
+    }
+
+    [MenuItem("Utility/Unlock All Player Skills")]
+    private static void UnlockAllPlayerSkills()
+    {
+        PlayerSkills playerSkills = (PlayerSkills)AssetDatabase.LoadAssetAtPath(PLAYERSKILLS_PATH, typeof(PlayerSkills));
+
+        if (playerSkills == null)
+        {
+            Debug.LogWarning("PlayerSkills at path " + PLAYERSKILLS_PATH + " not found.");
+            return;
+        }
+
+        playerSkills.hasDash = true;
+        playerSkills.hasGrapplingHook = true;
+        playerSkills.hasSwarmDash = true;
+        playerSkills.hasSandSoldier = true;
+        playerSkills.hasHeart = true;
+
+        Debug.Log("Player Skills Unlocked.");
     }
 
     [MenuItem("Utility/Delete Save File")]
