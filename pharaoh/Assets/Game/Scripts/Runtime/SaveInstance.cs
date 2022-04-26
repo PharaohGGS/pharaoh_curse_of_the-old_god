@@ -150,7 +150,7 @@ public class SaveInstance : MonoBehaviour
         }
 
         // Oui c'est sale mais plus le temps :sadge:
-        if (name.EndsWith(" - Dash") && playerSkills.HasDash)
+        if (playerSkills.HasDash && !playerSkills.HasGrapplingHook && !playerSkills.HasSwarmDash && !playerSkills.HasSandSoldier && !playerSkills.HasHeart)
             UIAccessor.pauseMenu.OnPauseMenu();
     }
 

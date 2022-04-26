@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
-using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -13,8 +12,6 @@ public class UtilityTools
 
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
     private const string PLAYERSKILLS_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData.asset";
-    private static readonly string SAVEFILE_PATH = "/save.dat";
-    private static readonly string PREFSFILE_PATH = "/prefs.dat";
 
     // Loads the SceneMerged scene as well as all the game scenes
     [MenuItem("Utility/Load Game Scenes")]
@@ -73,34 +70,6 @@ public class UtilityTools
         playerSkills.hasHeart = true;
 
         Debug.Log("Player Skills Unlocked.");
-    }
-
-    [MenuItem("Utility/Delete Save File")]
-    private static void EraseSaveFile()
-    {
-        string saveFile = Application.persistentDataPath + SAVEFILE_PATH;
-
-        if (File.Exists(saveFile))
-        {
-            File.Delete(saveFile);
-            Debug.Log("Save file deleted.");
-        }
-        else
-            Debug.Log("No save file found.");
-    }
-
-    [MenuItem("Utility/Delete Prefs File")]
-    private static void ErasePrefsFile()
-    {
-        string prefsFile = Application.persistentDataPath + PREFSFILE_PATH;
-
-        if (File.Exists(prefsFile))
-        {
-            File.Delete(prefsFile);
-            Debug.Log("Prefs file deleted.");
-        }
-        else
-            Debug.Log("No prefs file found.");
     }
 
     private static void SetAllBlockingMeshRenderers(bool enabled)
