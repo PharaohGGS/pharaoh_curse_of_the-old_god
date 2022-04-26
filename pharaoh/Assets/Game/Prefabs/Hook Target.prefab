@@ -102,7 +102,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputs: {fileID: 11400000, guid: 42de7f3cdab7a094aa6b7b8ec02c9842, type: 2}
   events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
-  waitTimeLoosing: 1
   onFoundTarget:
     m_PersistentCalls:
       m_Calls:
@@ -352,14 +351,17 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.03
+      - m_Value: 0
         m_Name: MaxSize
-        m_Overridden: 0
+        m_Overridden: 1
       - m_Value: 0
         m_Name: MaxLifetime
         m_Overridden: 1
       - m_Value: 0
         m_Name: MinLifetime
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: MinSize
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -434,8 +436,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-  - {fileID: 11400000, guid: 0ee6fdac2d509a547a9bd25bcfdf495a, type: 2}
   - {fileID: 11400000, guid: 7758b46d4ca2e83428db446757c3d0f4, type: 2}
+  - {fileID: 11400000, guid: 0ee6fdac2d509a547a9bd25bcfdf495a, type: 2}
+  - {fileID: 11400000, guid: cc094f56ef00dbb42b190ce1b606bb35, type: 2}
+  - {fileID: 11400000, guid: 72996cce4ccc36b4a8587c1412c27d54, type: 2}
   events: {fileID: 11400000, guid: d15a4840e296e6840ae37d24c6a322e8, type: 2}
 --- !u!1001 &520383217203542739
 PrefabInstance:
