@@ -48,11 +48,11 @@ namespace Pharaoh.Gameplay.Components
             while (true)
             {
                 _rb2D.AddForce(_velocityStart.normalized * (gravity * -2f));
-                if (rotate && _rb2D.velocity.normalized.magnitude >= Mathf.Epsilon)
+                if (rotate && _rb2D.velocity.magnitude >= Mathf.Epsilon)
                 {
                     var velocity = _rb2D.velocity.normalized;
                     float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-                    var diffAngle = Mathf.Abs(velocityAngle - _rb2D.rotation);
+                    var diffAngle = (velocity.x > 0.0f ? -1 : 1) * Mathf.Abs(velocityAngle - _rb2D.rotation);
                     _rb2D.MoveRotation(_rb2D.rotation + diffAngle * Time.fixedDeltaTime);
                 }
 
