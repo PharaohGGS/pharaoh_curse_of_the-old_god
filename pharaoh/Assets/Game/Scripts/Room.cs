@@ -12,7 +12,9 @@ public class Room : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer != LayerMask.NameToLayer("Player") && col.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
+        if (col.gameObject.layer != LayerMask.NameToLayer("Player")
+            && col.gameObject.layer != LayerMask.NameToLayer("Player - Dash")
+            && col.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
 
         virtualCamera.SetActive(true);
 
@@ -20,10 +22,14 @@ public class Room : MonoBehaviour
             LevelManager.Instance.ChangeRoom(gameObject.scene.name);
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D col)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player") && other.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
+        
+        if (col.gameObject.layer != LayerMask.NameToLayer("Player")
+            && col.gameObject.layer != LayerMask.NameToLayer("Player - Dash")
+            && col.gameObject.layer != LayerMask.NameToLayer("Player - Swarm")) return;
 
         virtualCamera.SetActive(false);
+        Debug.Log("EXIT");
     }
 }

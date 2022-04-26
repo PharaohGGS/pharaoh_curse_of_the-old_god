@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Pharaoh.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,7 +45,10 @@ public class SceneLoader : MonoBehaviour
         {
             if (_isLoaded) return;
             _isLoaded = true;
+            UIAccessor.loadingScreen.SetActive(true); // Display loading screen
+            Debug.Log("Loading");
             SceneManager.LoadScene(gameObject.name, LoadSceneMode.Additive);
+            UIAccessor.loadingScreen.SetActive(false); // Hide loading screen
         }
         else if (sceneLoader.neighbours.Contains(gameObject.name))
         {

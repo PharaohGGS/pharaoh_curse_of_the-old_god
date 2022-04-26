@@ -8,6 +8,7 @@ namespace Pharaoh.Gameplay
         [SerializeField] private GameObject mesh;
         [SerializeField] private Transform showingTransform;
         [SerializeField] private Transform hidingTransform;
+        private bool _firstActivation;
 
         private Collider2D _col;
         private Rigidbody2D _rb;
@@ -33,7 +34,14 @@ namespace Pharaoh.Gameplay
         public override void Disable()
         {
             if (!_isStarted) return;
-            Reset();
+            if (data.isTimed)
+            {
+                Reset();
+            }
+            else
+            {
+                _isStarted = false;
+            }
         }
 
         private void EnableMeshAndCollision(bool value)
@@ -46,9 +54,7 @@ namespace Pharaoh.Gameplay
         {
             StopAllCoroutines(); // kind of break the synchro of oneTimeDelayed 
             EnableMeshAndCollision(false);
-
             if (data.oneTimeDelay) _firstActivation = true;
-
             StartCoroutine(Move(data.hidingSpeed * 100f, _rb.position, hidingTransform.position));
             _isStarted = false;
         }

@@ -7,7 +7,6 @@ namespace Pharaoh.Gameplay
     public abstract class TrapBehaviour : MonoBehaviour
     {
         protected bool _isStarted;
-        protected bool _firstActivation;
         
         public abstract void Enable();
         public abstract void Disable();

@@ -19,9 +19,6 @@ namespace Pharaoh.Gameplay.Components
         [field: SerializeField, Range(1f, 100f)] public float fleeDistance { get; private set; } = 2;
         [field: SerializeField, Range(1f, 100f)] public float timeBetweenWaypoints { get; private set; } = 2;
         [field: SerializeField] public Transform waypointHolder { get; private set; }
-        [field: SerializeField] public LayerMask whatIsObstacle { get; private set; }
-        
-        
 
         public bool isStunned { get; private set; }
         private Rigidbody2D _rigidbody;

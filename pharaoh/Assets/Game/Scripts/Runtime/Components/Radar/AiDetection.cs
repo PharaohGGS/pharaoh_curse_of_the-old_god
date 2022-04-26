@@ -87,7 +87,7 @@ namespace Pharaoh.Gameplay.Components
                 return null;
             }
 
-            foreach (var coll in _overlapColliders)
+            foreach (var coll in _colliders)
             {
                 if (!coll || !coll.gameObject.activeInHierarchy || !coll.gameObject.HasLayer(layer)) continue;
                 return coll.gameObject;

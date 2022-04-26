@@ -5,11 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 using System.Collections.Generic;
+using System.IO;
 
 public class InstanceTools
 {
     private const int MAINMENU_INDEX = 0;
     private const string PLAYERSKILLS_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData.asset";
+    private static readonly string SAVEFILE_PATH = "/save.dat";
+    private static readonly string PREFSFILE_PATH = "/prefs.dat";
 
     // Returns all the build scenes as their paths
     private static List<string> GetAllBuildScenes()
@@ -133,6 +136,34 @@ public class InstanceTools
         playerSkills.Reset();
 
         Debug.Log("Player Skills Reset.");
+    }
+
+    [MenuItem("Instances/Delete Save File")]
+    private static void EraseSaveFile()
+    {
+        string saveFile = Application.persistentDataPath + SAVEFILE_PATH;
+
+        if (File.Exists(saveFile))
+        {
+            File.Delete(saveFile);
+            Debug.Log("Save file deleted.");
+        }
+        else
+            Debug.Log("No save file found.");
+    }
+
+    [MenuItem("Instances/Delete Prefs File")]
+    private static void ErasePrefsFile()
+    {
+        string prefsFile = Application.persistentDataPath + PREFSFILE_PATH;
+
+        if (File.Exists(prefsFile))
+        {
+            File.Delete(prefsFile);
+            Debug.Log("Prefs file deleted.");
+        }
+        else
+            Debug.Log("No prefs file found.");
     }
 
     [MenuItem("Instances/Unload Build Scenes")]

@@ -138,7 +138,7 @@ public class SaveInstance : MonoBehaviour
         }
     }
 
-    private void OnSkillUnlocked()
+    private void OnSkillUnlocked(bool dash)
     {
         if (name.EndsWith(" - Dash") && playerSkills.HasDash
                     || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
@@ -149,8 +149,9 @@ public class SaveInstance : MonoBehaviour
             //GetComponent<Light>().enabled = false; // currently no lights on the object
         }
 
-        if (name.EndsWith(" - Dash") && playerSkills.HasDash)
-            GameObject.Find("PauseMenu_v2").GetComponent<PauseMenu>().OnPauseMenu();
+        // Oui c'est sale mais plus le temps :sadge:
+        if (name.EndsWith(" - Dash") && dash)
+            UIAccessor.pauseMenu.OnPauseMenu();
     }
 
 }

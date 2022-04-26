@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
-using SaveDataManager = Pharaoh.Managers.SaveDataManager;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -12,8 +11,7 @@ public class UtilityTools
 {
 
     private static readonly string SCENE_PATH = "Assets/Game/Scenes/Blocking/Scenes by room/";
-    private static readonly string SAVEFILE_PATH = "/save.dat";
-    private static readonly string PREFSFILE_PATH = "/prefs.dat";
+    private const string PLAYERSKILLS_PATH = "Assets/Game/ScriptableObjects/SaveFile/PlayerSkillsData.asset";
 
     // Loads the SceneMerged scene as well as all the game scenes
     [MenuItem("Utility/Load Game Scenes")]
@@ -54,32 +52,24 @@ public class UtilityTools
         EditorSceneManager.OpenScene(secondScene[0].FullName, OpenSceneMode.Additive);
     }
 
-    [MenuItem("Utility/Delete Save File")]
-    private static void EraseSaveFile()
+    [MenuItem("Utility/Unlock All Player Skills")]
+    private static void UnlockAllPlayerSkills()
     {
-        string saveFile = Application.persistentDataPath + SAVEFILE_PATH;
+        PlayerSkills playerSkills = (PlayerSkills)AssetDatabase.LoadAssetAtPath(PLAYERSKILLS_PATH, typeof(PlayerSkills));
 
-        if (File.Exists(saveFile))
+        if (playerSkills == null)
         {
-            File.Delete(saveFile);
-            Debug.Log("Save file deleted.");
+            Debug.LogWarning("PlayerSkills at path " + PLAYERSKILLS_PATH + " not found.");
+            return;
         }
-        else
-            Debug.Log("No save file found.");
-    }
 
-    [MenuItem("Utility/Delete Prefs File")]
-    private static void ErasePrefsFile()
-    {
-        string prefsFile = Application.persistentDataPath + PREFSFILE_PATH;
+        playerSkills.hasDash = true;
+        playerSkills.hasGrapplingHook = true;
+        playerSkills.hasSwarmDash = true;
+        playerSkills.hasSandSoldier = true;
+        playerSkills.hasHeart = true;
 
-        if (File.Exists(prefsFile))
-        {
-            File.Delete(prefsFile);
-            Debug.Log("Prefs file deleted.");
-        }
-        else
-            Debug.Log("No prefs file found.");
+        Debug.Log("Player Skills Unlocked.");
     }
 
     private static void SetAllBlockingMeshRenderers(bool enabled)
