@@ -8,8 +8,42 @@ using UnityEngine.Audio;
 
 namespace Pharaoh.Managers
 {
-    public class AudioManager : PersistantMonoSingleton<AudioManager>
+    public class AudioManager : MonoBehaviour
     {
+        public static AudioManager Instance { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
+            if (sounds == null) return;
+            foreach (Sound s in sounds)
+            {
+                var go = new GameObject($"{s.name} source");
+                go.transform.SetParent(transform);
+                var source = go.AddComponent<AudioSource>();
+
+                source.outputAudioMixerGroup = s.audioMixerGroup;
+                source.clip = s.clip;
+                source.volume = s.volume;
+                source.pitch = s.pitch;
+                source.loop = s.loop;
+
+                if (!soundSources.TryAdd(s, source))
+                {
+                    Debug.LogError($"Can't add source to dico");
+                }
+            }
+        }
+
         [Space(10)]
         [Header("Player and enemies")]
         [SerializeField]
@@ -33,30 +67,6 @@ namespace Pharaoh.Managers
         private AudioClip[] cratePullClips;
 
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
-
-        protected override void Awake()
-        {
-            if (sounds == null) return;
-            foreach (Sound s in sounds)
-            {
-                var go = new GameObject($"{s.name} source");
-                go.transform.SetParent(transform);
-                var source = go.AddComponent<AudioSource>();
-
-                source.outputAudioMixerGroup = s.audioMixerGroup;
-                source.clip = s.clip;
-                source.volume = s.volume;
-                source.pitch = s.pitch;
-                source.loop = s.loop;
-
-                if (!soundSources.TryAdd(s, source))
-                {
-                    Debug.LogError($"Can't add source to dico");
-                }
-            }
-
-            base.Awake();
-        }
 
         [System.Serializable]
         public class Sound

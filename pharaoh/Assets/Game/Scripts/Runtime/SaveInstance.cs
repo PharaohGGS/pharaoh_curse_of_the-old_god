@@ -149,8 +149,9 @@ public class SaveInstance : MonoBehaviour
             //GetComponent<Light>().enabled = false; // currently no lights on the object
         }
 
+        // Oui c'est sale mais plus le temps :sadge:
         if (name.EndsWith(" - Dash") && playerSkills.HasDash)
-            GameObject.Find("PauseMenu_v2").GetComponent<PauseMenu>().OnPauseMenu();
+            UIAccessor.pauseMenu.OnPauseMenu();
     }
 
 }
