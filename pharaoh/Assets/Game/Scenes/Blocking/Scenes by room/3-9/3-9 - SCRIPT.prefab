@@ -83,10 +83,11 @@ MonoBehaviour:
   playOnExit: 0
   Replay: 0
   soundsToStop:
-  - Enigme
+  - 
   stopOnEnter: 1
   stopOnExit: 0
   Restop: 0
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &8453567937396582565
 BoxCollider2D:
@@ -1804,6 +1805,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
+      propertyPath: stopOnEnter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: soundsToPlay.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1990,6 +1995,10 @@ PrefabInstance:
     - target: {fileID: 898979599864047170, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: m_Offset.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
+      propertyPath: StopAllMusic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: soundsToPlay.Array.size

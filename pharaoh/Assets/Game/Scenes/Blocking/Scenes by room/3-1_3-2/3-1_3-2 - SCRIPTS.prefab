@@ -51,10 +51,11 @@ MonoBehaviour:
   playOnExit: 1
   Replay: 1
   soundsToStop:
-  - LoreShort
+  - 
   stopOnEnter: 0
   stopOnExit: 1
   Restop: 1
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &3354409827116338681
 BoxCollider2D:
@@ -274,14 +275,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundsToPlay:
   - Fight
-  playOnEnter: 0
-  playOnExit: 1
+  playOnEnter: 1
+  playOnExit: 0
   Replay: 0
   soundsToStop:
-  - Ambiance
+  - 
   stopOnEnter: 1
   stopOnExit: 0
   Restop: 0
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &2249467367899067490
 BoxCollider2D:
@@ -520,10 +522,11 @@ MonoBehaviour:
   playOnExit: 0
   Replay: 1
   soundsToStop:
-  - Fight
+  - 
   stopOnEnter: 1
   stopOnExit: 0
   Restop: 1
+  StopAllMusic: 1
   playerLayer: 17
 --- !u!61 &174398771224392832
 BoxCollider2D:
@@ -674,6 +677,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
       propertyPath: playOnEnter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
+      propertyPath: stopOnEnter
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1789375366544545026, guid: fcf5b4d552fd71646bf168d337f60580, type: 3}
