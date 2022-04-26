@@ -144,7 +144,8 @@ namespace Pharaoh.Gameplay
         private void SearchTargets()
         {
             center = _rigidbody.position + _collider.offset;
-            int overlapCount = Physics2D.OverlapCircleNonAlloc(center, overlappingRadius, _overlaps, whatIsTarget);
+            for (int i = 0; i < overlapCount; i++) _overlaps[i] = null;
+            int size = Physics2D.OverlapCircleNonAlloc(center, overlappingRadius, _overlaps, whatIsTarget);
 
             float closestDistanceRight = Mathf.Infinity;
             float closestDistanceLeft = Mathf.Infinity;
@@ -154,11 +155,10 @@ namespace Pharaoh.Gameplay
 
             // Loops each target and remove those behind walls as well as selects the closest one
             // Selects the best target to the right of the player and to the left
-            for (int overlapIndex = 0; overlapIndex < overlapCount; overlapIndex++)
+            for (int overlapIndex = 0; overlapIndex < size; overlapIndex++)
             {
                 var overlap = _overlaps[overlapIndex];
-
-                //if (_currentTarget == overlap.gameObject) continue;
+                if (!overlap.gameObject || _currentBehaviour?.gameObject == overlap.gameObject) continue;
 
                 Vector2 direction = (Vector2)overlap.transform.position - center;
                 float distance = direction.magnitude;
@@ -166,7 +166,7 @@ namespace Pharaoh.Gameplay
                 if (Vector2.Angle(transform.right * (inputs.isFacingRight ? 1 : -1), direction.normalized) >= overlappingFov / 2) continue;
                 if (Physics2D.RaycastAll(center, direction.normalized, distance, whatIsObstacle).Length > 0) continue;
 
-                switch (overlap.transform.position.x > center.x)
+                switch (overlap.transform.position.x >= center.x)
                 {
                     case true when distance < closestDistanceRight:
                         bestOverlapRight = overlapIndex;
