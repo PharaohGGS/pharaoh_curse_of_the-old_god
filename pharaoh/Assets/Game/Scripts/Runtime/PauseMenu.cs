@@ -18,6 +18,9 @@ public class PauseMenu: MonoBehaviour
     public GameObject[] labels;
     public PlayerSkills playerSkills;
 
+    [Header("Post Process")]
+    public GameObject globalVolume;
+
     private void OnEnable()
     {
         inputReader.exitPerformedEvent += OnPauseMenu;
@@ -38,6 +41,8 @@ public class PauseMenu: MonoBehaviour
 
     private void PauseGame()
     {
+        globalVolume.SetActive(false);
+
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
 
@@ -48,6 +53,8 @@ public class PauseMenu: MonoBehaviour
 
     private void UnpauseGame()
     {
+        globalVolume.SetActive(true);
+
         Time.timeScale = 1f;
         pausePanel.SetActive(false);
 
