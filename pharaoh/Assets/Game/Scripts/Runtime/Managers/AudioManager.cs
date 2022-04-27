@@ -45,13 +45,18 @@ namespace Pharaoh.Managers
         }
 
         [Space(10)]
-        [Header("Player and enemies")]
+        [Header("Player's sound")]
         [SerializeField]
         private AudioClip[] dashNormalClips;
         [SerializeField]
         private AudioClip[] dashSwarmClips;
         [SerializeField]
         private AudioClip[] khepeshHitClips;
+
+        [Space(10)]
+        [Header("Player's sound")]
+        [SerializeField]
+        private AudioClip[] clawSwingClips;
         [SerializeField]
         private AudioClip[] clawHitClips;
 
@@ -79,8 +84,10 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] SandFallShortClips;
 
+        [Space(10)]
+        [Header("Sounds parameters")]
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
-
+        
         [System.Serializable]
         public class Sound
         {
@@ -150,6 +157,9 @@ namespace Pharaoh.Managers
                         break;
                     case "KhepeshHit":
                         audioSource.clip = GetRandomClip(khepeshHitClips);
+                        break;
+                    case "ClawSwing":
+                        audioSource.clip = GetRandomClip(clawSwingClips);
                         break;
                     case "ClawHit":
                         audioSource.clip = GetRandomClip(clawHitClips);

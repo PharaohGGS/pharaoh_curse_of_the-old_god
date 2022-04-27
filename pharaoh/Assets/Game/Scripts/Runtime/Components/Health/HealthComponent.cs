@@ -133,12 +133,10 @@ namespace Pharaoh.Gameplay.Components
 
             if(name.Contains("Guard") && damager.name.Replace("(Clone)", "").Contains("Khepesh"))
             {
-                Debug.Log("Play Mob hit sound");
                 AudioManager.Instance?.Play("KhepeshHit");
             } 
             else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Gear") && damager.name.Replace("(Clone)", "").Contains("Claw"))
             {
-                Debug.Log("Player hit by claw sound");
                 AudioManager.Instance?.Play("ClawHit");
             }
             else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Gear") && damager.name.Replace("(Clone)", "").Contains("Harpoon"))
