@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,12 @@ public class SceneLoader : MonoBehaviour
     public List<string> neighbours; // List of room's neighbours
 
     private bool _isLoaded; // Is this room loaded or not
+    private GameObject _currentRoom;
+    private SceneLoader _currentSceneLoader;
+    private bool _isCurrentRoomValid;
+
+    private Coroutine _loadingCoroutine;
+    private Coroutine _unloadingCoroutine;
 
     private void Start()
     {
@@ -30,37 +37,36 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    private void OnRoomChanged()
+    private void Update()
     {
-        if (LevelManager.Instance == null)
-            return;
-
-        // Get the GameObject which represents the current room
-        GameObject currentRoom = GameObject.Find(LevelManager.Instance.currentRoom);
-
-        if (!currentRoom.TryGetComponent(out SceneLoader sceneLoader)) return; // If it has no SceneLoader, return
-
-        // If this room is in CurrentRoom's neighbours or is the CurrentRoom, load it
-        if (gameObject.name == currentRoom.name)
+        if (LevelManager.Instance == null) return;
+        if (_currentSceneLoader == null) return;
+        if (gameObject.name == _currentRoom.name)
         {
             if (_isLoaded) return;
             _isLoaded = true;
-            UIAccessor.loadingScreen.SetActive(true); // Display loading screen
-            SceneManager.LoadScene(gameObject.name, LoadSceneMode.Additive);
-            UIAccessor.loadingScreen.SetActive(false); // Hide loading screen
+            if (_loadingCoroutine == null)
+                SceneManager.LoadScene(gameObject.name, LoadSceneMode.Additive);
         }
-        else if (sceneLoader.neighbours.Contains(gameObject.name))
+        else if (_currentSceneLoader.neighbours.Contains(gameObject.name))
         {
             if (_isLoaded) return;
-            _isLoaded = true;
-            StartCoroutine(LoadScene());
+            if (_loadingCoroutine == null)
+                _loadingCoroutine = StartCoroutine(LoadScene());
         }
         else
         {
             if (!_isLoaded) return;
-            _isLoaded = false;
-            StartCoroutine(UnloadScene());
+            if (_unloadingCoroutine == null)
+                _unloadingCoroutine = StartCoroutine(UnloadScene());
         }
+    }
+
+    private void OnRoomChanged()
+    {
+        _currentRoom = GameObject.Find(LevelManager.Instance.currentRoom);
+        if (!_currentRoom.TryGetComponent(out _currentSceneLoader))
+            _currentSceneLoader = null;
     }
 
     private IEnumerator LoadScene()
@@ -70,6 +76,8 @@ public class SceneLoader : MonoBehaviour
         {
             yield return null;
         }
+        _isLoaded = true;
+        _loadingCoroutine = null;
     }
 
     private IEnumerator UnloadScene()
@@ -79,5 +87,7 @@ public class SceneLoader : MonoBehaviour
         {
             yield return null;
         }
+        _isLoaded = false;
+        _unloadingCoroutine = null;
     }
 }

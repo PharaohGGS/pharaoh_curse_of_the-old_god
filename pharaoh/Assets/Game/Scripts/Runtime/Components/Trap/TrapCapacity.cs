@@ -10,7 +10,6 @@ namespace Pharaoh.Gameplay
     public class TrapCapacity : MonoBehaviour
     {
         [SerializeField] private TrapBehaviour _behaviour;
-        [SerializeField] private LayerMask whatIsTarget;
 
         private TrapDetection _trapDetection;
 
