@@ -53,16 +53,14 @@ public class PlayerCombat : Combat
     private void OnEnable()
     {
         inputReader.attackPerformedEvent += OnAttack;
-        inputReader.dashStartedEvent += OnDash;
     }
     
     private void OnDisable()
     {
         inputReader.attackPerformedEvent -= OnAttack;
-        inputReader.dashStartedEvent -= OnDash;
     }
 
-    private void OnDash()
+    public void OnDashStart()
     {
         if (!skills || _sheathed) return;
         if (skills.HasDash && !skills.HasSwarmDash)
