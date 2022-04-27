@@ -274,6 +274,14 @@ namespace Pharaoh.Managers
         {
             return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
         }
+
+        public void RandomMobBark(int chanceOnTen)
+        {
+            if (UnityEngine.Random.Range(1, 10) <= chanceOnTen)
+            {
+                Play("MobBarks");
+            }
+        }
     }
 }
 
