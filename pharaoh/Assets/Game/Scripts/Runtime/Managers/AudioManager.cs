@@ -78,8 +78,8 @@ namespace Pharaoh.Managers
         private AudioClip[] SandFallLongClips;
         [SerializeField]
         private AudioClip[] SandFallShortClips;
-        [SerializeField]
-        private AudioClip[] TorcheClips;
+        /*[SerializeField]
+        private AudioClip[] TorcheClips;*/
 
 
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
@@ -169,9 +169,9 @@ namespace Pharaoh.Managers
                     case "SandFallShort":
                         audioSource.clip = GetRandomClip(SandFallShortClips);
                         break;
-                    case "Torche":
+                    /*case "Torche":
                         audioSource.clip = GetRandomClip(TorcheClips);
-                        break;
+                        break;*/
                     default :
                         Debug.LogWarning("Random sound " + name + " not found !");
                         break;
