@@ -60,6 +60,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
   - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
   - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
+  clawSwingClips:
+  - {fileID: 8300000, guid: 92a9fa2e87f6b4949963536483e3b9a5, type: 3}
+  - {fileID: 8300000, guid: f5097c5af4aa8654880b8dbccbbe6a72, type: 3}
+  - {fileID: 8300000, guid: 3cf3470b8292704439938633ed0aa17b, type: 3}
+  - {fileID: 8300000, guid: 20e7015e5e930de459ff0e3d26bdc9f9, type: 3}
   clawHitClips:
   - {fileID: 8300000, guid: ffd15b5fbb4e7cb438a55dde13705d38, type: 3}
   - {fileID: 8300000, guid: 43bb5bf198e242b40aa99194f856042a, type: 3}
@@ -410,7 +415,19 @@ MonoBehaviour:
     canOverride: 1
   - name: ClawHit
     clip: {fileID: 0}
-    volume: 0.3
+    volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: ClawSwing
+    clip: {fileID: 0}
+    volume: 0.2
     pitch: 1
     audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 0

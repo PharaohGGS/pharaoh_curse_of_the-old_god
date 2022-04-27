@@ -4,6 +4,7 @@ using System.Linq;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 namespace Pharaoh.Gameplay.Components
 {
@@ -108,18 +109,21 @@ namespace Pharaoh.Gameplay.Components
                     animator.ResetTrigger("Attacking");
                     animator.SetTrigger("Attacking");
                     LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
+                    AudioManager.Instance?.Play("ClawSwing");
                     return true;
                 case true when isStabbable && isThrowable:
                     // do stabbing animation
                     animator.ResetTrigger("Attacking");
                     animator.SetTrigger("Attacking");
                     LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
+                    Debug.Log("----Play harpoon swing");
                     return true;
                 case true when !isStabbable && isThrowable:
                     // do throwing animation
                     animator.ResetTrigger("Shooting");
                     animator.SetTrigger("Shooting");
                     LogHandler.SendMessage($"{name} shooting at {_currentTarget}", MessageType.Log);
+                    Debug.Log("----Play harpoon throw");
                     return true;
                 default:
                     LogHandler.SendMessage($"{name} is too far from {_currentTarget.name}", MessageType.Warning);
