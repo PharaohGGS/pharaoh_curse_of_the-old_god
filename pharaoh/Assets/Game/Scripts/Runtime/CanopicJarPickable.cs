@@ -32,8 +32,6 @@ public class CanopicJarPickable : MonoBehaviour
     public LayerMask whatIsPlayer;
     public CanopicJar jar = CanopicJar.Monkey;
 
-    public UnityEvent<CanopicJarPickable> onPickUp;
-
     public void OnInteract()
     {
         //Grant the player the given power
@@ -65,13 +63,14 @@ public class CanopicJarPickable : MonoBehaviour
 
         AudioManager.Instance.Play("CanopPickup");
 
+        
         Open();
+        if (jar == CanopicJar.Crocodile)
+            PlayCredits();
     }
 
     public void Open()
     {
-        onPickUp?.Invoke(this);
-
         boxCollider.enabled = false;
         vfxIdle.Stop();
         meshFilter.mesh = openedMesh;

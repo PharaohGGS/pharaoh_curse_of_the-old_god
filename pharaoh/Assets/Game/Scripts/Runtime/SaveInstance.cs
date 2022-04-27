@@ -43,6 +43,9 @@ public class SaveInstance : MonoBehaviour
         if (SaveDataManager.Instance == null)
             return;
 
+        if (type == Type.CanopicFire)
+            playerSkills.onChange -= OnSkillUnlocked;
+
         // Saves the instance when unloaded
         Save();
     }
@@ -97,10 +100,10 @@ public class SaveInstance : MonoBehaviour
                 break;
 
             case Type.CanopicFire:
-                if (name.EndsWith(" - Dash") && playerSkills.HasDash
-                    || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
-                    || name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
-                    || name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
+                if (gameObject.name.EndsWith(" - Dash") && playerSkills.HasDash
+                    || gameObject.name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
+                    || gameObject.name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
+                    || gameObject.name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
                 {
                     GetComponent<VisualEffect>().enabled = true;
                     //GetComponent<Light>().enabled = false; // currently no lights on the object
@@ -132,6 +135,7 @@ public class SaveInstance : MonoBehaviour
                 SaveDataManager.Instance.SaveSkills();
                 break;
 
+            case Type.CanopicFire:
             case Type.None:
             default:
                 break;
@@ -140,10 +144,13 @@ public class SaveInstance : MonoBehaviour
 
     private void OnSkillUnlocked(bool dash)
     {
-        if (name.EndsWith(" - Dash") && playerSkills.HasDash
-                    || name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
-                    || name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
-                    || name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
+        if (this == null)
+            Debug.Log("je suis nul");
+
+        if (gameObject.name.EndsWith(" - Dash") && playerSkills.HasDash
+            || gameObject.name.EndsWith(" - GrapplingHook") && playerSkills.HasGrapplingHook
+            || gameObject.name.EndsWith(" - SwarmDash") && playerSkills.HasSwarmDash
+            || gameObject.name.EndsWith(" - SandSoldier") && playerSkills.HasSandSoldier)
         {
             GetComponent<VisualEffect>().enabled = true;
             //GetComponent<Light>().enabled = false; // currently no lights on the object
