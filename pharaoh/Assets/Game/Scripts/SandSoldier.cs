@@ -163,7 +163,11 @@ public class SandSoldier : MonoBehaviour
             return;
         }
 
-        if (!_soldierBehaviour.groundHit) return; // If last ground hit was failed => Soldier is above a gap so don't summon
+        if (!_soldierBehaviour.groundHit) // If last ground hit was failed => Soldier is above a gap so don't summon
+        {
+            Destroy(_soldierBehaviour.gameObject);
+            return;
+        }
 
         if (_soldierBehaviour == null) return; // If behaviour has been destroyed for whatever reason, stop
 
