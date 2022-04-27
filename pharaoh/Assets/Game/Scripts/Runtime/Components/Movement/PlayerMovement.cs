@@ -91,6 +91,7 @@ namespace Pharaoh.Gameplay.Components.Movement
         [SerializeField] private LayerMask dashStunLayer;
         [SerializeField] private StunData dashStunData;
         [SerializeField] private UnityEvent<GameObject, StunData> onDashStun;
+        [SerializeField] private UnityEvent onDashStart;
         [SerializeField] private UnityEvent onDashEnd;
 
         private bool _canJumpHook;
@@ -185,6 +186,8 @@ namespace Pharaoh.Gameplay.Components.Movement
         {
             if (skills.HasDash && !_isDashing && !_hasDashedInAir && !_isPullingBlock)
             {
+                onDashStart?.Invoke();
+                
                 _rigidbody.velocity = Vector2.zero;
                 
                 _rigidbody.gravityScale = 0f;
