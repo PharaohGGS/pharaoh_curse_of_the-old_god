@@ -22,6 +22,11 @@ public class ZSaveFileManager : MonoBehaviour
         inputReader.interactPerformedEvent -= OnInteract;
     }
 
+    private void OnDisable()
+    {
+        inputReader.interactPerformedEvent -= OnInteract;
+    }
+
     private void OnInteract()
     {
         StopAllCoroutines();

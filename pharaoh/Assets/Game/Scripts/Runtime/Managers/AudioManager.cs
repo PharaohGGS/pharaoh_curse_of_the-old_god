@@ -51,7 +51,9 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] dashSwarmClips;
         [SerializeField]
-        private AudioClip[] enemyHitClips;
+        private AudioClip[] khepeshHitClips;
+        [SerializeField]
+        private AudioClip[] clawHitClips;
 
         [Space(10)]
         [Header("Doors and crates and plates sound")]
@@ -146,8 +148,11 @@ namespace Pharaoh.Managers
                     case "DashSwarm":
                         audioSource.clip = GetRandomClip(dashSwarmClips);
                         break;
-                    case "EnemyHit":
-                        audioSource.clip = GetRandomClip(enemyHitClips);
+                    case "KhepeshHit":
+                        audioSource.clip = GetRandomClip(khepeshHitClips);
+                        break;
+                    case "ClawHit":
+                        audioSource.clip = GetRandomClip(clawHitClips);
                         break;
                     case "RockFall":
                         audioSource.clip = GetRandomClip(RockFallClips);

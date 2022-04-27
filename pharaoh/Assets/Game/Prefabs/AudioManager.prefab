@@ -55,11 +55,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5a8a60a134434f44fb4a32908c331aff, type: 3}
   - {fileID: 8300000, guid: 0d03f92244eb28a40b632e9b3b5f7f11, type: 3}
   - {fileID: 8300000, guid: 87b347edfe7c1a8408b9995193a38ea9, type: 3}
-  enemyHitClips:
+  khepeshHitClips:
   - {fileID: 8300000, guid: 1f8cf1c7ff07ad64190c71e6a36af041, type: 3}
   - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
   - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
   - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
+  clawHitClips:
+  - {fileID: 8300000, guid: ffd15b5fbb4e7cb438a55dde13705d38, type: 3}
+  - {fileID: 8300000, guid: 43bb5bf198e242b40aa99194f856042a, type: 3}
+  - {fileID: 8300000, guid: 1e5892f299a08124eac87bb8ddb60d86, type: 3}
+  - {fileID: 8300000, guid: 5bb0e13234b5b24419060bae032558fb, type: 3}
   doorOpensClips:
   - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
   - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
@@ -379,6 +384,42 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 1
     canOverride: 0
+  - name: MenuAmbiance
+    clip: {fileID: 8300000, guid: e79fd955ceb135d4e8fd33735fdee2cc, type: 3}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 0
+    fadeOut: 1
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 0
+    canOverride: 0
+  - name: KhepeshHit
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: ClawHit
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
 --- !u!81 &2199613194498635937
 AudioListener:
   m_ObjectHideFlags: 0
