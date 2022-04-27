@@ -20,6 +20,7 @@ namespace Pharaoh.Gameplay.Components
         public LayerMask collidingLayers;
         [SerializeField] protected Transform socket;
         [SerializeField] protected Vector3 overrideRotation = Vector3.zero;
+        [SerializeField] protected UnityEvent onSocketAttach;
 
         public bool isThrown { get; protected set; }
         public bool isGrounded { get; protected set; }
@@ -71,6 +72,7 @@ namespace Pharaoh.Gameplay.Components
                     col.enabled = false;
                 }
                 _rigidbody2D.WakeUp();
+                onSocketAttach?.Invoke();
             }
         }
 
