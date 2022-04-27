@@ -53,6 +53,8 @@ public class SandSoldier : MonoBehaviour
     public LayerMask soldierLayer;
     [Tooltip("Moving Block layer, used to avoid the block getting stuck")]
     public LayerMask movingBlockLayer;
+    [Tooltip("Player layer, used to avoid the player getting stuck")]
+    public LayerMask playerLayer;
 
     [Header("Spawning parameters")]
     public Vector2 startColliderOffset = new Vector2(0.1f, 0f);
@@ -321,6 +323,33 @@ public class SandSoldier : MonoBehaviour
                 0f,
                 blockingLayer);
             if (movingBlockRoomCheck)
+            {
+                Destroy(soldier);
+                yield break;
+            }
+        }
+        
+        RaycastHit2D playerCheck = Physics2D.BoxCast(
+            soldier.transform.position,
+            soldierSize * 0.9f,
+            0f,
+            Vector2.up,
+            0f,
+            playerLayer);
+        if (playerCheck)
+        {
+            Vector2 size = playerCheck.collider.bounds.size;
+            Vector2 checkSize = new Vector2(size.x, soldierSize.y + size.y);
+            Vector3 pos = soldier.transform.position;
+            pos.y += -(soldierSize.y / 2f) + (checkSize.y / 2f);
+            RaycastHit2D playerRoomCheck = Physics2D.BoxCast(
+                pos,
+                checkSize * blockPlusSoldierThreshold,
+                0f,
+                Vector2.up,
+                0f,
+                blockingLayer);
+            if (playerRoomCheck)
             {
                 Destroy(soldier);
                 yield break;
