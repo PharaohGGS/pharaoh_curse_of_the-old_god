@@ -121,10 +121,10 @@ namespace Pharaoh.Gameplay.Components
         public void TakeHit(Damager damager, Collider2D other)
         {
             if (isInvincible) return;
-            if (!damager || !damager.damagerData) return;
+            if (!damager || !damager.data) return;
             if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
-            var damage = damager.damagerData.damage - armorDeal;
+            var damage = damager.data.damage - armorDeal;
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             onTakeHit?.Invoke(damager);
             Decrease(damage);
