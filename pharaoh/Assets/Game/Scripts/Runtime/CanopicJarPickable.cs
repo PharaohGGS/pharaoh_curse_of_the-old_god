@@ -87,6 +87,11 @@ public class CanopicJarPickable : MonoBehaviour
         inputReader.interactPerformedEvent -= OnInteract;
     }
 
+    private void OnDisable()
+    {
+        inputReader.interactPerformedEvent -= OnInteract;
+    }
+
     public void PlayCredits()
     {
         SceneManager.LoadScene("Credits");
