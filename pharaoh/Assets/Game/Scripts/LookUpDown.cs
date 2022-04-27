@@ -20,16 +20,19 @@ public class LookUpDown : MonoBehaviour
     
     private void OnEnable()
     {
-        inputReader.lookPerformedEvent += OnLook;
+        inputReader.lookStartedEvent += OnLook;
+        inputReader.lookCanceledEvent += OnStopLook;
     }
 
     private void OnDisable()
     {
-        inputReader.lookPerformedEvent -= OnLook;
+        inputReader.lookStartedEvent -= OnLook;
+        inputReader.lookCanceledEvent -= OnStopLook;
     }
     
     private void OnLook(float value)
     {
+        Debug.Log("STARTED");
         Vector3 position = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.State.CorrectedPosition;
         if (Vector3.Distance(position, Camera.main.transform.position) > 0.1f)
         {
@@ -37,7 +40,19 @@ public class LookUpDown : MonoBehaviour
             virtualCamera.SetActive(false);
             return;
         }
-            
+        
+        var brain = CinemachineCore.Instance.GetActiveBrain(0);
+        var vCam = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+        var transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
+        Vector3 followOffset = Vector3.zero;
+        if (transposer != null)
+            followOffset = vCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        float fov = vCam.m_Lens.FieldOfView;
+
+        virtualCamera.TryGetComponent(out CinemachineVirtualCamera lookCam);
+        lookCam.m_Lens.FieldOfView = fov;
+        position.z = transform.position.z + followOffset.z;
+        
         TryGetComponent(out PlayerMovement playerMovement);
         switch (value)
         {
@@ -55,11 +70,14 @@ public class LookUpDown : MonoBehaviour
                 virtualCamera.transform.position = position;
                 virtualCamera.SetActive(true);
                 break;
-            default:
-                EnableActions();
-                virtualCamera.SetActive(false);
-                break;
         }
+    }
+
+    private void OnStopLook()
+    {
+        Debug.Log("CANCELED");
+        EnableActions();
+        virtualCamera.SetActive(false);
     }
 
     private void DisableActions()

@@ -48,7 +48,8 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public UnityAction hookInteractStartedEvent;
     public UnityAction hookInteractPerformedEvent;
 
-    public UnityAction<float> lookPerformedEvent;
+    public UnityAction<float> lookStartedEvent;
+    public UnityAction lookCanceledEvent;
 
     public UnityAction sandSoldierStartedEvent;
     public UnityAction sandSoldierPerformedEvent;
@@ -125,7 +126,15 @@ public class InputReader : ScriptableObject, PlayerInput.ICharacterControlsActio
     public void OnLook(InputAction.CallbackContext context)
     {
         var value = context.ReadValue<float>();
-        if (context.phase == InputActionPhase.Performed) lookPerformedEvent?.Invoke(value);
+        switch (context.phase)
+        {
+            case InputActionPhase.Started:
+                lookStartedEvent?.Invoke(value);
+                break;
+            case InputActionPhase.Canceled:
+                lookCanceledEvent?.Invoke();
+                break;
+        }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
