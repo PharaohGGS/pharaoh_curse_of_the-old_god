@@ -1016,7 +1016,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 7044166387561328408}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
@@ -1028,7 +1028,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
   onSwordSwarmDash:
     m_PersistentCalls:
@@ -1045,6 +1045,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 6331296880941120157}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Damager, Pharaoh
+        m_MethodName: set_data
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 65a4ff0e59a316f4688841bd4a53fd43, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Pharaoh.Gameplay.Components.DamagerData,
+            Pharaoh
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 7044166387561328408}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -1052,6 +1065,19 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 3614266727031860938}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Damager, Pharaoh
+        m_MethodName: set_data
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 65a4ff0e59a316f4688841bd4a53fd43, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Pharaoh.Gameplay.Components.DamagerData,
+            Pharaoh
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1072,6 +1098,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6331296880941120157}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Damager, Pharaoh
+        m_MethodName: set_data
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 4657e833cef83f7409a66b337f5468fb, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Pharaoh.Gameplay.Components.DamagerData,
+            Pharaoh
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 7044166387561328408}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -1079,6 +1118,19 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3614266727031860938}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Damager, Pharaoh
+        m_MethodName: set_data
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 4657e833cef83f7409a66b337f5468fb, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Pharaoh.Gameplay.Components.DamagerData,
+            Pharaoh
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -50731,7 +50783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: onDamagingHit.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -50788,6 +50840,17 @@ PolygonCollider2D:
   m_CorrespondingSourceObject: {fileID: 3656568857706286206, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
   m_PrefabInstance: {fileID: 3930070744854689585}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6331296880941120157 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+  m_PrefabInstance: {fileID: 3930070744854689585}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7736959816141729621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
@@ -50866,7 +50929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: onDamagingHit.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
       propertyPath: onTriggerHit.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -50923,6 +50986,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6761408756555094116, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
   m_PrefabInstance: {fileID: 6016622196749771622}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3614266727031860938 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7014112821252148652, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}
+  m_PrefabInstance: {fileID: 6016622196749771622}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b347be1ec5ebe4c8a1b643e05ad943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!60 &7044166387561328408 stripped
 PolygonCollider2D:
   m_CorrespondingSourceObject: {fileID: 3656568857706286206, guid: 524601e6ebe5b894085fb02008b48eda, type: 3}

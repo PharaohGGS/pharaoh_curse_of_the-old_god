@@ -78,10 +78,12 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!_rigidbody || !_canMove) return;
             
-            var direction = ((Vector2)target - _rigidbody.position).normalized;
+            var direction = ((Vector2)target - _rigidbody.position);
+            Vector2 offset = Vector2.right * 0.1f * (direction.x > 0.0f ? 1 : -1);
+            var finalDirection = (((Vector2)target - offset) - _rigidbody.position).normalized;
             
             _smoothVelocity = Vector2.zero;
-            _smoothMovement = Vector2.SmoothDamp(_smoothMovement, direction, ref _smoothVelocity, 0.03f);
+            _smoothMovement = Vector2.SmoothDamp(_smoothMovement, finalDirection, ref _smoothVelocity, 0.03f, Mathf.Infinity, Time.fixedDeltaTime);
             _rigidbody.velocity = new Vector2(_smoothMovement.x * moveSpeed,  _rigidbody.velocity.y);
         }
 

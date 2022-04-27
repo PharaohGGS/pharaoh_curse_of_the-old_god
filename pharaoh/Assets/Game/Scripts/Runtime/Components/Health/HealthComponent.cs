@@ -4,6 +4,7 @@ using System.Linq;
 using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 namespace Pharaoh.Gameplay.Components
 {
@@ -121,13 +122,29 @@ namespace Pharaoh.Gameplay.Components
         public void TakeHit(Damager damager, Collider2D other)
         {
             if (isInvincible) return;
-            if (!damager || !damager.damagerData) return;
+            if (!damager || !damager.data) return;
             if (_colliders.Length <= 0 || _colliders.All(col => col != other)) return;
 
-            var damage = damager.damagerData.damage - armorDeal;
+            var damage = damager.data.damage - armorDeal;
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             onTakeHit?.Invoke(damager);
             Decrease(damage);
+            Debug.Log("---- " + name + " took damages from " + damager.name.Replace("(Clone)", ""));
+
+            if(name.Contains("Guard") && damager.name.Replace("(Clone)", "").Contains("Khepesh"))
+            {
+                Debug.Log("Play Mob hit sound");
+                AudioManager.Instance?.Play("KhepeshHit");
+            } 
+            else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Gear") && damager.name.Replace("(Clone)", "").Contains("Claw"))
+            {
+                Debug.Log("Player hit by claw sound");
+                AudioManager.Instance?.Play("ClawHit");
+            }
+            else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Gear") && damager.name.Replace("(Clone)", "").Contains("Harpoon"))
+            {
+                Debug.Log("Player hit by harpoon sound");
+            }
 
             if (!isInvincible && invincibilityTime > Mathf.Epsilon)
             {
