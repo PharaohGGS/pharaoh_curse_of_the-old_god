@@ -58,7 +58,7 @@ public class AudioTrigger : MonoBehaviour
                 }
             }
 
-            if (stopOnEnter && soundsToStop.Count > 0 && !stoppedOnEnter)
+            if (stopOnEnter && !stoppedOnEnter)
             {
                 if (StopAllMusic)
                 {
@@ -69,7 +69,8 @@ public class AudioTrigger : MonoBehaviour
                     {
                         AudioManager.Instance?.Stop(music);
                     }
-                } else
+                } 
+                else if (soundsToStop.Count > 0)
                 {
                     foreach (string soundToStop in soundsToStop)
                     {
@@ -95,7 +96,7 @@ public class AudioTrigger : MonoBehaviour
                 }
             }
 
-            if (stopOnExit && soundsToStop.Count > 0 && !stoppedOnExit)
+            if (stopOnExit && !stoppedOnExit)
             {
                 if (StopAllMusic)
                 {
@@ -107,7 +108,7 @@ public class AudioTrigger : MonoBehaviour
                         AudioManager.Instance?.Stop(music);
                     }
                 } 
-                else
+                else if(soundsToStop.Count > 0)
                 {
                     foreach (string soundToStop in soundsToStop)
                     {
