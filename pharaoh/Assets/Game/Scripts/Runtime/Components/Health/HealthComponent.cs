@@ -129,7 +129,6 @@ namespace Pharaoh.Gameplay.Components
             LogHandler.SendMessage($"{name} takes {damage} hit damage from {damager.name.Replace("(Clone)", "")}", MessageType.Log);
             onTakeHit?.Invoke(damager);
             Decrease(damage);
-            Debug.Log("---- " + name + " took damages from " + damager.name.Replace("(Clone)", ""));
 
             if(name.Contains("Guard") && damager.name.Replace("(Clone)", "").Contains("Khepesh"))
             {

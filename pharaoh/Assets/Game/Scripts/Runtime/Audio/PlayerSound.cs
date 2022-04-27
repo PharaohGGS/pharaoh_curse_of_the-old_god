@@ -21,6 +21,8 @@ public class PlayerSound : MonoBehaviour
     private AudioClip[] jumpClips;
     [SerializeField]
     private AudioClip[] DeathClips;
+    [SerializeField]
+    private AudioClip[] DeathBoneClips;
 
     [Space(10)]
     [Header("Khepesh sounds")]
@@ -56,6 +58,7 @@ public class PlayerSound : MonoBehaviour
         audioSourceHigh = go.AddComponent<AudioSource>();
 
         audioSourceHigh.volume = audioSourceVolumeHigh;
+        audioSourceHigh.outputAudioMixerGroup = audioSource.outputAudioMixerGroup;
         audioSourceHigh.loop = false;
     }
 
@@ -100,7 +103,9 @@ public class PlayerSound : MonoBehaviour
     public void PlayerDeathSound()
     {
         AudioClip DeathClip = GetRandomClip(DeathClips);
+        AudioClip DeathBoneClip = GetRandomClip(DeathBoneClips);
         audioSourceHigh.PlayOneShot(DeathClip);
+        audioSourceHigh.PlayOneShot(DeathBoneClip);
     }
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)

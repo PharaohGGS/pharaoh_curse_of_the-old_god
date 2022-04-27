@@ -101,7 +101,7 @@ namespace Pharaoh.Gameplay.Components
             var canThrow = data.throwable;
             var isThrowable = distance <= data.throwableRange;
             var isStabbable = distance <= data.range;
-            
+
             switch (canThrow)
             {
                 case false when isStabbable:
@@ -110,6 +110,7 @@ namespace Pharaoh.Gameplay.Components
                     animator.SetTrigger("Attacking");
                     LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
                     AudioManager.Instance?.Play("ClawSwing");
+                    AudioManager.Instance?.RandomMobBark(5);
                     return true;
                 case true when isStabbable && isThrowable:
                     // do stabbing animation
@@ -117,6 +118,7 @@ namespace Pharaoh.Gameplay.Components
                     animator.SetTrigger("Attacking");
                     LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
                     Debug.Log("----Play harpoon swing");
+                    AudioManager.Instance?.RandomMobBark(5);
                     return true;
                 case true when !isStabbable && isThrowable:
                     // do throwing animation
@@ -124,6 +126,7 @@ namespace Pharaoh.Gameplay.Components
                     animator.SetTrigger("Shooting");
                     LogHandler.SendMessage($"{name} shooting at {_currentTarget}", MessageType.Log);
                     Debug.Log("----Play harpoon throw");
+                    AudioManager.Instance?.RandomMobBark(5);
                     return true;
                 default:
                     LogHandler.SendMessage($"{name} is too far from {_currentTarget.name}", MessageType.Warning);

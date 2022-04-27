@@ -54,7 +54,9 @@ namespace Pharaoh.Managers
         private AudioClip[] khepeshHitClips;
 
         [Space(10)]
-        [Header("Player's sound")]
+        [Header("Mob's sound")]
+        [SerializeField]
+        private AudioClip[] mobBarksClips;
         [SerializeField]
         private AudioClip[] clawSwingClips;
         [SerializeField]
@@ -157,6 +159,9 @@ namespace Pharaoh.Managers
                         break;
                     case "KhepeshHit":
                         audioSource.clip = GetRandomClip(khepeshHitClips);
+                        break; 
+                    case "MobBarks":
+                        audioSource.clip = GetRandomClip(mobBarksClips);
                         break;
                     case "ClawSwing":
                         audioSource.clip = GetRandomClip(clawSwingClips);
@@ -268,6 +273,14 @@ namespace Pharaoh.Managers
         private AudioClip GetRandomClip(AudioClip[] audioClips)
         {
             return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
+        }
+
+        public void RandomMobBark(int chanceOnTen)
+        {
+            if (UnityEngine.Random.Range(1, 10) <= chanceOnTen)
+            {
+                Play("MobBarks");
+            }
         }
     }
 }
