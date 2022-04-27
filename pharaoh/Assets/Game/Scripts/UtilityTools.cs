@@ -67,7 +67,6 @@ public class UtilityTools
         playerSkills.hasGrapplingHook = true;
         playerSkills.hasSwarmDash = true;
         playerSkills.hasSandSoldier = true;
-        playerSkills.hasHeart = true;
 
         Debug.Log("Player Skills Unlocked.");
     }
