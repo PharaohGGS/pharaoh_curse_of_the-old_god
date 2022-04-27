@@ -123,16 +123,16 @@ public class SaveInstance : MonoBehaviour
         {
             case Type.Enemy:
                 // Save this enemy state
-                SaveDataManager.Instance.SaveEnemyState(instanceID, !GetComponent<HealthComponent>().isDead);
+                SaveDataManager.Instance?.SaveEnemyState(instanceID, !GetComponent<HealthComponent>().isDead);
                 break;
 
             case Type.MovingBlock:
                 // Save this block position
-                SaveDataManager.Instance.SaveBlockPosition(instanceID, transform.position);
+                SaveDataManager.Instance?.SaveBlockPosition(instanceID, transform.position);
                 break;
 
             case Type.CanopicJar:
-                SaveDataManager.Instance.SaveSkills();
+                SaveDataManager.Instance?.SaveSkills();
                 break;
 
             case Type.CanopicFire:
