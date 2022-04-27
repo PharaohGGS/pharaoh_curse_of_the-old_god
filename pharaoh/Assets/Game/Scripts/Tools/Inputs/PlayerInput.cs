@@ -76,7 +76,7 @@ namespace Pharaoh.Tools.Inputs
                 },
                 {
                     ""name"": ""Look"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""faed6114-f770-4817-a1f2-a19239852ba3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
