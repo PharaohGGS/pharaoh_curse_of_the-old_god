@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AudioManager = Pharaoh.Managers.AudioManager;
+using Pharaoh.Tools;
 
 public class AudioTrigger : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class AudioTrigger : MonoBehaviour
 
     [Header("Player layer")]
     [Tooltip("Player layer number")]
-    [SerializeField] private int playerLayer;
+    [SerializeField] private LayerMask playerLayers;
 
     private bool playedOnEnter = false;
     private bool playedOnExit = false;
@@ -47,7 +48,7 @@ public class AudioTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (playerLayer == collision.gameObject.layer)
+        if (collision.gameObject.HasLayer(playerLayers))
         {
             if (playOnEnter && soundsToPlay.Count > 0 && !playedOnEnter)
             {
@@ -85,7 +86,7 @@ public class AudioTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (playerLayer == collision.gameObject.layer)
+        if (collision.gameObject.HasLayer(playerLayers))
         {
             if (playOnExit && soundsToPlay.Count > 0 && !playedOnExit)
             {
