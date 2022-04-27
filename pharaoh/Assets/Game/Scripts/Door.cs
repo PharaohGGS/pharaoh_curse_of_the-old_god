@@ -32,6 +32,8 @@ public class Door : MonoBehaviour
 
     [Tooltip("An inverted door means an active pressure plate will close it.")]
     public bool inverted = false;
+    [Tooltip("Is the door placed horizontally")]
+    public bool horizontal = false;
     [Tooltip("Layers able to block the door from closing")]
     public LayerMask whatCanBlockDoor;
 
@@ -51,7 +53,7 @@ public class Door : MonoBehaviour
         _startPos = transform.position;
 
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-        mpb.SetFloat("_Clip", transform.position.y - 1.5f);
+        mpb.SetFloat("_Clip", (horizontal ? transform.position.x + 1.5f : transform.position.y - 1.5f));
         door.GetComponent<MeshRenderer>().SetPropertyBlock(mpb);
 
         RefreshState();
@@ -68,7 +70,7 @@ public class Door : MonoBehaviour
         _activePlates++;
         StopAllCoroutines();
         StartCoroutine(Shake());
-        AudioManager.Instance.Play("DoorOpens");
+        //AudioManager.Instance.Play("DoorOpens");
         RefreshState();
     }
 
@@ -78,7 +80,7 @@ public class Door : MonoBehaviour
         _activePlates--;
         StopAllCoroutines();
         StartCoroutine(Shake());
-        AudioManager.Instance.Play("DoorCloses");
+        //AudioManager.Instance.Play("DoorCloses");
         RefreshState();
     }
 
