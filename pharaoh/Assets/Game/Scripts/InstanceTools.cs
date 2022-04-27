@@ -40,6 +40,8 @@ public class InstanceTools
     [MenuItem("Instances/Load Build Scenes")]
     private static void LoadBuildScenes()
     {
+        EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(1));
+
         List<string> scenes = GetAllBuildScenes();
         foreach (string s in scenes)
         {
