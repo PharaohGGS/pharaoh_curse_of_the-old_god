@@ -190,6 +190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviour: {fileID: 0}
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &8462471460476970478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,10 +205,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031c99b32e4b8841bbcca2181539aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionCollider: {fileID: 4082437492315050596}
   whatIsTarget:
     serializedVersion: 2
-    m_Bits: 131072
-  detectionCollider: {fileID: 4082437492315050596}
+    m_Bits: 5373952
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 0
   overlapCount: 8
 --- !u!114 &2683696243840683768
 MonoBehaviour:

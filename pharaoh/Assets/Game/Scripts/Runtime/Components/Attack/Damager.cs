@@ -12,7 +12,7 @@ namespace Pharaoh.Gameplay.Components
     [RequireComponent(typeof(Collider2D))]
     public class Damager : MonoBehaviour
     {
-        public DamagerData damagerData;
+        [field: SerializeField] public DamagerData data { get; set; }
         public StunData stunData;
         public LayerMask ownerMask;
         
