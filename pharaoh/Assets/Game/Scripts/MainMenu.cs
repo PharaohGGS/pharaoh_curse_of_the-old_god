@@ -42,20 +42,22 @@ public class MainMenu : MonoBehaviour
 
     public void ContinueGame()
     {
+        AudioManager.Instance.Stop("Menu");
+        AudioManager.Instance.Stop("MenuAmbiance");
         SaveDataManager.Instance.LoadSave();
         LoadGameScene();
     }
 
     public void NewGame()
     {
+        AudioManager.Instance.Stop("Menu");
+        AudioManager.Instance.Stop("MenuAmbiance");
         SaveDataManager.Instance.NewSave();
         LoadGameScene();
     }
 
     private void LoadGameScene()
     {
-        AudioManager.Instance.Stop("Menu");
-        AudioManager.Instance.Stop("MenuAmbiance");
         Debug.Log("Loading Game Scene");
         SceneManager.LoadScene(1);
     }
