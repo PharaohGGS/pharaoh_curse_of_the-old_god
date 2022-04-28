@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using SaveDataManager = Pharaoh.Managers.SaveDataManager;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class PauseMenu: MonoBehaviour
 {
@@ -74,6 +75,7 @@ public class PauseMenu: MonoBehaviour
     public void MainMenu()
     {
         UnpauseGame();
+        AudioManager.Instance?.StopAllMusic();
         SceneManager.LoadScene(0);
     }
 
