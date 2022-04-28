@@ -2100,6 +2100,7 @@ GameObject:
   - component: {fileID: 876405839}
   - component: {fileID: 876405838}
   - component: {fileID: 876405840}
+  - component: {fileID: 876405841}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2289,6 +2290,14 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!81 &876405841
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876405836}
+  m_Enabled: 1
 --- !u!1 &893023471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,10 +3224,6 @@ PrefabInstance:
     - target: {fileID: 1509091087091232412, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
       propertyPath: m_Name
       value: AudioManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545863962414996424, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}
-      propertyPath: sounds.Array.data[0].fadeIn
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d3bc17333502f42bf61f9ec8723607, type: 3}

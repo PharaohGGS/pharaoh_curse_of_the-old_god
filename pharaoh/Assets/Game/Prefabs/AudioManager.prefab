@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1330603988909350982}
   - component: {fileID: 3545863962414996424}
-  - component: {fileID: 2199613194498635937}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -144,7 +143,7 @@ MonoBehaviour:
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 1
-    fadeIn: 0
+    fadeIn: 1
     fadeOut: 1
     fadeInDuration: 1
     fadeOutDuration: 3
@@ -462,11 +461,3 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 1
     canOverride: 1
---- !u!81 &2199613194498635937
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1509091087091232412}
-  m_Enabled: 1
