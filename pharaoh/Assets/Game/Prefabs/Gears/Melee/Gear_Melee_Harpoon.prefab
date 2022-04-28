@@ -345,8 +345,14 @@ VisualEffect:
       - m_Value: 90
         m_Name: RotateAngle
         m_Overridden: 0
-      - m_Value: 2
+      - m_Value: 1
         m_Name: TimeToAppear
+        m_Overridden: 1
+      - m_Value: 2
+        m_Name: TimeToDisappear
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: KillDelay
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -437,50 +443,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff08cfc3a5da45b1a2bbe0fb3776a057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToAppear: 1
-  timeToDisappear: 2
-  onVfxSpawned:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5843525832407711864}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 3747128703299353231}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onVfxKilled:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3747128703299353231}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+  waitForFixedUpdateCount: 20
+  vfxEvents:
+    list:
+    - Key: Spawn
+      Value:
+        delay: SpawnDelay
+        lifetime: TimeToAppear
+        onEventSpawn:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 6897467276550690146}
+              m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.VFXGear, Pharaoh
+              m_MethodName: ResetCollisionAABox
+              m_Mode: 1
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 3747128703299353231}
+              m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+              m_MethodName: SendEvent
+              m_Mode: 5
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: Spawn
+                m_BoolArgument: 0
+              m_CallState: 2
+        onEventAfterDelay:
+          m_PersistentCalls:
+            m_Calls: []
+        onEventAfterLifetime:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 5843525832407711864}
+              m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+              m_MethodName: set_enabled
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+            - m_Target: {fileID: 3747128703299353231}
+              m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+              m_MethodName: Stop
+              m_Mode: 1
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+    - Key: Kill
+      Value:
+        delay: KillDelay
+        lifetime: TimeToDisappear
+        onEventSpawn:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 3747128703299353231}
+              m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+              m_MethodName: SendEvent
+              m_Mode: 5
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: Kill
+                m_BoolArgument: 0
+              m_CallState: 2
+        onEventAfterDelay:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 5843525832407711864}
+              m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+              m_MethodName: set_enabled
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+        onEventAfterLifetime:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 3747128703299353231}
+              m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+              m_MethodName: Stop
+              m_Mode: 1
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+    keyCollision: 0
 --- !u!114 &7451239046983173651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,8 +591,8 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 6897467276550690146}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.VFXGear, Pharaoh
-        m_MethodName: Spawn
-        m_Mode: 1
+        m_MethodName: CallEvent
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -528,10 +604,22 @@ MonoBehaviour:
   onThrownCollisionHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5843525832407711864}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 6013927071415405160}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
+        m_MethodName: Disable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6897467276550690146}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.VFXGear, Pharaoh
+        m_MethodName: SetCollisionAABox
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -554,26 +642,14 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 6897467276550690146}
         m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.VFXGear, Pharaoh
-        m_MethodName: Kill
-        m_Mode: 1
+        m_MethodName: CallEvent
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6013927071415405160}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Ballistic, Pharaoh
-        m_MethodName: Disable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Kill
           m_BoolArgument: 0
         m_CallState: 2
   data: {fileID: 11400000, guid: 29729268f4c165c4bb42d226982dce18, type: 2}
