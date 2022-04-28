@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AudioManager = Pharaoh.Managers.AudioManager;
 
-[RequireComponent(typeof(AudioSource))]
+//[RequireComponent(typeof(AudioSource))]
 public class MobSound : MonoBehaviour
 {
     [Header("Audio source parameters")]
@@ -25,7 +25,7 @@ public class MobSound : MonoBehaviour
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponentInChildren<AudioSource>();
 
         audioSource.volume = audioSourceVolume;
         audioSource.loop = false;
@@ -48,7 +48,6 @@ public class MobSound : MonoBehaviour
 
     public void MobDeathSound()
     {
-        Debug.Log("----Play death mob sound");
         AudioClip deathClip = GetRandomClip(deathClips);
         audioSource.PlayOneShot(deathClip);
     }
