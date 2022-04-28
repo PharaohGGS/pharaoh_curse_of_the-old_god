@@ -4,6 +4,7 @@ using Pharaoh.Managers;
 using Pharaoh.Tools;
 using UnityEngine.VFX;
 using UnityEngine.SceneManagement;
+using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -20,17 +21,27 @@ public class CanopicJarPickable : MonoBehaviour
         Crocodile   // Rien (coeur)
     };
 
+    private Vector4 _defaultColor;
+    private Vector4 _hoverColor;
+
     public InputReader inputReader;
     public PlayerSkills playerSkills;
 
     public BoxCollider2D boxCollider;
     public MeshFilter meshFilter;
     public VisualEffect vfxIdle;
+    public float transitionDuration = 1f;
 
     public Mesh openedMesh;
 
     public LayerMask whatIsPlayer;
     public CanopicJar jar = CanopicJar.Monkey;
+
+    private void Awake()
+    {
+        _defaultColor = new Vector4(8, 8, 8, 0);
+        _hoverColor = new Vector4(4.13973284f, 10.6405144f, 49.4180717f, 0.0f);
+    }
 
     public void OnInteract()
     {
@@ -79,12 +90,21 @@ public class CanopicJarPickable : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.HasLayer(whatIsPlayer))
+        {
+            StopAllCoroutines();
+            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), _hoverColor));
             inputReader.interactPerformedEvent += OnInteract;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        inputReader.interactPerformedEvent -= OnInteract;
+        if (collision.gameObject.HasLayer(whatIsPlayer))
+        {
+            StopAllCoroutines();
+            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), _defaultColor));
+            inputReader.interactPerformedEvent -= OnInteract;
+        }
     }
 
     private void OnDisable()
@@ -95,6 +115,24 @@ public class CanopicJarPickable : MonoBehaviour
     public void PlayCredits()
     {
         SceneManager.LoadScene("Credits");
+    }
+
+    private IEnumerator FadeColor(Vector4 startColor, Vector4 endColor)
+    {
+        float elapsedTime = 0f;
+        float duration = transitionDuration;
+
+        while (elapsedTime < duration)
+        {
+            Vector4 currentColor = Vector4.Lerp(startColor, endColor, elapsedTime / duration);
+            vfxIdle.SetVector4("FireColor", currentColor);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        vfxIdle.SetVector4("FireColor", endColor);
+        yield return null;
     }
 
 }
