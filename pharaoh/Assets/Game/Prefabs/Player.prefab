@@ -363,7 +363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1463119867
 Transform:
   m_ObjectHideFlags: 0
@@ -372,7 +372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463119866}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -386,9 +386,9 @@ VisualEffect:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463119866}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 428494a2767a7c94fb3b7362c04bc78a, type: 3}
-  m_InitialEventName: Dash
+  m_InitialEventName: 
   m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
@@ -405,7 +405,16 @@ VisualEffect:
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Transform_angles
+        m_Overridden: 0
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Transform_position
+        m_Overridden: 0
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: Transform_scale
+        m_Overridden: 0
     m_Vector4f:
       m_Array: []
     m_Uint:
@@ -419,7 +428,10 @@ VisualEffect:
     m_Gradient:
       m_Array: []
     m_NamedObject:
-      m_Array: []
+      m_Array:
+      - m_Value: {fileID: 0}
+        m_Name: PlayerSkinnedMesh
+        m_Overridden: 0
     m_Bool:
       m_Array:
       - m_Value: 1
@@ -968,7 +980,8 @@ MonoBehaviour:
     m_Bits: 2163712
   animator: {fileID: 5280757643533625441}
   modelTransform: {fileID: 2281400649281040923}
-  swarmDashVFX: {fileID: 1463119869}
+  swarmDashPrefab: {fileID: 8408273860269484880, guid: 059571bf47a130b4fa57ecd328b0394d, type: 3}
+  playerSkinTransform: {fileID: 2281400649281040923}
   dashStunLayer:
     serializedVersion: 2
     m_Bits: 2048

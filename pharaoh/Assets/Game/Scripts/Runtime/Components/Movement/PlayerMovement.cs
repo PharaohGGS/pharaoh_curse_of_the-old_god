@@ -4,6 +4,7 @@ using Pharaoh.Tools.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
+using UnityEngine.VFX.Utility;
 using MessageType = Pharaoh.Tools.Debug.MessageType;
 using AudioManager = Pharaoh.Managers.AudioManager;
 using InputFlags = InputReader.InputFlags;
@@ -84,8 +85,11 @@ namespace Pharaoh.Gameplay.Components.Movement
         public Transform modelTransform;
 
         [Header("VFX")]
-        [Tooltip("VFX for the swarm dash")]
-        public VisualEffect swarmDashVFX;
+        //[Tooltip("VFX for the swarm dash")]
+        //public VisualEffect swarmDashVFX;
+
+        public GameObject swarmDashPrefab;
+        public Transform playerSkinTransform;
 
         [Header("Dash Detection")]
         [SerializeField] private LayerMask dashStunLayer;
@@ -201,11 +205,25 @@ namespace Pharaoh.Gameplay.Components.Movement
 
                 if (skills.HasSwarmDash)
                 {
+                    // Player
                     gameObject.layer = _swarmDashLayer;
                     foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    swarmDashVFX.SetVector3("StartPosition", transform.position);
-                    swarmDashVFX.SetBool("IsFacingRight", _isFacingRight);
-                    swarmDashVFX.enabled = true;
+                    // VFX
+                    GameObject go = Instantiate(swarmDashPrefab, Vector3.zero, Quaternion.identity);
+                    if (go.TryGetComponent(out VisualEffect vfx))
+                    {
+                        vfx.SetBool("IsFacingRight", _isFacingRight);
+                        vfx.SetVector3("Transform_position", playerSkinTransform.position);
+                        vfx.SetVector3("Transform_angles", playerSkinTransform.eulerAngles);
+                        vfx.SetVector3("Transform_scale", playerSkinTransform.localScale);
+                        vfx.SetVector3("PlayerTransform_position", transform.position);
+                        vfx.SetVector3("PlayerTransform_angles", transform.eulerAngles);
+                        vfx.SetVector3("PlayerTransform_scale", transform.localScale);
+                        vfx.SendEvent("Start");
+                        StartCoroutine(UpdateVFX(vfx));
+                    }
+                    //Destroy(go, 3f);
+                    // Audio
                     AudioManager.Instance.Play("DashSwarm");
                 } 
                 else
@@ -380,7 +398,6 @@ namespace Pharaoh.Gameplay.Components.Movement
                 gameObject.layer = _defaultLayer;
 
                 foreach (Renderer r in GetComponentsInChildren<Renderer>()) r.enabled = true;
-                swarmDashVFX.enabled = false;
 
                 StartCoroutine(DashCooldown());
             }
@@ -455,6 +472,18 @@ namespace Pharaoh.Gameplay.Components.Movement
             animator.SetBool("Is Facing Right", _isFacingRight);
             animator.SetBool("Is Pulling", _isPullingBlock);
             animator.SetBool("Is Hooked", _isHooked);
+        }
+
+        private System.Collections.IEnumerator UpdateVFX(VisualEffect vfx)
+        {
+            float elapsed = 0f;
+            while (elapsed < 3f)
+            {
+                elapsed += Time.deltaTime;
+                vfx.SetVector3("TargetPosition", transform.position + Vector3.up);
+                yield return null;
+            }
+            Destroy(vfx.gameObject);
         }
 
         // Coroutine re-enabling the dash after it's cooldown
