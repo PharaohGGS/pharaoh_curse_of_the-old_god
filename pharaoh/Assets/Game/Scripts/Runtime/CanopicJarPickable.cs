@@ -21,27 +21,22 @@ public class CanopicJarPickable : MonoBehaviour
         Crocodile   // Rien (coeur)
     };
 
-    private Vector4 _defaultColor;
-    private Vector4 _hoverColor;
-
     public InputReader inputReader;
     public PlayerSkills playerSkills;
 
     public BoxCollider2D boxCollider;
     public MeshFilter meshFilter;
     public VisualEffect vfxIdle;
-    public float transitionDuration = 1f;
 
     public Mesh openedMesh;
 
     public LayerMask whatIsPlayer;
     public CanopicJar jar = CanopicJar.Monkey;
 
-    private void Awake()
-    {
-        _defaultColor = new Vector4(8, 8, 8, 0);
-        _hoverColor = new Vector4(4.13973284f, 10.6405144f, 49.4180717f, 0.0f);
-    }
+    [Header("Color transition")]
+    [ColorUsage(true, true)] public Color defaultColor;
+    [ColorUsage(true, true)] public Color hoverColor;
+    public float transitionDuration = 0.5f;
 
     public void OnInteract()
     {
@@ -92,7 +87,7 @@ public class CanopicJarPickable : MonoBehaviour
         if (collision.gameObject.HasLayer(whatIsPlayer))
         {
             StopAllCoroutines();
-            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), _hoverColor));
+            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), hoverColor));
             inputReader.interactPerformedEvent += OnInteract;
         }
     }
@@ -102,7 +97,7 @@ public class CanopicJarPickable : MonoBehaviour
         if (collision.gameObject.HasLayer(whatIsPlayer))
         {
             StopAllCoroutines();
-            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), _defaultColor));
+            StartCoroutine(FadeColor(vfxIdle.GetVector4("FireColor"), defaultColor));
             inputReader.interactPerformedEvent -= OnInteract;
         }
     }

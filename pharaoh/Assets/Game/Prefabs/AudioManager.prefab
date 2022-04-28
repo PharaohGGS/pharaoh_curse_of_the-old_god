@@ -136,9 +136,15 @@ MonoBehaviour:
   soundSources:
     list: []
     keyCollision: 0
+  musicsToStop:
+  - Ambiance
+  - LoreZone
+  - LoreShort
+  - Fight
+  - Roomtone High
   sounds:
   - name: Menu
-    clip: {fileID: 8300000, guid: 70a5d57c36daaa74aac6f93fc38e487e, type: 3}
+    clip: {fileID: 8300000, guid: 393a32a6ba7aaae4b98310fd5aa77560, type: 3}
     volume: 0.5
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
@@ -146,11 +152,11 @@ MonoBehaviour:
     fadeIn: 1
     fadeOut: 1
     fadeInDuration: 1
-    fadeOutDuration: 3
+    fadeOutDuration: 0.5
     randomized: 0
     canOverride: 0
   - name: Ambiance
-    clip: {fileID: 8300000, guid: 70a5d57c36daaa74aac6f93fc38e487e, type: 3}
+    clip: {fileID: 8300000, guid: cf452747c81361a40afea500a83a3155, type: 3}
     volume: 0.5
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
@@ -171,6 +177,18 @@ MonoBehaviour:
     fadeOut: 1
     fadeInDuration: 5
     fadeOutDuration: 3
+    randomized: 0
+    canOverride: 0
+  - name: Credits
+    clip: {fileID: 8300000, guid: 277cd08ac4fdfc3458192ee967dd5391, type: 3}
+    volume: 0.5
+    pitch: 1
+    audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
     randomized: 0
     canOverride: 0
   - name: Enigme
@@ -410,7 +428,7 @@ MonoBehaviour:
     fadeIn: 0
     fadeOut: 1
     fadeInDuration: 1
-    fadeOutDuration: 1
+    fadeOutDuration: 0.5
     randomized: 0
     canOverride: 0
   - name: KhepeshHit
