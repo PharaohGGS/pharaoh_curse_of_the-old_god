@@ -30,10 +30,9 @@ namespace Pharaoh.AI.Actions
             if (!_fight || !_fight.activeWeapon || state != NodeState.Failure) return;
 
             var weapon = _fight.activeWeapon;
-            if (weapon.isThrown && weapon.isGrounded && blackboard.TryGetData("target", out Transform t))
+            if (weapon.isThrown && weapon.isGrounded)
             {
                 blackboard.SetData("target", weapon.transform);
-                blackboard.SetData("lastTarget", t);
             }
         }
     }

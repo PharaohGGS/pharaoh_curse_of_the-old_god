@@ -26,18 +26,12 @@ namespace Pharaoh.AI.Actions
             if (!t.TryGetComponent(out Gear gear) || !gear.isThrown || !gear.isGrounded) return NodeState.Running;
 
             gear.SocketAttach(true);
-            if (blackboard.TryGetData("lastTarget", out Transform last))
-            {
-                blackboard.SetData("target", last);
-                blackboard.ClearData("lastTarget");
-            }
+            blackboard.ClearData("target");
 
             var weapon = _fight.activeWeapon;
             if (weapon && weapon.isActiveAndEnabled)
             {
                 ((EnemyAgent)agent).StartWait(WaitType.Attack, weapon.GetBaseData().rate);
-                //blackboard.SetData("isWaiting", true);
-                //blackboard.SetData("waitTime", weapon.GetBaseData().rate);
             }   
             
             return NodeState.Success;
