@@ -1,4 +1,5 @@
-﻿using BehaviourTree.Tools;
+﻿using System;
+using BehaviourTree.Tools;
 using Pharaoh.Gameplay.Components;
 using Pharaoh.Tools;
 using Pharaoh.Tools.Debug;
@@ -9,7 +10,13 @@ namespace Pharaoh.AI.Actions
     public class TaskChangeWaypoint : ActionNode
     {
         private AiMovement _aiMovement;
+        private bool _firstActivation;
         
+        private void Awake()
+        {
+            _firstActivation = true;
+        }
+
         protected override void OnStart()
         {
             if (!_aiMovement && !agent.TryGetComponent(out _aiMovement))
@@ -32,7 +39,14 @@ namespace Pharaoh.AI.Actions
             }
 
             var index = blackboard.GetData<int>("currentWaypointIndex");
-            ((EnemyAgent) agent).StartWait(WaitType.Movement, _aiMovement.timeBetweenWaypoints);
+            if (!_firstActivation)
+            {
+                ((EnemyAgent) agent).StartWait(WaitType.Movement, _aiMovement.timeBetweenWaypoints);
+            }
+            else
+            {
+                _firstActivation = false;
+            }
             
             var nextIndex = (index + 1) % _aiMovement.waypointHolder.childCount;
             blackboard.SetData("currentWaypointIndex", nextIndex);
