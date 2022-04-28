@@ -190,9 +190,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviour: {fileID: 0}
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &8462471460476970478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,9 +226,10 @@ MonoBehaviour:
   response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Pharaoh.Gameplay.SpikeTrapBehaviour, Pharaoh
-        m_MethodName: Respawn
+      - m_Target: {fileID: 8462471460476970478}
+        m_TargetAssemblyTypeName: Pharaoh.Gameplay.Components.Detection`1[[UnityEngine.Collider2D,
+          UnityEngine
+        m_MethodName: Reset
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

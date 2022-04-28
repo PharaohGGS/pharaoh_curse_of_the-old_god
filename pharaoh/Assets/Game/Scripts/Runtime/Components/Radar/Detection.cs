@@ -78,6 +78,15 @@ namespace Pharaoh.Gameplay.Components
                 _colliders.Add(overlapCollider);
                 onOverlapEnter?.Invoke(overlapCollider);
             }
+            
+            Debug.Log($"Name: {name}, overlappedCount: {overlappedCount}");
+        }
+
+        public virtual void Reset()
+        {
+            for (int i = 0; i < _overlapColliders.Length; i++) _overlapColliders[i] = null;
+            _colliders.Clear();
+            _removables.Clear();
         }
 
         protected virtual void OnOverlapEnter(Collider2D other) {}
