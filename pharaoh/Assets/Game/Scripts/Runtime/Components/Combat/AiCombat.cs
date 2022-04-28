@@ -96,7 +96,7 @@ namespace Pharaoh.Gameplay.Components
             }
 
             var data = gear.GetData();
-            var distance = Mathf.Abs(_currentTarget.position.x - transform.position.x);
+            var distance = Vector2.Distance(_currentTarget.position, transform.position);
 
             var canThrow = data.throwable;
             var isThrowable = distance <= data.throwableRange;
