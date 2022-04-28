@@ -26,8 +26,12 @@ namespace Pharaoh.AI.Actions
             if (!t.TryGetComponent(out Gear gear) || !gear.isThrown || !gear.isGrounded) return NodeState.Running;
 
             gear.SocketAttach(true);
-            blackboard.ClearData("target");
-            
+            if (blackboard.TryGetData("lastTarget", out Transform last))
+            {
+                blackboard.SetData("target", last);
+                blackboard.ClearData("lastTarget");
+            }
+
             var weapon = _fight.activeWeapon;
             if (weapon && weapon.isActiveAndEnabled)
             {

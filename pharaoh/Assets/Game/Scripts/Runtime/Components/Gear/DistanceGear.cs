@@ -16,14 +16,14 @@ namespace Pharaoh.Gameplay.Components
             _pool = GetComponent<DamagerPool>();
         }
         
-        public void Shoot(Transform target)
+        public void Shoot(Vector3 target)
         {
             var damager = _pool.Get();
 
             if (damager.TryGetComponent(out Rigidbody2D rb2D))
             {
                 rb2D.bodyType = RigidbodyType2D.Dynamic;
-                var direction = (Vector2)target.position - rb2D.position;
+                var direction = (Vector2)target - rb2D.position;
                 rb2D.AddForce(direction.normalized * GetData().shootInitialVelocity, ForceMode2D.Impulse);
             }
 

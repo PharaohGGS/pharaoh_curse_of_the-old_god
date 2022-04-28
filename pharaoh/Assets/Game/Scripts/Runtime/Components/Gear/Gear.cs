@@ -21,17 +21,23 @@ namespace Pharaoh.Gameplay.Components
         [SerializeField] protected Transform socket;
         [SerializeField] protected Vector3 overrideRotation = Vector3.zero;
         [SerializeField] protected UnityEvent onSocketAttach;
+        [SerializeField] protected UnityEvent<Collider2D> onThrownCollisionHit;
 
         public bool isThrown { get; protected set; }
         public bool isGrounded { get; protected set; }
         
         protected Rigidbody2D _rigidbody2D = null;
+        protected Collider2D _collider2D = null;
 
         protected virtual void Awake()
         {
             if (!TryGetComponent(out _rigidbody2D))
             {
-                LogHandler.SendMessage($"{name} can't use physics engine", MessageType.Warning);
+                LogHandler.SendMessage($"{name} can't use physics engine, no Rigidbody", MessageType.Warning);
+            }
+            if (!TryGetComponent(out _collider2D))
+            {
+                LogHandler.SendMessage($"{name} can't use physics engine, no Collider", MessageType.Warning);
             }
 
             SocketAttach(true);
@@ -40,9 +46,15 @@ namespace Pharaoh.Gameplay.Components
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (!isThrown || !other.gameObject.HasLayer(collidingLayers)) return;
-
+            
             isGrounded = true;
+            onThrownCollisionHit?.Invoke(other);
 
+            if (_collider2D)
+            {
+                _collider2D.enabled = false;
+            }
+            
             if (_rigidbody2D)
             {
                 _rigidbody2D.isKinematic = true;

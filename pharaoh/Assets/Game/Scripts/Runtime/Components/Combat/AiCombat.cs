@@ -150,14 +150,14 @@ namespace Pharaoh.Gameplay.Components
         {
             if (!_currentTarget) return;
             if (activeWeapon is not MeleeGear melee || !melee.GetData().throwable) return;
-            melee.Throw(_currentTarget);
+            melee.Throw(_currentTarget.position);
         }
 
         public void Shoot()
         {
             if (!_currentTarget) return;
             if (activeWeapon is not DistanceGear distance) return;
-            distance.Shoot(_currentTarget);
+            distance.Shoot(_currentTarget.position);
         }
     }
 }

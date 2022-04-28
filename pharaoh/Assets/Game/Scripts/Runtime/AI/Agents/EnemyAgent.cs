@@ -45,7 +45,8 @@ namespace Pharaoh.AI
         {
             if (_waitTypes.Contains(type))
             {
-                Debug.LogWarning($"Can't wait more than once for {type}");
+                //Debug.LogWarning($"Can't wait more than once for {type}");
+                _waitDico[type] = new WaitStruct(Time.time, waitTime);
                 return;
             }
 

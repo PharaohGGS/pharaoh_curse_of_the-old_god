@@ -11,11 +11,11 @@ namespace Pharaoh.Gameplay.Components
     {
         [HideInInspector] public UnityEvent onWeaponThrown = new UnityEvent();
         
-        public void Throw(Transform target)
+        public void Throw(Vector3 target)
         {
             if (!_rigidbody2D) return;
             var initialVelocity = GetData().throwableInitialVelocity;
-            var direction = (target.position + Vector3.up) - transform.position;
+            var direction = (target + Vector3.up) - transform.position;
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             _rigidbody2D.AddForce(direction.normalized * initialVelocity, ForceMode2D.Impulse);
             SocketAttach(false);
