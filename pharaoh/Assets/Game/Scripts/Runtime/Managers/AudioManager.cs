@@ -89,7 +89,10 @@ namespace Pharaoh.Managers
         [Space(10)]
         [Header("Sounds parameters")]
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
-        
+        [SerializeField]
+        private List<string> musicsToStop = new List<string>
+        {"Ambiance", "LoreZone", "LoreShort", "Fight", "Roomtone High"};
+
         [System.Serializable]
         public class Sound
         {
@@ -270,16 +273,24 @@ namespace Pharaoh.Managers
             yield break;
         }
 
+        public void StopAllMusic()
+        {
+            foreach (string music in musicsToStop)
+            {
+                Stop(music);
+            }
+        }
+
         private AudioClip GetRandomClip(AudioClip[] audioClips)
         {
             return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
         }
 
-        public void RandomMobBark(int chanceOnTen)
+        public void RandomBark(string soundName, int chanceOnTen)
         {
             if (UnityEngine.Random.Range(1, 10) <= chanceOnTen)
             {
-                Play("MobBarks");
+                Play(soundName);
             }
         }
     }
