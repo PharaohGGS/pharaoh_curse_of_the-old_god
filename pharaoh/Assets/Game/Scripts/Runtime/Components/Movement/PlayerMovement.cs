@@ -480,7 +480,7 @@ namespace Pharaoh.Gameplay.Components.Movement
             while (elapsed < 3f)
             {
                 elapsed += Time.deltaTime;
-                vfx.SetVector3("TargetPosition", transform.position + Vector3.up);
+                vfx.SetVector3("TargetPosition", transform.position + new Vector3(0f, 1f, 0f));
                 yield return null;
             }
             Destroy(vfx.gameObject);

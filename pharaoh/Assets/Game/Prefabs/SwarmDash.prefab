@@ -49,7 +49,34 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 20
+        m_Name: TrailMinForce
+        m_Overridden: 1
+      - m_Value: 30
+        m_Name: TrailMaxForce
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: TurbulenceFrequency
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: TurbulenceIntensity
+        m_Overridden: 1
+      - m_Value: 15
+        m_Name: TrailAmount
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: TrailTurbulenceIntensity
+        m_Overridden: 1
+      - m_Value: 30
+        m_Name: RestAmount
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: TrailMinLifetime
+        m_Overridden: 1
+      - m_Value: 0.7
+        m_Name: TrailMaxLifetime
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -75,6 +102,15 @@ VisualEffect:
       - m_Value: {x: 3.2, y: 1.4, z: 0}
         m_Name: TargetPosition
         m_Overridden: 1
+      - m_Value: {x: 0.25, y: 3, z: 10}
+        m_Name: KillBoxSize
+        m_Overridden: 1
+      - m_Value: {x: 2, y: 0, z: 0}
+        m_Name: TrailVelocity
+        m_Overridden: 1
+      - m_Value: {x: 2, y: 0, z: 0}
+        m_Name: StartVelocity
+        m_Overridden: 1
     m_Vector4f:
       m_Array: []
     m_Uint:
@@ -94,6 +130,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: {fileID: -2204676977505184693, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
         m_Name: New Mesh
+        m_Overridden: 1
+      - m_Value: {fileID: -2204676977505184693, guid: 735e07316ea6ef542935d741f1961f4c, type: 3}
+        m_Name: PlayerMesh
         m_Overridden: 1
     m_Bool:
       m_Array: []
