@@ -73,9 +73,20 @@ public class CanopicJarPickable : MonoBehaviour
         Open();
         if (jar == CanopicJar.Crocodile)
         {
-            AudioManager.Instance?.StopAllMusic();
-            PlayCredits();
+            StartCoroutine(PlayCredits());
         }
+    }
+
+    private IEnumerator PlayCredits()
+    {
+        inputReader.DisableInputs(InputReader.InputFlags.All);
+        FadeToBlack ftb = FindObjectOfType<FadeToBlack>();
+        ftb.Fade();
+
+        yield return new WaitForSeconds(ftb.fadeDuration);
+
+        inputReader.EnableInputs(InputReader.InputFlags.All);
+        SceneManager.LoadScene("Credits");
     }
 
     public void Open()
@@ -108,12 +119,6 @@ public class CanopicJarPickable : MonoBehaviour
     private void OnDisable()
     {
         inputReader.interactPerformedEvent -= OnInteract;
-    }
-
-    public void PlayCredits()
-    {
-        AudioManager.Instance?.Play("Credits");
-        SceneManager.LoadScene("Credits");
     }
 
     private IEnumerator FadeColor(Vector4 startColor, Vector4 endColor)
