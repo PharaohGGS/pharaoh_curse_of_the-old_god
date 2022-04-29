@@ -117,7 +117,7 @@ namespace Pharaoh.Gameplay.Components
                     animator.ResetTrigger("Attacking");
                     animator.SetTrigger("Attacking");
                     LogHandler.SendMessage($"{name} stabbing {_currentTarget}", MessageType.Log);
-                    Debug.Log("----Play harpoon swing");
+                    AudioManager.Instance?.Play("HarpoonSwing");
                     AudioManager.Instance?.RandomBark("MobBarks", 5);
                     return true;
                 case true when !isStabbable && isThrowable:

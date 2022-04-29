@@ -140,7 +140,7 @@ namespace Pharaoh.Gameplay.Components
             }
             else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Gear") && damager.name.Replace("(Clone)", "").Contains("Harpoon"))
             {
-                Debug.Log("Player hit by harpoon sound");
+                AudioManager.Instance?.Play("HarpoonHit");
             }
 
             if (!isInvincible && invincibilityTime > Mathf.Epsilon)

@@ -13,6 +13,8 @@ namespace Pharaoh.Gameplay
         private Collider2D _col;
         private Rigidbody2D _rb;
 
+        private TrapSound _spikeSound;
+
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
 
         protected void Awake()
@@ -20,6 +22,8 @@ namespace Pharaoh.Gameplay
             // at start hide gear
             if (TryGetComponent(out _col)) _col.enabled = false;
             if (TryGetComponent(out _rb) && hidingTransform) Reset();
+
+            _spikeSound = GetComponent<TrapSound>();
         }
 
         public override void Enable()
@@ -77,6 +81,8 @@ namespace Pharaoh.Gameplay
 
             // when showing, activate collider
             EnableMeshAndCollision(true);
+            Debug.Log("----Play spikes");
+            _spikeSound.ActivationSound();
             yield return StartCoroutine(show);
 
             // after showing wait some lifeTime

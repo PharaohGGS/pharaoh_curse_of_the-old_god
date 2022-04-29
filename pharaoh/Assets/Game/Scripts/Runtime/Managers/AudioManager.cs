@@ -62,7 +62,11 @@ namespace Pharaoh.Managers
         [SerializeField]
         private AudioClip[] clawHitClips;
         [SerializeField]
+        private AudioClip[] harpoonSwingClips;
+        [SerializeField]
         private AudioClip[] harpoonThrowClips;
+        [SerializeField]
+        private AudioClip[] harpoonHitClips;
 
         [Space(10)]
         [Header("Doors and crates and plates sound")]
@@ -133,7 +137,7 @@ namespace Pharaoh.Managers
 
             if (audioSource.isPlaying && !s.canOverride)
             {
-                Debug.LogWarning($"{s.name} audioSource is already playing and can't override.");
+                Debug.Log($"{s.name} audioSource is already playing and can't override.");
                 return;
             }
 
@@ -174,8 +178,14 @@ namespace Pharaoh.Managers
                     case "ClawHit":
                         audioSource.clip = GetRandomClip(clawHitClips);
                         break;
+                    case "HarpoonSwing":
+                        audioSource.clip = GetRandomClip(harpoonSwingClips);
+                        break;
                     case "HarpoonThrow":
                         audioSource.clip = GetRandomClip(harpoonThrowClips);
+                        break;
+                    case "HarpoonHit":
+                        audioSource.clip = GetRandomClip(harpoonHitClips);
                         break;
                     case "RockFall":
                         audioSource.clip = GetRandomClip(RockFallClips);

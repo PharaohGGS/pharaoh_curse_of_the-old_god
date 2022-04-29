@@ -82,11 +82,21 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 43bb5bf198e242b40aa99194f856042a, type: 3}
   - {fileID: 8300000, guid: 1e5892f299a08124eac87bb8ddb60d86, type: 3}
   - {fileID: 8300000, guid: 5bb0e13234b5b24419060bae032558fb, type: 3}
+  harpoonSwingClips:
+  - {fileID: 8300000, guid: 9ac6e108b53d6214bba75fa4469ca2f6, type: 3}
+  - {fileID: 8300000, guid: 696239d1f006ebf4d80f5fd17893d3dc, type: 3}
+  - {fileID: 8300000, guid: d8e9af13041013c45b80563bfe464c92, type: 3}
+  - {fileID: 8300000, guid: 16368e1f3101c8942b6034af6d94cd31, type: 3}
   harpoonThrowClips:
   - {fileID: 8300000, guid: 83139c9c42b00ad45b10e2716b53ff7d, type: 3}
   - {fileID: 8300000, guid: ff6bf4a57f5ca2040a87f8c342d4aff0, type: 3}
   - {fileID: 8300000, guid: cd0c2ffa33673dc48b1d0fb230ef4ce7, type: 3}
   - {fileID: 8300000, guid: 9a4bba27f3802cb4cb6de67e41caee1c, type: 3}
+  harpoonHitClips:
+  - {fileID: 8300000, guid: 21d78eb17577ff54b8a65b8570c9df06, type: 3}
+  - {fileID: 8300000, guid: 5c316e9e9250f1e4b8f5b74ad0dd6287, type: 3}
+  - {fileID: 8300000, guid: ea1a047b0d08c3a46a2036e4f6f8e4d2, type: 3}
+  - {fileID: 8300000, guid: 728a86315d2e58648a56af07789c2b63, type: 3}
   doorOpensClips:
   - {fileID: 8300000, guid: 309e43e3b4ced1041935f10d84697895, type: 3}
   - {fileID: 8300000, guid: 8cd092a7ce07b224ab34d36f8c9a2fdb, type: 3}
@@ -243,7 +253,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    canOverride: 0
+    canOverride: 1
   - name: ButtonClick
     clip: {fileID: 8300000, guid: d9b05f234e6d1f441b2ad219973130bc, type: 3}
     volume: 0.3
@@ -255,7 +265,7 @@ MonoBehaviour:
     fadeInDuration: 1
     fadeOutDuration: 1
     randomized: 0
-    canOverride: 0
+    canOverride: 1
   - name: LaunchGame
     clip: {fileID: 8300000, guid: dc026c22485e860429d33ee6fd278c63, type: 3}
     volume: 0.2
@@ -508,7 +518,31 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 1
     canOverride: 1
+  - name: HarpoonSwing
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
   - name: HarpoonThrow
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: HarpoonHit
     clip: {fileID: 0}
     volume: 0.3
     pitch: 1
