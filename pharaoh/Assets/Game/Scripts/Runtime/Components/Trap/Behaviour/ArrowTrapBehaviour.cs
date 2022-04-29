@@ -14,10 +14,12 @@ namespace Pharaoh.Gameplay
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
         
         private DamagerPool _pool;
+        private ArrowSound _arrowSound;
 
         private void Awake()
         {
             _pool = GetComponent<DamagerPool>();
+            _arrowSound = GetComponentInParent<ArrowSound>();
             Reset();
         }
 
@@ -55,6 +57,8 @@ namespace Pharaoh.Gameplay
 
             if (damager.TryGetComponent(out DamagerReturnToPool returnToPool))
             {
+                Debug.Log("----Playing arrow sound");
+                _arrowSound.ArrowActivationSound();
                 returnToPool.StartLifeTimeCountDown(data.lifeTime);
             }
 

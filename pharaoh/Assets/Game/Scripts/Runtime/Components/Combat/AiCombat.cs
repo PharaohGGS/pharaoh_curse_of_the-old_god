@@ -125,7 +125,7 @@ namespace Pharaoh.Gameplay.Components
                     animator.ResetTrigger("Shooting");
                     animator.SetTrigger("Shooting");
                     LogHandler.SendMessage($"{name} shooting at {_currentTarget}", MessageType.Log);
-                    Debug.Log("----Play harpoon throw");
+                    AudioManager.Instance?.Play("HarpoonThrow");
                     AudioManager.Instance?.RandomBark("MobBarks", 5);
                     return true;
                 default:

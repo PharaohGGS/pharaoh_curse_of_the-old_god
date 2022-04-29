@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace Pharaoh.Gameplay
 {
@@ -19,6 +20,8 @@ namespace Pharaoh.Gameplay
         private SerializedProperty _minVector3;
         private SerializedProperty _maxVector4;
         private SerializedProperty _minVector4;
+        private SerializedProperty _maxGradient;
+        private SerializedProperty _minGradient;
 
         private void OnEnable()
         {
@@ -35,6 +38,8 @@ namespace Pharaoh.Gameplay
             _minVector3 = serializedObject.FindProperty("minVector3");
             _maxVector4 = serializedObject.FindProperty("maxVector4");
             _minVector4 = serializedObject.FindProperty("minVector4");
+            _maxGradient = serializedObject.FindProperty("maxGradient");
+            _minGradient = serializedObject.FindProperty("minGradient");
         }
 
 
@@ -101,6 +106,16 @@ namespace Pharaoh.Gameplay
                         _maxColor.colorValue = _minColor.colorValue = default;
                         _maxVector2.vector2Value = _minVector2.vector2Value = default;
                         _maxVector3.vector3Value = _minVector3.vector3Value = default;
+                        break;
+                    case 6:
+                        EditorGUILayout.PropertyField(_maxGradient, true, null);
+                        EditorGUILayout.PropertyField(_minGradient, true, null);
+                        _maxFloat.floatValue = _minFloat.floatValue = default;
+                        _maxInteger.intValue = _minInteger.intValue = default;
+                        _maxColor.colorValue = _minColor.colorValue = default;
+                        _maxVector2.vector2Value = _minVector2.vector2Value = default;
+                        _maxVector3.vector3Value = _minVector3.vector3Value = default;
+                        _maxVector4.vector4Value = _minVector4.vector4Value = default;
                         break;
                 }
             }

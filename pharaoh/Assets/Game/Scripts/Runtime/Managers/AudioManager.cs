@@ -61,6 +61,8 @@ namespace Pharaoh.Managers
         private AudioClip[] clawSwingClips;
         [SerializeField]
         private AudioClip[] clawHitClips;
+        [SerializeField]
+        private AudioClip[] harpoonThrowClips;
 
         [Space(10)]
         [Header("Doors and crates and plates sound")]
@@ -171,6 +173,9 @@ namespace Pharaoh.Managers
                         break;
                     case "ClawHit":
                         audioSource.clip = GetRandomClip(clawHitClips);
+                        break;
+                    case "HarpoonThrow":
+                        audioSource.clip = GetRandomClip(harpoonThrowClips);
                         break;
                     case "RockFall":
                         audioSource.clip = GetRandomClip(RockFallClips);
