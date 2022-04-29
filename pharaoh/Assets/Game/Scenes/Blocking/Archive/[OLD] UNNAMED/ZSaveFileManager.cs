@@ -4,12 +4,25 @@ using System.Collections;
 
 public class ZSaveFileManager : MonoBehaviour
 {
+
+    private AudioSource _fileSound;
+
     public InputReader inputReader;
 
     public GameObject saveFile;
     public ParticleSystem fileLoader;
+    public AudioClip fileClip;
 
     public LayerMask whatIsPlayer;
+
+    private void OnEnable()
+    {
+        _fileSound = gameObject.AddComponent<AudioSource>();
+        _fileSound.loop = false;
+        _fileSound.playOnAwake = false;
+        _fileSound.volume = 0.1f;
+        _fileSound.clip = fileClip;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -32,6 +45,7 @@ public class ZSaveFileManager : MonoBehaviour
         StopAllCoroutines();
         saveFile.SetActive(true);
         fileLoader.Play();
+        _fileSound.Play();
         StartCoroutine(SaveForSeconds(2f));
     }
 
