@@ -72,7 +72,10 @@ public class CanopicJarPickable : MonoBehaviour
         
         Open();
         if (jar == CanopicJar.Crocodile)
+        {
+            AudioManager.Instance?.StopAllMusic();
             PlayCredits();
+        }
     }
 
     public void Open()
@@ -109,6 +112,7 @@ public class CanopicJarPickable : MonoBehaviour
 
     public void PlayCredits()
     {
+        AudioManager.Instance?.Play("Credits");
         SceneManager.LoadScene("Credits");
     }
 

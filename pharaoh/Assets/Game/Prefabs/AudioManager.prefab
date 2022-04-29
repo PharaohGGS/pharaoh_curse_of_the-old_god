@@ -122,6 +122,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: df5a091bab1cd3746a762514a0344b06, type: 3}
   - {fileID: 8300000, guid: 1a50a5baa8ccdef40acf58b68a05028d, type: 3}
   - {fileID: 8300000, guid: 7c31a945af023344ab4b15746406d1ba, type: 3}
+  arrowHitClips:
+  - {fileID: 8300000, guid: cf55db07190968043add8852cda73048, type: 3}
+  - {fileID: 8300000, guid: aa68151e35861414b94cdc0bc9c639dc, type: 3}
+  - {fileID: 8300000, guid: 541713d30a95b5f45b98268182d27ce1, type: 3}
+  - {fileID: 8300000, guid: c539188f54157ed45bb5f75554793e59, type: 3}
+  spikeHitClips:
+  - {fileID: 8300000, guid: 50b911b3e745be04393eb68a9e1aab94, type: 3}
+  - {fileID: 8300000, guid: ac3e47534928eec42b3fbbff307e3fe6, type: 3}
+  - {fileID: 8300000, guid: 02f3b507e2b26e14ea7894f37edb2bfd, type: 3}
+  - {fileID: 8300000, guid: 2cab3d768e18d174abcad100bbb96c42, type: 3}
   RockFallClips:
   - {fileID: 8300000, guid: e6acb4ee8594e7246b8d2494039962cb, type: 3}
   - {fileID: 8300000, guid: e8543ff11e696ca40b1c3b5dcc389f5a, type: 3}
@@ -159,7 +169,7 @@ MonoBehaviour:
   - Roomtone High
   sounds:
   - name: Menu
-    clip: {fileID: 8300000, guid: 393a32a6ba7aaae4b98310fd5aa77560, type: 3}
+    clip: {fileID: 8300000, guid: 277cd08ac4fdfc3458192ee967dd5391, type: 3}
     volume: 0.5
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
@@ -195,7 +205,7 @@ MonoBehaviour:
     randomized: 0
     canOverride: 0
   - name: Credits
-    clip: {fileID: 8300000, guid: 277cd08ac4fdfc3458192ee967dd5391, type: 3}
+    clip: {fileID: 8300000, guid: 393a32a6ba7aaae4b98310fd5aa77560, type: 3}
     volume: 0.5
     pitch: 1
     audioMixerGroup: {fileID: 6700529900607419227, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
@@ -410,6 +420,18 @@ MonoBehaviour:
     fadeOutDuration: 0.5
     randomized: 0
     canOverride: 0
+  - name: MenuAmbiance
+    clip: {fileID: 8300000, guid: e79fd955ceb135d4e8fd33735fdee2cc, type: 3}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 1
+    fadeIn: 0
+    fadeOut: 1
+    fadeInDuration: 1
+    fadeOutDuration: 0.5
+    randomized: 0
+    canOverride: 0
   - name: RockFall
     clip: {fileID: 0}
     volume: 0.3
@@ -458,18 +480,18 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 1
     canOverride: 0
-  - name: MenuAmbiance
-    clip: {fileID: 8300000, guid: e79fd955ceb135d4e8fd33735fdee2cc, type: 3}
+  - name: MobBarks
+    clip: {fileID: 0}
     volume: 0.3
     pitch: 1
-    audioMixerGroup: {fileID: -567874039340393521, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
-    loop: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
     fadeIn: 0
-    fadeOut: 1
+    fadeOut: 0
     fadeInDuration: 1
-    fadeOutDuration: 0.5
-    randomized: 0
-    canOverride: 0
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
   - name: KhepeshHit
     clip: {fileID: 0}
     volume: 0.3
@@ -554,7 +576,19 @@ MonoBehaviour:
     fadeOutDuration: 1
     randomized: 1
     canOverride: 1
-  - name: MobBarks
+  - name: ArrowHit
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: SpikeHit
     clip: {fileID: 0}
     volume: 0.3
     pitch: 1

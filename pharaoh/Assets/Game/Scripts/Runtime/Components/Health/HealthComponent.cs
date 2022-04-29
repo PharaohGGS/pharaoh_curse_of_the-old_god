@@ -142,6 +142,14 @@ namespace Pharaoh.Gameplay.Components
             {
                 AudioManager.Instance?.Play("HarpoonHit");
             }
+            else if (name.Contains("Player") && damager.name.Replace("(Clone)", "").Contains("Arrow"))
+            {
+                AudioManager.Instance?.Play("ArrowHit");
+            }
+            else if ((name.Contains("Player") || name.Contains("Guard")) && damager.name.Replace("(Clone)", "").Contains("Spikes"))
+            {
+                AudioManager.Instance?.Play("SpikeHit");
+            }
 
             if (!isInvincible && invincibilityTime > Mathf.Epsilon)
             {
