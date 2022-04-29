@@ -27,9 +27,7 @@ public class TrapSound : MonoBehaviour
 
     public void ActivationSound()
     {
-        Debug.Log("Arrow activation");
         AudioClip activationClip = GetRandomClip(activationClips);
-        Debug.Log("---- clip : " + (activationClip != null));
         audioSource.PlayOneShot(activationClip);
     }
 
