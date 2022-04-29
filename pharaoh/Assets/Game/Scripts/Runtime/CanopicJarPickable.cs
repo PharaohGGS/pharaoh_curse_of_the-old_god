@@ -73,6 +73,7 @@ public class CanopicJarPickable : MonoBehaviour
         Open();
         if (jar == CanopicJar.Crocodile)
         {
+            AudioManager.Instance?.StopAllMusic();
             StartCoroutine(PlayCredits());
         }
     }
@@ -82,6 +83,7 @@ public class CanopicJarPickable : MonoBehaviour
         inputReader.DisableInputs(InputReader.InputFlags.All);
         FadeToBlack ftb = FindObjectOfType<FadeToBlack>();
         ftb.Fade();
+        AudioManager.Instance?.Play("Credits");
 
         yield return new WaitForSeconds(ftb.fadeDuration);
 

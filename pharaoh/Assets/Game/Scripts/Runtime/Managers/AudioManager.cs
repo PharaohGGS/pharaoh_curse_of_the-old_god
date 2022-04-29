@@ -80,6 +80,13 @@ namespace Pharaoh.Managers
         private AudioClip[] plateOffClips;
         [SerializeField]
         private AudioClip[] cratePullClips;
+        
+        [Space(10)]
+        [Header("Traps' sound")]
+        [SerializeField]
+        private AudioClip[] arrowHitClips;
+        [SerializeField]
+        private AudioClip[] spikeHitClips;
 
         [Space(10)]
         [Header("Environmental sounds")]
@@ -97,7 +104,7 @@ namespace Pharaoh.Managers
         public GenericDictionary<Sound, AudioSource> soundSources = new GenericDictionary<Sound, AudioSource>();
         [SerializeField]
         private List<string> musicsToStop = new List<string>
-        {"Ambiance", "LoreZone", "LoreShort", "Fight", "Roomtone High"};
+        {"Menu", "Ambiance", "Fight", "Enigme", "LoreZone", "LoreShort", "Roomtone High", "Credits"};
 
         [System.Serializable]
         public class Sound
@@ -186,6 +193,12 @@ namespace Pharaoh.Managers
                         break;
                     case "HarpoonHit":
                         audioSource.clip = GetRandomClip(harpoonHitClips);
+                        break;
+                    case "ArrowHit":
+                        audioSource.clip = GetRandomClip(arrowHitClips);
+                        break;
+                    case "SpikeHit":
+                        audioSource.clip = GetRandomClip(spikeHitClips);
                         break;
                     case "RockFall":
                         audioSource.clip = GetRandomClip(RockFallClips);
