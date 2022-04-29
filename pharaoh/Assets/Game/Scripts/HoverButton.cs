@@ -2,8 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using AudioManager = Pharaoh.Managers.AudioManager;
 
+[RequireComponent(typeof(AudioSource))]
 public class HoverButton : MonoBehaviour
 {
+
+    private AudioSource _audioSource;
 
     public bool interactable = true;
 
@@ -22,6 +25,8 @@ public class HoverButton : MonoBehaviour
 
     private void OnEnable()
     {
+        _audioSource = GetComponent<AudioSource>();
+
         tmp.color = interactable ? defaultColor : disabledColor;
         tmp.fontSize = defaultSize;
     }
@@ -35,7 +40,8 @@ public class HoverButton : MonoBehaviour
     {
         if (interactable)
         {
-            AudioManager.Instance?.Play("ButtonHover");
+            //AudioManager.Instance?.Play("ButtonHover");
+            _audioSource.Play();
             tmp.color = hoverColor;
             tmp.fontSize = hoverSize;
         }
