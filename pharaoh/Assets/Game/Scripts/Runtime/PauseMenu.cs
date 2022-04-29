@@ -42,6 +42,9 @@ public class PauseMenu: MonoBehaviour
 
     private void PauseGame()
     {
+        // Disables all player inputs
+        inputReader.DisableInputs(InputReader.InputFlags.All);
+
         globalVolume.SetActive(false);
 
         Time.timeScale = 0f;
@@ -60,6 +63,9 @@ public class PauseMenu: MonoBehaviour
         pausePanel.SetActive(false);
 
         isGamePaused = false;
+
+        // Enables all player inputs
+        inputReader.EnableInputs(InputReader.InputFlags.All);
     }
 
     public void Continue()
