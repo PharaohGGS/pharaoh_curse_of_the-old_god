@@ -25,6 +25,11 @@ public class HoverButton : MonoBehaviour
         tmp.fontSize = defaultSize;
     }
 
+    private void OnDisable()
+    {
+        Exit();
+    }
+
     public void Hover()
     {
         if (interactable)
