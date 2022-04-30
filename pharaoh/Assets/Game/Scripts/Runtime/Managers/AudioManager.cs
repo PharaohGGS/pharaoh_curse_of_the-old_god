@@ -52,6 +52,10 @@ namespace Pharaoh.Managers
         private AudioClip[] dashSwarmClips;
         [SerializeField]
         private AudioClip[] khepeshHitClips;
+        [SerializeField]
+        private AudioClip[] sandSoldierOnClips;
+        [SerializeField]
+        private AudioClip[] sandSoldierOffClips;
 
         [Space(10)]
         [Header("Mob's sound")]
@@ -175,6 +179,12 @@ namespace Pharaoh.Managers
                         break;
                     case "KhepeshHit":
                         audioSource.clip = GetRandomClip(khepeshHitClips);
+                        break;
+                    case "SandSoldierOn":
+                        audioSource.clip = GetRandomClip(sandSoldierOnClips);
+                        break;
+                    case "SandSoldierOff":
+                        audioSource.clip = GetRandomClip(sandSoldierOffClips);
                         break; 
                     case "MobBarks":
                         audioSource.clip = GetRandomClip(mobBarksClips);

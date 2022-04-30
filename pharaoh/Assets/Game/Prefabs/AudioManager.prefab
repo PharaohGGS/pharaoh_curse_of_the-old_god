@@ -59,6 +59,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5952d364011fe1c40a88670f4824ddd8, type: 3}
   - {fileID: 8300000, guid: 69f0dcee352a745449cc737ca8be1c4d, type: 3}
   - {fileID: 8300000, guid: 86d39284e06eef248b31debfe5b5cb7a, type: 3}
+  sandSoldierOnClips:
+  - {fileID: 8300000, guid: dc92073957524a8429e37f38f3d77e44, type: 3}
+  - {fileID: 8300000, guid: 74c2e3799997da743ac123600246e877, type: 3}
+  - {fileID: 8300000, guid: 06dcea4d46628c442b82d36663b90e7f, type: 3}
+  - {fileID: 8300000, guid: a9fc3b842db9a8a4ca0976ce15ba1497, type: 3}
+  sandSoldierOffClips:
+  - {fileID: 8300000, guid: 7c178b41d4d1df74fbccdb21f589b073, type: 3}
+  - {fileID: 8300000, guid: 3571147853d58e540958a058ee733229, type: 3}
   mobBarksClips:
   - {fileID: 8300000, guid: d39da720c95ccd042a7ecdb21424ae64, type: 3}
   - {fileID: 8300000, guid: 0fdc162dfccc7324da16d196da81a6b6, type: 3}
@@ -303,6 +311,30 @@ MonoBehaviour:
   - name: DashNormal
     clip: {fileID: 0}
     volume: 0.2
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: SandSoldierOn
+    clip: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
+    loop: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeInDuration: 1
+    fadeOutDuration: 1
+    randomized: 1
+    canOverride: 1
+  - name: SandSoldierOff
+    clip: {fileID: 0}
+    volume: 0.3
     pitch: 1
     audioMixerGroup: {fileID: 5697760445656229806, guid: daab505a2cbc22443a1bb8049d37e61b, type: 2}
     loop: 0

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 using PlayerInput = Pharaoh.Tools.Inputs.PlayerInput;
+using AudioManager = Pharaoh.Managers.AudioManager;
 
 public class SandSoldier : MonoBehaviour
 {
@@ -359,7 +360,8 @@ public class SandSoldier : MonoBehaviour
                 yield break;
             }
         }
-        
+        AudioManager.Instance?.Play("SandSoldierOn");
+
         // Lerp the collider size from ground to full size
         float elapsed = 0f;
         col.offset = startColliderOffset;
@@ -415,8 +417,8 @@ public class SandSoldier : MonoBehaviour
         if (!soldier.TryGetComponent(out VisualEffect vfx))
             Debug.Log("No Vfx on soldier");
         vfx.SendEvent("Kill");
+        AudioManager.Instance?.Play("SandSoldierOff");
         yield return new WaitForSeconds(timeToDie);
-        
         Destroy(soldier);
     }
     
